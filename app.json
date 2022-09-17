@@ -1,0 +1,35 @@
+{
+  "expo": {
+    "name": "wlin",
+    "slug": "wlin",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/logo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#711775",
+      "width": "80%"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/logoSpals.png",
+        "backgroundColor": "#711775"
+      },
+      "package": "com.thuongnguyen.wlin"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
+  }
+}
