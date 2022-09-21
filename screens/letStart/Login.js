@@ -24,7 +24,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { RadioButton } from "react-native-paper";
 import ModalSms from "../../components/ModalSms";
 import { useDispatch } from "react-redux";
-import { getOTP } from "../../redux/actions/authAction";
+import { AUTH, getOTP } from "../../redux/actions/authAction";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
@@ -48,6 +48,9 @@ const Login = () => {
     setValid(checkValid ? checkValid : false);
     checkValid && checked && setModalSms(true);
     // dispatch(getOTP(value));
+    // setTimeout(() => {
+    //   dispatch({ type: AUTH.OTP, payload: [] });
+    // }, [3000]);
   };
   return (
     <KeyboardAwareScrollView style={styles.container}>
@@ -78,7 +81,7 @@ const Login = () => {
                 alignItems: "center",
                 borderRadius: 5,
                 marginBottom: 7,
-                transform: [{ rotate: "-45deg" }],
+                // transform: [{ rotate: "-45deg" }],
                 shadowColor: "#000",
                 shadowOffset: {
                   width: 0,
@@ -94,7 +97,7 @@ const Login = () => {
                 name="chevron-back-outline"
                 size={25}
                 color="#711775"
-                style={{ transform: [{ rotate: "45deg" }] }}
+                // style={{ transform: [{ rotate: "45deg" }] }}
               />
             </TouchableOpacity>
             <Text style={{ color: "#711775", fontSize: 25, fontWeight: "600" }}>

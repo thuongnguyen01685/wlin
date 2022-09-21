@@ -15,70 +15,22 @@ import {
 // create a component
 const data = [
   {
-    _id: 1,
     picture: require("../../../assets/logo.png"),
     nameAreas: "WLIN PIONEER EU+",
     person: "Mai Thu Huyền",
-    code: "quocgia",
   },
   {
-    _id: 2,
     picture: require("../../../assets/logo.png"),
     nameAreas: "WLIN PASSION USA+",
     person: "Mai Thu Huyền",
-    code: "quocgia",
   },
   {
-    _id: 3,
     picture: require("../../../assets/logo.png"),
     nameAreas: "WLIN STARS ASIA+",
     person: "Mai Thu Huyền",
-    code: "quocgia",
-  },
-  {
-    _id: 1,
-    picture: require("../../../assets/logo.png"),
-    nameAreas: "WLIN STARS ASIA+",
-    person: "Mai Thu Huyền",
-    code: "khuvuc",
-  },
-  {
-    _id: 2,
-    picture: require("../../../assets/logo.png"),
-    nameAreas: "WLIN PIONEER EU+",
-    person: "Mai Thu Huyền",
-    code: "khuvuc",
-  },
-  {
-    _id: 3,
-    picture: require("../../../assets/logo.png"),
-    nameAreas: "WLIN PASSION USA+",
-    person: "Mai Thu Huyền",
-    code: "khuvuc",
-  },
-  {
-    _id: 1,
-    picture: require("../../../assets/logo.png"),
-    nameAreas: "WLIN PASSION USA+",
-    person: "Mai Thu Huyền",
-    code: "vung",
-  },
-  {
-    _id: 2,
-    picture: require("../../../assets/logo.png"),
-    nameAreas: "WLIN STARS ASIA+",
-    person: "Mai Thu Huyền",
-    code: "vung",
-  },
-  {
-    _id: 3,
-    picture: require("../../../assets/logo.png"),
-    nameAreas: "WLIN PIONEER EU+",
-    person: "Mai Thu Huyền",
-    code: "vung",
   },
 ];
-const BodyClub = (props) => {
+const BodyTYFCB = () => {
   const navigation = useNavigation();
   return (
     <View>
@@ -90,16 +42,19 @@ const BodyClub = (props) => {
           paddingLeft: 20,
           paddingTop: 18,
         }}>
-        Danh sách CLUB
+        Danh sách TYFCB
       </Text>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View
-          style={{ marginBottom: "57%", paddingHorizontal: 15, marginTop: 20 }}>
-          {data
-            .filter((items) => items.code === props.code)
-            .map((item) => (
+          style={{
+            marginBottom: "57%",
+            paddingHorizontal: 15,
+            marginTop: 20,
+          }}>
+          <View>
+            {data.map((item, index) => (
               <TouchableOpacity
-                key={item._id}
+                key={index}
                 style={{
                   flexDirection: "row",
                   justifyContent: "space-around",
@@ -109,7 +64,8 @@ const BodyClub = (props) => {
                   borderRadius: 8,
                   paddingVertical: 20,
                 }}
-                onPress={() => navigation.navigate("DetailClub")}>
+                // onPress={() => navigation.navigate("DetailClub")}
+              >
                 <View
                   style={{
                     flexDirection: "row",
@@ -121,9 +77,14 @@ const BodyClub = (props) => {
                       justifyContent: "space-between",
                       alignItems: "center",
                     }}>
+                    {/* <Ionicons name="reader-outline" size={30} color="#711775" /> */}
+                    <Image
+                      source={require("../../../assets/like.png")}
+                      style={{ width: 30, height: 20 }}
+                    />
                     <Image
                       source={item.picture}
-                      style={{ width: 80, height: 40 }}
+                      style={{ width: 90, height: 40, marginLeft: 10 }}
                     />
                     <View
                       style={{
@@ -144,7 +105,8 @@ const BodyClub = (props) => {
                   </View>
                 </View>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate("DetailClub")}>
+                // onPress={() => navigation.navigate("DetailClub")}
+                >
                   <Ionicons
                     name="chevron-forward-outline"
                     size={25}
@@ -153,8 +115,39 @@ const BodyClub = (props) => {
                 </TouchableOpacity>
               </TouchableOpacity>
             ))}
+          </View>
         </View>
       </ScrollView>
+      <TouchableOpacity
+        style={{
+          flexDirection: "row",
+          justifyContent: "flex-end",
+          alignItems: "flex-end",
+          position: "absolute",
+          top: "75%",
+          zIndex: 10,
+          left: "80%",
+        }}
+        onPress={() => {
+          navigation.navigate("CreateTYFCB");
+        }}>
+        <LinearGradient
+          start={{ x: 0.8, y: 1 }}
+          end={{ x: 0.3, y: 0.3 }}
+          colors={[
+            "rgba(241, 108, 246, 0.8) 120.28%)",
+            "rgba(113, 23, 117, 0.8) -6.93%",
+          ]}
+          style={{
+            width: 70,
+            paddingVertical: 18,
+            flexDirection: "row",
+            justifyContent: "center",
+            borderRadius: 50,
+          }}>
+          <Ionicons name="add-outline" size={30} color="#ffffff" />
+        </LinearGradient>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -163,4 +156,4 @@ const BodyClub = (props) => {
 const styles = StyleSheet.create({});
 
 //make this component available to the app
-export default BodyClub;
+export default BodyTYFCB;

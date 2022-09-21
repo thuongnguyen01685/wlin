@@ -15,70 +15,27 @@ import {
 // create a component
 const data = [
   {
-    _id: 1,
     picture: require("../../../assets/logo.png"),
-    nameAreas: "WLIN PIONEER EU+",
-    person: "Mai Thu Huyền",
-    code: "quocgia",
+    name: "Nhóm quyền lợi Partner",
+    rank: "Partner",
   },
   {
-    _id: 2,
     picture: require("../../../assets/logo.png"),
-    nameAreas: "WLIN PASSION USA+",
-    person: "Mai Thu Huyền",
-    code: "quocgia",
+    name: "Nhóm quyền lợi Kim cương",
+    rank: "Kim cương",
   },
   {
-    _id: 3,
     picture: require("../../../assets/logo.png"),
-    nameAreas: "WLIN STARS ASIA+",
-    person: "Mai Thu Huyền",
-    code: "quocgia",
+    name: "Nhóm quyền lợi Vàng",
+    rank: "Vàng",
   },
   {
-    _id: 1,
     picture: require("../../../assets/logo.png"),
-    nameAreas: "WLIN STARS ASIA+",
-    person: "Mai Thu Huyền",
-    code: "khuvuc",
-  },
-  {
-    _id: 2,
-    picture: require("../../../assets/logo.png"),
-    nameAreas: "WLIN PIONEER EU+",
-    person: "Mai Thu Huyền",
-    code: "khuvuc",
-  },
-  {
-    _id: 3,
-    picture: require("../../../assets/logo.png"),
-    nameAreas: "WLIN PASSION USA+",
-    person: "Mai Thu Huyền",
-    code: "khuvuc",
-  },
-  {
-    _id: 1,
-    picture: require("../../../assets/logo.png"),
-    nameAreas: "WLIN PASSION USA+",
-    person: "Mai Thu Huyền",
-    code: "vung",
-  },
-  {
-    _id: 2,
-    picture: require("../../../assets/logo.png"),
-    nameAreas: "WLIN STARS ASIA+",
-    person: "Mai Thu Huyền",
-    code: "vung",
-  },
-  {
-    _id: 3,
-    picture: require("../../../assets/logo.png"),
-    nameAreas: "WLIN PIONEER EU+",
-    person: "Mai Thu Huyền",
-    code: "vung",
+    name: "Nhóm quyền lợi Bạc",
+    rank: "Bạc",
   },
 ];
-const BodyClub = (props) => {
+const BodyBenefit = () => {
   const navigation = useNavigation();
   return (
     <View>
@@ -90,26 +47,29 @@ const BodyClub = (props) => {
           paddingLeft: 20,
           paddingTop: 18,
         }}>
-        Danh sách CLUB
+        Danh sách nhóm quyền lợi
       </Text>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View
-          style={{ marginBottom: "57%", paddingHorizontal: 15, marginTop: 20 }}>
-          {data
-            .filter((items) => items.code === props.code)
-            .map((item) => (
+          style={{
+            marginBottom: "57%",
+            paddingHorizontal: 15,
+            marginTop: 20,
+          }}>
+          <View>
+            {data.map((item, index) => (
               <TouchableOpacity
-                key={item._id}
                 style={{
                   flexDirection: "row",
-                  justifyContent: "space-around",
+                  justifyContent: "space-between",
                   alignItems: "center",
                   backgroundColor: "#F3F3F3",
                   marginVertical: 10,
                   borderRadius: 8,
                   paddingVertical: 20,
+                  paddingHorizontal: 15,
                 }}
-                onPress={() => navigation.navigate("DetailClub")}>
+                key={index}>
                 <View
                   style={{
                     flexDirection: "row",
@@ -123,8 +83,9 @@ const BodyClub = (props) => {
                     }}>
                     <Image
                       source={item.picture}
-                      style={{ width: 80, height: 40 }}
+                      style={{ width: 90, height: 40 }}
                     />
+
                     <View
                       style={{
                         flexDirection: "column",
@@ -137,14 +98,22 @@ const BodyClub = (props) => {
                           fontSize: 15,
                           fontWeight: "600",
                         }}>
-                        {item.nameAreas}
+                        {item.name}
                       </Text>
-                      <Text>{item.person}</Text>
+                      <Text
+                        style={{
+                          color: "#000000",
+                          fontSize: 12,
+                          fontWeight: "500",
+                        }}>
+                        Gói: {item.rank}
+                      </Text>
                     </View>
                   </View>
                 </View>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate("DetailClub")}>
+                // onPress={() => navigation.navigate("DetailClub")}
+                >
                   <Ionicons
                     name="chevron-forward-outline"
                     size={25}
@@ -153,6 +122,7 @@ const BodyClub = (props) => {
                 </TouchableOpacity>
               </TouchableOpacity>
             ))}
+          </View>
         </View>
       </ScrollView>
     </View>
@@ -163,4 +133,4 @@ const BodyClub = (props) => {
 const styles = StyleSheet.create({});
 
 //make this component available to the app
-export default BodyClub;
+export default BodyBenefit;

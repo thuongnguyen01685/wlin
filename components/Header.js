@@ -10,10 +10,17 @@ import {
   Image,
   ImageBackground,
 } from "react-native";
+import { useDispatch } from "react-redux";
+import { AUTH } from "../redux/actions/authAction";
 
 // create a component
 const Header = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const handleShowProfile = () => {
+    //dispatch({ type: AUTH.SHOWPROFILE, payload: true });
+    navigation.navigate("OtherScreen");
+  };
   return (
     <View
       style={{
@@ -40,7 +47,7 @@ const Header = () => {
             justifyContent: "center",
             alignItems: "center",
             borderRadius: 5,
-            transform: [{ rotate: "-45deg" }],
+            // transform: [{ rotate: "-45deg" }],
             shadowColor: "#000",
             shadowOffset: {
               width: 0,
@@ -52,12 +59,7 @@ const Header = () => {
             elevation: 5,
           }}
           onPress={() => navigation.goBack()}>
-          <Ionicons
-            name="chevron-back-outline"
-            size={25}
-            color="#711775"
-            style={{ transform: [{ rotate: "45deg" }] }}
-          />
+          <Ionicons name="chevron-back-outline" size={25} color="#711775" />
         </TouchableOpacity>
         <View style={{ marginLeft: 15 }}>
           <View style={{ flexDirection: "row" }}>
@@ -75,7 +77,7 @@ const Header = () => {
                 height: 20,
                 left: -4,
                 width: 10,
-                transform: [{ rotate: "45deg" }],
+                //transform: [{ rotate: "45deg" }],
                 flexDirection: "column",
                 justifyContent: "flex-start",
               }}>
@@ -113,8 +115,8 @@ const Header = () => {
             flexDirection: "row",
             justifyContent: "center",
             alignItems: "center",
-            borderRadius: 5,
-            transform: [{ rotate: "-45deg" }],
+            borderRadius: 50,
+            //transform: [{ rotate: "-45deg" }],
             shadowColor: "#000",
             shadowOffset: {
               width: 0,
@@ -122,10 +124,10 @@ const Header = () => {
             },
             shadowOpacity: 0.25,
             shadowRadius: 3.84,
-
             elevation: 5,
-            marginRight: "10%",
-          }}>
+            marginRight: "7%",
+          }}
+          onPress={handleShowProfile}>
           {/* <Ionicons
                   name="chevron-back-outline"
                   size={25}
@@ -137,9 +139,9 @@ const Header = () => {
             style={{
               width: 50,
               height: 50,
-              transform: [{ rotate: "45deg" }],
+              //transform: [{ rotate: "45deg" }],
               resizeMode: "contain",
-              borderRadius: 5,
+              borderRadius: 50,
               position: "absolute",
             }}
           />

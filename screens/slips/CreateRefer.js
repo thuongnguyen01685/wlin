@@ -25,13 +25,14 @@ import { RadioButton } from "react-native-paper";
 import ModalSms from "../../components/ModalSms";
 import Header from "../../components/Header";
 import BodySlips from "../../components/page/Slips/BodySlips";
+import BodyCreateRefer from "../../components/page/Slips/BodyCreateRefer";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
 const ratio = w / 720;
 
 // create a component
-const Slips = () => {
+const CreateRefer = () => {
   const navigation = useNavigation();
   const [search, setSearch] = useState("");
 
@@ -119,7 +120,7 @@ const Slips = () => {
           </TouchableOpacity>
         </View>
         <View style={styles.body}>
-          <BodySlips />
+          <BodyCreateRefer />
         </View>
       </View>
     </View>
@@ -172,4 +173,4 @@ const styles = StyleSheet.create({
 });
 
 //make this component available to the app
-export default Slips;
+export default CreateRefer;

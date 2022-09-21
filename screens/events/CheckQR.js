@@ -24,6 +24,7 @@ import PhoneInput from "react-native-phone-number-input";
 import { RadioButton } from "react-native-paper";
 import ModalSms from "../../components/ModalSms";
 import Header from "../../components/Header";
+import BodyCheckQR from "../../components/page/events/BodyCheckQR";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
@@ -117,7 +118,9 @@ const CheckQR = () => {
             </LinearGradient>
           </TouchableOpacity>
         </View>
-        <View style={styles.body}></View>
+        <View style={styles.body}>
+          <BodyCheckQR />
+        </View>
       </View>
     </View>
   );

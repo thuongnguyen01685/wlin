@@ -103,7 +103,7 @@ const Otp = ({ route }) => {
                 alignItems: "center",
                 borderRadius: 5,
                 marginBottom: 7,
-                transform: [{ rotate: "-45deg" }],
+                //transform: [{ rotate: "-45deg" }],
                 shadowColor: "#000",
                 shadowOffset: {
                   width: 0,
@@ -115,12 +115,7 @@ const Otp = ({ route }) => {
                 elevation: 5,
               }}
               onPress={() => navigation.goBack()}>
-              <Ionicons
-                name="chevron-back-outline"
-                size={25}
-                color="#711775"
-                style={{ transform: [{ rotate: "45deg" }] }}
-              />
+              <Ionicons name="chevron-back-outline" size={25} color="#711775" />
             </TouchableOpacity>
             <Text style={{ color: "#711775", fontSize: 25, fontWeight: "600" }}>
               WLIN xin chào
@@ -252,7 +247,11 @@ const Otp = ({ route }) => {
                 <Text>Bạn quên mã OTP?</Text>
                 <TouchableOpacity
                   style={{ marginLeft: 10 }}
-                  onPress={() => navigation.navigate("ForgetOtp")}>
+                  onPress={() =>
+                    navigation.navigate("ForgetOtp", {
+                      numberPhone: route.params.numberPhone,
+                    })
+                  }>
                   <Text
                     style={{
                       color: "#711775",

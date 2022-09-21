@@ -29,7 +29,7 @@ const h = Dimensions.get("window").height;
 const ratio = w / 720;
 
 // create a component
-const ForgetOtp = () => {
+const ForgetOtp = ({ route }) => {
   const navigation = useNavigation();
 
   return (
@@ -53,7 +53,7 @@ const ForgetOtp = () => {
                 alignItems: "center",
                 borderRadius: 5,
                 marginBottom: 7,
-                transform: [{ rotate: "-45deg" }],
+                //transform: [{ rotate: "-45deg" }],
                 shadowColor: "#000",
                 shadowOffset: {
                   width: 0,
@@ -65,12 +65,7 @@ const ForgetOtp = () => {
                 elevation: 5,
               }}
               onPress={() => navigation.goBack()}>
-              <Ionicons
-                name="chevron-back-outline"
-                size={25}
-                color="#711775"
-                style={{ transform: [{ rotate: "45deg" }] }}
-              />
+              <Ionicons name="chevron-back-outline" size={25} color="#711775" />
             </TouchableOpacity>
             <Text style={{ color: "#711775", fontSize: 25, fontWeight: "600" }}>
               WLIN xin chào
@@ -116,7 +111,9 @@ const ForgetOtp = () => {
             </Text>
             <View style={{ paddingHorizontal: 36 }}>
               <View style={{ marginTop: 10 }}>
-                <Text style={styles.contentText}>Xin chào, +84378759723!</Text>
+                <Text style={styles.contentText}>
+                  Xin chào, {route.params.numberPhone}!
+                </Text>
                 <Text style={styles.contentText}>
                   Mã OTP của bạn đã được gửi vào SMS vào lúc 09/08/2022 14:00.
                 </Text>
@@ -152,7 +149,12 @@ const ForgetOtp = () => {
                 justifyContent: "flex-end",
                 paddingHorizontal: 30,
               }}>
-              <TouchableOpacity onPress={() => navigation.navigate("Otp")}>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate("Otp", {
+                    numberPhone: route.params.numberPhone,
+                  })
+                }>
                 <LinearGradient
                   start={{ x: 0, y: 0.3 }}
                   end={{ x: 1, y: 1 }}

@@ -19,6 +19,7 @@ import {
   TouchableOpacity,
   Dimensions,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -52,6 +53,7 @@ const data = {
 
 // create a component
 const BodyHome = () => {
+  const navigation = useNavigation();
   return (
     <View>
       <Text
@@ -130,8 +132,7 @@ const BodyHome = () => {
               <View
                 style={{
                   flexDirection: "column",
-                  justifyContent: "flex-start",
-                  height: "54%",
+                  height: "93%",
                   shadowColor: "#000",
                   shadowOffset: {
                     width: 0,
@@ -139,50 +140,58 @@ const BodyHome = () => {
                   },
                   shadowOpacity: 0.25,
                   shadowRadius: 3.84,
-
+                  borderRadius: 5,
                   elevation: 5,
                 }}>
                 <LinearGradient
                   start={{ x: 1, y: 0.7 }}
                   end={{ x: 0.3, y: 0.8 }}
                   colors={["#F9C271", "#F4EFB8", "#F4EFB8", "#F9C271"]}
-                  style={{ width: 120, height: 70, borderRadius: 3 }}>
-                  <Text style={{ fontSize: 10 }}>Thành viên</Text>
+                  style={{ width: 100, height: 130, borderRadius: 5 }}>
                   <View
                     style={{
-                      flexDirection: "row",
+                      flexDirection: "column",
                       justifyContent: "center",
+                      alignItems: "center",
                       height: "100%",
-                      alignItems: "flex-start",
                     }}>
                     <Image
                       source={require("../../assets/logo.png")}
                       style={{ width: 70, height: 30 }}
                     />
+                    <Text style={{ fontSize: 10, color: "#969696" }}>
+                      Gói vàng
+                    </Text>
                   </View>
                 </LinearGradient>
               </View>
             </View>
             <View
               style={{
+                width: "100%",
+
                 flexDirection: "row",
                 justifyContent: "flex-end",
-                paddingBottom: 10,
-                width: "130%",
-                marginRight: 10,
+                paddingHorizontal: 15,
               }}>
-              <TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  borderRadius: 7,
+                  flexDirection: "row",
+                  alignContent: "center",
+                  alignItems: "center",
+                  width: "35%",
+                  justifyContent: "flex-end",
+                  marginBottom: 10,
+                }}>
                 <LinearGradient
                   start={{ x: 1, y: 0.3 }}
                   end={{ x: 1, y: 1 }}
                   colors={["#751979", "#AE40B2"]}
                   style={{
-                    borderRadius: 7,
-                    flexDirection: "row",
-                    alignContent: "center",
-                    alignItems: "center",
+                    paddingHorizontal: 15,
                     paddingVertical: 5,
-                    width: "50%",
+                    borderRadius: 7,
                   }}>
                   <Text
                     style={{
@@ -203,7 +212,7 @@ const BodyHome = () => {
               flexDirection: "row",
               justifyContent: "space-between",
             }}>
-            <View
+            <TouchableOpacity
               style={{
                 //   paddingHorizontal: 10,
                 marginHorizontal: 15,
@@ -221,7 +230,8 @@ const BodyHome = () => {
                 marginTop: 10,
                 marginBottom: 10,
                 width: "43%",
-              }}>
+              }}
+              onPress={() => navigation.navigate("SlipsScreen")}>
               <LinearGradient
                 start={{ x: 1, y: 0.3 }}
                 end={{ x: 1, y: 1 }}
@@ -268,7 +278,7 @@ const BodyHome = () => {
                   </Text>
                 </View>
               </View>
-            </View>
+            </TouchableOpacity>
             <View
               style={{
                 //   paddingHorizontal: 10,
@@ -403,6 +413,7 @@ const styles = StyleSheet.create({
     color: "#000",
     fontSize: 12,
     fontWeight: "400",
+    marginVertical: 1,
   },
 });
 

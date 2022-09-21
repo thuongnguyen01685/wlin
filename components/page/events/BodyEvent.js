@@ -12,6 +12,7 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
+  RefreshControl,
 } from "react-native";
 
 const dataHeader = [
@@ -102,10 +103,20 @@ const dataEvents = [
     code: "dadienra",
   },
 ];
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
 // create a component
 const BodyEvent = () => {
   const [cat, setCat] = useState("dangdienra");
   const navigation = useNavigation();
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
+
   return (
     <View>
       <Text
@@ -118,7 +129,11 @@ const BodyEvent = () => {
         }}>
         Danh sách sự kiện
       </Text>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
         <View style={{ marginBottom: "57%" }}>
           <View
             style={{

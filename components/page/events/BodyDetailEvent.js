@@ -4,6 +4,7 @@ import {
   MaterialCommunityIcons,
   MaterialIcons,
 } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 
 import React, { Component, useState } from "react";
@@ -22,6 +23,7 @@ const h = Dimensions.get("window").height;
 const ratio = w / 720;
 // create a component
 const BodyDetailEvent = () => {
+  const navigation = useNavigation();
   return (
     <View>
       <Text
@@ -203,21 +205,75 @@ const BodyDetailEvent = () => {
               <View
                 style={{
                   flexDirection: "row",
-                  justifyContent: "space-around",
+                  justifyContent: "space-between",
                   alignItems: "center",
+                  marginLeft: 10,
+                  width: "35%",
                 }}>
-                <View style={styles.borderBacRounded}>
-                  <Ionicons name="qr-code-outline" size={20} color="#ffffff" />
-                </View>
-                <View style={styles.borderBacRounded}>
-                  <Ionicons name="image-outline" size={20} color="#ffffff" />
-                </View>
-                <View style={styles.borderBacRounded}>
-                  <Image
-                    source={require("../../../assets/fbf.png")}
-                    style={styles.imageCheckin}
-                  />
-                </View>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("CheckQR")}>
+                  <LinearGradient
+                    start={{ x: 0, y: 0.3 }}
+                    end={{ x: 1, y: 1 }}
+                    colors={["#751979", "#AE40B2"]}
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      alignContent: "center",
+                      alignItems: "center",
+                      borderRadius: 30,
+                    }}>
+                    <View style={styles.borderBacRounded}>
+                      <Ionicons
+                        name="qr-code-outline"
+                        size={20}
+                        color="#ffffff"
+                      />
+                    </View>
+                  </LinearGradient>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("CheckImage")}>
+                  <LinearGradient
+                    start={{ x: 0, y: 0.3 }}
+                    end={{ x: 1, y: 1 }}
+                    colors={["#751979", "#AE40B2"]}
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      alignContent: "center",
+                      alignItems: "center",
+                      borderRadius: 30,
+                    }}>
+                    <View style={styles.borderBacRounded}>
+                      <Ionicons
+                        name="image-outline"
+                        size={20}
+                        color="#ffffff"
+                      />
+                    </View>
+                  </LinearGradient>
+                </TouchableOpacity>
+                {/* <TouchableOpacity>
+                  <LinearGradient
+                    start={{ x: 0, y: 0.3 }}
+                    end={{ x: 1, y: 1 }}
+                    colors={["#751979", "#AE40B2"]}
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      alignContent: "center",
+                      alignItems: "center",
+                      borderRadius: 30,
+                    }}>
+                    <View style={styles.borderBacRounded}>
+                      <Image
+                        source={require("../../../assets/fbf.png")}
+                        style={styles.imageCheckin}
+                      />
+                    </View>
+                  </LinearGradient>
+                </TouchableOpacity> */}
               </View>
             </View>
           </View>
@@ -266,9 +322,6 @@ const styles = StyleSheet.create({
   },
   borderBacRounded: {
     padding: 20,
-    backgroundColor: "#D171C8",
-    borderRadius: 30,
-    marginHorizontal: 5,
   },
   imageCheckin: {
     width: 20,

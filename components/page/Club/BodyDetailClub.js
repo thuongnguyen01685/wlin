@@ -136,6 +136,9 @@ const BodyDeTailClub = () => {
                 style={{
                   marginTop: 10,
                   width: "60%",
+                  height: 80,
+                  flexDirection: "column",
+                  justifyContent: "space-between",
                 }}>
                 <View
                   style={{

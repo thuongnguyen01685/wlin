@@ -11,6 +11,7 @@ const initialState = {
   banner: [],
   dmnv: [],
   otp: [],
+  showNaProfile: false,
 };
 
 const authReducer = (state = initialState, action) => {
@@ -20,6 +21,8 @@ const authReducer = (state = initialState, action) => {
         ...state,
         otp: action.payload,
       };
+    case AUTH.SHOWPROFILE:
+      return { ...state, showNaProfile: action.payload };
     default:
       return state;
   }

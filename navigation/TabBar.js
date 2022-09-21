@@ -5,17 +5,25 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Home from "../screens/home/Home";
-import Profile from "../screens/account/Profile";
+
 import Octicons from "react-native-vector-icons/Octicons";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Club from "../screens/clup/Club";
 import DetailClub from "../screens/clup/DetailClub";
-import BenefitClub from "../screens/clup/BenefitClub";
+
 import Events from "../screens/events/Events";
 import DetailEvents from "../screens/events/DetailEvents";
 import CheckQR from "../screens/events/CheckQR";
 import CheckImage from "../screens/events/CheckImage";
 import Slips from "../screens/slips/Slips";
+import CreateRefer from "../screens/slips/CreateRefer";
+import Other from "../screens/other/Other";
+import Profile from "../screens/other/Profile";
+import Benefit from "../screens/other/Benefit";
+import TYFCB from "../screens/other/TYFCB";
+import CreateTYFCB from "../screens/other/CreateTYFCB";
+import UpgradeMember from "../screens/other/UpgradeMember";
+import { useSelector } from "react-redux";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -31,11 +39,6 @@ function ClubScreen() {
       <Stack.Screen
         name="DetailClub"
         component={DetailClub}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="BenefitClub"
-        component={BenefitClub}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
@@ -69,6 +72,64 @@ function EventsScreen() {
   );
 }
 
+function SlipsScreen() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Slips"
+        component={Slips}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="CreateRefer"
+        component={CreateRefer}
+        options={{ headerShown: false }}
+      />
+    </Stack.Navigator>
+  );
+}
+
+function OtherScreen() {
+  const { auth } = useSelector((state) => state);
+
+  return (
+    <Stack.Navigator
+      initialRouteName={auth.showNaProfile ? "Profile" : "Other"}>
+      <Stack.Screen
+        name="Other"
+        component={Other}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Profile"
+        component={Profile}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Benefit"
+        component={Benefit}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="TYFCB"
+        component={TYFCB}
+        options={{ headerShown: false }}
+      />
+
+      <Stack.Screen
+        name="CreateTYFCB"
+        component={CreateTYFCB}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="UpgradeMember"
+        component={UpgradeMember}
+        options={{ headerShown: false }}
+      />
+    </Stack.Navigator>
+  );
+}
+
 // create a component
 const TabBar = () => {
   return (
@@ -84,7 +145,7 @@ const TabBar = () => {
               />
             );
           }
-          if (route.name === "Slips") {
+          if (route.name === "SlipsScreen") {
             return (
               <Ionicons
                 name="reader-outline"
@@ -93,7 +154,7 @@ const TabBar = () => {
               />
             );
           }
-          if (route.name === "Profile") {
+          if (route.name === "OtherScreen") {
             return (
               <Ionicons
                 name="menu"
@@ -140,7 +201,11 @@ const TabBar = () => {
         component={Home}
         options={{ title: "Trang chủ" }}
       />
-      <Tab.Screen name="Slips" component={Slips} options={{ title: "Slips" }} />
+      <Tab.Screen
+        name="SlipsScreen"
+        component={SlipsScreen}
+        options={{ title: "Slips" }}
+      />
       <Tab.Screen
         name="ClubScreen"
         component={ClubScreen}
@@ -152,8 +217,8 @@ const TabBar = () => {
         options={{ headerShown: false, title: "Sự kiện" }}
       />
       <Tab.Screen
-        name="Profile"
-        component={Profile}
+        name="OtherScreen"
+        component={OtherScreen}
         options={{ title: "Khác" }}
       />
     </Tab.Navigator>

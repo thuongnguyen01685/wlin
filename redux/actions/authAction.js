@@ -2,6 +2,7 @@ import { getData } from "../../utils/fetchApi";
 
 export const AUTH = {
   OTP: "OTP",
+  SHOWPROFILE: "SHOWPROFILE",
 };
 
 export const getOTP = (number) => async (dispatch) => {
