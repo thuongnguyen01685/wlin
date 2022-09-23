@@ -16,12 +16,32 @@ import {
 const data = [
   {
     picture: require("../../../assets/Chart.png"),
-    name: "Referrals",
+    name: "Quản trị hội viên",
+    navigation: "SlipsScreen",
+  },
+  {
+    picture: require("../../../assets/uit_shield-check.png"),
+    name: "Quản trị CLUB",
+    navigation: "ClubScreen",
+  },
+  {
+    picture: require("../../../assets/Calendar.png"),
+    name: "Quản trị sự kiện",
+    navigation: "EventsScreen",
+  },
+  {
+    picture: require("../../../assets/Chart.png"),
+    name: "Tạo CLUB",
+    navigation: "CreateClub",
+  },
+  {
+    picture: require("../../../assets/Chart.png"),
+    name: "Quản trị Referrals",
     navigation: "SlipsScreen",
   },
   {
     picture: require("../../../assets/Chart.png"),
-    name: "TYFCB",
+    name: "Quản trị TYFCB",
     navigation: "TYFCB",
   },
   {
@@ -90,7 +110,7 @@ const BodyOther = () => {
                       }}>
                       <Image
                         source={item.picture}
-                        style={{ width: 20, height: 20 }}
+                        style={{ width: 20, height: 22 }}
                       />
                     </View>
 

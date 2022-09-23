@@ -19,7 +19,7 @@ const Header = () => {
   const dispatch = useDispatch();
   const handleShowProfile = () => {
     //dispatch({ type: AUTH.SHOWPROFILE, payload: true });
-    navigation.navigate("OtherScreen");
+    navigation.navigate("Profile");
   };
   return (
     <View

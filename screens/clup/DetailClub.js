@@ -31,7 +31,7 @@ const h = Dimensions.get("window").height;
 const ratio = w / 720;
 
 // create a component
-const DetailClub = () => {
+const DetailClub = ({ route }) => {
   const navigation = useNavigation();
   const [search, setSearch] = useState("");
 
@@ -119,7 +119,7 @@ const DetailClub = () => {
           </TouchableOpacity>
         </View>
         <View style={styles.body}>
-          <BodyDetailClub />
+          <BodyDetailClub _id={route.params._id} />
         </View>
       </View>
     </View>

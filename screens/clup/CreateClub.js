@@ -25,15 +25,36 @@ import { RadioButton } from "react-native-paper";
 import ModalSms from "../../components/ModalSms";
 import Header from "../../components/Header";
 
+import BodyClub from "../../components/page/Club/BodyClub";
+import BodyCreateClub from "../../components/page/Club/BodyCreateClub";
+
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
 const ratio = w / 720;
 
 // create a component
-const BenefitClub = () => {
+
+const codeData = [
+  {
+    _id: 1,
+    name: "Quốc gia",
+    code: "quocgia",
+  },
+  {
+    _id: 2,
+    name: "Khu vực",
+    code: "khuvuc",
+  },
+  {
+    _id: 3,
+    name: "Vùng",
+    code: "vung",
+  },
+];
+const CreateClub = () => {
   const navigation = useNavigation();
   const [search, setSearch] = useState("");
-
+  const [code, setCode] = useState("quocgia");
   return (
     <View style={styles.container}>
       <View>
@@ -60,6 +81,7 @@ const BenefitClub = () => {
             />
           </View>
         </View>
+
         <View style={styles.search}>
           <View
             style={{
@@ -117,7 +139,9 @@ const BenefitClub = () => {
             </LinearGradient>
           </TouchableOpacity>
         </View>
-        <View style={styles.body}></View>
+        <View style={styles.body}>
+          <BodyCreateClub />
+        </View>
       </View>
     </View>
   );
@@ -169,4 +193,4 @@ const styles = StyleSheet.create({
 });
 
 //make this component available to the app
-export default BenefitClub;
+export default CreateClub;

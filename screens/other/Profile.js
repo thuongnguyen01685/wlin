@@ -165,7 +165,7 @@ const Profile = () => {
         <View style={styles.body}>
           <View>
             <ScrollView showsVerticalScrollIndicator={false}>
-              <View style={{ marginBottom: "20%" }}>
+              <View style={{ marginBottom: "5%" }}>
                 <View
                   style={{
                     marginHorizontal: 15,

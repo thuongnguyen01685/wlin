@@ -2,7 +2,8 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { Component } from "react";
+import React, { Component, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   View,
   Text,
@@ -11,6 +12,8 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
+import { CLUB, getCLub } from "../../../redux/actions/ClupAction";
+import { URL } from "../../../utils/fetchApi";
 
 // create a component
 const data = [
@@ -80,6 +83,13 @@ const data = [
 ];
 const BodyClub = (props) => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const { club } = useSelector((state) => state);
+
+  useEffect(() => {
+    dispatch(getCLub());
+  }, [dispatch]);
+
   return (
     <View>
       <Text
@@ -95,64 +105,75 @@ const BodyClub = (props) => {
       <ScrollView showsVerticalScrollIndicator={false}>
         <View
           style={{ marginBottom: "57%", paddingHorizontal: 15, marginTop: 20 }}>
-          {data
-            .filter((items) => items.code === props.code)
-            .map((item) => (
-              <TouchableOpacity
-                key={item._id}
+          {club.getClubs.map((item) => (
+            <TouchableOpacity
+              key={item._id}
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-around",
+                alignItems: "center",
+                backgroundColor: "#F3F3F3",
+                marginVertical: 10,
+                borderRadius: 8,
+                paddingVertical: 20,
+              }}
+              onPress={() =>
+                navigation.navigate("DetailClub", { _id: item._id })
+              }>
+              <View
                 style={{
                   flexDirection: "row",
-                  justifyContent: "space-around",
-                  alignItems: "center",
-                  backgroundColor: "#F3F3F3",
-                  marginVertical: 10,
-                  borderRadius: 8,
-                  paddingVertical: 20,
-                }}
-                onPress={() => navigation.navigate("DetailClub")}>
+                  justifyContent: "space-between",
+                  width: "70%",
+                }}>
                 <View
                   style={{
                     flexDirection: "row",
                     justifyContent: "space-between",
+                    alignItems: "center",
                   }}>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                    }}>
+                  {item.hinh_anh ? (
                     <Image
-                      source={item.picture}
+                      source={{
+                        uri: `${URL}/`.concat(`${item.hinh_anh}`),
+                      }}
+                      style={{ width: 80, height: 40, borderRadius: 7 }}
+                    />
+                  ) : (
+                    <Image
+                      source={require("../../../assets/logo.png")}
                       style={{ width: 80, height: 40 }}
                     />
-                    <View
+                  )}
+
+                  <View
+                    style={{
+                      flexDirection: "column",
+                      marginLeft: 10,
+                      justifyContent: "center",
+                    }}>
+                    <Text
                       style={{
-                        flexDirection: "column",
-                        marginLeft: 10,
-                        justifyContent: "center",
+                        color: "#711775",
+                        fontSize: 15,
+                        fontWeight: "600",
                       }}>
-                      <Text
-                        style={{
-                          color: "#711775",
-                          fontSize: 15,
-                          fontWeight: "600",
-                        }}>
-                        {item.nameAreas}
-                      </Text>
-                      <Text>{item.person}</Text>
-                    </View>
+                      {item.ten_club}
+                    </Text>
+                    <Text>{item.ten_partner}</Text>
                   </View>
                 </View>
-                <TouchableOpacity
-                  onPress={() => navigation.navigate("DetailClub")}>
-                  <Ionicons
-                    name="chevron-forward-outline"
-                    size={25}
-                    color="#711775"
-                  />
-                </TouchableOpacity>
+              </View>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("DetailClub")}>
+                <Ionicons
+                  name="chevron-forward-outline"
+                  size={25}
+                  color="#711775"
+                />
               </TouchableOpacity>
-            ))}
+            </TouchableOpacity>
+          ))}
         </View>
       </ScrollView>
     </View>

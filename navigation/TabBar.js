@@ -100,11 +100,11 @@ function OtherScreen() {
         component={Other}
         options={{ headerShown: false }}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Profile"
         component={Profile}
         options={{ headerShown: false }}
-      />
+      /> */}
       <Stack.Screen
         name="Benefit"
         component={Benefit}

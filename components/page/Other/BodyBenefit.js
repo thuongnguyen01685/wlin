@@ -3,6 +3,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { Component } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   View,
   Text,
@@ -11,6 +12,8 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
+import { useEffect } from "react";
+import { getListBenefit } from "../../../redux/actions/ClupAction";
 
 // create a component
 const data = [
@@ -37,6 +40,13 @@ const data = [
 ];
 const BodyBenefit = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const { club } = useSelector((state) => state);
+
+  useEffect(() => {
+    dispatch(getListBenefit());
+  }, [dispatch]);
+
   return (
     <View>
       <Text
@@ -57,7 +67,7 @@ const BodyBenefit = () => {
             marginTop: 20,
           }}>
           <View>
-            {data.map((item, index) => (
+            {club.getBenefit.map((item) => (
               <TouchableOpacity
                 style={{
                   flexDirection: "row",
@@ -69,7 +79,7 @@ const BodyBenefit = () => {
                   paddingVertical: 20,
                   paddingHorizontal: 15,
                 }}
-                key={index}>
+                key={item._id}>
                 <View
                   style={{
                     flexDirection: "row",
@@ -82,7 +92,7 @@ const BodyBenefit = () => {
                       alignItems: "center",
                     }}>
                     <Image
-                      source={item.picture}
+                      source={require("../../../assets/logo.png")}
                       style={{ width: 90, height: 40 }}
                     />
 
@@ -98,7 +108,7 @@ const BodyBenefit = () => {
                           fontSize: 15,
                           fontWeight: "600",
                         }}>
-                        {item.name}
+                        {item.ten_nhquyenloi}
                       </Text>
                       <Text
                         style={{
@@ -106,7 +116,7 @@ const BodyBenefit = () => {
                           fontSize: 12,
                           fontWeight: "500",
                         }}>
-                        Gói: {item.rank}
+                        Gói: {item.ten_goi_thanh_vien}
                       </Text>
                     </View>
                   </View>

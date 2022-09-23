@@ -26,6 +26,8 @@ import Login from "../screens/letStart/Login";
 import Otp from "../screens/letStart/Otp";
 import ForgetOtp from "../screens/letStart/ForgetOtp";
 import Splash from "../screens/letStart/Splash";
+import Profile from "../screens/other/Profile";
+import CreateClub from "../screens/clup/CreateClub";
 
 // Notifications.setNotificationHandler({
 //   handleNotification: async () => ({
@@ -317,6 +319,16 @@ const Navigator = () => {
         <Stack.Screen
           name="TabBar"
           component={TabBar}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Profile"
+          component={Profile}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="CreateClub"
+          component={CreateClub}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

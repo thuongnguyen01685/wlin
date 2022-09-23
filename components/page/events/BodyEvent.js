@@ -2,7 +2,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { Component, useState } from "react";
+import React, { Component, useEffect, useState } from "react";
 
 import {
   View,
@@ -14,6 +14,8 @@ import {
   Dimensions,
   RefreshControl,
 } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import { getEventsAction } from "../../../redux/actions/eventsAction";
 
 const dataHeader = [
   {
@@ -110,12 +112,19 @@ const wait = (timeout) => {
 const BodyEvent = () => {
   const [cat, setCat] = useState("dangdienra");
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const [refreshing, setRefreshing] = React.useState(false);
 
+  const { event } = useSelector((state) => state);
+
+  useEffect(() => {
+    dispatch(getEventsAction());
+  }, [dispatch]);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
+    dispatch(getEventsAction());
     wait(2000).then(() => setRefreshing(false));
-  }, []);
+  }, [dispatch]);
 
   return (
     <View>

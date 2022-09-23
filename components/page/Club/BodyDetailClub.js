@@ -2,6 +2,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { Component, useState } from "react";
+import { useEffect } from "react";
 import {
   View,
   Text,
@@ -11,7 +12,13 @@ import {
   TouchableOpacity,
   Dimensions,
 } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
+import { getDetailClub } from "../../../redux/actions/ClupAction";
+import { URL } from "../../../utils/fetchApi";
 
+const w = Dimensions.get("window").width;
+const h = Dimensions.get("window").height;
+const ratio = w / 720;
 const dataHeader = [
   {
     _id: 1,
@@ -91,9 +98,16 @@ const dataTotal = [
   },
 ];
 // create a component
-const BodyDeTailClub = () => {
+const BodyDeTailClub = (props) => {
   const [cat, setCat] = useState("thanhvien");
   const [nk, setNk] = useState("nk1");
+  const dispatch = useDispatch();
+  const { club } = useSelector((state) => state);
+
+  useEffect(() => {
+    dispatch(getDetailClub(props._id));
+  }, [dispatch]);
+
   return (
     <View>
       <Text
@@ -112,63 +126,97 @@ const BodyDeTailClub = () => {
             <View
               style={{
                 flexDirection: "row",
-                justifyContent: "center",
+                justifyContent: "space-between",
                 alignItems: "center",
-              }}>
-              <Image
-                source={require("../../../assets/logo.png")}
-                style={{ width: 120, height: 50 }}
-              />
-              <View>
-                <Text
-                  style={{ fontSize: 20, fontWeight: "600", color: "#711775" }}>
-                  WLIN PIONEER EU+
-                </Text>
-              </View>
-            </View>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "flex-end",
-                paddingRight: 40,
+                paddingHorizontal: 20,
+                width: w,
               }}>
               <View
                 style={{
-                  marginTop: 10,
-                  width: "60%",
-                  height: 80,
                   flexDirection: "column",
-                  justifyContent: "space-between",
+                  justifyContent: "flex-end",
+                  width: "40%",
                 }}>
+                {club.detailClub.hinh_anh ? (
+                  <Image
+                    source={{
+                      uri: `${URL}/`.concat(`${club.detailClub.hinh_anh}`),
+                    }}
+                    style={{ width: "80%", height: 90, borderRadius: 7 }}
+                  />
+                ) : (
+                  <Image
+                    source={require("../../../assets/logo.png")}
+                    style={{ width: "80%", height: 50, borderRadius: 7 }}
+                  />
+                )}
+              </View>
+
+              <View style={{ width: "60%", paddingRight: 10 }}>
+                <Text
+                  style={{
+                    fontSize: 20,
+                    fontWeight: "600",
+                    color: "#711775",
+                    textAlign: "center",
+                  }}>
+                  {club.detailClub.ten_club}
+                </Text>
                 <View
                   style={{
                     flexDirection: "row",
-                    justifyContent: "space-between",
+                    justifyContent: "center",
                   }}>
-                  <Text>Partner: Mai Thu Huyền</Text>
-                  <TouchableOpacity>
-                    <Ionicons name="call-outline" color="#711775" size={20} />
-                  </TouchableOpacity>
-                </View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                  }}>
-                  <Text>Thư ký: Mai Thu Huyền</Text>
-                  <TouchableOpacity>
-                    <Ionicons name="call-outline" color="#711775" size={20} />
-                  </TouchableOpacity>
-                </View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                  }}>
-                  <Text>BD: Ms A</Text>
-                  <TouchableOpacity>
-                    <Ionicons name="call-outline" color="#711775" size={20} />
-                  </TouchableOpacity>
+                  <View
+                    style={{
+                      marginTop: 10,
+                      height: 80,
+                      flexDirection: "column",
+                      justifyContent: "space-between",
+                    }}>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                      }}>
+                      <Text>Partner: {club.detailClub.ten_partner}</Text>
+                      <TouchableOpacity style={{ marginLeft: 10 }}>
+                        <Ionicons
+                          name="call-outline"
+                          color="#711775"
+                          size={20}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                      }}>
+                      <Text>Thư ký: Mai Thu Huyền</Text>
+                      <TouchableOpacity>
+                        <Ionicons
+                          name="call-outline"
+                          color="#711775"
+                          size={20}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                      }}>
+                      <Text>BD: Ms A</Text>
+                      <TouchableOpacity>
+                        <Ionicons
+                          name="call-outline"
+                          color="#711775"
+                          size={20}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
                 </View>
               </View>
             </View>
@@ -242,9 +290,8 @@ const BodyDeTailClub = () => {
           )}
 
           <ScrollView>
-            {dataTotal
-              .filter((items) => items.code === cat)
-              .map((item) =>
+            {club.detailClub.ds_thanh_vien &&
+              club.detailClub.ds_thanh_vien.map((item) =>
                 cat === "thanhvien" ? (
                   <View
                     key={item._id}
@@ -267,11 +314,11 @@ const BodyDeTailClub = () => {
                       }}>
                       <View style={{ flexDirection: "row" }}>
                         <Image
-                          source={item.avatar}
+                          source={require("../../../assets/truong.png")}
                           style={{ width: 70, height: 70 }}
                         />
                         <Image
-                          source={item.vm}
+                          source={require("../../../assets/vmvang.png")}
                           style={{ width: 20, height: 20 }}
                         />
                       </View>
@@ -288,7 +335,7 @@ const BodyDeTailClub = () => {
                             fontSize: 18,
                             fontWeight: "600",
                           }}>
-                          {item.name}
+                          {item.ten_kh}
                         </Text>
                         <Text
                           style={{
@@ -296,7 +343,7 @@ const BodyDeTailClub = () => {
                             fontSize: 12,
                             fontWeight: "600",
                           }}>
-                          {item.position}
+                          {item.ten_chuc_vu}
                         </Text>
                       </View>
                     </View>

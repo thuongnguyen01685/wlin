@@ -257,7 +257,10 @@ const BodyHome = () => {
                   justifyContent: "space-between",
                   alignItems: "center",
                 }}>
-                <Ionicons name="calendar-outline" size={40} color="#711775" />
+                <Image
+                  source={require("../../assets/uil_notes.png")}
+                  style={{ width: 35, height: 30 }}
+                />
                 <View>
                   <Text
                     style={{
@@ -279,7 +282,7 @@ const BodyHome = () => {
                 </View>
               </View>
             </TouchableOpacity>
-            <View
+            <TouchableOpacity
               style={{
                 //   paddingHorizontal: 10,
                 marginHorizontal: 15,
@@ -321,10 +324,14 @@ const BodyHome = () => {
                   justifyContent: "space-between",
                   alignItems: "center",
                 }}>
-                <Ionicons
+                {/* <Ionicons
                   name="heart-circle-outline"
                   size={40}
                   color="#711775"
+                /> */}
+                <Image
+                  source={require("../../assets/fa6-regular_handshake.png")}
+                  style={{ width: 40, height: 30 }}
                 />
                 <View>
                   <Text
@@ -346,7 +353,160 @@ const BodyHome = () => {
                   </Text>
                 </View>
               </View>
-            </View>
+            </TouchableOpacity>
+          </View>
+          <View
+            style={{
+              width: "100%",
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}>
+            <TouchableOpacity
+              style={{
+                //   paddingHorizontal: 10,
+                marginHorizontal: 15,
+                borderRadius: 8,
+                shadowColor: "#000",
+                shadowOffset: {
+                  width: 0,
+                  height: 1,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
+
+                elevation: 5,
+                backgroundColor: "#ffff",
+                marginTop: 10,
+                marginBottom: 10,
+                width: "43%",
+              }}
+              onPress={() => navigation.navigate("ClubScreen")}>
+              <LinearGradient
+                start={{ x: 1, y: 0.3 }}
+                end={{ x: 1, y: 1 }}
+                colors={["#751979", "#AE40B2"]}
+                style={{
+                  borderRadius: 7,
+                  flexDirection: "row",
+                  alignContent: "center",
+                  alignItems: "center",
+                  padding: 5,
+                  marginBottom: 10,
+                  width: "100%",
+                }}>
+                <Text style={{ fontSize: 12, color: "#ffffff" }}>CLUB</Text>
+              </LinearGradient>
+              <View
+                style={{
+                  paddingHorizontal: 15,
+                  paddingBottom: 10,
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}>
+                {/* <Ionicons
+                  name="shield-checkmark-outline"
+                  size={40}
+                  color="#711775"
+                /> */}
+                <Image
+                  source={require("../../assets/uit_shield-check.png")}
+                  style={{ width: 36, height: 33 }}
+                />
+                <View>
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      color: "#711775",
+                      textAlign: "center",
+                    }}>
+                    1/2/2022
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 30,
+                      color: "#711775",
+                      textAlign: "center",
+                      fontWeight: "700",
+                    }}>
+                    10
+                  </Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                //   paddingHorizontal: 10,
+                marginHorizontal: 15,
+                borderRadius: 8,
+                shadowColor: "#000",
+                shadowOffset: {
+                  width: 0,
+                  height: 1,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
+
+                elevation: 5,
+                backgroundColor: "#ffff",
+                marginTop: 10,
+                marginBottom: 10,
+                width: "43%",
+              }}
+              onPress={() => navigation.navigate("EventsScreen")}>
+              <LinearGradient
+                start={{ x: 1, y: 0.3 }}
+                end={{ x: 1, y: 1 }}
+                colors={["#751979", "#AE40B2"]}
+                style={{
+                  borderRadius: 7,
+                  flexDirection: "row",
+                  alignContent: "center",
+                  alignItems: "center",
+                  padding: 5,
+                  marginBottom: 10,
+                  width: "100%",
+                }}>
+                <Text style={{ fontSize: 12, color: "#ffffff" }}>Sự kiện</Text>
+              </LinearGradient>
+              <View
+                style={{
+                  paddingHorizontal: 15,
+                  paddingBottom: 10,
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}>
+                {/* <Ionicons
+                  name="heart-circle-outline"
+                  size={40}
+                  color="#711775"
+                /> */}
+                <Image
+                  source={require("../../assets/Calendar.png")}
+                  style={{ width: 30, height: 33 }}
+                />
+                <View>
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      color: "#711775",
+                      textAlign: "center",
+                    }}>
+                    19/2/2022
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 30,
+                      color: "#711775",
+                      textAlign: "center",
+                      fontWeight: "700",
+                    }}>
+                    30
+                  </Text>
+                </View>
+              </View>
+            </TouchableOpacity>
           </View>
           <View
             style={{
