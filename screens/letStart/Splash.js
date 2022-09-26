@@ -21,7 +21,7 @@ const Splash = () => {
   return (
     <View style={styles.container}>
       <LinearGradient
-        start={{ x: 1, y: 0 }}
+        start={{ x: 1, y: 0.5 }}
         end={{ x: 1, y: 1 }}
         colors={[
           "rgba(113, 23, 117, 0.8) -6.93%",

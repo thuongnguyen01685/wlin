@@ -3834,6 +3834,11 @@
     "@expo/config-plugins" "^4.0.14"
     "expo-image-loader" "~3.2.0"
 
+"expo-checkbox@^2.2.0":
+  "integrity" "sha512-vuLVnQS1UqzjKod/obfAC3XmozEDw1N338xKel1BqB/AclgpQVxCVhyPJRNsT3kScwrjNb4UXn3H0qJneTX/fg=="
+  "resolved" "https://registry.npmjs.org/expo-checkbox/-/expo-checkbox-2.2.0.tgz"
+  "version" "2.2.0"
+
 "expo-constants@~13.1.0", "expo-constants@~13.1.1":
   "integrity" "sha512-QRVHrrMCLenBzWZ8M+EvCXM+jjdQzFMW27YQHRac3SGGoND1hWr81scOmGwlFo2wLZrYXm8HcYt1E6ry3IIwrA=="
   "resolved" "https://registry.npmjs.org/expo-constants/-/expo-constants-13.1.1.tgz"

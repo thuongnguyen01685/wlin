@@ -109,7 +109,7 @@ const BodyDeTailClub = (props) => {
   }, [dispatch]);
 
   return (
-    <View>
+    <View style={{ height: "100%" }}>
       <Text
         style={{
           fontSize: 20,
@@ -120,175 +120,157 @@ const BodyDeTailClub = (props) => {
         }}>
         Chi tiết CLUB
       </Text>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={{ marginBottom: "57%", marginTop: 15 }}>
-          <View>
+      <View style={{ marginTop: 10 }}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            paddingHorizontal: 20,
+            width: w,
+          }}>
+          <View
+            style={{
+              flexDirection: "column",
+              justifyContent: "flex-end",
+              width: "40%",
+            }}>
+            {club.detailClub.hinh_anh ? (
+              <Image
+                source={{
+                  uri: `${URL}/`.concat(`${club.detailClub.hinh_anh}`),
+                }}
+                style={{ width: "80%", height: 90, borderRadius: 7 }}
+              />
+            ) : (
+              <Image
+                source={require("../../../assets/logo.png")}
+                style={{ width: "80%", height: 50, borderRadius: 7 }}
+              />
+            )}
+          </View>
+
+          <View style={{ width: "60%", paddingRight: 10 }}>
+            <Text
+              style={{
+                fontSize: 20,
+                fontWeight: "600",
+                color: "#711775",
+                textAlign: "center",
+              }}>
+              {club.detailClub.ten_club}
+            </Text>
             <View
               style={{
                 flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                paddingHorizontal: 20,
-                width: w,
+                justifyContent: "center",
               }}>
               <View
                 style={{
+                  marginTop: 10,
+                  height: 80,
                   flexDirection: "column",
-                  justifyContent: "flex-end",
-                  width: "40%",
+                  justifyContent: "space-between",
                 }}>
-                {club.detailClub.hinh_anh ? (
-                  <Image
-                    source={{
-                      uri: `${URL}/`.concat(`${club.detailClub.hinh_anh}`),
-                    }}
-                    style={{ width: "80%", height: 90, borderRadius: 7 }}
-                  />
-                ) : (
-                  <Image
-                    source={require("../../../assets/logo.png")}
-                    style={{ width: "80%", height: 50, borderRadius: 7 }}
-                  />
-                )}
-              </View>
-
-              <View style={{ width: "60%", paddingRight: 10 }}>
-                <Text
-                  style={{
-                    fontSize: 20,
-                    fontWeight: "600",
-                    color: "#711775",
-                    textAlign: "center",
-                  }}>
-                  {club.detailClub.ten_club}
-                </Text>
                 <View
                   style={{
                     flexDirection: "row",
-                    justifyContent: "center",
+                    justifyContent: "space-between",
                   }}>
-                  <View
-                    style={{
-                      marginTop: 10,
-                      height: 80,
-                      flexDirection: "column",
-                      justifyContent: "space-between",
-                    }}>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                      }}>
-                      <Text>Partner: {club.detailClub.ten_partner}</Text>
-                      <TouchableOpacity style={{ marginLeft: 10 }}>
-                        <Ionicons
-                          name="call-outline"
-                          color="#711775"
-                          size={20}
-                        />
-                      </TouchableOpacity>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                      }}>
-                      <Text>Thư ký: Mai Thu Huyền</Text>
-                      <TouchableOpacity>
-                        <Ionicons
-                          name="call-outline"
-                          color="#711775"
-                          size={20}
-                        />
-                      </TouchableOpacity>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                      }}>
-                      <Text>BD: Ms A</Text>
-                      <TouchableOpacity>
-                        <Ionicons
-                          name="call-outline"
-                          color="#711775"
-                          size={20}
-                        />
-                      </TouchableOpacity>
-                    </View>
-                  </View>
+                  <Text>Partner: {club.detailClub.ten_partner}</Text>
+                  <TouchableOpacity style={{ marginLeft: 10 }}>
+                    <Ionicons name="call-outline" color="#711775" size={20} />
+                  </TouchableOpacity>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}>
+                  <Text>Thư ký: Mai Thu Huyền</Text>
+                  <TouchableOpacity>
+                    <Ionicons name="call-outline" color="#711775" size={20} />
+                  </TouchableOpacity>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}>
+                  <Text>BD: Ms A</Text>
+                  <TouchableOpacity>
+                    <Ionicons name="call-outline" color="#711775" size={20} />
+                  </TouchableOpacity>
                 </View>
               </View>
             </View>
           </View>
-          <View
+        </View>
+      </View>
+      <View
+        style={{
+          backgroundColor: "#f3f3f3",
+          marginHorizontal: 10,
+          marginTop: 30,
+          marginBottom: 10,
+          borderRadius: 20,
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}>
+        {dataHeader.map((item) => (
+          <TouchableOpacity
             style={{
-              backgroundColor: "#f3f3f3",
-              marginHorizontal: 10,
-              marginTop: 30,
-              marginBottom: 10,
+              backgroundColor: item.value === cat ? "#711775" : "#f3f3f3",
               borderRadius: 20,
-              flexDirection: "row",
-              justifyContent: "space-between",
-            }}>
-            {dataHeader.map((item) => (
-              <TouchableOpacity
-                style={{
-                  backgroundColor: item.value === cat ? "#711775" : "#f3f3f3",
-                  borderRadius: 20,
-                  paddingHorizontal: "7%",
-                }}
-                key={item._id}
-                onPress={() => setCat(item.value)}>
-                <Text
-                  style={{
-                    color: item.value === cat ? "#ffffff" : "#A0A0A0",
-                    marginVertical: 5,
-                  }}>
-                  {item.cat}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-          {cat === "banquantri" && (
-            <View
+              paddingHorizontal: "7%",
+            }}
+            key={item._id}
+            onPress={() => setCat(item.value)}>
+            <Text
               style={{
-                flexDirection: "row",
-                justifyContent: "flex-end",
-                marginHorizontal: 15,
-                zIndex: 6,
+                color: item.value === cat ? "#ffffff" : "#A0A0A0",
+                marginVertical: 5,
               }}>
-              <TouchableOpacity
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-around",
-                  backgroundColor: "#f3f3f3",
-                  borderRadius: 5,
-                  shadowColor: "#000",
-                  shadowOffset: {
-                    width: 0,
-                    height: 2,
-                  },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 3.84,
-                  elevation: 5,
-                  width: "30%",
-                  paddingHorizontal: 10,
-                  paddingVertical: 5,
-                }}>
-                <Text
-                  style={{ color: "#711775", fontSize: 13, fontWeight: "500" }}>
-                  Nhiệm kì 1
-                </Text>
-                <Ionicons
-                  name="chevron-down-outline"
-                  size={20}
-                  color="#711775"
-                />
-              </TouchableOpacity>
-            </View>
-          )}
-
+              {item.cat}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+      {cat === "banquantri" && (
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "flex-end",
+            marginHorizontal: 15,
+            zIndex: 6,
+          }}>
+          <TouchableOpacity
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-around",
+              backgroundColor: "#f3f3f3",
+              borderRadius: 5,
+              shadowColor: "#000",
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.84,
+              elevation: 5,
+              width: "30%",
+              paddingHorizontal: 10,
+              paddingVertical: 5,
+            }}>
+            <Text style={{ color: "#711775", fontSize: 13, fontWeight: "500" }}>
+              Nhiệm kì 1
+            </Text>
+            <Ionicons name="chevron-down-outline" size={20} color="#711775" />
+          </TouchableOpacity>
+        </View>
+      )}
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={{ marginBottom: "20%" }}>
           <ScrollView>
             {club.detailClub.ds_thanh_vien &&
               club.detailClub.ds_thanh_vien.map((item) =>
@@ -309,8 +291,8 @@ const BodyDeTailClub = (props) => {
                     <View
                       style={{
                         flexDirection: "row",
-                        justifyContent: "space-between",
-                        alignItems: "center",
+
+                        width: "70%",
                       }}>
                       <View style={{ flexDirection: "row" }}>
                         <Image
@@ -326,13 +308,13 @@ const BodyDeTailClub = (props) => {
                       <View
                         style={{
                           flexDirection: "column",
-                          marginLeft: 20,
                           justifyContent: "center",
+                          marginLeft: 4,
                         }}>
                         <Text
                           style={{
                             color: "#711775",
-                            fontSize: 18,
+                            fontSize: 15,
                             fontWeight: "600",
                           }}>
                           {item.ten_kh}
@@ -351,7 +333,9 @@ const BodyDeTailClub = (props) => {
                       style={{
                         flexDirection: "row",
                         justifyContent: "space-between",
+                        alignItems: "flex-end",
                         width: "20%",
+                        height: "50%",
                       }}>
                       <TouchableOpacity>
                         <Ionicons

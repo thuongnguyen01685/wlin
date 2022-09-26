@@ -127,7 +127,7 @@ const BodyEvent = () => {
   }, [dispatch]);
 
   return (
-    <View>
+    <View style={{ height: "100%" }}>
       <Text
         style={{
           fontSize: 20,
@@ -138,41 +138,41 @@ const BodyEvent = () => {
         }}>
         Danh sách sự kiện
       </Text>
+      <View
+        style={{
+          backgroundColor: "#f3f3f3",
+          marginHorizontal: 10,
+          marginTop: 15,
+          marginBottom: 10,
+          borderRadius: 20,
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}>
+        {dataHeader.map((item, index) => (
+          <TouchableOpacity
+            style={{
+              backgroundColor: item.code === cat ? "#711775" : "#f3f3f3",
+              borderRadius: 20,
+              paddingHorizontal: 25,
+            }}
+            key={index}
+            onPress={() => setCat(item.code)}>
+            <Text
+              style={{
+                color: item.code === cat ? "#ffffff" : "#A0A0A0",
+                marginVertical: 5,
+              }}>
+              {item.name}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>
       <ScrollView
         showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
-        <View style={{ marginBottom: "57%" }}>
-          <View
-            style={{
-              backgroundColor: "#f3f3f3",
-              marginHorizontal: 10,
-              marginTop: 30,
-              marginBottom: 10,
-              borderRadius: 20,
-              flexDirection: "row",
-              justifyContent: "space-between",
-            }}>
-            {dataHeader.map((item, index) => (
-              <TouchableOpacity
-                style={{
-                  backgroundColor: item.code === cat ? "#711775" : "#f3f3f3",
-                  borderRadius: 20,
-                  paddingHorizontal: 25,
-                }}
-                key={index}
-                onPress={() => setCat(item.code)}>
-                <Text
-                  style={{
-                    color: item.code === cat ? "#ffffff" : "#A0A0A0",
-                    marginVertical: 5,
-                  }}>
-                  {item.name}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
+        <View style={{ marginBottom: "20%" }}>
           {dataEvents
             .filter((items) => items.code === cat)
             .map((item, index) => (

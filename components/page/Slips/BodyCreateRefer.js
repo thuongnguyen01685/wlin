@@ -25,7 +25,7 @@ const BodyCreateRefer = () => {
   const [mdRef, setMdRef] = useState("");
   const [modalSuccess, setModalSuccess] = useState(false);
   return (
-    <View>
+    <View style={{ height: "100%" }}>
       <Text
         style={{
           fontSize: 20,
@@ -46,9 +46,9 @@ const BodyCreateRefer = () => {
       <ScrollView showsVerticalScrollIndicator={false}>
         <View
           style={{
-            marginBottom: "57%",
+            marginBottom: "20%",
             paddingHorizontal: 30,
-            marginTop: 20,
+            marginTop: 10,
           }}>
           <View style={styles.cardContainer}>
             <Text style={styles.headerName}>WLIN Global</Text>

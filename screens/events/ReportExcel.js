@@ -24,14 +24,14 @@ import PhoneInput from "react-native-phone-number-input";
 import { RadioButton } from "react-native-paper";
 import ModalSms from "../../components/ModalSms";
 import Header from "../../components/Header";
-import BodyCheckImage from "../../components/page/events/BodyCheckImage";
+import BodyReportExcel from "../../components/page/events/BodyReportExcel";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
 const ratio = w / 720;
 
 // create a component
-const CheckImage = () => {
+const ReportExcel = () => {
   const navigation = useNavigation();
   const [search, setSearch] = useState("");
 
@@ -119,7 +119,7 @@ const CheckImage = () => {
           </TouchableOpacity>
         </View>
         <View style={styles.body}>
-          <BodyCheckImage />
+          <BodyReportExcel />
         </View>
       </View>
     </View>
@@ -172,4 +172,4 @@ const styles = StyleSheet.create({
 });
 
 //make this component available to the app
-export default CheckImage;
+export default ReportExcel;

@@ -33,7 +33,7 @@ const data = [
 const BodyTYFCB = () => {
   const navigation = useNavigation();
   return (
-    <View>
+    <View style={{ height: "100%" }}>
       <Text
         style={{
           fontSize: 20,
@@ -47,9 +47,9 @@ const BodyTYFCB = () => {
       <ScrollView showsVerticalScrollIndicator={false}>
         <View
           style={{
-            marginBottom: "57%",
+            marginBottom: "20%",
             paddingHorizontal: 15,
-            marginTop: 20,
+            marginTop: 10,
           }}>
           <View>
             {data.map((item, index) => (

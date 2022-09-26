@@ -18,12 +18,14 @@ import {
   TouchableOpacity,
   Dimensions,
 } from "react-native";
+import ModalPayment from "../../modal/ModalPayment";
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
 const ratio = w / 720;
 // create a component
 const BodyDetailEvent = () => {
   const navigation = useNavigation();
+  const [modalSuccess, setModalSuccess] = useState(false);
   return (
     <View>
       <Text
@@ -82,12 +84,13 @@ const BodyDetailEvent = () => {
                   Bạn chưa tham gia
                 </Text>
               </View>
-              <View
+              <TouchableOpacity
                 style={{
                   flexDirection: "row",
                   justifyContent: "space-between",
                   alignItems: "center",
-                }}>
+                }}
+                onPress={() => navigation.navigate("ListParticipant")}>
                 <View
                   style={{
                     flexDirection: "row",
@@ -126,21 +129,36 @@ const BodyDetailEvent = () => {
                     }}
                   />
                 </View>
+
                 <Text style={{ fontSize: 10, marginLeft: 2 }}>
                   300 người tham gia
                 </Text>
-                <TouchableOpacity>
-                  <Ionicons
-                    name="arrow-forward-outline"
-                    color="#711775"
-                    size={20}
-                  />
-                </TouchableOpacity>
-              </View>
+
+                <Ionicons
+                  name="arrow-forward-outline"
+                  color="#711775"
+                  size={20}
+                />
+              </TouchableOpacity>
             </View>
           </View>
           <View style={{ paddingHorizontal: 15 }}>
-            <Text style={{ fontSize: 20, fontWeight: "500" }}>Sự kiện 1</Text>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Text style={{ fontSize: 20, fontWeight: "500" }}>Sự kiện 1</Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("UpdateEvent")}>
+                <Image
+                  source={require("../../../assets/Edit.png")}
+                  style={{
+                    width: 25,
+                    height: 12,
+                    resizeMode: "contain",
+                    marginLeft: 2,
+                  }}
+                />
+              </TouchableOpacity>
+            </View>
+
             <View style={styles.containerBox}>
               <View style={styles.backBorder}>
                 <Ionicons name="calendar-outline" size={15} color="#711775" />
@@ -161,6 +179,46 @@ const BodyDetailEvent = () => {
                 <Text style={styles.bodyContent}>
                   15A Hồ Văn Huê, Phường 9, Quận Phú Nhuận, TP.HCM
                 </Text>
+              </View>
+              <View
+                style={{
+                  position: "absolute",
+                  left: "80%",
+                  width: "20%",
+                }}>
+                <TouchableOpacity
+                  style={{
+                    borderRadius: 7,
+                    flexDirection: "row",
+                    alignContent: "center",
+                    alignItems: "center",
+                    width: "100%",
+                    justifyContent: "center",
+                    marginBottom: 15,
+                  }}>
+                  <LinearGradient
+                    start={{ x: 1, y: 0.3 }}
+                    end={{ x: 1, y: 1 }}
+                    colors={["#751979", "#AE40B2"]}
+                    style={{
+                      borderRadius: 7,
+                      paddingVertical: 3,
+                      paddingHorizontal: 6,
+                      flexDirection: "row",
+                      justifyContent: "center",
+                    }}>
+                    <Ionicons name="location" size={15} color="#ffffff" />
+                    <Text
+                      style={{
+                        fontSize: 10,
+                        color: "#ffffff",
+                        textAlign: "center",
+                        fontWeight: "500",
+                      }}>
+                      Xem bản đồ
+                    </Text>
+                  </LinearGradient>
+                </TouchableOpacity>
               </View>
             </View>
             <View style={styles.containerBox}>
@@ -208,7 +266,7 @@ const BodyDetailEvent = () => {
                   justifyContent: "space-between",
                   alignItems: "center",
                   marginLeft: 10,
-                  width: "35%",
+                  width: "50%",
                 }}>
                 <TouchableOpacity
                   onPress={() => navigation.navigate("CheckQR")}>
@@ -254,7 +312,10 @@ const BodyDetailEvent = () => {
                     </View>
                   </LinearGradient>
                 </TouchableOpacity>
-                {/* <TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    setModalSuccess(true);
+                  }}>
                   <LinearGradient
                     start={{ x: 0, y: 0.3 }}
                     end={{ x: 1, y: 1 }}
@@ -268,15 +329,23 @@ const BodyDetailEvent = () => {
                     }}>
                     <View style={styles.borderBacRounded}>
                       <Image
-                        source={require("../../../assets/fbf.png")}
+                        source={require("../../../assets/coin.png")}
                         style={styles.imageCheckin}
                       />
                     </View>
                   </LinearGradient>
-                </TouchableOpacity> */}
+                </TouchableOpacity>
               </View>
             </View>
           </View>
+          {modalSuccess && (
+            <ModalPayment
+              modalSuccess={modalSuccess}
+              setModalSuccess={setModalSuccess}
+              content={"Xác nhận thanh toán thành công"}
+              textButton={"Tiếp tục"}
+            />
+          )}
         </View>
       </ScrollView>
     </View>

@@ -11,6 +11,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
+  RefreshControl,
 } from "react-native";
 import { CLUB, getCLub } from "../../../redux/actions/ClupAction";
 import { URL } from "../../../utils/fetchApi";
@@ -81,30 +82,53 @@ const data = [
     code: "vung",
   },
 ];
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
 const BodyClub = (props) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const { club } = useSelector((state) => state);
+  const [refreshing, setRefreshing] = React.useState(false);
 
   useEffect(() => {
+    setRefreshing(true);
     dispatch(getCLub());
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
+  }, [dispatch, props.code]);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    dispatch(getCLub());
+    wait(2000).then(() => setRefreshing(false));
   }, [dispatch]);
 
   return (
-    <View>
+    <View style={{ height: "100%" }}>
       <Text
         style={{
           fontSize: 20,
           color: "#711775",
           fontWeight: "600",
           paddingLeft: 20,
-          paddingTop: 18,
+          paddingTop: 15,
         }}>
         Danh sách CLUB
       </Text>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            tintColor="#711775"
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={["#711775", "green", "blue"]}
+          />
+        }>
         <View
-          style={{ marginBottom: "57%", paddingHorizontal: 15, marginTop: 20 }}>
+          style={{ marginBottom: "20%", paddingHorizontal: 15, marginTop: 10 }}>
           {club.getClubs.map((item) => (
             <TouchableOpacity
               key={item._id}

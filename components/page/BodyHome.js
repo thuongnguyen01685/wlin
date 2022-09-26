@@ -55,7 +55,7 @@ const data = {
 const BodyHome = () => {
   const navigation = useNavigation();
   return (
-    <View>
+    <View style={{ height: "100%" }}>
       <Text
         style={{
           fontSize: 20,
@@ -67,7 +67,7 @@ const BodyHome = () => {
         Trang chủ
       </Text>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={{ marginBottom: "57%" }}>
+        <View style={{ marginBottom: "20%" }}>
           <View
             style={{
               //   paddingHorizontal: 10,
@@ -300,7 +300,8 @@ const BodyHome = () => {
                 marginTop: 10,
                 marginBottom: 10,
                 width: "43%",
-              }}>
+              }}
+              onPress={() => navigation.navigate("TYFCB")}>
               <LinearGradient
                 start={{ x: 1, y: 0.3 }}
                 end={{ x: 1, y: 1 }}
@@ -349,7 +350,7 @@ const BodyHome = () => {
                       textAlign: "center",
                       fontWeight: "700",
                     }}>
-                    30
+                    20
                   </Text>
                 </View>
               </View>
@@ -538,8 +539,14 @@ const BodyHome = () => {
                 padding: 8,
                 marginBottom: 10,
                 width: "100%",
+                justifyContent: "space-between",
               }}>
               <Text style={{ fontSize: 12, color: "#ffffff" }}>Hoạt động</Text>
+              <Ionicons
+                name="arrow-forward-outline"
+                size={20}
+                color="#ffffff"
+              />
             </LinearGradient>
             <View style={{ paddingHorizontal: 15, flexDirection: "row" }}>
               <Text>Hoạt động trong</Text>

@@ -28,6 +28,9 @@ import ForgetOtp from "../screens/letStart/ForgetOtp";
 import Splash from "../screens/letStart/Splash";
 import Profile from "../screens/other/Profile";
 import CreateClub from "../screens/clup/CreateClub";
+import CheckQR from "../screens/events/CheckQR";
+import TYFCB from "../screens/other/TYFCB";
+import CreateTYFCB from "../screens/other/CreateTYFCB";
 
 // Notifications.setNotificationHandler({
 //   handleNotification: async () => ({
@@ -329,6 +332,21 @@ const Navigator = () => {
         <Stack.Screen
           name="CreateClub"
           component={CreateClub}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="CheckQR"
+          component={CheckQR}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="TYFCB"
+          component={TYFCB}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="CreateTYFCB"
+          component={CreateTYFCB}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

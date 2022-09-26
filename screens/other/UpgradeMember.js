@@ -124,7 +124,7 @@ const UpgradeMember = () => {
           </TouchableOpacity>
         </View>
         <View style={styles.body}>
-          <View>
+          <View style={{ height: "100%" }}>
             <Text
               style={{
                 fontSize: 20,
@@ -145,9 +145,9 @@ const UpgradeMember = () => {
             <ScrollView showsVerticalScrollIndicator={false}>
               <View
                 style={{
-                  marginBottom: "57%",
+                  marginBottom: "20%",
                   paddingHorizontal: 15,
-                  marginTop: 20,
+                  marginTop: 10,
                 }}>
                 <View style={styles.cardContainer}>
                   <Text style={styles.headerName}>Gói thành viên</Text>
@@ -268,7 +268,7 @@ const styles = StyleSheet.create({
     zIndex: 5,
     height: "200%",
     // position: "absolute",
-    marginTop: "45%",
+    marginTop: "40%",
     borderTopRightRadius: 30,
     borderTopLeftRadius: 30,
     shadowColor: "#000",

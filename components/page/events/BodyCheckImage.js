@@ -46,7 +46,7 @@ const BodyCheckImage = () => {
     return <Text>Chưa cho phép quyền camera</Text>;
   }
   return (
-    <View>
+    <View style={{ height: "100%" }}>
       <Text
         style={{
           fontSize: 20,
@@ -58,7 +58,7 @@ const BodyCheckImage = () => {
         Checkin bằng hình ảnh
       </Text>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={{ marginBottom: "57%" }}>
+        <View style={{ marginBottom: "20%" }}>
           <View style={{ marginVertical: 12 }}>
             <Text
               style={{ textAlign: "center", fontSize: 12, fontWeight: "600" }}>

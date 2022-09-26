@@ -24,6 +24,10 @@ import TYFCB from "../screens/other/TYFCB";
 import CreateTYFCB from "../screens/other/CreateTYFCB";
 import UpgradeMember from "../screens/other/UpgradeMember";
 import { useSelector } from "react-redux";
+import ListPaticipant from "../screens/events/ListParticipant";
+import ConfirmPayment from "../screens/events/ConfirmPayment";
+import UpdateEvent from "../screens/events/UpdateEvent";
+import ReportExcel from "../screens/events/ReportExcel";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -66,6 +70,27 @@ function EventsScreen() {
       <Stack.Screen
         name="CheckImage"
         component={CheckImage}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ListParticipant"
+        component={ListPaticipant}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ConfirmPayment"
+        component={ConfirmPayment}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="UpdateEvent"
+        component={UpdateEvent}
+        options={{ headerShown: false }}
+      />
+
+      <Stack.Screen
+        name="ReportExcel"
+        component={ReportExcel}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

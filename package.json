@@ -24,6 +24,7 @@
     "buffer": "^6.0.3",
     "expo": "~45.0.0",
     "expo-barcode-scanner": "~11.3.0",
+    "expo-checkbox": "^2.2.0",
     "expo-device": "^4.2.0",
     "expo-linear-gradient": "^11.3.0",
     "expo-linking": "^3.2.2",

@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
     width: "100%",
     zIndex: 5,
     // position: "absolute",
-    marginTop: "45%",
+    marginTop: "40%",
     borderTopRightRadius: 30,
     borderTopLeftRadius: 30,
     shadowColor: "#000",

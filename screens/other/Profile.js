@@ -41,6 +41,13 @@ const Profile = () => {
     dispatch({ type: AUTH.SHOWPROFILE, payload: false });
     navigation.goBack();
   };
+  const data = [
+    {
+      name: "Số điện thoại",
+      icon: "call-outline",
+      value: "+84 378759723",
+    },
+  ];
   return (
     <View style={styles.container}>
       <View>
@@ -120,6 +127,7 @@ const Profile = () => {
               alignContent: "center",
               width: "75%",
               borderRadius: 10,
+              paddingHorizontal: 10,
             }}>
             <Text style={{ color: "#711775", fontSize: 25, fontWeight: "800" }}>
               Hồ sơ cá nhân
@@ -163,7 +171,7 @@ const Profile = () => {
           </View>
         </View>
         <View style={styles.body}>
-          <View>
+          <View style={{ height: "100%" }}>
             <ScrollView showsVerticalScrollIndicator={false}>
               <View style={{ marginBottom: "5%" }}>
                 <View
@@ -238,109 +246,66 @@ const Profile = () => {
                   </View>
                   <View
                     style={{
-                      width: "100%",
                       flexDirection: "row",
-                      justifyContent: "flex-end",
-                      paddingHorizontal: 15,
-                      alignItems: "flex-start",
-                      paddingLeft: 30,
+                      justifyContent: "space-between",
+                      marginHorizontal: 15,
                     }}>
-                    <TouchableOpacity
-                      style={{
-                        backgroundColor: "#ffffff",
-                        width: "70%",
-                        paddingHorizontal: 10,
-                        shadowColor: "#000",
-                        shadowOffset: {
-                          width: 0,
-                          height: 1,
-                        },
-                        shadowOpacity: 0.25,
-                        shadowRadius: 3.84,
-                        borderRadius: 5,
-                        elevation: 5,
-                      }}>
-                      <View
+                    <View style={{ width: "60%" }}>
+                      <TouchableOpacity style={{ width: "90%" }}>
+                        <LinearGradient
+                          start={{ x: 1, y: 0.3 }}
+                          end={{ x: 1, y: 1 }}
+                          colors={["#751979", "#AE40B2"]}
+                          style={{
+                            paddingHorizontal: 22,
+                            paddingVertical: 5,
+                            borderRadius: 7,
+                            flexDirection: "row",
+                            justifyContent: "center",
+                          }}>
+                          <Text
+                            style={{
+                              fontSize: 12,
+                              color: "#ffffff",
+                              textAlign: "center",
+                              width: "100%",
+                            }}>
+                            Xem thông tin quyền lợi
+                          </Text>
+                        </LinearGradient>
+                      </TouchableOpacity>
+                    </View>
+
+                    <View>
+                      <TouchableOpacity
                         style={{
+                          borderRadius: 7,
                           flexDirection: "row",
-                          justifyContent: "space-between",
-                          paddingVertical: 3,
-                        }}>
-                        <Text>Quyền lợi vàng</Text>
-                        <Ionicons name="chevron-forward-outline" size={20} />
-                      </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={{
-                        borderRadius: 7,
-                        flexDirection: "row",
-                        alignContent: "center",
-                        alignItems: "center",
-                        width: "35%",
-                        justifyContent: "flex-end",
-                        marginBottom: 10,
-                      }}
-                      onPress={() => navigation.navigate("UpgradeMember")}>
-                      <LinearGradient
-                        start={{ x: 1, y: 0.3 }}
-                        end={{ x: 1, y: 1 }}
-                        colors={["#751979", "#AE40B2"]}
-                        style={{
-                          paddingHorizontal: 22,
-                          paddingVertical: 5,
-                          borderRadius: 7,
-                        }}>
-                        <Text
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                        onPress={() => navigation.navigate("UpgradeMember")}>
+                        <LinearGradient
+                          start={{ x: 1, y: 0.3 }}
+                          end={{ x: 1, y: 1 }}
+                          colors={["#751979", "#AE40B2"]}
                           style={{
-                            fontSize: 12,
-                            color: "#ffffff",
-                            textAlign: "center",
-                            width: "100%",
+                            paddingHorizontal: 22,
+                            paddingVertical: 5,
+                            borderRadius: 7,
                           }}>
-                          Nâng cấp
-                        </Text>
-                      </LinearGradient>
-                    </TouchableOpacity>
-                  </View>
-                  <View
-                    style={{
-                      width: "100%",
-                      flexDirection: "row",
-                      justifyContent: "flex-start",
-                      paddingHorizontal: 15,
-                    }}>
-                    <TouchableOpacity
-                      style={{
-                        borderRadius: 7,
-                        flexDirection: "row",
-                        alignContent: "center",
-                        alignItems: "center",
-                        width: "35%",
-                        justifyContent: "flex-end",
-                        marginBottom: 10,
-                        marginLeft: "10%",
-                      }}
-                      onPress={() => navigation.navigate("UpgradeMember")}>
-                      <LinearGradient
-                        start={{ x: 0.3, y: 1 }}
-                        end={{ x: 1, y: 1 }}
-                        colors={["#751979", "#AE40B2"]}
-                        style={{
-                          paddingHorizontal: 15,
-                          paddingVertical: 5,
-                          borderRadius: 7,
-                        }}>
-                        <Text
-                          style={{
-                            fontSize: 12,
-                            color: "#ffffff",
-                            textAlign: "center",
-                            width: "100%",
-                          }}>
-                          Xem chi tiết
-                        </Text>
-                      </LinearGradient>
-                    </TouchableOpacity>
+                          <Text
+                            style={{
+                              fontSize: 12,
+                              color: "#ffffff",
+                              textAlign: "center",
+                              width: "100%",
+                            }}>
+                            Nâng cấp
+                          </Text>
+                        </LinearGradient>
+                      </TouchableOpacity>
+                    </View>
                   </View>
                   <View style={{ paddingHorizontal: 10 }}>
                     <View
@@ -351,7 +316,7 @@ const Profile = () => {
                         backgroundColor: "#F3F3F3",
                         marginVertical: 10,
                         borderRadius: 8,
-                        paddingVertical: 20,
+                        paddingVertical: 10,
                         paddingHorizontal: 20,
                         shadowColor: "#000",
                         shadowOffset: {
@@ -380,13 +345,17 @@ const Profile = () => {
                               alignItems: "center",
                               backgroundColor: "rgba(127, 32, 131, 0.2)",
                               padding: 10,
+                              paddingHorizontal: 17.8,
                               borderRadius: 50,
                             }}>
-                            <Ionicons
-                              name="call-outline"
-                              size={25}
-                              color="#711775"
-                            />
+                            <Text
+                              style={{
+                                fontSize: 20,
+                                fontWeight: "600",
+                                color: "#711775",
+                              }}>
+                              #
+                            </Text>
                           </View>
 
                           <View
@@ -401,7 +370,7 @@ const Profile = () => {
                                 fontSize: 15,
                                 fontWeight: "600",
                               }}>
-                              Số điện thoại
+                              Mã hội viên
                             </Text>
                             <Text
                               style={{
@@ -422,85 +391,88 @@ const Profile = () => {
                         />
                       </TouchableOpacity>
                     </View>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        backgroundColor: "#F3F3F3",
-                        marginVertical: 10,
-                        borderRadius: 8,
-                        paddingVertical: 20,
-                        paddingHorizontal: 20,
-                        shadowColor: "#000",
-                        shadowOffset: {
-                          width: 0,
-                          height: 1,
-                        },
-                        shadowOpacity: 0.25,
-                        shadowRadius: 3.84,
-                        elevation: 5,
-                      }}>
+                    {data.map((item, index) => (
                       <View
                         style={{
                           flexDirection: "row",
                           justifyContent: "space-between",
-                        }}>
+                          alignItems: "center",
+                          backgroundColor: "#F3F3F3",
+                          marginVertical: 10,
+                          borderRadius: 8,
+                          paddingVertical: 10,
+                          paddingHorizontal: 20,
+                          shadowColor: "#000",
+                          shadowOffset: {
+                            width: 0,
+                            height: 1,
+                          },
+                          shadowOpacity: 0.25,
+                          shadowRadius: 3.84,
+                          elevation: 5,
+                        }}
+                        key={index}>
                         <View
                           style={{
                             flexDirection: "row",
                             justifyContent: "space-between",
-                            alignItems: "center",
                           }}>
                           <View
                             style={{
                               flexDirection: "row",
                               justifyContent: "space-between",
                               alignItems: "center",
-                              backgroundColor: "rgba(127, 32, 131, 0.2)",
-                              padding: 10,
-                              borderRadius: 50,
                             }}>
-                            <Ionicons
-                              name="location-outline"
-                              size={25}
-                              color="#711775"
-                            />
-                          </View>
+                            <View
+                              style={{
+                                flexDirection: "row",
+                                justifyContent: "space-between",
+                                alignItems: "center",
+                                backgroundColor: "rgba(127, 32, 131, 0.2)",
+                                padding: 10,
+                                borderRadius: 50,
+                              }}>
+                              <Ionicons
+                                name={item.icon}
+                                size={25}
+                                color="#711775"
+                              />
+                            </View>
 
-                          <View
-                            style={{
-                              flexDirection: "column",
-                              marginLeft: 10,
-                              justifyContent: "center",
-                            }}>
-                            <Text
+                            <View
                               style={{
-                                color: "#711775",
-                                fontSize: 15,
-                                fontWeight: "600",
+                                flexDirection: "column",
+                                marginLeft: 10,
+                                justifyContent: "center",
                               }}>
-                              Địa chỉ
-                            </Text>
-                            <Text
-                              style={{
-                                color: "#7C1E80",
-                                fontSize: 12,
-                                fontWeight: "400",
-                              }}>
-                              Quận 7, TPHCM
-                            </Text>
+                              <Text
+                                style={{
+                                  color: "#711775",
+                                  fontSize: 15,
+                                  fontWeight: "600",
+                                }}>
+                                {item.name}
+                              </Text>
+                              <Text
+                                style={{
+                                  color: "#7C1E80",
+                                  fontSize: 12,
+                                  fontWeight: "400",
+                                }}>
+                                {item.value}
+                              </Text>
+                            </View>
                           </View>
                         </View>
+                        <TouchableOpacity>
+                          <Ionicons
+                            name="create-outline"
+                            size={25}
+                            color="#711775"
+                          />
+                        </TouchableOpacity>
                       </View>
-                      <TouchableOpacity>
-                        <Ionicons
-                          name="create-outline"
-                          size={25}
-                          color="#711775"
-                        />
-                      </TouchableOpacity>
-                    </View>
+                    ))}
                   </View>
                 </View>
               </View>
@@ -521,7 +493,7 @@ const styles = StyleSheet.create({
   search: {
     zIndex: 5,
     position: "absolute",
-    marginTop: "26%",
+    marginTop: "23%",
     width: "100%",
     paddingHorizontal: 20,
   },
@@ -536,7 +508,7 @@ const styles = StyleSheet.create({
     width: "100%",
     zIndex: 5,
     // position: "absolute",
-    marginTop: "85%",
+    marginTop: "80%",
     borderTopRightRadius: 30,
     borderTopLeftRadius: 30,
     shadowColor: "#000",
@@ -550,7 +522,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   contentText: {
-    lineHeight: 25,
+    lineHeight: 20,
   },
   contentHeader: {
     color: "#000",

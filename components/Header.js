@@ -104,7 +104,10 @@ const Header = () => {
           alignItems: "center",
           justifyContent: "space-around",
         }}>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("CheckQR");
+          }}>
           <Ionicons name="qr-code-outline" size={35} />
         </TouchableOpacity>
         <TouchableOpacity

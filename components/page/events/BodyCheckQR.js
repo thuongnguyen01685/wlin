@@ -59,7 +59,7 @@ const BodyCheckQR = () => {
     return <Text>Chưa cho phép quyền camera</Text>;
   }
   return (
-    <View>
+    <View style={{ height: "100%" }}>
       <Text
         style={{
           fontSize: 20,
@@ -81,7 +81,7 @@ const BodyCheckQR = () => {
         {modalFail && (
           <ModalFailCheck modalFail={modalFail} setModalFail={setModalFail} />
         )}
-        <View style={{ marginBottom: "57%" }}>
+        <View style={{ marginBottom: "20%" }}>
           <View style={{ marginVertical: 12 }}>
             <Text
               style={{ textAlign: "center", fontSize: 12, fontWeight: "600" }}>
