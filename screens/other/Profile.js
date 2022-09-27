@@ -3,7 +3,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
-import React, { Component, useRef, useState } from "react";
+import React, { Component, useEffect, useRef, useState } from "react";
 import {
   View,
   Text,
@@ -18,6 +18,7 @@ import {
   Keyboard,
   Platform,
   TextInput,
+  ToastAndroid,
 } from "react-native";
 import PhoneInput from "react-native-phone-number-input";
 
@@ -25,8 +26,9 @@ import { RadioButton } from "react-native-paper";
 import ModalSms from "../../components/ModalSms";
 import Header from "../../components/Header";
 import BodyHome from "../../components/page/BodyHome";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AUTH } from "../../redux/actions/authAction";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
@@ -38,16 +40,88 @@ const Profile = () => {
   const [search, setSearch] = useState("");
   const dispatch = useDispatch();
   const handleCloseProfile = () => {
-    dispatch({ type: AUTH.SHOWPROFILE, payload: false });
     navigation.goBack();
   };
+  const { auth } = useSelector((state) => state);
   const data = [
     {
       name: "Số điện thoại",
       icon: "call-outline",
       value: "+84 378759723",
     },
+    {
+      name: "Chức vụ",
+      icon: "briefcase-outline",
+      value: "Trưởng ban",
+    },
+    {
+      name: "Công ty",
+      icon: "business-outline",
+      value: "TNHH MTV Công Nghệ FOS",
+    },
+    {
+      name: "Địa chỉ công ty",
+      icon: "location-outline",
+      value: "Quận 1, TPHCM",
+    },
+    {
+      name: "Địa chỉ cá nhân",
+      icon: "location-outline",
+      value: "Quận 7, TPHCM",
+    },
+    {
+      name: "Email",
+      icon: "mail-outline",
+      value: "vinh.nguyen@fostech.vn",
+    },
+    {
+      name: "Nhóm hội viên",
+      icon: "people-outline",
+      value: "Nhóm A",
+    },
+    {
+      name: "Ngày sinh",
+      icon: "calendar-outline",
+      value: "24/05/1985",
+    },
+    {
+      name: "Ngành hàng",
+      icon: "cube-outline",
+      value: "Ban Công nghệ - Phần mềm",
+    },
+    {
+      name: "Người giới thiệu",
+      icon: "person-outline",
+      value: "Mr. Nguyễn Xuân Trường",
+    },
   ];
+
+  useEffect(() => {
+    if (auth.token === null || auth.token === "") {
+      navigation.navigate("Splash");
+    }
+  }, [auth.token]);
+
+  const handleLogout = async () => {
+    try {
+      await AsyncStorage.removeItem("@token_key");
+
+      // console.log("Token removed");
+      await dispatch({ type: AUTH.TOKEN, payload: null });
+      await dispatch({ type: AUTH.PROFILE, payload: [] });
+
+      ToastAndroid.showWithGravityAndOffset(
+        "Bạn đã đăng xuất !",
+        ToastAndroid.SHORT,
+        ToastAndroid.TOP,
+        25,
+        50
+      );
+      // BackHandler.exitApp();
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <View style={styles.container}>
       <View>
@@ -344,7 +418,7 @@ const Profile = () => {
                               justifyContent: "space-between",
                               alignItems: "center",
                               backgroundColor: "rgba(127, 32, 131, 0.2)",
-                              padding: 10,
+                              paddingVertical: 9.7,
                               paddingHorizontal: 17.8,
                               borderRadius: 50,
                             }}>
@@ -473,6 +547,71 @@ const Profile = () => {
                         </TouchableOpacity>
                       </View>
                     ))}
+                    <TouchableOpacity
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        backgroundColor: "#F3F3F3",
+                        marginVertical: 10,
+                        borderRadius: 8,
+                        paddingVertical: 10,
+                        paddingHorizontal: 20,
+                        shadowColor: "#000",
+                        shadowOffset: {
+                          width: 0,
+                          height: 1,
+                        },
+                        shadowOpacity: 0.25,
+                        shadowRadius: 3.84,
+                        elevation: 5,
+                      }}
+                      onPress={handleLogout}>
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                        }}>
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                          }}>
+                          <View
+                            style={{
+                              flexDirection: "row",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                              backgroundColor: "rgba(127, 32, 131, 0.2)",
+                              padding: 10,
+                              borderRadius: 50,
+                            }}>
+                            <Ionicons
+                              name="log-out-outline"
+                              size={25}
+                              color="#711775"
+                            />
+                          </View>
+
+                          <View
+                            style={{
+                              flexDirection: "column",
+                              marginLeft: 10,
+                              justifyContent: "center",
+                            }}>
+                            <Text
+                              style={{
+                                color: "#711775",
+                                fontSize: 15,
+                                fontWeight: "600",
+                              }}>
+                              Đăng xuất
+                            </Text>
+                          </View>
+                        </View>
+                      </View>
+                    </TouchableOpacity>
                   </View>
                 </View>
               </View>

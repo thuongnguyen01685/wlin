@@ -2,6 +2,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React, { Component } from "react";
+import { useEffect } from "react";
 import {
   View,
   Text,
@@ -10,8 +11,9 @@ import {
   Image,
   ImageBackground,
 } from "react-native";
-import { useDispatch } from "react-redux";
-import { AUTH } from "../redux/actions/authAction";
+import { useDispatch, useSelector } from "react-redux";
+import { AUTH, getProfileAction } from "../redux/actions/authAction";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // create a component
 const Header = () => {
@@ -21,6 +23,14 @@ const Header = () => {
     //dispatch({ type: AUTH.SHOWPROFILE, payload: true });
     navigation.navigate("Profile");
   };
+  const { auth } = useSelector((state) => state);
+  useEffect(() => {
+    const it = async () => {
+      const token = await AsyncStorage.getItem("@token_key");
+      dispatch(getProfileAction(token));
+    };
+    it();
+  }, []);
   return (
     <View
       style={{
@@ -30,13 +40,14 @@ const Header = () => {
         flexDirection: "row",
         justifyContent: "space-between",
         width: "100%",
+
+        paddingHorizontal: 10,
       }}>
       <View
         style={{
           flexDirection: "row",
           alignItems: "center",
-          justifyContent: "center",
-          marginLeft: "4%",
+          justifyContent: "space-between",
         }}>
         <TouchableOpacity
           style={{
@@ -61,7 +72,7 @@ const Header = () => {
           onPress={() => navigation.goBack()}>
           <Ionicons name="chevron-back-outline" size={25} color="#711775" />
         </TouchableOpacity>
-        <View style={{ marginLeft: 15 }}>
+        <View style={{ left: 3 }}>
           <View style={{ flexDirection: "row" }}>
             <Text
               style={{
@@ -69,7 +80,7 @@ const Header = () => {
                 fontSize: 20,
                 fontWeight: "600",
               }}>
-              Xin chào, Thương
+              Xin chào, {auth.profile.name}
             </Text>
             <View
               style={{
@@ -98,6 +109,7 @@ const Header = () => {
           </Text>
         </View>
       </View>
+
       <View
         style={{
           flexDirection: "row",

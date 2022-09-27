@@ -260,7 +260,8 @@ const BodyCreateClub = (props) => {
                 width: "40%",
                 justifyContent: "center",
                 marginBottom: 10,
-              }}>
+              }}
+              onPress={() => navigation.navigate("ClubScreen")}>
               <LinearGradient
                 start={{ x: 0.3, y: 1 }}
                 end={{ x: 1, y: 1 }}

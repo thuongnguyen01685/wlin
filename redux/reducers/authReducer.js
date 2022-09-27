@@ -2,7 +2,7 @@ import { AUTH } from "../actions/authAction";
 
 const initialState = {
   token: null,
-  err: "Error",
+  err: "",
   profile: [],
   alert: "",
   message: "",
@@ -11,7 +11,6 @@ const initialState = {
   banner: [],
   dmnv: [],
   otp: [],
-  showNaProfile: false,
 };
 
 const authReducer = (state = initialState, action) => {
@@ -21,8 +20,16 @@ const authReducer = (state = initialState, action) => {
         ...state,
         otp: action.payload,
       };
-    case AUTH.SHOWPROFILE:
-      return { ...state, showNaProfile: action.payload };
+    case AUTH.ERROR:
+      return {
+        ...state,
+        err: action.payload,
+      };
+    case AUTH.TOKEN:
+      return { ...state, token: action.payload };
+    case AUTH.PROFILE:
+      return { ...state, profile: action.payload };
+
     default:
       return state;
   }

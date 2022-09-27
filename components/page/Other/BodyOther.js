@@ -17,7 +17,7 @@ const data = [
   {
     picture: require("../../../assets/Chart.png"),
     name: "Quản trị hội viên",
-    navigation: "SlipsScreen",
+    navigation: "ListMember",
   },
   {
     picture: require("../../../assets/uit_shield-check.png"),

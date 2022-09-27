@@ -15,6 +15,7 @@ import {
   RefreshControl,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
+import { Picker } from "@react-native-picker/picker";
 import { getEventsAction } from "../../../redux/actions/eventsAction";
 import CheckBox from "expo-checkbox";
 
@@ -108,6 +109,7 @@ const BodyListPaticipant = () => {
   const [modalSuccess, setModalSuccess] = useState(false);
   const [checkPayment, setCheckPayment] = useState(false);
 
+  const [select, setSelect] = useState("hoivien");
   const { event } = useSelector((state) => state);
 
   useEffect(() => {
@@ -162,35 +164,43 @@ const BodyListPaticipant = () => {
                 style={{
                   color: item.code === cat ? "#ffffff" : "#A0A0A0",
                   marginVertical: 5,
+                  fontSize: 12,
                 }}>
                 {item.name}
               </Text>
             </TouchableOpacity>
           ))}
         </View>
-        <TouchableOpacity
+        <View
           style={{
-            flexDirection: "row",
-            justifyContent: "space-around",
-            backgroundColor: "#f3f3f3",
-            borderRadius: 5,
-            shadowColor: "#000",
+            borderRadius: 7,
+            width: 120,
+            height: 40,
+            backgroundColor: "#fdfdfd",
             shadowOffset: {
               width: 0,
               height: 2,
             },
             shadowOpacity: 0.25,
             shadowRadius: 3.84,
+
             elevation: 5,
-            paddingHorizontal: 10,
-            height: "60%",
-            alignItems: "center",
           }}>
-          <Text style={{ color: "#711775", fontSize: 13, fontWeight: "500" }}>
-            Hội viên
-          </Text>
-          <Ionicons name="chevron-down-outline" size={20} color="#711775" />
-        </TouchableOpacity>
+          <Picker
+            selectedValue={select}
+            onValueChange={(itemValue, itemIndex) => setSelect(itemValue)}>
+            <Picker.Item
+              label="Hội viên"
+              value="hoivien"
+              style={styles.itemSelect}
+            />
+            <Picker.Item
+              label="Quản trị viên"
+              value="quantrivien"
+              style={styles.itemSelect}
+            />
+          </Picker>
+        </View>
       </View>
 
       <ScrollView
@@ -380,6 +390,12 @@ const styles = StyleSheet.create({
     color: "#000",
     fontSize: 12,
     fontWeight: "400",
+  },
+  itemSelect: {
+    fontSize: 12,
+    fontWeight: "500",
+    color: "#711775",
+    textAlign: "center",
   },
 });
 

@@ -18,6 +18,7 @@ import {
   TouchableOpacity,
   Dimensions,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
 const ratio = w / 720;
@@ -25,6 +26,7 @@ const ratio = w / 720;
 const BodyCheckImage = () => {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
+  const navigation = useNavigation();
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
@@ -88,7 +90,10 @@ const BodyCheckImage = () => {
             }}>
             <TouchableOpacity
               style={{ width: "15%" }}
-              onPress={() => setScanned(true)}>
+              onPress={() => {
+                setScanned(true);
+                navigation.navigate("PayBenefits");
+              }}>
               <LinearGradient
                 start={{ x: 0, y: 0.3 }}
                 end={{ x: 1, y: 1 }}

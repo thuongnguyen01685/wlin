@@ -31,6 +31,7 @@ import CreateClub from "../screens/clup/CreateClub";
 import CheckQR from "../screens/events/CheckQR";
 import TYFCB from "../screens/other/TYFCB";
 import CreateTYFCB from "../screens/other/CreateTYFCB";
+import ReportExcel from "../screens/events/ReportExcel";
 
 // Notifications.setNotificationHandler({
 //   handleNotification: async () => ({
@@ -347,6 +348,11 @@ const Navigator = () => {
         <Stack.Screen
           name="CreateTYFCB"
           component={CreateTYFCB}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ReportExcel"
+          component={ReportExcel}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

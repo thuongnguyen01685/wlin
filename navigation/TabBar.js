@@ -28,6 +28,9 @@ import ListPaticipant from "../screens/events/ListParticipant";
 import ConfirmPayment from "../screens/events/ConfirmPayment";
 import UpdateEvent from "../screens/events/UpdateEvent";
 import ReportExcel from "../screens/events/ReportExcel";
+import ListMember from "../screens/other/ListMember";
+import ManagementMember from "../screens/other/ManagementMember";
+import PayBenefits from "../screens/events/PayBenefits";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -87,10 +90,14 @@ function EventsScreen() {
         component={UpdateEvent}
         options={{ headerShown: false }}
       />
-
       <Stack.Screen
         name="ReportExcel"
         component={ReportExcel}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="PayBenefits"
+        component={PayBenefits}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
@@ -140,7 +147,6 @@ function OtherScreen() {
         component={TYFCB}
         options={{ headerShown: false }}
       />
-
       <Stack.Screen
         name="CreateTYFCB"
         component={CreateTYFCB}
@@ -149,6 +155,16 @@ function OtherScreen() {
       <Stack.Screen
         name="UpgradeMember"
         component={UpgradeMember}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ListMember"
+        component={ListMember}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ManagementMember"
+        component={ManagementMember}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

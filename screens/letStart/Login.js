@@ -17,13 +17,14 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Platform,
+  ToastAndroid,
 } from "react-native";
 import PhoneInput from "react-native-phone-number-input";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import { RadioButton } from "react-native-paper";
 import ModalSms from "../../components/ModalSms";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AUTH, getOTP } from "../../redux/actions/authAction";
 
 const w = Dimensions.get("window").width;
@@ -42,16 +43,37 @@ const Login = () => {
   const [modalSms, setModalSms] = useState(false);
   const dispatch = useDispatch();
 
-  const handleGetOtp = () => {
+  const { auth } = useSelector((state) => state);
+
+  const handleGetOtp = async () => {
     const checkValid = phoneInput.current?.isValidNumber(value);
     setShowMessage(true);
     setValid(checkValid ? checkValid : false);
-    checkValid && checked && setModalSms(true);
-    // dispatch(getOTP(value));
-    // setTimeout(() => {
-    //   dispatch({ type: AUTH.OTP, payload: [] });
-    // }, [3000]);
+
+    if (checkValid && checked) {
+      const res = await dispatch(getOTP(value));
+
+      if (res) {
+        setModalSms(true);
+        setTimeout(() => {
+          dispatch({ type: AUTH.OTP, payload: "" });
+        }, 300 * 1000);
+      } else {
+        ToastAndroid.showWithGravityAndOffset(
+          "Tài khoản này không tồn tại !",
+          ToastAndroid.SHORT,
+          ToastAndroid.TOP,
+          25,
+          50
+        );
+        dispatch({ type: AUTH.ERROR, payload: "" });
+      }
+    }
   };
+
+  // setTimeout(() => {
+  //   dispatch({ type: AUTH.OTP, payload: [] });
+  // }, [3000]);
   return (
     <KeyboardAwareScrollView style={styles.container}>
       {modalSms && (

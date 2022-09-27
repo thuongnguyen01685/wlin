@@ -291,7 +291,7 @@ const BodyDetailEvent = () => {
                   </LinearGradient>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate("CheckImage")}>
+                  onPress={() => navigation.navigate("PayBenefits")}>
                   <LinearGradient
                     start={{ x: 0, y: 0.3 }}
                     end={{ x: 1, y: 1 }}

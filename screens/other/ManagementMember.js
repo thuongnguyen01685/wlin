@@ -24,29 +24,19 @@ import PhoneInput from "react-native-phone-number-input";
 import { RadioButton } from "react-native-paper";
 import ModalSms from "../../components/ModalSms";
 import Header from "../../components/Header";
-import BodyHome from "../../components/page/BodyHome";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { getProfileAction } from "../../redux/actions/authAction";
+import BodyEvent from "../../components/page/events/BodyEvent";
+import BodyListPaticipant from "../../components/page/events/BodyListPaticipant";
+import BodyUpdateEvent from "../../components/page/events/BodyUpdateEvent";
+import BodyManagementMember from "../../components/page/Other/BodyManagementMember";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
 const ratio = w / 720;
 
 // create a component
-const Home = () => {
+const ManagementMember = () => {
   const navigation = useNavigation();
   const [search, setSearch] = useState("");
-  const dispatch = useDispatch();
-
-  const { auth } = useSelector((state) => state);
-
-  useEffect(() => {
-    if (auth.token) {
-      dispatch(getProfileAction(auth.token));
-    }
-  }, [auth.token, dispatch]);
 
   return (
     <View style={styles.container}>
@@ -132,7 +122,7 @@ const Home = () => {
           </TouchableOpacity>
         </View>
         <View style={styles.body}>
-          <BodyHome />
+          <BodyManagementMember />
         </View>
       </View>
     </View>
@@ -185,4 +175,4 @@ const styles = StyleSheet.create({
 });
 
 //make this component available to the app
-export default Home;
+export default ManagementMember;

@@ -19,34 +19,18 @@ import {
   Platform,
   TextInput,
 } from "react-native";
-import PhoneInput from "react-native-phone-number-input";
 
-import { RadioButton } from "react-native-paper";
-import ModalSms from "../../components/ModalSms";
 import Header from "../../components/Header";
-import BodyHome from "../../components/page/BodyHome";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { getProfileAction } from "../../redux/actions/authAction";
+import BodyPayBenefits from "../../components/page/events/BodyPayBenefits";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
 const ratio = w / 720;
 
 // create a component
-const Home = () => {
+const PayBenefits = () => {
   const navigation = useNavigation();
   const [search, setSearch] = useState("");
-  const dispatch = useDispatch();
-
-  const { auth } = useSelector((state) => state);
-
-  useEffect(() => {
-    if (auth.token) {
-      dispatch(getProfileAction(auth.token));
-    }
-  }, [auth.token, dispatch]);
 
   return (
     <View style={styles.container}>
@@ -132,7 +116,7 @@ const Home = () => {
           </TouchableOpacity>
         </View>
         <View style={styles.body}>
-          <BodyHome />
+          <BodyPayBenefits />
         </View>
       </View>
     </View>
@@ -185,4 +169,4 @@ const styles = StyleSheet.create({
 });
 
 //make this component available to the app
-export default Home;
+export default PayBenefits;

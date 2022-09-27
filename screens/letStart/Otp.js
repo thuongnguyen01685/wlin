@@ -26,6 +26,10 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { RadioButton } from "react-native-paper";
 import ModalSms from "../../components/ModalSms";
 import { useDispatch, useSelector } from "react-redux";
+import {
+  getProfileAction,
+  getTokenAction,
+} from "../../redux/actions/authAction";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
@@ -41,6 +45,7 @@ const Otp = ({ route }) => {
   const navigation = useNavigation();
   const [checked, setChecked] = useState(false);
   const [modalSms, setModalSms] = useState(false);
+  const dispatch = useDispatch();
 
   const firstInput = useRef();
   const secondInput = useRef();
@@ -64,7 +69,7 @@ const Otp = ({ route }) => {
   //   );
   // }, [firstInput, secondInput, thirdInput, fourInput, fiveInput, sixInput]);
 
-  const handleCheckOtp = () => {
+  const handleCheckOtp = async () => {
     const maOtp =
       one.toString() +
       two.toString() +
@@ -73,12 +78,14 @@ const Otp = ({ route }) => {
       five.toString() +
       six.toString();
 
-    // if (auth.otp.otp === maOtp.toString()) {
-    //   navigation.navigate("TabBar");
-    // } else {
-    //   Alert.alert("Sai mật mã. Vui lòng nhập lại mã OTP !");
-    // }
-    navigation.navigate("TabBar");
+    if (auth.otp.otp === maOtp.toString()) {
+      dispatch(getTokenAction(auth.otp._id, auth.otp.otp));
+
+      navigation.navigate("TabBar");
+    } else {
+      Alert.alert("Sai mật mã. Vui lòng nhập lại mã OTP !");
+    }
+    // navigation.navigate("TabBar");
   };
   return (
     <KeyboardAwareScrollView style={styles.container}>

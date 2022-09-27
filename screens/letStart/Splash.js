@@ -2,7 +2,8 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { Component } from "react";
+import React, { Component, useEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   View,
   Text,
@@ -11,6 +12,8 @@ import {
   TouchableOpacity,
   Dimensions,
 } from "react-native";
+import { useDispatch } from "react-redux";
+import { AUTH, getProfileAction } from "../../redux/actions/authAction";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
@@ -18,6 +21,26 @@ const ratio = w / 720;
 // create a component
 const Splash = () => {
   const navigation = useNavigation();
+  const [token, setToken] = useState("");
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const it = async () => {
+      const token = await AsyncStorage.getItem("@token_key");
+      dispatch({ type: AUTH.TOKEN, payload: token });
+    };
+    it();
+  }, [token]);
+  const handleGo = async () => {
+    const token = await AsyncStorage.getItem("@token_key");
+    if (token) {
+      dispatch(getProfileAction(token));
+      navigation.navigate("TabBar");
+    } else {
+      navigation.navigate("Wellcome");
+    }
+  };
+
   return (
     <View style={styles.container}>
       <LinearGradient
@@ -71,7 +94,7 @@ const Splash = () => {
             justifyContent: "flex-end",
             paddingHorizontal: 10,
           }}>
-          <TouchableOpacity onPress={() => navigation.navigate("Wellcome")}>
+          <TouchableOpacity onPress={handleGo}>
             <View
               style={{
                 paddingHorizontal: 20,
