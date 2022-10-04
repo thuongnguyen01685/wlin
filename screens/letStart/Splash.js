@@ -14,6 +14,7 @@ import {
 } from "react-native";
 import { useDispatch } from "react-redux";
 import { AUTH, getProfileAction } from "../../redux/actions/authAction";
+import { getNotify } from "../../redux/actions/notifyAction";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
@@ -21,20 +22,25 @@ const ratio = w / 720;
 // create a component
 const Splash = () => {
   const navigation = useNavigation();
-  const [token, setToken] = useState("");
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     const it = async () => {
       const token = await AsyncStorage.getItem("@token_key");
-      dispatch({ type: AUTH.TOKEN, payload: token });
+      if (token) {
+        await dispatch({ type: AUTH.TOKEN, payload: token });
+      }
     };
     it();
-  }, [token]);
+  }, [dispatch]);
   const handleGo = async () => {
     const token = await AsyncStorage.getItem("@token_key");
+
     if (token) {
       dispatch(getProfileAction(token));
+      dispatch(getNotify(token));
+      
       navigation.navigate("TabBar");
     } else {
       navigation.navigate("Wellcome");

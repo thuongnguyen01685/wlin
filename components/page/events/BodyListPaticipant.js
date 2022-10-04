@@ -110,14 +110,14 @@ const BodyListPaticipant = () => {
   const [checkPayment, setCheckPayment] = useState(false);
 
   const [select, setSelect] = useState("hoivien");
-  const { event } = useSelector((state) => state);
+  const { auth, event } = useSelector((state) => state);
 
   useEffect(() => {
-    dispatch(getEventsAction());
+    dispatch(getEventsAction(auth.token));
   }, [dispatch]);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    dispatch(getEventsAction());
+    dispatch(getEventsAction(auth.token));
     wait(2000).then(() => setRefreshing(false));
   }, [dispatch]);
 

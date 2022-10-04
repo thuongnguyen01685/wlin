@@ -19,6 +19,11 @@ import { getEventsAction } from "../../../redux/actions/eventsAction";
 import CheckBox from "expo-checkbox";
 
 import ModalRequest from "../../modal/ModalRequest";
+import {
+  getDetailMember,
+  getMemberAction,
+} from "../../../redux/actions/ClupAction";
+import { URL } from "../../../utils/fetchApi";
 
 const dataHeader = [
   {
@@ -103,11 +108,27 @@ const BodyListMember = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [refreshing, setRefreshing] = React.useState(false);
+  const { auth, club } = useSelector((state) => state);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
+    dispatch(getMemberAction(auth.token));
     wait(2000).then(() => setRefreshing(false));
-  }, [dispatch]);
+  }, []);
+
+  useEffect(() => {
+    setRefreshing(true);
+    dispatch(getMemberAction(auth.token));
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
+  }, []);
+
+  const handleDetailMember = (_id) => {
+    dispatch(getDetailMember(_id, auth.token));
+
+    navigation.navigate("ManagementMember");
+  };
 
   return (
     <View style={{ height: "100%" }}>
@@ -124,12 +145,16 @@ const BodyListMember = () => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={["#711775", "green", "blue"]}
+          />
         }>
         <View style={{ marginBottom: "20%" }}>
-          {dataEvents.map((item, index) => (
+          {club.getMember.map((item) => (
             <TouchableOpacity
-              key={index}
+              key={item._id}
               style={{
                 flexDirection: "row",
                 justifyContent: "space-between",
@@ -138,21 +163,40 @@ const BodyListMember = () => {
                 marginVertical: 10,
                 borderRadius: 8,
                 paddingVertical: 5,
-                marginHorizontal: 10,
-                paddingHorizontal: 10,
+                marginHorizontal: 15,
               }}
-              onPress={() => navigation.navigate("ManagementMember")}>
+              onPress={() => handleDetailMember(item._id)}>
               <View
                 style={{
                   flexDirection: "row",
-                  justifyContent: "space-between",
+
                   alignItems: "center",
+                  width: "70%",
                 }}>
                 <View style={{ flexDirection: "row", marginHorizontal: 10 }}>
-                  <Image
-                    source={item.picture}
-                    style={{ width: 70, height: 70 }}
-                  />
+                  {item.hinh_anh ? (
+                    <Image
+                      source={{
+                        uri: `${URL}/`.concat(`${item.hinh_anh}`),
+                      }}
+                      style={{
+                        width: 70,
+                        height: 70,
+                        borderRadius: 50,
+                        resizeMode: "contain",
+                      }}
+                    />
+                  ) : (
+                    <Image
+                      source={require("../../../assets/logo.png")}
+                      style={{
+                        width: 70,
+                        height: 70,
+                        borderRadius: 50,
+                        resizeMode: "contain",
+                      }}
+                    />
+                  )}
                 </View>
 
                 <View
@@ -163,18 +207,18 @@ const BodyListMember = () => {
                   <Text
                     style={{
                       color: "#711775",
-                      fontSize: 18,
+                      fontSize: 15,
                       fontWeight: "600",
                     }}>
-                    {item.namePaticipant}
+                    {item.ten_kh}
                   </Text>
                   <Text
                     style={{
                       color: "#000000",
-                      fontSize: 10,
-                      fontWeight: "600",
+                      fontSize: 12,
+                      fontWeight: "500",
                     }}>
-                    {item.position}
+                    {item.ten_trang_thai}
                   </Text>
                 </View>
               </View>

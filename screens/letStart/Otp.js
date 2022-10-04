@@ -19,6 +19,7 @@ import {
   Platform,
   TextInput,
   Alert,
+  Animated,
 } from "react-native";
 import PhoneInput from "react-native-phone-number-input";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -30,6 +31,8 @@ import {
   getProfileAction,
   getTokenAction,
 } from "../../redux/actions/authAction";
+import { AntDesign, Entypo } from "@expo/vector-icons";
+import { getNotify } from "../../redux/actions/notifyAction";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
@@ -45,6 +48,43 @@ const Otp = ({ route }) => {
   const navigation = useNavigation();
   const [checked, setChecked] = useState(false);
   const [modalSms, setModalSms] = useState(false);
+
+  //animated
+  const [status, setStatus] = useState(null);
+  const popAnim = useRef(new Animated.Value(h * -1)).current;
+  const successColor = "#6dcf81";
+  const successHeader = "Success!";
+  const successMessage = "Đăng nhập thành công";
+  const failColor = "#bf6060";
+  const failHeader = "Đăng nhập thất bại";
+  const failMessage = "Kiểm tra lại mã OTP";
+
+  const popIn = () => {
+    Animated.timing(popAnim, {
+      toValue: h * 0.1 * -1,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(popOut());
+  };
+
+  const popOut = () => {
+    setTimeout(() => {
+      Animated.timing(popAnim, {
+        toValue: h * -1,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    }, 10000);
+  };
+
+  const instantPopOut = () => {
+    Animated.timing(popAnim, {
+      toValue: h * -1,
+      duration: 150,
+      useNativeDriver: true,
+    }).start();
+  };
+
   const dispatch = useDispatch();
 
   const firstInput = useRef();
@@ -79,17 +119,28 @@ const Otp = ({ route }) => {
       six.toString();
 
     if (auth.otp.otp === maOtp.toString()) {
-      dispatch(getTokenAction(auth.otp._id, auth.otp.otp));
+      const res = await dispatch(getTokenAction(auth.otp._id, auth.otp.otp));
 
-      navigation.navigate("TabBar");
+      if (res) {
+        dispatch(getProfileAction(res.token));
+        dispatch(getNotify(res.token));
+        setStatus("success");
+        setTimeout(() => {
+          navigation.navigate("TabBar");
+        }, 1000);
+        popIn();
+      }
     } else {
-      Alert.alert("Sai mật mã. Vui lòng nhập lại mã OTP !");
+      //Alert.alert("Sai mật mã. Vui lòng nhập lại mã OTP !");
+      setStatus("fail");
+      popIn();
     }
     // navigation.navigate("TabBar");
   };
   return (
     <KeyboardAwareScrollView style={styles.container}>
       {modalSms && <ModalSms modalSms={modalSms} setModalSms={setModalSms} />}
+
       <View>
         <View>
           <View
@@ -127,6 +178,36 @@ const Otp = ({ route }) => {
             <Text style={{ color: "#711775", fontSize: 25, fontWeight: "600" }}>
               WLIN xin chào
             </Text>
+            <View>
+              <Animated.View
+                style={[
+                  styles.toastContainer,
+                  {
+                    transform: [{ translateY: popAnim }],
+                  },
+                ]}>
+                <View style={styles.toastRow}>
+                  <AntDesign
+                    name={
+                      status === "success" ? "checkcircleo" : "closecircleo"
+                    }
+                    size={24}
+                    color={status === "success" ? successColor : failColor}
+                  />
+                  <View style={styles.toastText}>
+                    <Text style={{ fontWeight: "bold", fontSize: 15 }}>
+                      {status === "success" ? successHeader : failHeader}
+                    </Text>
+                    <Text style={{ fontSize: 12 }}>
+                      {status === "success" ? successMessage : failMessage}
+                    </Text>
+                  </View>
+                  <TouchableOpacity onPress={instantPopOut}>
+                    <Entypo name="cross" size={24} color="black" />
+                  </TouchableOpacity>
+                </View>
+              </Animated.View>
+            </View>
           </View>
           <View>
             <ImageBackground
@@ -334,6 +415,33 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: 50,
     textAlign: "center",
+  },
+  //animated
+  toastContainer: {
+    height: 60,
+    width: 350,
+    backgroundColor: "#f5f5f5",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  toastRow: {
+    width: "90%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+  },
+  toastText: {
+    width: "70%",
+    padding: 2,
   },
 });
 

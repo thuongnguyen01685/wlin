@@ -4,9 +4,9 @@ export const EVENTS = {
   GETEVENTS: "GETEVENTS",
 };
 
-export const getEventsAction = () => async (dispatch) => {
+export const getEventsAction = (token) => async (dispatch) => {
   try {
-    const res = await getdataApi(`dmsukien`);
+    const res = await getdataApi(`dmsukien`, token);
 
     dispatch({ type: EVENTS.GETEVENTS, payload: res.data });
   } catch (error) {

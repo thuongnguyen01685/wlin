@@ -66,7 +66,6 @@ const Login = () => {
           25,
           50
         );
-        dispatch({ type: AUTH.ERROR, payload: "" });
       }
     }
   };

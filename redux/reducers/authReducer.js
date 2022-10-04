@@ -4,6 +4,7 @@ const initialState = {
   token: null,
   err: "",
   profile: [],
+  permission: [],
   alert: "",
   message: "",
   isModalRe: false,
@@ -29,7 +30,8 @@ const authReducer = (state = initialState, action) => {
       return { ...state, token: action.payload };
     case AUTH.PROFILE:
       return { ...state, profile: action.payload };
-
+    case AUTH.PERSSION:
+      return { ...state, permission: action.payload[0] };
     default:
       return state;
   }

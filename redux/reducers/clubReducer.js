@@ -4,6 +4,8 @@ const initialState = {
   getClubs: [],
   detailClub: {},
   getBenefit: [],
+  getMember: [],
+  detailMember: {},
 };
 
 const clubReducer = (state = initialState, action) => {
@@ -11,7 +13,7 @@ const clubReducer = (state = initialState, action) => {
     case CLUB.GETCLUB:
       return {
         ...state,
-        getClubs: action.payload,
+        getClubs: [...state.getClubs, ...action.payload],
       };
     case CLUB.DETAILCLUB:
       return {
@@ -22,6 +24,16 @@ const clubReducer = (state = initialState, action) => {
       return {
         ...state,
         getBenefit: action.payload,
+      };
+    case CLUB.GETMEMBER:
+      return {
+        ...state,
+        getMember: action.payload,
+      };
+    case CLUB.DETAILMEMBER:
+      return {
+        ...state,
+        detailMember: action.payload,
       };
     default:
       return state;

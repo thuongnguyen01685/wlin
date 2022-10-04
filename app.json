@@ -1,35 +1,91 @@
 {
-  "expo": {
-    "name": "wlin",
-    "slug": "wlin",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/logo.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#711775",
-      "width": "80%"
-    },
-    "updates": {
-      "fallbackToCacheTimeout": 0
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/logoSpals.png",
-        "backgroundColor": "#711775"
-      },
-      "package": "com.thuongnguyen.wlin"
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
+    "expo": {
+        "name": "wlin",
+        "slug": "wlin",
+        "version": "1.0.0",
+        "orientation": "portrait",
+        "icon": "./assets/icon.png",
+        "notification": {
+            "icon": "./assets/icon.png",
+            "color": "#FFFFFF",
+            "androidMode": "collapse",
+            "androidCollapsedTitle": "wlin"
+        },
+        "userInterfaceStyle": "light",
+        "splash": {
+            "image": "./assets/logo.png",
+            "resizeMode": "contain",
+            "backgroundColor": "#711775",
+            "width": "80%"
+        },
+        "updates": {
+            "fallbackToCacheTimeout": 0
+        },
+        "assetBundlePatterns": [
+            "**/*"
+        ],
+        "ios": {
+            "bundleIdentifier": "com.thuongnguyen.wlin",
+            "supportsTablet": true,
+            "googleServicesFile": "./GoogleService-Info.plist"
+        },
+        "android": {
+            "icon": "./assets/icon.png",
+            "adaptiveIcon": {
+                "foregroundImage": "./assets/logoSpals.png",
+                "backgroundColor": "#711775"
+            },
+            "googleServicesFile": "./google-services.json",
+            "permissions": [
+                "ACCESS_COARSE_LOCATION",
+                "ACCESS_FINE_LOCATION",
+                "CAMERA",
+                "MANAGE_DOCUMENTS",
+                "VIBRATE",
+                "WAKE_LOCK",
+                "READ_CALENDAR",
+                "WRITE_CALENDAR",
+                "USE_FINGERPRINT",
+                "USE_BIOMETRIC",
+                "READ_EXTERNAL_STORAGE",
+                "WRITE_EXTERNAL_STORAGE",
+                "com.anddoes.launcher.permission.UPDATE_COUNT",
+                "com.android.launcher.permission.INSTALL_SHORTCUT",
+                "com.google.android.c2dm.permission.RECEIVE",
+                "com.google.android.gms.permission.ACTIVITY_RECOGNITION",
+                "com.google.android.providers.gsf.permission.READ_GSERVICES",
+                "com.majeur.launcher.permission.UPDATE_BADGE",
+                "com.sec.android.provider.badge.permission.READ",
+                "com.sec.android.provider.badge.permission.WRITE",
+                "com.sonyericsson.home.permission.BROADCAST_BADGE"
+            ],
+            "package": "com.thuongnguyen.wlin",
+            "useNextNotificationsApi": true
+        },
+        "web": {
+            "favicon": "./assets/favicon.png",
+            "config": {
+                "firebase": {
+                    "apiKey": "AIzaSyBYu82r3ggcMcIhSVLLApN_eGJ48XVDPFg",
+                    "authDomain": "wlin-88c70.firebaseapp.com",
+                    "projectId": "wlin-88c70",
+                    "storageBucket": "wlin-88c70.appspot.com",
+                    "messagingSenderId": "738734331346",
+                    "appId": "1:738734331346:web:f249e7562dd555ef85640b",
+                    "measurementId": "G-0ENWEQZCDZ"
+                }
+            }
+        },
+        "plugins": [
+            [
+                "expo-image-picker",
+                {
+                    "photosPermission": "The app accesses your photos to let you share them with your friends."
+                }
+            ],
+            "@react-native-firebase/app",
+            "@react-native-firebase/perf",
+            "@react-native-firebase/crashlytics"
+        ]
     }
-  }
 }

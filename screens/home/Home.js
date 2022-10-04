@@ -28,7 +28,11 @@ import BodyHome from "../../components/page/BodyHome";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { getProfileAction } from "../../redux/actions/authAction";
+import {
+  getPermissionAction,
+  getProfileAction,
+} from "../../redux/actions/authAction";
+import { getNotify } from "../../redux/actions/notifyAction";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
@@ -40,13 +44,15 @@ const Home = () => {
   const [search, setSearch] = useState("");
   const dispatch = useDispatch();
 
-  const { auth } = useSelector((state) => state);
+  const { auth, notify } = useSelector((state) => state);
 
   useEffect(() => {
     if (auth.token) {
-      dispatch(getProfileAction(auth.token));
+      // dispatch(getProfileAction(auth.token));
+      // dispatch(getNotify(auth.token));
+      dispatch(getPermissionAction(auth.token, auth.profile.email));
     }
-  }, [auth.token, dispatch]);
+  }, [auth.token, dispatch, auth.profile.email]);
 
   return (
     <View style={styles.container}>

@@ -1,7 +1,7 @@
 //import liraries
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import React, { Component } from "react";
+import React, { Component, useRef, useState } from "react";
 import { useEffect } from "react";
 import {
   View,
@@ -10,27 +10,70 @@ import {
   TouchableOpacity,
   Image,
   ImageBackground,
+  Animated,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { AUTH, getProfileAction } from "../redux/actions/authAction";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { URL } from "../utils/fetchApi";
+import ModalNotify from "./modal/ModalNotify";
 
 // create a component
 const Header = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const [modalVisible, setModalVisible] = useState(false);
   const handleShowProfile = () => {
     //dispatch({ type: AUTH.SHOWPROFILE, payload: true });
     navigation.navigate("Profile");
   };
-  const { auth } = useSelector((state) => state);
+  const amin = useRef(new Animated.Value(0)).current;
+
+  const { auth, notify } = useSelector((state) => state);
+
   useEffect(() => {
     const it = async () => {
       const token = await AsyncStorage.getItem("@token_key");
       dispatch(getProfileAction(token));
     };
     it();
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(amin, {
+          toValue: -1, // so i add the delay here
+          duration: 100,
+          delay: 2 * 1000,
+          useNativeDriver: true,
+        }),
+        Animated.timing(amin, {
+          toValue: 1,
+          duration: 100,
+          useNativeDriver: true,
+        }),
+        Animated.timing(amin, {
+          toValue: -1,
+          duration: 100,
+          useNativeDriver: true,
+        }),
+        Animated.timing(amin, {
+          toValue: 1,
+          duration: 100,
+          useNativeDriver: true,
+        }),
+        Animated.timing(amin, {
+          toValue: 0,
+          duration: 100,
+          useNativeDriver: true,
+        }),
+      ])
+    ).start();
   }, []);
+
+  const rotation = amin.interpolate({
+    inputRange: [-1, 1], // left side to right side
+    outputRange: ["-10deg", "10deg"], // before that we have to check now it's perfect
+  });
+
   return (
     <View
       style={{
@@ -77,12 +120,12 @@ const Header = () => {
             <Text
               style={{
                 color: "#711775",
-                fontSize: 20,
+                fontSize: 17,
                 fontWeight: "600",
               }}>
               Xin chào, {auth.profile.name}
             </Text>
-            <View
+            {/* <View
               style={{
                 top: -1,
                 height: 20,
@@ -96,13 +139,13 @@ const Header = () => {
                 source={require("../assets/Vm.png")}
                 style={{ width: 12, height: 12 }}
               />
-            </View>
+            </View> */}
           </View>
 
           <Text
             style={{
               color: "#711775",
-              fontSize: 13,
+              fontSize: 12,
               fontWeight: "600",
             }}>
             WLIN Global
@@ -114,13 +157,64 @@ const Header = () => {
         style={{
           flexDirection: "row",
           alignItems: "center",
-          justifyContent: "space-around",
+          justifyContent: "space-between",
+          width: "30%",
         }}>
+        {notify.getNotify.length > 0 ? (
+          <Animated.View
+            style={{ alignSelf: "center", transform: [{ rotate: rotation }] }}>
+            <TouchableOpacity onPress={() => setModalVisible(true)}>
+              <Ionicons name="notifications" size={28} color="#711775" />
+              <View
+                style={{
+                  position: "absolute",
+                  left: 14,
+                  top: 2,
+                }}>
+                <Text
+                  style={{
+                    backgroundColor: "#ff0",
+                    fontSize: 8,
+                    paddingHorizontal: notify.getNotify.length > 9 ? 2 : 4,
+                    borderRadius: 50,
+                    color: "#711775",
+                    borderColor: "#ffffff",
+                    borderWidth: 0.1,
+                    fontWeight: "600",
+                  }}>
+                  {notify.getNotify.length > 9 ? "9+" : notify.getNotify.length}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </Animated.View>
+        ) : (
+          <TouchableOpacity onPress={() => setModalVisible(true)}>
+            <Ionicons name="notifications" size={28} color="#711775" />
+            {/* <View
+              style={{
+                position: "absolute",
+                left: 14,
+                top: 2,
+              }}>
+              <Text
+                style={{
+                  backgroundColor: "#ff0",
+                  fontSize: 10,
+                  paddingHorizontal: 7.5,
+                  borderRadius: 50,
+                  color: "#711775",
+                  borderColor: "#ffffff",
+                  borderWidth: 0.1,
+                }}></Text>
+            </View> */}
+          </TouchableOpacity>
+        )}
+
         <TouchableOpacity
           onPress={() => {
             navigation.navigate("CheckQR");
           }}>
-          <Ionicons name="qr-code-outline" size={35} />
+          <Ionicons name="qr-code-outline" size={30} />
         </TouchableOpacity>
         <TouchableOpacity
           style={{
@@ -140,7 +234,6 @@ const Header = () => {
             shadowOpacity: 0.25,
             shadowRadius: 3.84,
             elevation: 5,
-            marginRight: "7%",
           }}
           onPress={handleShowProfile}>
           {/* <Ionicons
@@ -150,7 +243,7 @@ const Header = () => {
                   style={{ transform: [{ rotate: "45deg" }] }}
                 /> */}
           <Image
-            source={require("../assets/logo.png")}
+            source={{ uri: `${URL}${auth.profile.picture}` }}
             style={{
               width: 50,
               height: 50,
@@ -162,6 +255,12 @@ const Header = () => {
           />
         </TouchableOpacity>
       </View>
+      {modalVisible && (
+        <ModalNotify
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+        />
+      )}
     </View>
   );
 };

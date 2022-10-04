@@ -1,23 +1,25 @@
-import { getdataApi, getDetailApi } from "../../utils/fetchApi";
+import { getdataApi, getdataApiClub, getDetailApi } from "../../utils/fetchApi";
 
 export const CLUB = {
   GETCLUB: "GETCLUB",
   DETAILCLUB: "DETAILCLUB",
   GETBENEFIT: "GETBENEFIT",
+  GETMEMBER: "GETMEMBER",
+  DETAILMEMBER: "DETAILMEMBER",
 };
 
-export const getCLub = () => async (dispatch) => {
+export const getCLub = (token, page) => async (dispatch) => {
   try {
-    const res = await getdataApi(`wlin_club`);
-    // console.log(res.data);
+    const res = await getdataApiClub(`wlin_club`, token, page);
+
     dispatch({ type: CLUB.GETCLUB, payload: res.data });
   } catch (error) {
     console.log(error);
   }
 };
-export const getDetailClub = (_id) => async (dispatch) => {
+export const getDetailClub = (_id, token) => async (dispatch) => {
   try {
-    const res = await getDetailApi(`wlin_club`, _id);
+    const res = await getDetailApi(`wlin_club`, _id, token);
 
     dispatch({ type: CLUB.DETAILCLUB, payload: res.data });
   } catch (error) {
@@ -25,10 +27,29 @@ export const getDetailClub = (_id) => async (dispatch) => {
   }
 };
 
-export const getListBenefit = () => async (dispatch) => {
+export const getListBenefit = (token) => async (dispatch) => {
   try {
-    const res = await getdataApi(`dmnhomquyenloi`);
+    const res = await getdataApi(`dmnhomquyenloi`, token);
     dispatch({ type: CLUB.GETBENEFIT, payload: res.data });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getMemberAction = (token) => async (dispatch) => {
+  try {
+    const res = await getdataApi(`wlin_hoi_vien`, token);
+    dispatch({ type: CLUB.GETMEMBER, payload: res.data });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getDetailMember = (id, token) => async (dispatch) => {
+  try {
+    const res = await getDetailApi(`wlin_hoi_vien`, id, token);
+
+    dispatch({ type: CLUB.DETAILMEMBER, payload: res.data });
   } catch (error) {
     console.log(error);
   }

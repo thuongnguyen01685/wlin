@@ -88,6 +88,15 @@ const BodyOther = () => {
                   borderRadius: 8,
                   paddingVertical: 10,
                   paddingHorizontal: 15,
+                  shadowColor: "#000",
+                  shadowOffset: {
+                    width: 0,
+                    height: 1,
+                  },
+                  shadowOpacity: 0.25,
+                  shadowRadius: 3.84,
+
+                  elevation: 5,
                 }}
                 key={index}
                 onPress={() => navigation.navigate(`${item.navigation}`)}>

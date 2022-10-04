@@ -115,14 +115,14 @@ const BodyEvent = () => {
   const dispatch = useDispatch();
   const [refreshing, setRefreshing] = React.useState(false);
 
-  const { event } = useSelector((state) => state);
+  const { auth, event } = useSelector((state) => state);
 
   useEffect(() => {
-    dispatch(getEventsAction());
+    dispatch(getEventsAction(auth.token));
   }, [dispatch]);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    dispatch(getEventsAction());
+    dispatch(getEventsAction(auth.token));
     wait(2000).then(() => setRefreshing(false));
   }, [dispatch]);
 
@@ -188,6 +188,15 @@ const BodyEvent = () => {
                   paddingVertical: 5,
                   marginHorizontal: 10,
                   paddingHorizontal: 10,
+                  shadowColor: "#000",
+                  shadowOffset: {
+                    width: 0,
+                    height: 1,
+                  },
+                  shadowOpacity: 0.25,
+                  shadowRadius: 3.84,
+
+                  elevation: 5,
                 }}
                 onPress={() => navigation.navigate("DetailEvents")}>
                 <View

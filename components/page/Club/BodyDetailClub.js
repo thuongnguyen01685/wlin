@@ -1,7 +1,7 @@
 //import liraries
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { Component, useState } from "react";
+import React, { Component, useRef, useState } from "react";
 import { useEffect } from "react";
 import {
   View,
@@ -11,11 +11,16 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
+  RefreshControl,
+  Animated,
 } from "react-native";
+
 import { useSelector, useDispatch } from "react-redux";
 import { getDetailClub } from "../../../redux/actions/ClupAction";
 import { URL } from "../../../utils/fetchApi";
-
+import { Picker } from "@react-native-picker/picker";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
 const ratio = w / 720;
@@ -36,245 +41,267 @@ const dataHeader = [
     value: "banquantri",
   },
 ];
-
-const dataTotal = [
-  {
-    _id: 1,
-    avatar: require("../../../assets/truong.png"),
-    name: "Xuân Trường",
-    position: "Thành viên",
-    vm: require("../../../assets/vmbac.png"),
-    code: "thanhvien",
-  },
-  {
-    _id: 2,
-    avatar: require("../../../assets/vinh.png"),
-    name: "Thành Vinh",
-    position: "Thành viên",
-    vm: require("../../../assets/vmxanh.png"),
-    code: "thanhvien",
-  },
-  {
-    _id: 3,
-    avatar: require("../../../assets/truong.png"),
-    name: "Anh Tây",
-    position: "Quản lí",
-    vm: require("../../../assets/vmvang.png"),
-    code: "thanhvien",
-  },
-  {
-    _id: 1,
-    picture: require("../../../assets/logo.png"),
-    name: "Nhiệm kỳ 1",
-    time: "11/08 - 12/08/2022",
-    code: "nhiemky",
-  },
-  {
-    _id: 2,
-    picture: require("../../../assets/logo.png"),
-    name: "Nhiệm kỳ 2",
-    time: "11/08 - 12/08/2022",
-    code: "nhiemky",
-  },
-  {
-    _id: 1,
-    picture: require("../../../assets/logo.png"),
-    name: "Nhiệm kỳ 1",
-    value: "nk1",
-    hoivien: "Đinh Thị Thu Hiền",
-    chucvu: "Trưởng Ban",
-    mota: "",
-    code: "banquantri",
-  },
-  {
-    _id: 2,
-    picture: require("../../../assets/logo.png"),
-    name: "Nhiệm kỳ 2",
-    value: "nk2",
-    hoivien: "Đinh Thị Thu Hà",
-    chucvu: "Trưởng Ban",
-    mota: "",
-    code: "banquantri",
-  },
-];
+const HEADER_HEIGHT = 150;
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
 // create a component
 const BodyDeTailClub = (props) => {
   const [cat, setCat] = useState("thanhvien");
   const [nk, setNk] = useState("nk1");
   const dispatch = useDispatch();
-  const { club } = useSelector((state) => state);
-
+  const { auth, club } = useSelector((state) => state);
+  const [select, setSelect] = useState("nk1");
+  const [refreshing, setRefreshing] = React.useState(false);
+  const insets = useSafeAreaInsets();
+  const animatedValue = useRef(new Animated.Value(0)).current;
+  const headerHeight = animatedValue.interpolate({
+    inputRange: [0, HEADER_HEIGHT + insets.top],
+    outputRange: [HEADER_HEIGHT + insets.top, insets.top + 30],
+    extrapolate: "clamp",
+  });
   useEffect(() => {
-    dispatch(getDetailClub(props._id));
-  }, [dispatch]);
+    setRefreshing(true);
+    dispatch(getDetailClub(props._id, auth.token));
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, [dispatch, props._id]);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    dispatch(getDetailClub(props._id, auth.token));
+    wait(2000).then(() => setRefreshing(false));
+  }, [dispatch, props._id]);
+
+  // const height = useRef(new Animated.Value(210)).current;
 
   return (
     <View style={{ height: "100%" }}>
-      <Text
+      <View
         style={{
-          fontSize: 20,
-          color: "#711775",
-          fontWeight: "600",
-          paddingLeft: 20,
-          paddingTop: 18,
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
         }}>
-        Chi tiết CLUB
-      </Text>
-      <View style={{ marginTop: 10 }}>
-        <View
+        <Text
           style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            paddingHorizontal: 20,
-            width: w,
+            fontSize: 20,
+            color: "#711775",
+            fontWeight: "600",
+            paddingLeft: 20,
+            paddingTop: 18,
+          }}>
+          Chi tiết CLUB
+        </Text>
+
+        {cat === "banquantri" && (
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "flex-end",
+              marginHorizontal: 15,
+              zIndex: 10,
+            }}>
+            <View
+              style={{
+                borderRadius: 7,
+                width: 150,
+                height: 40,
+                backgroundColor: "#fdfdfd",
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
+
+                elevation: 5,
+              }}>
+              <Picker
+                selectedValue={select}
+                onValueChange={(itemValue, itemIndex) => setSelect(itemValue)}>
+                <Picker.Item
+                  label="Nhiệm kì 1"
+                  value="nk1"
+                  style={styles.itemSelect}
+                />
+                <Picker.Item
+                  label="Nhiệm kì 2"
+                  value="nk2"
+                  style={styles.itemSelect}
+                />
+              </Picker>
+            </View>
+          </View>
+        )}
+      </View>
+
+      <Animated.View
+        style={{
+          position: "absolute",
+          marginTop: 47,
+          left: 0,
+          right: 0,
+          zIndex: 10,
+          height: headerHeight,
+          backgroundColor: "#ffffff",
+        }}>
+        <Animated.View
+          style={{
+            marginTop: 10,
+            opacity: animatedValue.interpolate({
+              inputRange: [0, 25],
+              outputRange: [1, 0],
+              extrapolate: "clamp",
+            }),
           }}>
           <View
             style={{
-              flexDirection: "column",
-              justifyContent: "flex-end",
-              width: "40%",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              paddingHorizontal: 20,
+              width: w,
             }}>
-            {club.detailClub.hinh_anh ? (
-              <Image
-                source={{
-                  uri: `${URL}/`.concat(`${club.detailClub.hinh_anh}`),
-                }}
-                style={{ width: "80%", height: 90, borderRadius: 7 }}
-              />
-            ) : (
-              <Image
-                source={require("../../../assets/logo.png")}
-                style={{ width: "80%", height: 50, borderRadius: 7 }}
-              />
-            )}
-          </View>
-
-          <View style={{ width: "60%", paddingRight: 10 }}>
-            <Text
-              style={{
-                fontSize: 20,
-                fontWeight: "600",
-                color: "#711775",
-                textAlign: "center",
-              }}>
-              {club.detailClub.ten_club}
-            </Text>
             <View
               style={{
-                flexDirection: "row",
-                justifyContent: "center",
+                flexDirection: "column",
+                justifyContent: "flex-end",
+                width: "40%",
               }}>
+              {club.detailClub.hinh_anh ? (
+                <Image
+                  source={{
+                    uri: `${URL}/`.concat(`${club.detailClub.hinh_anh}`),
+                  }}
+                  style={{ width: "80%", height: 90, borderRadius: 7 }}
+                />
+              ) : (
+                <Image
+                  source={require("../../../assets/logo.png")}
+                  style={{ width: "80%", height: 50, borderRadius: 7 }}
+                />
+              )}
+            </View>
+
+            <View style={{ width: "60%", paddingRight: 10 }}>
+              <Text
+                style={{
+                  fontSize: 20,
+                  fontWeight: "600",
+                  color: "#711775",
+                  textAlign: "center",
+                }}>
+                {club.detailClub.ten_club}
+              </Text>
               <View
                 style={{
-                  marginTop: 10,
-                  height: 80,
-                  flexDirection: "column",
-                  justifyContent: "space-between",
+                  flexDirection: "row",
+                  justifyContent: "center",
                 }}>
                 <View
                   style={{
-                    flexDirection: "row",
+                    marginTop: 10,
+                    height: 80,
+                    flexDirection: "column",
                     justifyContent: "space-between",
                   }}>
-                  <Text>Partner: {club.detailClub.ten_partner}</Text>
-                  <TouchableOpacity style={{ marginLeft: 10 }}>
-                    <Ionicons name="call-outline" color="#711775" size={20} />
-                  </TouchableOpacity>
-                </View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                  }}>
-                  <Text>Thư ký: Mai Thu Huyền</Text>
-                  <TouchableOpacity>
-                    <Ionicons name="call-outline" color="#711775" size={20} />
-                  </TouchableOpacity>
-                </View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                  }}>
-                  <Text>BD: Ms A</Text>
-                  <TouchableOpacity>
-                    <Ionicons name="call-outline" color="#711775" size={20} />
-                  </TouchableOpacity>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                    }}>
+                    <Text>Partner: {club.detailClub.ten_partner}</Text>
+                    <TouchableOpacity style={{ marginLeft: 10 }}>
+                      <Ionicons name="call-outline" color="#711775" size={20} />
+                    </TouchableOpacity>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                    }}>
+                    <Text>Thư ký: Mai Thu Huyền</Text>
+                    <TouchableOpacity>
+                      <Ionicons name="call-outline" color="#711775" size={20} />
+                    </TouchableOpacity>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                    }}>
+                    <Text>BD: Ms A</Text>
+                    <TouchableOpacity>
+                      <Ionicons name="call-outline" color="#711775" size={20} />
+                    </TouchableOpacity>
+                  </View>
                 </View>
               </View>
             </View>
           </View>
-        </View>
-      </View>
-      <View
-        style={{
-          backgroundColor: "#f3f3f3",
-          marginHorizontal: 10,
-          marginTop: 30,
-          marginBottom: 10,
-          borderRadius: 20,
-          flexDirection: "row",
-          justifyContent: "space-between",
-        }}>
-        {dataHeader.map((item) => (
-          <TouchableOpacity
-            style={{
-              backgroundColor: item.value === cat ? "#711775" : "#f3f3f3",
-              borderRadius: 20,
-              paddingHorizontal: "7%",
-            }}
-            key={item._id}
-            onPress={() => setCat(item.value)}>
-            <Text
-              style={{
-                color: item.value === cat ? "#ffffff" : "#A0A0A0",
-                marginVertical: 5,
-              }}>
-              {item.cat}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-      {cat === "banquantri" && (
-        <View
+        </Animated.View>
+
+        <Animated.View
           style={{
+            backgroundColor: "#f3f3f3",
+            marginHorizontal: 10,
+            marginTop: 10,
+            marginBottom: 10,
+            borderRadius: 20,
             flexDirection: "row",
-            justifyContent: "flex-end",
-            marginHorizontal: 15,
-            zIndex: 6,
-          }}>
-          <TouchableOpacity
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-around",
-              backgroundColor: "#f3f3f3",
-              borderRadius: 5,
-              shadowColor: "#000",
-              shadowOffset: {
-                width: 0,
-                height: 2,
+            justifyContent: "space-between",
+            transform: [
+              {
+                translateY: animatedValue.interpolate({
+                  inputRange: [0, 50],
+                  outputRange: [0, -120],
+                  extrapolate: "clamp",
+                }),
               },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.84,
-              elevation: 5,
-              width: "30%",
-              paddingHorizontal: 10,
-              paddingVertical: 5,
-            }}>
-            <Text style={{ color: "#711775", fontSize: 13, fontWeight: "500" }}>
-              Nhiệm kì 1
-            </Text>
-            <Ionicons name="chevron-down-outline" size={20} color="#711775" />
-          </TouchableOpacity>
-        </View>
-      )}
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={{ marginBottom: "20%" }}>
-          <ScrollView>
-            {club.detailClub.ds_thanh_vien &&
-              club.detailClub.ds_thanh_vien.map((item) =>
-                cat === "thanhvien" ? (
+            ],
+          }}>
+          {dataHeader.map((item) => (
+            <TouchableOpacity
+              style={{
+                backgroundColor: item.value === cat ? "#711775" : "#f3f3f3",
+                borderRadius: 20,
+                paddingHorizontal: "7%",
+              }}
+              key={item._id}
+              onPress={() => setCat(item.value)}>
+              <Text
+                style={{
+                  color: item.value === cat ? "#ffffff" : "#A0A0A0",
+                  marginVertical: 5,
+                }}>
+                {item.cat}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </Animated.View>
+      </Animated.View>
+
+      <ScrollView
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { y: animatedValue } } }],
+          { useNativeDriver: false }
+        )}
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            tintColor="#711775"
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={["#711775", "green", "blue"]}
+          />
+        }>
+        <View style={{ marginBottom: "20%", marginTop: "45%" }}>
+          {club.detailClub.ds_thanh_vien &&
+            club.detailClub.ds_thanh_vien.map(
+              (item) =>
+                cat === "thanhvien" && (
                   <View
                     key={item._id}
                     style={{
@@ -287,6 +314,15 @@ const BodyDeTailClub = (props) => {
                       paddingVertical: 5,
                       marginHorizontal: 10,
                       paddingHorizontal: 10,
+                      shadowColor: "#000",
+                      shadowOffset: {
+                        width: 0,
+                        height: 1,
+                      },
+                      shadowOpacity: 0.25,
+                      shadowRadius: 3.84,
+
+                      elevation: 5,
                     }}>
                     <View
                       style={{
@@ -360,9 +396,14 @@ const BodyDeTailClub = (props) => {
                       </TouchableOpacity>
                     </View>
                   </View>
-                ) : cat === "nhiemky" ? (
+                )
+            )}
+          {club.detailClub.nhiem_ky &&
+            club.detailClub.nhiem_ky.map(
+              (item, index) =>
+                cat === "nhiemky" && (
                   <View
-                    key={item._id}
+                    key={index}
                     style={{
                       flexDirection: "row",
                       justifyContent: "space-between",
@@ -373,6 +414,15 @@ const BodyDeTailClub = (props) => {
                       paddingVertical: 15,
                       marginHorizontal: 10,
                       paddingHorizontal: 10,
+                      shadowColor: "#000",
+                      shadowOffset: {
+                        width: 0,
+                        height: 1,
+                      },
+                      shadowOpacity: 0.25,
+                      shadowRadius: 3.84,
+
+                      elevation: 5,
                     }}>
                     <View
                       style={{
@@ -382,8 +432,12 @@ const BodyDeTailClub = (props) => {
                       }}>
                       <View style={{ flexDirection: "row" }}>
                         <Image
-                          source={item.picture}
-                          style={{ width: 100, height: 40 }}
+                          source={require("../../../assets/logo.png")}
+                          style={{
+                            width: 100,
+                            height: 40,
+                            resizeMode: "contain",
+                          }}
                         />
                       </View>
 
@@ -399,7 +453,7 @@ const BodyDeTailClub = (props) => {
                             fontSize: 18,
                             fontWeight: "600",
                           }}>
-                          {item.name}
+                          {item.ten_nhiem_ky}
                         </Text>
                         <View
                           style={{
@@ -417,13 +471,19 @@ const BodyDeTailClub = (props) => {
                               fontSize: 12,
                               fontWeight: "600",
                             }}>
-                            {item.time}
+                            {item.tu_ngay.slice(0, 10)} -{" "}
+                            {item.den_ngay.slice(0, 10)}
                           </Text>
                         </View>
                       </View>
                     </View>
                   </View>
-                ) : (
+                )
+            )}
+          {club.detailClub.quan_tri &&
+            club.detailClub.quan_tri.map(
+              (item) =>
+                cat === "banquantri" && (
                   <View
                     key={item._id}
                     style={{
@@ -433,9 +493,18 @@ const BodyDeTailClub = (props) => {
                       backgroundColor: "#F3F3F3",
                       marginVertical: 10,
                       borderRadius: 8,
-                      paddingVertical: 5,
+                      paddingVertical: 10,
                       marginHorizontal: 10,
                       paddingHorizontal: 10,
+                      shadowColor: "#000",
+                      shadowOffset: {
+                        width: 0,
+                        height: 1,
+                      },
+                      shadowOpacity: 0.25,
+                      shadowRadius: 3.84,
+
+                      elevation: 5,
                     }}>
                     <View
                       style={{
@@ -445,7 +514,7 @@ const BodyDeTailClub = (props) => {
                       }}>
                       <View style={{ flexDirection: "row" }}>
                         <Image
-                          source={item.picture}
+                          source={require("../../../assets/logo.png")}
                           style={{ width: 100, height: 40 }}
                         />
                       </View>
@@ -462,7 +531,16 @@ const BodyDeTailClub = (props) => {
                             fontSize: 18,
                             fontWeight: "600",
                           }}>
-                          {item.name}
+                          {item.ten_kh}
+                        </Text>
+                        <Text
+                          style={{
+                            color: "#E0ABDF",
+                            fontSize: 12,
+                            fontWeight: "600",
+                            marginVertical: 5,
+                          }}>
+                          Chức danh: {item.chuc_vu2}
                         </Text>
                         <Text
                           style={{
@@ -470,30 +548,13 @@ const BodyDeTailClub = (props) => {
                             fontSize: 12,
                             fontWeight: "600",
                           }}>
-                          Hội viên: {item.hoivien}
-                        </Text>
-                        <Text
-                          style={{
-                            color: "#E0ABDF",
-                            fontSize: 12,
-                            fontWeight: "600",
-                          }}>
-                          Chức vụ: {item.chucvu}
-                        </Text>
-                        <Text
-                          style={{
-                            color: "#E0ABDF",
-                            fontSize: 12,
-                            fontWeight: "600",
-                          }}>
-                          Mô tả: {item.mota}
+                          Đầy đủ: {item.ten_chuc_vu}
                         </Text>
                       </View>
                     </View>
                   </View>
                 )
-              )}
-          </ScrollView>
+            )}
         </View>
       </ScrollView>
     </View>
@@ -506,6 +567,12 @@ const styles = StyleSheet.create({
     color: "#000",
     fontSize: 12,
     fontWeight: "400",
+  },
+  itemSelect: {
+    fontSize: 13,
+    fontWeight: "500",
+    color: "#711775",
+    textAlign: "center",
   },
 });
 

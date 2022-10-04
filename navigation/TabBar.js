@@ -31,6 +31,7 @@ import ReportExcel from "../screens/events/ReportExcel";
 import ListMember from "../screens/other/ListMember";
 import ManagementMember from "../screens/other/ManagementMember";
 import PayBenefits from "../screens/events/PayBenefits";
+import Map from "../screens/events/Map";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -98,6 +99,11 @@ function EventsScreen() {
       <Stack.Screen
         name="PayBenefits"
         component={PayBenefits}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Map"
+        component={Map}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
@@ -225,6 +231,7 @@ const TabBar = () => {
         },
         tabBarActiveTintColor: "#ffffff",
         tabBarInactiveTintColor: "#909090",
+
         headerShown: false,
         tabBarStyle: {
           height: 70,

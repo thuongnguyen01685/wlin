@@ -11,6 +11,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
+  RefreshControl,
 } from "react-native";
 import { useEffect } from "react";
 import { getListBenefit } from "../../../redux/actions/ClupAction";
@@ -38,13 +39,26 @@ const data = [
     rank: "Bạc",
   },
 ];
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
 const BodyBenefit = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const { club } = useSelector((state) => state);
+  const { auth, club } = useSelector((state) => state);
+  const [refreshing, setRefreshing] = React.useState(false);
 
   useEffect(() => {
-    dispatch(getListBenefit());
+    setRefreshing(true);
+    dispatch(getListBenefit(auth.token));
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, [dispatch]);
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    dispatch(getListBenefit(auth.token));
+    wait(2000).then(() => setRefreshing(false));
   }, [dispatch]);
 
   return (
@@ -59,7 +73,16 @@ const BodyBenefit = () => {
         }}>
         Danh sách nhóm quyền lợi
       </Text>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            tintColor="#711775"
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={["#711775", "green", "blue"]}
+          />
+        }>
         <View
           style={{
             marginBottom: "20%",

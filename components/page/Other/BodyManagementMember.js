@@ -20,6 +20,9 @@ import { getEventsAction } from "../../../redux/actions/eventsAction";
 import CheckBox from "expo-checkbox";
 
 import ModalRequest from "../../modal/ModalRequest";
+import { getDetailMember } from "../../../redux/actions/ClupAction";
+import { URL } from "../../../utils/fetchApi";
+import ModalTT from "../../modal/ModalTT";
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -33,18 +36,18 @@ const BodyManagementMember = () => {
   const [modalSuccess, setModalSuccess] = useState(false);
   const [checkPayment, setCheckPayment] = useState(false);
 
-  const { event } = useSelector((state) => state);
+  const { auth, club } = useSelector((state) => state);
 
   const [benefitGroup, setBenefitGroup] = useState("");
   const [member, setMember] = useState("");
   const [actionText, setActionText] = useState("");
 
   useEffect(() => {
-    dispatch(getEventsAction());
+    dispatch(getDetailMember(auth.token));
   }, [dispatch]);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    dispatch(getEventsAction());
+    dispatch(getDetailMember(auth.token));
     wait(2000).then(() => setRefreshing(false));
   }, [dispatch]);
 
@@ -63,7 +66,11 @@ const BodyManagementMember = () => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={["#711775", "green", "blue"]}
+          />
         }>
         <View
           style={{ marginBottom: "20%", paddingHorizontal: 25, marginTop: 15 }}>
@@ -74,18 +81,32 @@ const BodyManagementMember = () => {
               width: "100%",
               alignItems: "center",
             }}>
-            <Image
-              source={require("../../../assets/truong.png")}
-              style={{
-                width: 80,
-                height: 80,
-                resizeMode: "contain",
-                borderRadius: 50,
-              }}
-            />
+            {club.detailMember.hinh_anh ? (
+              <Image
+                source={{
+                  uri: `${URL}/`.concat(`${club.detailMember.hinh_anh}`),
+                }}
+                style={{
+                  width: 80,
+                  height: 80,
+                  borderRadius: 50,
+                  resizeMode: "contain",
+                }}
+              />
+            ) : (
+              <Image
+                source={require("../../../assets/logo.png")}
+                style={{
+                  width: 80,
+                  height: 80,
+                  borderRadius: 50,
+                  resizeMode: "contain",
+                }}
+              />
+            )}
             <Text
               style={{ fontSize: 13, fontWeight: "600", marginVertical: 10 }}>
-              Xuân Trường
+              {club.detailMember.ten_kh}
             </Text>
           </View>
           <View style={styles.containerView}>
@@ -168,18 +189,16 @@ const BodyManagementMember = () => {
             </TouchableOpacity>
           </View>
           {modalSuccess && (
-            <ModalRequest
+            <ModalTT
               modalSuccess={modalSuccess}
               setModalSuccess={setModalSuccess}
               content={"Gửi thông báo tất toán thành công"}
               textButton={"Xác nhận tất toán"}
-              checkPayment={checkPayment}
-              setCheckPayment={setCheckPayment}
             />
           )}
         </View>
       </ScrollView>
-      {checkPayment && (
+      {/* {checkPayment && (
         <TouchableOpacity
           style={{
             flexDirection: "row",
@@ -219,7 +238,7 @@ const BodyManagementMember = () => {
             />
           </LinearGradient>
         </TouchableOpacity>
-      )}
+      )} */}
     </View>
   );
 };

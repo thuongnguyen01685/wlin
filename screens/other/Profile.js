@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
 import React, { Component, useEffect, useRef, useState } from "react";
+import * as ImagePicker from "expo-image-picker";
 import {
   View,
   Text,
@@ -19,6 +20,7 @@ import {
   Platform,
   TextInput,
   ToastAndroid,
+  TouchableHighlight,
 } from "react-native";
 import PhoneInput from "react-native-phone-number-input";
 
@@ -27,8 +29,14 @@ import ModalSms from "../../components/ModalSms";
 import Header from "../../components/Header";
 import BodyHome from "../../components/page/BodyHome";
 import { useDispatch, useSelector } from "react-redux";
-import { AUTH } from "../../redux/actions/authAction";
+import {
+  AUTH,
+  getImageUserAction,
+  getProfileAction,
+} from "../../redux/actions/authAction";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import callApi from "../../utils/callApi";
+import { URL } from "../../utils/fetchApi";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
@@ -43,6 +51,8 @@ const Profile = () => {
     navigation.goBack();
   };
   const { auth } = useSelector((state) => state);
+  const [image, setImage] = useState(null);
+
   const data = [
     {
       name: "Số điện thoại",
@@ -100,7 +110,7 @@ const Profile = () => {
     if (auth.token === null || auth.token === "") {
       navigation.navigate("Splash");
     }
-  }, [auth.token]);
+  }, [auth.token, dispatch]);
 
   const handleLogout = async () => {
     try {
@@ -122,6 +132,39 @@ const Profile = () => {
       console.log(error);
     }
   };
+
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
+
+    const temp = await dispatch(getImageUserAction(result.uri, auth.token));
+
+    await callApi(`api/updateprofile?access_token=${auth.token}`, "POST", {
+      picture: JSON.parse(temp).image,
+    });
+    await dispatch(getProfileAction(auth.token));
+    // await AsyncStorage.setItem(
+    //   "@info",
+    //   JSON.stringify({
+    //     id: auth.profile.id,
+    //     name: auth.profile.name,
+    //     picture: JSON.parse(temp).image,
+    //     email: auth.profile.email,
+    //     token: auth.token,
+    //   })
+    // );
+    // await dispatch(checkLoginSession(2));
+  };
+
   return (
     <View style={styles.container}>
       <View>
@@ -212,15 +255,63 @@ const Profile = () => {
               style={{
                 flexDirection: "row",
                 justifyContent: "center",
+                width: "100%",
               }}>
-              <Image
-                source={require("../../assets/vinh.png")}
+              <View
                 style={{
-                  borderColor: "#ffffff",
-                  borderWidth: 1.2,
-                  borderRadius: 80,
+                  shadowColor: "#000",
+                  shadowOffset: {
+                    width: 0,
+                    height: 1,
+                  },
+                  shadowOpacity: 0.25,
+                  shadowRadius: 3.84,
+
+                  elevation: 5,
+                  backgroundColor: "#ffffff",
+                  borderRadius: 60,
+                }}>
+                {image ? (
+                  <Image
+                    source={{ uri: image }}
+                    style={{
+                      borderColor: "#ffffff",
+                      borderWidth: 2,
+                      borderRadius: 80,
+                      width: 120,
+                      height: 120,
+                    }}
+                  />
+                ) : (
+                  <Image
+                    source={{ uri: `${URL}/${auth.profile.picture}` }}
+                    style={{
+                      borderColor: "#ffffff",
+                      borderWidth: 2,
+                      borderRadius: 80,
+                      width: 120,
+                      height: 120,
+                    }}
+                  />
+                )}
+              </View>
+
+              <TouchableOpacity
+                style={{
+                  backgroundColor: "rgba(150, 150, 150, 0.7)",
+                  position: "absolute",
+                  width: 30,
+                  height: 30,
+                  borderRadius: 50,
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  top: "70%",
+                  right: "34.5%",
                 }}
-              />
+                onPress={pickImage}>
+                <Ionicons name="camera-outline" size={20} color="#ffffff" />
+              </TouchableOpacity>
             </View>
             <View style={{ marginTop: 10 }}>
               <Text
@@ -230,7 +321,7 @@ const Profile = () => {
                   fontWeight: "600",
                   textAlign: "center",
                 }}>
-                Thành Vinh
+                {auth.profile.name}
               </Text>
               <View
                 style={{

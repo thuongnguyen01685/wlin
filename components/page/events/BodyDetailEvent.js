@@ -195,7 +195,8 @@ const BodyDetailEvent = () => {
                     width: "100%",
                     justifyContent: "center",
                     marginBottom: 15,
-                  }}>
+                  }}
+                  onPress={() => navigation.navigate("Map")}>
                   <LinearGradient
                     start={{ x: 1, y: 0.3 }}
                     end={{ x: 1, y: 1 }}
