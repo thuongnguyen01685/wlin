@@ -1,7 +1,9 @@
 import {
   getData,
+  getdataApi,
   getPermission,
   getProfile,
+  getRank,
   getToken,
   URL,
 } from "../../utils/fetchApi";
@@ -12,6 +14,7 @@ export const AUTH = {
   TOKEN: "TOKEN",
   PROFILE: "PROFILE",
   PERSSION: "PERSSION",
+  RANK: "RANK",
   ERROR: "ERROR",
 };
 
@@ -59,6 +62,24 @@ export const getPermissionAction = (token, email) => async (dispatch) => {
     const res = await getPermission(`participant`, token, email);
 
     dispatch({ type: AUTH.PERSSION, payload: res.data });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getRankAction = (token, email) => async (dispatch) => {
+  try {
+    const res = await getRank(token, email);
+
+    const getRankMember = await getdataApi(`dmgoithanhvien`, token);
+
+    if (getRankMember.data) {
+      var dataFilter = getRankMember.data.filter(
+        (item) => item.ma_goi == res.data[0].goi_thanh_vien
+      )[0];
+    }
+
+    dispatch({ type: AUTH.RANK, payload: { ...dataFilter, ...res.data[0] } });
   } catch (error) {
     console.log(error);
   }

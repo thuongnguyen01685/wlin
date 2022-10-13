@@ -26,16 +26,6 @@ const BodyCreateRefer = () => {
   const [modalSuccess, setModalSuccess] = useState(false);
   return (
     <View style={{ height: "100%" }}>
-      <Text
-        style={{
-          fontSize: 20,
-          color: "#711775",
-          fontWeight: "600",
-          paddingLeft: 20,
-          paddingTop: 18,
-        }}>
-        Tạo Referrals
-      </Text>
       {modalSuccess && (
         <ModalSuccessRefer
           modalSuccess={modalSuccess}

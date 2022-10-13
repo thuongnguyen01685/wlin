@@ -16,11 +16,12 @@ export default function Wellcome() {
   return (
     <View style={styles.container}>
       <StatusBar />
+
       <View
         style={{
           marginBottom: 20,
           flexDirection: "column",
-          justifyContent: "space-around",
+          justifyContent: "space-between",
         }}>
         <View style={styles.imgCon}>
           <View>
@@ -54,53 +55,57 @@ export default function Wellcome() {
             />
           </View>
         </View>
-        <View style={{ marginTop: 230 }}>
+        <View style={{ marginTop: 200 }}>
           <Text
             style={{
               textAlign: "center",
               fontSize: 25,
               fontWeight: "700",
-              color: "#711775",
+              color: "#9D85F2",
             }}>
             Chào mừng
           </Text>
           <Text
             style={{
-              fontSize: 15,
+              fontSize: 13,
               fontWeight: "400",
-              paddingHorizontal: 40,
+              paddingHorizontal: 30,
               textAlign: "justify",
               marginTop: 10,
               lineHeight: 25,
             }}>
-            WLIN hiểu rằng phụ nữ đóng vai trò vô cùng quan trọng trong việc giữ
-            gìn hạnh phúc gia đình, trong việc nuôi dạy con cái và đóng góp
-            không nhỏ vào sự phát triển của cộng đồng trong nước cũng như toàn
-            thế giới.
+            WLIN Global Holdings xây dựng một hệ sinh thái phục vụ cho các Nữ
+            lãnh đạo trên toàn cầu, kết nối giao thương, học hỏi và hỗ trợ nhau
+            cùng phát triển để "Khỏe Đẹp Hơn - Hạnh Phúc Hơn - Thành Công Hơn".
           </Text>
         </View>
         <View
           style={{
             flexDirection: "row",
-            justifyContent: "flex-end",
-            paddingHorizontal: 10,
+            justifyContent: "center",
+            marginTop: 30,
           }}>
           <TouchableOpacity onPress={() => navigation.navigate("Login")}>
             <LinearGradient
               start={{ x: 0, y: 0.3 }}
               end={{ x: 1, y: 1 }}
-              colors={[
-                "rgba(241, 108, 246, 0.8) 120.28%)",
-                "rgba(113, 23, 117, 0.8) -6.93%",
-              ]}
+              colors={["#9796F0", "#FBC7D4"]}
               style={{
-                paddingHorizontal: 20,
-                paddingVertical: 19,
+                width: "100%",
+                paddingVertical: 15,
                 borderRadius: 30,
                 flexDirection: "row",
-                justifyContent: "space-around",
+                justifyContent: "center",
               }}>
-              <Ionicons name="arrow-forward" size={25} color="#ffffff" />
+              {/* <Ionicons name="arrow-forward" size={25} color="#ffffff" /> */}
+              <Text
+                style={{
+                  fontSize: 18,
+                  fontWeight: "600",
+                  color: "#ffffff",
+                }}>
+                Tiếp tục
+              </Text>
             </LinearGradient>
           </TouchableOpacity>
         </View>

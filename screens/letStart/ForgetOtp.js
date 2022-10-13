@@ -23,6 +23,8 @@ import PhoneInput from "react-native-phone-number-input";
 
 import { RadioButton } from "react-native-paper";
 import ModalSms from "../../components/ModalSms";
+import { useSelector } from "react-redux";
+import { formatDateTimeDisplay } from "../../utils/datetime";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
@@ -31,6 +33,7 @@ const ratio = w / 720;
 // create a component
 const ForgetOtp = ({ route }) => {
   const navigation = useNavigation();
+  const { auth } = useSelector((state) => state);
 
   return (
     <View style={styles.container}>
@@ -51,7 +54,7 @@ const ForgetOtp = ({ route }) => {
                 flexDirection: "row",
                 justifyContent: "center",
                 alignItems: "center",
-                borderRadius: 5,
+                borderRadius: 50,
                 marginBottom: 7,
                 //transform: [{ rotate: "-45deg" }],
                 shadowColor: "#000",
@@ -65,9 +68,9 @@ const ForgetOtp = ({ route }) => {
                 elevation: 5,
               }}
               onPress={() => navigation.goBack()}>
-              <Ionicons name="chevron-back-outline" size={25} color="#711775" />
+              <Ionicons name="chevron-back-outline" size={25} color="#9D85F2" />
             </TouchableOpacity>
-            <Text style={{ color: "#711775", fontSize: 25, fontWeight: "600" }}>
+            <Text style={{ color: "#826CCF", fontSize: 25, fontWeight: "600" }}>
               WLIN xin chào
             </Text>
           </View>
@@ -101,28 +104,36 @@ const ForgetOtp = ({ route }) => {
           <ScrollView>
             <Text
               style={{
-                fontSize: 20,
-                color: "#711775",
-                fontWeight: "600",
+                fontSize: 25,
+                color: "#9D85F2",
+                fontWeight: "800",
                 paddingLeft: 25,
                 paddingTop: 18,
+                textAlign: "center",
               }}>
               Quên mã OTP
             </Text>
             <View style={{ paddingHorizontal: 36 }}>
               <View style={{ marginTop: 10 }}>
-                <Text style={styles.contentText}>
-                  Xin chào, {route.params.numberPhone}!
+                <Text
+                  style={{
+                    fontSize: 14,
+                    fontWeight: "600",
+                    textAlign: "center",
+                  }}>
+                  Xin chào,
+                  <Text style={{ fontSize: 14, fontWeight: "400" }}>
+                    {route.params.numberPhone} !
+                  </Text>
                 </Text>
                 <Text style={styles.contentText}>
-                  Mã OTP của bạn đã được gửi vào SMS vào lúc 09/08/2022 14:00.
+                  Mã OTP của bạn đã được gửi vào SMS vào lúc{" "}
+                  {formatDateTimeDisplay(auth.otp.date_created)}.
                 </Text>
                 <Text style={styles.contentText}>
                   Vui lòng kiểm tra hộp thoại tin nhắn với Brand name "WGH" để
                   lấy mã OTP.
                 </Text>
-
-                <Text style={styles.contentText}>"WGH" để lấy mã OTP.</Text>
                 <Text style={styles.contentText}>
                   Nếu không tìm thấy, xin vui lòng liên hệ trực tiếp:
                 </Text>
@@ -131,14 +142,14 @@ const ForgetOtp = ({ route }) => {
                 <TouchableOpacity>
                   <Image
                     source={require("../../assets/mess.png")}
-                    style={{ width: 30, height: 30, marginHorizontal: 10 }}
+                    style={{ width: 20, height: 20, marginHorizontal: 10 }}
                   />
                 </TouchableOpacity>
 
                 <TouchableOpacity>
                   <Image
                     source={require("../../assets/gmail.png")}
-                    style={{ width: 30, height: 30, marginHorizontal: 10 }}
+                    style={{ width: 20, height: 20, marginHorizontal: 10 }}
                   />
                 </TouchableOpacity>
               </View>
@@ -146,8 +157,10 @@ const ForgetOtp = ({ route }) => {
             <View
               style={{
                 flexDirection: "row",
-                justifyContent: "flex-end",
+                justifyContent: "center",
+                alignItems: "center",
                 paddingHorizontal: 30,
+                marginTop: 30,
               }}>
               <TouchableOpacity
                 onPress={() =>
@@ -159,20 +172,26 @@ const ForgetOtp = ({ route }) => {
                   start={{ x: 0, y: 0.3 }}
                   end={{ x: 1, y: 1 }}
                   colors={
-                    [
-                      "rgba(241, 108, 246, 0.8) 120.28%)",
-                      "rgba(113, 23, 117, 0.8) -6.93%",
-                    ]
+                    ["#9796F0", "#FBC7D4"]
                     //   : ["#b2b2b2", "#d8d8d8"]
                   }
                   style={{
+                    width: "100%",
                     paddingHorizontal: 20,
-                    paddingVertical: 19,
+                    paddingVertical: 15,
                     borderRadius: 30,
                     flexDirection: "row",
-                    justifyContent: "space-around",
+                    justifyContent: "center",
                   }}>
-                  <Ionicons name="arrow-forward" size={25} color="#ffffff" />
+                  {/* <Ionicons name="arrow-forward" size={25} color="#ffffff" /> */}
+                  <Text
+                    style={{
+                      fontSize: 18,
+                      fontWeight: "600",
+                      color: "#ffffff",
+                    }}>
+                    Tiếp tục
+                  </Text>
                 </LinearGradient>
               </TouchableOpacity>
             </View>
@@ -198,7 +217,10 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 30,
   },
   contentText: {
-    lineHeight: 25,
+    fontSize: 13,
+    fontWeight: "400",
+    textAlign: "center",
+    lineHeight: 22,
   },
 });
 

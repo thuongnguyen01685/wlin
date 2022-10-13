@@ -100,7 +100,7 @@ const Login = () => {
                 flexDirection: "row",
                 justifyContent: "center",
                 alignItems: "center",
-                borderRadius: 5,
+                borderRadius: 50,
                 marginBottom: 7,
                 // transform: [{ rotate: "-45deg" }],
                 shadowColor: "#000",
@@ -117,11 +117,11 @@ const Login = () => {
               <Ionicons
                 name="chevron-back-outline"
                 size={25}
-                color="#711775"
+                color="#9D85F2"
                 // style={{ transform: [{ rotate: "45deg" }] }}
               />
             </TouchableOpacity>
-            <Text style={{ color: "#711775", fontSize: 25, fontWeight: "600" }}>
+            <Text style={{ color: "#826CCF", fontSize: 25, fontWeight: "600" }}>
               WLIN xin chào
             </Text>
           </View>
@@ -142,10 +142,10 @@ const Login = () => {
             <ImageBackground
               source={require("../../assets/start2.png")}
               style={{
-                height: ratio * 500,
+                height: ratio * 400,
                 width: w,
                 position: "absolute",
-                top: "45%",
+                top: "53%",
                 zIndex: 3,
               }}
             />
@@ -153,7 +153,13 @@ const Login = () => {
         </View>
         <View style={styles.body}>
           <ScrollView>
-            <Text style={{ fontSize: 20, color: "#711775", fontWeight: "600" }}>
+            <Text
+              style={{
+                fontSize: 25,
+                color: "#9D85F2",
+                fontWeight: "800",
+                textAlign: "center",
+              }}>
               Đăng nhập
             </Text>
             {/* {showMessage && (
@@ -204,21 +210,28 @@ const Login = () => {
               <View
                 style={{
                   flexDirection: "row",
-                  alignContent: "center",
+                  justifyContent: "center",
+
                   alignItems: "center",
                 }}>
-                <RadioButton
-                  value={false}
-                  status={checked === true ? "checked" : "unchecked"}
-                  onPress={() => setChecked(!checked)}
-                />
-
-                <Text>
-                  Đồng ý với{" "}
-                  <Text style={{ color: "#711775", fontSize: 11 }}>
-                    điều khoản & điều kiện
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}>
+                  <RadioButton
+                    value={false}
+                    status={checked === true ? "checked" : "unchecked"}
+                    onPress={() => setChecked(!checked)}
+                  />
+                  <Text style={{ fontSize: 12 }}>
+                    Đồng ý với{" "}
+                    <Text style={{ color: "#9D85F2" }}>
+                      điều khoản & điều kiện
+                    </Text>
                   </Text>
-                </Text>
+                </View>
               </View>
             </View>
             {/* </TouchableWithoutFeedback>
@@ -227,29 +240,33 @@ const Login = () => {
             <View
               style={{
                 flexDirection: "row",
-                justifyContent: "flex-end",
-                paddingHorizontal: 10,
+                justifyContent: "center",
+                marginTop: 20,
               }}>
               <TouchableOpacity onPress={handleGetOtp} disabled={false}>
                 <LinearGradient
                   start={{ x: 0, y: 0.3 }}
                   end={{ x: 1, y: 1 }}
                   colors={
-                    checked
-                      ? [
-                          "rgba(241, 108, 246, 0.8) 120.28%)",
-                          "rgba(113, 23, 117, 0.8) -6.93%",
-                        ]
-                      : ["#b2b2b2", "#d8d8d8"]
+                    checked ? ["#9796F0", "#FBC7D4"] : ["#b2b2b2", "#d8d8d8"]
                   }
                   style={{
-                    paddingHorizontal: 20,
-                    paddingVertical: 19,
+                    width: "100%",
+                    paddingHorizontal: 10,
+                    paddingVertical: 15,
                     borderRadius: 30,
                     flexDirection: "row",
-                    justifyContent: "space-around",
+                    justifyContent: "center",
                   }}>
-                  <Ionicons name="arrow-forward" size={25} color="#ffffff" />
+                  {/* <Ionicons name="arrow-forward" size={25} color="#ffffff" /> */}
+                  <Text
+                    style={{
+                      fontSize: 18,
+                      fontWeight: "600",
+                      color: "#ffffff",
+                    }}>
+                    Tiếp tục
+                  </Text>
                 </LinearGradient>
               </TouchableOpacity>
             </View>
@@ -273,7 +290,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
     borderTopRightRadius: 30,
     borderTopLeftRadius: 30,
-    padding: 40,
+    paddingHorizontal: 30,
+    paddingVertical: 20,
   },
 });
 

@@ -2,7 +2,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { Component, useEffect, useState } from "react";
+import React, { Component, useEffect, useRef, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   View,
@@ -11,10 +11,20 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
+  TouchableHighlight,
+  ActivityIndicator,
 } from "react-native";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AUTH, getProfileAction } from "../../redux/actions/authAction";
 import { getNotify } from "../../redux/actions/notifyAction";
+import Lottie from "lottie-react-native";
+// import {
+//   CirclesLoader,
+//   PulseLoader,
+//   TextLoader,
+//   DotsLoader,
+//   BubblesLoader,
+// } from "react-native-indicator";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
@@ -22,52 +32,59 @@ const ratio = w / 720;
 // create a component
 const Splash = () => {
   const navigation = useNavigation();
-
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+  const { auth } = useSelector((state) => state);
 
   useEffect(() => {
     const it = async () => {
       const token = await AsyncStorage.getItem("@token_key");
-      if (token) {
-        await dispatch({ type: AUTH.TOKEN, payload: token });
-      }
+      setLoading(true);
+      setTimeout(async () => {
+        if (token) {
+          await dispatch({ type: AUTH.TOKEN, payload: token });
+          dispatch(getProfileAction(token));
+          dispatch(getNotify(token));
+          setLoading(false);
+          navigation.navigate("TabBar");
+        } else {
+          setLoading(false);
+          navigation.navigate("Wellcome");
+        }
+      }, 1 * 2000);
     };
     it();
-  }, [dispatch]);
-  const handleGo = async () => {
-    const token = await AsyncStorage.getItem("@token_key");
+  }, [dispatch, auth.token]);
+  // const handleGo = async () => {
+  //   const token = await AsyncStorage.getItem("@token_key");
 
-    if (token) {
-      dispatch(getProfileAction(token));
-      dispatch(getNotify(token));
-      
-      navigation.navigate("TabBar");
-    } else {
-      navigation.navigate("Wellcome");
-    }
-  };
+  //   if (token) {
+  //     dispatch(getProfileAction(token));
+  //     dispatch(getNotify(token));
+
+  //     navigation.navigate("TabBar");
+  //   } else {
+  //     navigation.navigate("Wellcome");
+  //   }
+  // };
 
   return (
     <View style={styles.container}>
       <LinearGradient
-        start={{ x: 1, y: 0.5 }}
+        start={{ x: 1, y: 0.4 }}
         end={{ x: 1, y: 1 }}
-        colors={[
-          "rgba(113, 23, 117, 0.8) -6.93%",
-          "rgba(241, 108, 246, 0.8) 120.28%",
-        ]}
+        colors={["#9796F0", "#FBC7D4"]}
         style={{
           flex: 1,
-          //   justifyContent: "center",
-          //   alignContent: "center",
-          //   alignItems: "center",
+          justifyContent: "center",
+          alignContent: "center",
+          alignItems: "center",
           paddingHorizontal: 20,
         }}>
         <View
           style={{
             paddingHorizontal: 20,
-            marginTop: 10,
-            height: "85%",
+
             flexDirection: "column",
             justifyContent: "center",
           }}>
@@ -94,13 +111,18 @@ const Splash = () => {
             </Text>
           </View>
         </View>
+
         <View
           style={{
             flexDirection: "row",
             justifyContent: "flex-end",
             paddingHorizontal: 10,
+            top: "10%",
+            width: "100%",
+            height: 150,
+            zIndex: 1,
           }}>
-          <TouchableOpacity onPress={handleGo}>
+          {/* <TouchableOpacity onPress={handleGo}>
             <View
               style={{
                 paddingHorizontal: 20,
@@ -112,7 +134,15 @@ const Splash = () => {
               }}>
               <Ionicons name="arrow-forward" size={25} color="#711775" />
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
+          {/* <ActivityIndicator size="large" color="#00ff00" /> */}
+          {loading && (
+            <Lottie
+              source={require("../../assets/animationloader.json")}
+              autoPlay
+              loop
+            />
+          )}
         </View>
       </LinearGradient>
     </View>
@@ -123,6 +153,12 @@ const Splash = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  lottie: {
+    width: 100,
+    height: 100,
   },
 });
 

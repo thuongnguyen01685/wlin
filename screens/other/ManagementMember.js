@@ -19,14 +19,9 @@ import {
   Platform,
   TextInput,
 } from "react-native";
-import PhoneInput from "react-native-phone-number-input";
 
-import { RadioButton } from "react-native-paper";
-import ModalSms from "../../components/ModalSms";
 import Header from "../../components/Header";
-import BodyEvent from "../../components/page/events/BodyEvent";
-import BodyListPaticipant from "../../components/page/events/BodyListPaticipant";
-import BodyUpdateEvent from "../../components/page/events/BodyUpdateEvent";
+
 import BodyManagementMember from "../../components/page/Other/BodyManagementMember";
 
 const w = Dimensions.get("window").width;

@@ -25,7 +25,6 @@ import { RadioButton } from "react-native-paper";
 import ModalSms from "../../components/ModalSms";
 import Header from "../../components/Header";
 
-import BodyClub from "../../components/page/Club/BodyClub";
 import BodyCreateClub from "../../components/page/Club/BodyCreateClub";
 
 const w = Dimensions.get("window").width;
@@ -107,7 +106,7 @@ const CreateClub = () => {
                 borderTopRightRadius: 7,
                 borderBottomRightRadius: 7,
               }}>
-              <Ionicons name="search-outline" size={20} color="#711775" />
+              <Ionicons name="search-outline" size={20} color="#826CCF" />
             </TouchableOpacity>
           </View>
           <TouchableOpacity>

@@ -3,7 +3,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
-import React, { Component, useRef, useState } from "react";
+import React, { Component, useEffect, useRef, useState } from "react";
 import {
   View,
   Text,
@@ -18,109 +18,338 @@ import {
   Keyboard,
   Platform,
   TextInput,
+  RefreshControl,
 } from "react-native";
-import PhoneInput from "react-native-phone-number-input";
-
-import { RadioButton } from "react-native-paper";
-import ModalSms from "../../components/ModalSms";
-import Header from "../../components/Header";
-import BodyEvent from "../../components/page/events/BodyEvent";
+import Lottie from "lottie-react-native";
+import { useDispatch, useSelector } from "react-redux";
+import HeaderPart from "../../components/HeaderPart/HeaderPart";
+import { getEventsAction } from "../../redux/actions/eventsAction";
+import { formatDateDisplay, formatDateTimeDisplay } from "../../utils/datetime";
+import { URL } from "../../utils/fetchApi";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
 const ratio = w / 720;
 
+const dataHeader = [
+  {
+    name: "Đang diễn ra",
+    code: "dangdienra",
+  },
+  {
+    name: "Sắp diễn ra",
+    code: "sapdienra",
+  },
+  {
+    name: "Đã diễn ra",
+    code: "dadienra",
+  },
+];
+const dataEvents = [
+  {
+    nameEvent: "Sự kiện 1",
+    picture: require("../../assets/e1.png"),
+    location: "15A Hồ Văn Huê, Phường 9, Q. Phú Nhuận, TP.HCM",
+    time: "T4, 17/08/2022 9H00",
+    save: true,
+    code: "dangdienra",
+  },
+  {
+    nameEvent: "Sự kiện 2",
+    picture: require("../../assets/e2.png"),
+    location: "15A Hồ Văn Huê, Phường 9, Q. Phú Nhuận, TP.HCM",
+    time: "T4, 17/08/2022 9H00",
+    save: true,
+    code: "dangdienra",
+  },
+  {
+    nameEvent: "Sự kiện 3",
+    picture: require("../../assets/e3.png"),
+    location: "15A Hồ Văn Huê, Phường 9, Q. Phú Nhuận, TP.HCM",
+    time: "T4, 17/08/2022 9H00",
+    save: false,
+    code: "dangdienra",
+  },
+  {
+    nameEvent: "Sự kiện 4",
+    picture: require("../../assets/e4.png"),
+    location: "15A Hồ Văn Huê, Phường 9, Q. Phú Nhuận, TP.HCM",
+    time: "T4, 17/08/2022 9H00",
+    save: false,
+    code: "dangdienra",
+  },
+  {
+    nameEvent: "Sự kiện 5",
+    picture: require("../../assets/e4.png"),
+    location: "15A Hồ Văn Huê, Phường 9, Q. Phú Nhuận, TP.HCM",
+    time: "T4, 17/08/2022 9H00",
+    save: true,
+    code: "dangdienra",
+  },
+  {
+    nameEvent: "Sự kiện 6",
+    picture: require("../../assets/e4.png"),
+    location: "15A Hồ Văn Huê, Phường 9, Q. Phú Nhuận, TP.HCM",
+    time: "T4, 17/08/2022 9H00",
+    save: false,
+    code: "sapdienra",
+  },
+  {
+    nameEvent: "Sự kiện 7",
+    picture: require("../../assets/e4.png"),
+    location: "15A Hồ Văn Huê, Phường 9, Q. Phú Nhuận, TP.HCM",
+    time: "T4, 17/08/2022 9H00",
+    save: true,
+    code: "sapdienra",
+  },
+  {
+    nameEvent: "Sự kiện 8",
+    picture: require("../../assets/e4.png"),
+    location: "15A Hồ Văn Huê, Phường 9, Q. Phú Nhuận, TP.HCM",
+    time: "T4, 17/08/2022 9H00",
+    save: false,
+    code: "dadienra",
+  },
+  {
+    nameEvent: "Sự kiện 9",
+    picture: require("../../assets/e4.png"),
+    location: "15A Hồ Văn Huê, Phường 9, Q. Phú Nhuận, TP.HCM",
+    time: "T4, 17/08/2022 9H00",
+    save: true,
+    code: "dadienra",
+  },
+];
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
 // create a component
 const Events = () => {
+  const [cat, setCat] = useState("dangdienra");
   const navigation = useNavigation();
-  const [search, setSearch] = useState("");
+  const dispatch = useDispatch();
+  const [refreshing, setRefreshing] = useState(false);
 
+  const { auth, event } = useSelector((state) => state);
+
+  // console.log(
+  //   event.getEvents.map((item) => formatDateTimeDisplay(item.ngay_su_kien))
+  // );
+
+  useEffect(() => {
+    setRefreshing(true);
+    dispatch(getEventsAction(auth.token));
+    wait(2000).then(() => setRefreshing(false));
+  }, [dispatch, cat]);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    dispatch(getEventsAction(auth.token));
+    wait(2000).then(() => setRefreshing(false));
+  }, [dispatch, cat]);
   return (
     <View style={styles.container}>
-      <View>
-        <View>
-          <Header />
-          <View>
-            <ImageBackground
-              source={require("../../assets/EllipseLogin.png")}
+      <StatusBar barStyle="light-content" />
+      <HeaderPart />
+      <View
+        style={{
+          backgroundColor: "#ffffff",
+          shadowColor: "#000",
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
+          shadowOpacity: 0.25,
+          shadowRadius: 3.84,
+
+          elevation: 5,
+          zIndex: 3,
+          marginTop: -55,
+          marginHorizontal: 15,
+          paddingVertical: 20,
+          borderRadius: 10,
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+          paddingHorizontal: 10,
+        }}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}>
+          <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
+            Danh sách sự kiện
+          </Text>
+
+          {refreshing && (
+            <View
               style={{
-                height: 455,
-                width: 325,
-                zIndex: 1,
+                left: 10,
+                padding: 30,
                 position: "absolute",
-              }}
-            />
-            <ImageBackground
-              source={require("../../assets/VctLogin.png")}
-              style={{
-                height: ratio * 1000,
-                width: w,
-                position: "absolute",
-                zIndex: 2,
-              }}
-            />
-          </View>
+                left: "100%",
+              }}>
+              <Lottie
+                source={require("../../assets/loading.json")}
+                autoPlay
+                loop
+              />
+            </View>
+          )}
         </View>
-        <View style={styles.search}>
-          <View
-            style={{
-              flexDirection: "row",
-              backgroundColor: "#ffffff",
-              alignItems: "center",
-              alignContent: "center",
-              width: "75%",
-              borderRadius: 10,
-              justifyContent: "space-between",
-            }}>
-            <TextInput
-              style={styles.input}
-              onChangeText={(keySearch) => setSearch(keySearch)}
-              value={search}
-              placeholder="Tìm kiếm"
-            />
+
+        <TouchableOpacity>
+          <Ionicons name="alert-circle-outline" size={20} color="#826CCF" />
+        </TouchableOpacity>
+      </View>
+      <View style={{ height: "100%" }}>
+        <View
+          style={{
+            backgroundColor: "#f3f3f3",
+            marginHorizontal: 15,
+            marginTop: 15,
+            marginBottom: 10,
+            borderRadius: 20,
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}>
+          {dataHeader.map((item, index) => (
             <TouchableOpacity
               style={{
-                marginHorizontal: 10,
-                padding: 7,
-
-                borderTopRightRadius: 7,
-                borderBottomRightRadius: 7,
-              }}>
-              <Ionicons name="search-outline" size={20} color="#711775" />
-            </TouchableOpacity>
-          </View>
-          <TouchableOpacity>
-            <LinearGradient
-              start={{ x: 0, y: 0.3 }}
-              end={{ x: 1, y: 1 }}
-              colors={["#751979", "#AE40B2"]}
-              style={{
-                borderRadius: 30,
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignContent: "center",
-                alignItems: "center",
-                paddingLeft: 1,
-                paddingRight: 10,
-              }}>
-              <View
+                backgroundColor: item.code === cat ? "#711775" : "#f3f3f3",
+                borderRadius: 20,
+                paddingHorizontal: 23,
+              }}
+              key={index}
+              onPress={() => setCat(item.code)}>
+              <Text
                 style={{
-                  backgroundColor: "#ffffff",
-                  borderRadius: 30,
-                  marginVertical: 2,
-                  marginRight: 5,
-                  padding: 2,
+                  color: item.code === cat ? "#ffffff" : "#A0A0A0",
+                  marginVertical: 5,
                 }}>
-                <Ionicons name="filter" size={18} color="#751979" />
-              </View>
+                {item.name}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }>
+          <View style={{ marginBottom: "80%" }}>
+            {event.getEvents.map((item) => (
+              <TouchableOpacity
+                key={item._id}
+                style={{
+                  flexDirection: "row",
+                  // justifyContent: "space-between",
+                  // alignItems: "center",
+                  marginBottom: 10,
+                  borderRadius: 8,
+                  paddingVertical: 5,
+                  marginHorizontal: 15,
+                  borderBottomColor: "#DADADA",
+                  borderBottomWidth: 0.5,
+                }}
+                onPress={() => navigation.navigate("DetailEvents")}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    width: "80%",
+                    marginBottom: 5,
+                  }}>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      borderRadius: 7,
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}>
+                    <Image
+                      source={{ uri: `${URL}${item.hinh_anh}` }}
+                      style={{ width: 80, height: 80, borderRadius: 7 }}
+                    />
+                  </View>
+                  <View
+                    style={{
+                      width: "75%",
+                      justifyContent: "space-evenly",
+                      alignItems: "stretch",
+                      marginLeft: 10,
+                    }}>
+                    <Text
+                      style={{
+                        color: "#474747",
+                        fontSize: 14,
+                        fontWeight: "600",
+                      }}>
+                      {item.ten_su_kien}
+                    </Text>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        backgroundColor: "#EEF4FF",
+                        width: "50%",
+                        borderRadius: 13,
+                        paddingHorizontal: 4,
+                        paddingVertical: 2,
+                      }}>
+                      <Ionicons name="calendar" size={15} color="#769CEC" />
+                      <Text
+                        style={{
+                          color: "#769CEC",
+                          fontSize: 11,
+                          fontWeight: "600",
+                          left: 10,
+                        }}>
+                        {formatDateDisplay(item.ngay_su_kien)}
+                      </Text>
+                    </View>
+                    <View style={{ flexDirection: "row" }}>
+                      <Ionicons name="location" size={14} />
+                      <Text
+                        style={{
+                          color: "#000000",
+                          fontSize: 10,
+                          fontWeight: "600",
+                          left: 5,
+                        }}>
+                        {item.dia_diem}
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
 
-              <Text style={{ fontSize: 10, color: "#ffffff" }}>Lọc</Text>
-            </LinearGradient>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.body}>
-          <BodyEvent />
-        </View>
+                    width: "15%",
+                    marginLeft: 10,
+                  }}>
+                  <TouchableOpacity>
+                    <Ionicons
+                      name={item.save ? "bookmark" : "bookmark-outline"}
+                      size={20}
+                      color={item.save ? "#FFBE17" : "#711775"}
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity>
+                    <Ionicons
+                      name="alert-circle-outline"
+                      size={20}
+                      color="#9D85F2"
+                    />
+                  </TouchableOpacity>
+                </View>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </ScrollView>
       </View>
     </View>
   );
@@ -132,42 +361,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#ffffff",
   },
-  search: {
-    zIndex: 5,
-    position: "absolute",
-    marginTop: "26%",
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignContent: "center",
-    alignItems: "center",
-  },
-  input: {
-    height: 40,
-    padding: 10,
-    width: "82%",
-    marginLeft: 10,
-  },
-  body: {
-    backgroundColor: "#ffffff",
-    width: "100%",
-    zIndex: 5,
-    // position: "absolute",
-    marginTop: "40%",
-    borderTopRightRadius: 30,
-    borderTopLeftRadius: 30,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-
-    elevation: 5,
-  },
-  contentText: {
-    lineHeight: 25,
+  contentHeader: {
+    color: "#000",
+    fontSize: 12,
+    fontWeight: "400",
   },
 });
 

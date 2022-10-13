@@ -19,111 +19,207 @@ import {
   Platform,
   TextInput,
 } from "react-native";
-import PhoneInput from "react-native-phone-number-input";
-
-import { RadioButton } from "react-native-paper";
-import ModalSms from "../../components/ModalSms";
-import Header from "../../components/Header";
-import BodySlips from "../../components/page/Slips/BodySlips";
-import BodyOther from "../../components/page/Other/BodyOther";
-import BodyBenefit from "../../components/page/Other/BodyBenefit";
-import BodyTYFCB from "../../components/page/Other/BodyTYFCB";
+import HeaderPart from "../../components/HeaderPart/HeaderPart";
+import Lottie from "lottie-react-native";
+import { useDispatch } from "react-redux";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
 const ratio = w / 720;
-
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
+const data = [
+  {
+    picture: require("../../assets/logo.png"),
+    nameAreas: "WLIN PIONEER EU+",
+    person: "Mai Thu Huyền",
+  },
+  {
+    picture: require("../../assets/logo.png"),
+    nameAreas: "WLIN PASSION USA+",
+    person: "Mai Thu Huyền",
+  },
+  {
+    picture: require("../../assets/logo.png"),
+    nameAreas: "WLIN STARS ASIA+",
+    person: "Mai Thu Huyền",
+  },
+];
 // create a component
 const TYFCB = () => {
   const navigation = useNavigation();
-  const [search, setSearch] = useState("");
+  const dispatch = useDispatch();
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+
+    wait(2000).then(() => setRefreshing(false));
+  }, [dispatch]);
 
   return (
     <View style={styles.container}>
-      <View>
-        <View>
-          <Header />
-          <View>
-            <ImageBackground
-              source={require("../../assets/EllipseLogin.png")}
+      <StatusBar barStyle="light-content" />
+      <HeaderPart />
+      <View
+        style={{
+          backgroundColor: "#ffffff",
+          shadowColor: "#000",
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
+          shadowOpacity: 0.25,
+          shadowRadius: 3.84,
+
+          elevation: 5,
+          zIndex: 3,
+          marginTop: -55,
+          marginHorizontal: 15,
+          paddingVertical: 20,
+          borderRadius: 10,
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+          paddingHorizontal: 10,
+        }}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}>
+          <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
+            Danh sách TYFCB
+          </Text>
+
+          {refreshing && (
+            <View
               style={{
-                height: 455,
-                width: 325,
-                zIndex: 1,
+                left: 10,
+                padding: 30,
                 position: "absolute",
-              }}
-            />
-            <ImageBackground
-              source={require("../../assets/VctLogin.png")}
-              style={{
-                height: ratio * 1000,
-                width: w,
-                position: "absolute",
-                zIndex: 2,
-              }}
-            />
-          </View>
+                left: "100%",
+              }}>
+              <Lottie
+                source={require("../../assets/loading.json")}
+                autoPlay
+                loop
+              />
+            </View>
+          )}
         </View>
-        <View style={styles.search}>
+
+        <TouchableOpacity>
+          <Ionicons name="alert-circle-outline" size={20} color="#826CCF" />
+        </TouchableOpacity>
+      </View>
+      <View style={{ height: "100%" }}>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <View
             style={{
-              flexDirection: "row",
-              backgroundColor: "#ffffff",
-              alignItems: "center",
-              alignContent: "center",
-              width: "75%",
-              borderRadius: 10,
-              justifyContent: "space-between",
+              marginBottom: "80%",
+              paddingHorizontal: 15,
+              marginTop: 10,
             }}>
-            <TextInput
-              style={styles.input}
-              onChangeText={(keySearch) => setSearch(keySearch)}
-              value={search}
-              placeholder="Tìm kiếm"
-            />
-            <TouchableOpacity
-              style={{
-                marginHorizontal: 10,
-                padding: 7,
-
-                borderTopRightRadius: 7,
-                borderBottomRightRadius: 7,
-              }}>
-              <Ionicons name="search-outline" size={20} color="#711775" />
-            </TouchableOpacity>
+            <View>
+              {data.map((item, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-around",
+                    alignItems: "center",
+                    backgroundColor: "#F3F3F3",
+                    marginVertical: 10,
+                    borderRadius: 8,
+                    paddingVertical: 20,
+                  }}
+                  // onPress={() => navigation.navigate("DetailClub")}
+                >
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                    }}>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                      }}>
+                      {/* <Ionicons name="reader-outline" size={30} color="#711775" /> */}
+                      <Image
+                        source={require("../../assets/like.png")}
+                        style={{ width: 30, height: 20 }}
+                      />
+                      <Image
+                        source={item.picture}
+                        style={{ width: 90, height: 40, marginLeft: 10 }}
+                      />
+                      <View
+                        style={{
+                          flexDirection: "column",
+                          marginLeft: 10,
+                          justifyContent: "center",
+                        }}>
+                        <Text
+                          style={{
+                            color: "#711775",
+                            fontSize: 15,
+                            fontWeight: "600",
+                          }}>
+                          {item.nameAreas}
+                        </Text>
+                        <Text>{item.person}</Text>
+                      </View>
+                    </View>
+                  </View>
+                  <TouchableOpacity
+                  // onPress={() => navigation.navigate("DetailClub")}
+                  >
+                    <Ionicons
+                      name="chevron-forward-outline"
+                      size={25}
+                      color="#711775"
+                    />
+                  </TouchableOpacity>
+                </TouchableOpacity>
+              ))}
+            </View>
           </View>
-          <TouchableOpacity>
-            <LinearGradient
-              start={{ x: 0, y: 0.3 }}
-              end={{ x: 1, y: 1 }}
-              colors={["#751979", "#AE40B2"]}
-              style={{
-                borderRadius: 30,
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignContent: "center",
-                alignItems: "center",
-                paddingLeft: 1,
-                paddingRight: 10,
-              }}>
-              <View
-                style={{
-                  backgroundColor: "#ffffff",
-                  borderRadius: 30,
-                  marginVertical: 2,
-                  marginRight: 5,
-                  padding: 2,
-                }}>
-                <Ionicons name="filter" size={18} color="#751979" />
-              </View>
-
-              <Text style={{ fontSize: 10, color: "#ffffff" }}>Lọc</Text>
-            </LinearGradient>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.body}>
-          <BodyTYFCB />
-        </View>
+        </ScrollView>
+        <TouchableOpacity
+          style={{
+            flexDirection: "row",
+            justifyContent: "flex-end",
+            alignItems: "flex-end",
+            position: "absolute",
+            top: "55%",
+            zIndex: 10,
+            left: "80%",
+          }}
+          onPress={() => {
+            navigation.navigate("CreateTYFCB");
+          }}>
+          <LinearGradient
+            start={{ x: 0.8, y: 1 }}
+            end={{ x: 0.3, y: 0.3 }}
+            colors={[
+              "rgba(241, 108, 246, 0.8) 120.28%)",
+              "rgba(113, 23, 117, 0.8) -6.93%",
+            ]}
+            style={{
+              width: 70,
+              paddingVertical: 18,
+              flexDirection: "row",
+              justifyContent: "center",
+              borderRadius: 50,
+            }}>
+            <Ionicons name="add-outline" size={30} color="#ffffff" />
+          </LinearGradient>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -134,43 +230,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#ffffff",
-  },
-  search: {
-    zIndex: 5,
-    position: "absolute",
-    marginTop: "26%",
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignContent: "center",
-    alignItems: "center",
-  },
-  input: {
-    height: 40,
-    padding: 10,
-    width: "82%",
-    marginLeft: 10,
-  },
-  body: {
-    backgroundColor: "#ffffff",
-    width: "100%",
-    zIndex: 5,
-    // position: "absolute",
-    marginTop: "40%",
-    borderTopRightRadius: 30,
-    borderTopLeftRadius: 30,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-
-    elevation: 5,
-  },
-  contentText: {
-    lineHeight: 25,
   },
 });
 

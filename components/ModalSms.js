@@ -23,7 +23,7 @@ const ModalSms = (props) => {
           borderRadius: 7,
           padding: 10,
           elevation: 5,
-          width: "100%",
+          marginHorizontal: 20,
           height: "auto",
           bottom: 20,
         }}>
@@ -31,7 +31,12 @@ const ModalSms = (props) => {
           <View style={{ flexDirection: "row", justifyContent: "center" }}>
             <Image
               source={require("../assets/Chat.png")}
-              style={{ resizeMode: "contain", width: 50, height: 50 }}
+              style={{
+                resizeMode: "contain",
+                width: 150,
+                height: 100,
+                marginVertical: 10,
+              }}
             />
           </View>
           <View
@@ -41,10 +46,21 @@ const ModalSms = (props) => {
               paddingHorizontal: 20,
               marginVertical: 5,
             }}>
-            <Text style={{ textAlign: "center" }}>
+            <Text
+              style={{
+                textAlign: "center",
+                fontSize: 20,
+                color: "#9D85F2",
+                fontWeight: "600",
+              }}>
+              Chúc mừng
+            </Text>
+            <Text
+              style={{ textAlign: "center", fontWeight: "400", fontSize: 13 }}>
               Mã OTP đã được gửi về sms của bạn.
             </Text>
-            <Text style={{ textAlign: "center" }}>
+            <Text
+              style={{ textAlign: "center", fontWeight: "400", fontSize: 13 }}>
               Vui lòng kiểm tra, sau đó nhập mã OTP để đăng nhập
             </Text>
           </View>
@@ -62,15 +78,15 @@ const ModalSms = (props) => {
               <LinearGradient
                 start={{ x: 1, y: 0.1 }}
                 // end={{ x: 0.3, y: 0.3 }}
-                colors={["#711775", "#F16CF6"]}
+                colors={["#9D85F2", "#F16CF6"]}
                 style={{
                   paddingHorizontal: 40,
                   paddingVertical: 5,
-                  borderRadius: 7,
+                  borderRadius: 15,
                   flexDirection: "row",
                   justifyContent: "space-around",
                 }}>
-                <Text style={{ fontSize: 15, color: "#ffffff" }}>OK</Text>
+                <Text style={{ fontSize: 15, color: "#ffffff" }}>Tiếp tục</Text>
               </LinearGradient>
             </TouchableOpacity>
           </View>

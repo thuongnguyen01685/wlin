@@ -19,13 +19,13 @@ import {
   Platform,
   TextInput,
 } from "react-native";
-import PhoneInput from "react-native-phone-number-input";
 
-import { RadioButton } from "react-native-paper";
-import ModalSms from "../../components/ModalSms";
-import Header from "../../components/Header";
-import BodyCheckQR from "../../components/page/events/BodyCheckQR";
+import HeaderPart from "../../components/HeaderPart/HeaderPart";
 
+import { BarCodeScanner } from "expo-barcode-scanner";
+import ModalSuccessCheck from "../../components/modal/ModalSuccessCheck";
+import ModalFailCheck from "../../components/modal/ModalFailCheck";
+import { useEffect } from "react";
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
 const ratio = w / 720;
@@ -33,94 +33,154 @@ const ratio = w / 720;
 // create a component
 const CheckQR = () => {
   const navigation = useNavigation();
-  const [search, setSearch] = useState("");
+  const [hasPermission, setHasPermission] = useState(null);
+  const [scanned, setScanned] = useState(false);
+  const [modalSuccess, setModalSuccess] = useState(false);
+  const [modalFail, setModalFail] = useState(false);
+  const [dataCheck, setDataCheck] = useState("");
 
+  useEffect(() => {
+    const getBarCodeScannerPermissions = async () => {
+      const { status } = await BarCodeScanner.requestPermissionsAsync();
+      setHasPermission(status === "granted");
+    };
+
+    getBarCodeScannerPermissions();
+  }, []);
+
+  const handleBarCodeScanned = ({ type, data }, error) => {
+    setScanned(false);
+
+    if (data) {
+      setModalSuccess(true);
+      setDataCheck(data);
+    } else {
+      setModalFail(true);
+    }
+    //alert(`Code ${type} và Thông tin ${data} đã được quét!`);
+  };
+
+  if (hasPermission === null) {
+    return <Text>Cấp quyền cho camera truy cập ứng dụng</Text>;
+  }
+  if (hasPermission === false) {
+    return <Text>Chưa cho phép quyền camera</Text>;
+  }
   return (
     <View style={styles.container}>
-      <View>
-        <View>
-          <Header />
-          <View>
-            <ImageBackground
-              source={require("../../assets/EllipseLogin.png")}
+      <StatusBar barStyle="light-content" />
+      <HeaderPart />
+      <View
+        style={{
+          backgroundColor: "#ffffff",
+          shadowColor: "#000",
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
+          shadowOpacity: 0.25,
+          shadowRadius: 3.84,
+
+          elevation: 5,
+          zIndex: 3,
+          marginTop: -55,
+          marginHorizontal: 15,
+          paddingVertical: 20,
+          borderRadius: 10,
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+          paddingHorizontal: 10,
+        }}>
+        <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
+          Check-QR
+        </Text>
+        <TouchableOpacity>
+          <Ionicons name="alert-circle-outline" size={20} color="#9D85F2" />
+        </TouchableOpacity>
+      </View>
+      <View style={{ height: "100%" }}>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          {modalSuccess && (
+            <ModalSuccessCheck
+              modalSuccess={modalSuccess}
+              setModalSuccess={setModalSuccess}
+              dataCheck={dataCheck}
+            />
+          )}
+          {modalFail && (
+            <ModalFailCheck modalFail={modalFail} setModalFail={setModalFail} />
+          )}
+          <View style={{ marginBottom: "80%" }}>
+            <View style={{ marginVertical: 12 }}>
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontSize: 12,
+                  fontWeight: "600",
+                }}>
+                Quét mã QR bằng thiết bị của bạn để checkin sự kiện
+              </Text>
+            </View>
+            <View
               style={{
-                height: 455,
-                width: 325,
-                zIndex: 1,
-                position: "absolute",
-              }}
-            />
-            <ImageBackground
-              source={require("../../assets/VctLogin.png")}
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+              }}>
+              <View style={styles.barcodebox}>
+                <BarCodeScanner
+                  onBarCodeScanned={scanned ? handleBarCodeScanned : undefined}
+                  style={{ height: 400, width: 300 }}
+                />
+              </View>
+            </View>
+
+            <View
               style={{
-                height: ratio * 1000,
-                width: w,
-                position: "absolute",
-                zIndex: 2,
-              }}
-            />
-          </View>
-        </View>
-        <View style={styles.search}>
-          <View
-            style={{
-              flexDirection: "row",
-              backgroundColor: "#ffffff",
-              alignItems: "center",
-              alignContent: "center",
-              width: "75%",
-              borderRadius: 10,
-              justifyContent: "space-between",
-            }}>
-            <TextInput
-              style={styles.input}
-              onChangeText={(keySearch) => setSearch(keySearch)}
-              value={search}
-              placeholder="Tìm kiếm"
-            />
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+                marginVertical: 10,
+              }}>
+              <TouchableOpacity
+                style={{ width: "15%" }}
+                onPress={() => setScanned(true)}>
+                <LinearGradient
+                  start={{ x: 0, y: 0.3 }}
+                  end={{ x: 1, y: 1 }}
+                  colors={["#9796F0", "#FBC7D4"]}
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignContent: "center",
+                    alignItems: "center",
+                    borderRadius: 30,
+                  }}>
+                  <View style={styles.borderBacRounded}>
+                    <Image
+                      source={require("../../assets/btncheckqr.png")}
+                      style={styles.imageCheckin}
+                    />
+                  </View>
+                </LinearGradient>
+              </TouchableOpacity>
+            </View>
+
             <TouchableOpacity
               style={{
-                marginHorizontal: 10,
-                padding: 7,
-
-                borderTopRightRadius: 7,
-                borderBottomRightRadius: 7,
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop: 10,
               }}>
-              <Ionicons name="search-outline" size={20} color="#711775" />
+              <Ionicons name="image-outline" size={20} />
+              <Text style={{ fontSize: 12, fontWeight: "600", marginLeft: 5 }}>
+                Tải mã QR có sẵn
+              </Text>
             </TouchableOpacity>
           </View>
-          <TouchableOpacity>
-            <LinearGradient
-              start={{ x: 0, y: 0.3 }}
-              end={{ x: 1, y: 1 }}
-              colors={["#751979", "#AE40B2"]}
-              style={{
-                borderRadius: 30,
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignContent: "center",
-                alignItems: "center",
-                paddingLeft: 1,
-                paddingRight: 10,
-              }}>
-              <View
-                style={{
-                  backgroundColor: "#ffffff",
-                  borderRadius: 30,
-                  marginVertical: 2,
-                  marginRight: 5,
-                  padding: 2,
-                }}>
-                <Ionicons name="filter" size={18} color="#751979" />
-              </View>
-
-              <Text style={{ fontSize: 10, color: "#ffffff" }}>Lọc</Text>
-            </LinearGradient>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.body}>
-          <BodyCheckQR />
-        </View>
+        </ScrollView>
       </View>
     </View>
   );
@@ -132,42 +192,19 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#ffffff",
   },
-  search: {
-    zIndex: 5,
-    position: "absolute",
-    marginTop: "26%",
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignContent: "center",
-    alignItems: "center",
+  barcodebox: {
+    height: 300,
+    width: 300,
+    overflow: "hidden",
+    borderRadius: 30,
+    backgroundColor: "#711775",
   },
-  input: {
-    height: 40,
-    padding: 10,
-    width: "82%",
-    marginLeft: 10,
+  borderBacRounded: {
+    padding: 20,
   },
-  body: {
-    backgroundColor: "#ffffff",
-    width: "100%",
-    zIndex: 5,
-    // position: "absolute",
-    marginTop: "40%",
-    borderTopRightRadius: 30,
-    borderTopLeftRadius: 30,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-
-    elevation: 5,
-  },
-  contentText: {
-    lineHeight: 25,
+  imageCheckin: {
+    width: 20,
+    height: 20,
   },
 });
 

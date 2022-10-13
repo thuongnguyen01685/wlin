@@ -18,108 +18,256 @@ import {
   Keyboard,
   Platform,
   TextInput,
+  Animated,
 } from "react-native";
-import PhoneInput from "react-native-phone-number-input";
-
-import { RadioButton } from "react-native-paper";
-import ModalSms from "../../components/ModalSms";
-import Header from "../../components/Header";
-import BodySlips from "../../components/page/Slips/BodySlips";
-
+import Lottie from "lottie-react-native";
+import HeaderPart from "../../components/HeaderPart/HeaderPart";
+import { useDispatch } from "react-redux";
+import { Avatar, Surface } from "react-native-paper";
 const w = Dimensions.get("window").width;
-const h = Dimensions.get("window").height;
+const { height } = Dimensions.get("screen");
 const ratio = w / 720;
-
+const data = [
+  {
+    key: 1,
+    picture: require("../../assets/logo.png"),
+    nameAreas: "WLIN PIONEER EU+",
+    person: "Mai Thu Huyền",
+  },
+  {
+    key: 2,
+    picture: require("../../assets/logo.png"),
+    nameAreas: "WLIN PASSION USA+",
+    person: "Mai Thu Huyền",
+  },
+  {
+    key: 3,
+    picture: require("../../assets/logo.png"),
+    nameAreas: "WLIN STARS ASIA+",
+    person: "Mai Thu Huyền",
+  },
+  {
+    key: 4,
+    picture: require("../../assets/logo.png"),
+    nameAreas: "WLIN PIONEER EU+",
+    person: "Mai Thu Huyền",
+  },
+  {
+    key: 5,
+    picture: require("../../assets/logo.png"),
+    nameAreas: "WLIN PASSION USA+",
+    person: "Mai Thu Huyền",
+  },
+  {
+    key: 6,
+    picture: require("../../assets/logo.png"),
+    nameAreas: "WLIN STARS ASIA+",
+    person: "Mai Thu Huyền",
+  },
+  {
+    key: 7,
+    picture: require("../../assets/logo.png"),
+    nameAreas: "WLIN PIONEER EU+",
+    person: "Mai Thu Huyền",
+  },
+  {
+    key: 8,
+    picture: require("../../assets/logo.png"),
+    nameAreas: "WLIN PASSION USA+",
+    person: "Mai Thu Huyền",
+  },
+  {
+    key: 9,
+    picture: require("../../assets/logo.png"),
+    nameAreas: "WLIN STARS ASIA+",
+    person: "Mai Thu Huyền",
+  },
+];
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
 // create a component
 const Slips = () => {
   const navigation = useNavigation();
-  const [search, setSearch] = useState("");
+  const dispatch = useDispatch();
+  const [refreshing, setRefreshing] = useState(false);
+  const scrollY = React.useRef(new Animated.Value(0)).current;
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
 
+    wait(2000).then(() => setRefreshing(false));
+  }, [dispatch]);
   return (
     <View style={styles.container}>
-      <View>
-        <View>
-          <Header />
-          <View>
-            <ImageBackground
-              source={require("../../assets/EllipseLogin.png")}
+      <StatusBar barStyle="light-content" />
+      <HeaderPart />
+      <View
+        style={{
+          backgroundColor: "#ffffff",
+          shadowColor: "#000",
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
+          shadowOpacity: 0.25,
+          shadowRadius: 3.84,
+
+          elevation: 5,
+          zIndex: 3,
+          marginTop: -55,
+          marginHorizontal: 15,
+          paddingVertical: 20,
+          borderRadius: 10,
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+          paddingHorizontal: 10,
+        }}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}>
+          <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
+            Danh sách phiếu
+          </Text>
+
+          {refreshing && (
+            <View
               style={{
-                height: 455,
-                width: 325,
-                zIndex: 1,
+                left: 10,
+                padding: 30,
                 position: "absolute",
-              }}
-            />
-            <ImageBackground
-              source={require("../../assets/VctLogin.png")}
-              style={{
-                height: ratio * 1000,
-                width: w,
-                position: "absolute",
-                zIndex: 2,
-              }}
-            />
-          </View>
+                left: "100%",
+              }}>
+              <Lottie
+                source={require("../../assets/loading.json")}
+                autoPlay
+                loop
+              />
+            </View>
+          )}
         </View>
-        <View style={styles.search}>
-          <View
+
+        <TouchableOpacity>
+          <Ionicons name="alert-circle-outline" size={20} color="#826CCF" />
+        </TouchableOpacity>
+      </View>
+      <View style={{ height: "100%" }}>
+        <View
+          style={{
+            marginBottom: "70%",
+            paddingHorizontal: 15,
+            marginTop: 10,
+          }}>
+          <Animated.FlatList
+            onScroll={Animated.event(
+              [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+              { useNativeDriver: true }
+            )}
+            data={data}
+            keyExtractor={(item) => item.key}
+            renderItem={({ item, index }) => {
+              const inputRange = [
+                -1,
+                0,
+                (height * 0.1 + 15) * index,
+                (height * 0.1 + 15) * (index + 3),
+              ];
+              const scale = 1;
+              const opacity = scrollY.interpolate({
+                inputRange,
+                outputRange: [1, 1, 1, 0],
+              });
+              const Offset = scrollY.interpolate({
+                inputRange,
+                outputRange: [0, 0, 0, 500],
+              });
+              return (
+                <Animated.View
+                  style={{
+                    transform: [{ scale: scale }, { translateX: Offset }],
+                    opacity: opacity,
+                  }}>
+                  <TouchableOpacity>
+                    <Surface style={styles.surface}>
+                      <View style={{ flex: 0.3, justifyContent: "center" }}>
+                        {/* <Avatar.Image size={42} source={item.picture} /> */}
+                        <Image
+                          source={item.picture}
+                          style={{ width: 90, height: 40, marginLeft: 10 }}
+                        />
+                      </View>
+                      <View
+                        style={{
+                          flex: 0.6,
+                          flexDirection: "column",
+                          justifyContent: "center",
+                        }}>
+                        <Text
+                          style={{
+                            color: "#711775",
+                            fontSize: 15,
+                            fontWeight: "600",
+                          }}>
+                          {item.nameAreas}
+                        </Text>
+                        <Text>{item.person}</Text>
+                      </View>
+                      <View
+                        style={{
+                          flex: 0.1,
+                          flexDirection: "column",
+                          justifyContent: "center",
+                        }}>
+                        <TouchableOpacity
+                        // onPress={() => navigation.navigate("DetailClub")}
+                        >
+                          <Ionicons
+                            name="chevron-forward-outline"
+                            size={25}
+                            color="#711775"
+                          />
+                        </TouchableOpacity>
+                      </View>
+                    </Surface>
+                  </TouchableOpacity>
+                </Animated.View>
+              );
+            }}
+          />
+
+          <TouchableOpacity
             style={{
               flexDirection: "row",
-              backgroundColor: "#ffffff",
-              alignItems: "center",
-              alignContent: "center",
-              width: "75%",
-              borderRadius: 10,
-              justifyContent: "space-between",
+              justifyContent: "flex-end",
+              alignItems: "flex-end",
+              position: "absolute",
+              top: "85%",
+              zIndex: 10,
+              left: "85%",
+            }}
+            onPress={() => {
+              navigation.navigate("CreateRefer");
             }}>
-            <TextInput
-              style={styles.input}
-              onChangeText={(keySearch) => setSearch(keySearch)}
-              value={search}
-              placeholder="Tìm kiếm"
-            />
-            <TouchableOpacity
-              style={{
-                marginHorizontal: 10,
-                padding: 7,
-
-                borderTopRightRadius: 7,
-                borderBottomRightRadius: 7,
-              }}>
-              <Ionicons name="search-outline" size={20} color="#711775" />
-            </TouchableOpacity>
-          </View>
-          <TouchableOpacity>
             <LinearGradient
-              start={{ x: 0, y: 0.3 }}
-              end={{ x: 1, y: 1 }}
-              colors={["#751979", "#AE40B2"]}
+              start={{ x: 0.8, y: 1 }}
+              end={{ x: 0.3, y: 0.3 }}
+              colors={[
+                "rgba(241, 108, 246, 0.8) 120.28%)",
+                "rgba(113, 23, 117, 0.8) -6.93%",
+              ]}
               style={{
-                borderRadius: 30,
+                width: 70,
+                paddingVertical: 18,
                 flexDirection: "row",
-                justifyContent: "space-between",
-                alignContent: "center",
-                alignItems: "center",
-                paddingLeft: 1,
-                paddingRight: 10,
+                justifyContent: "center",
+                borderRadius: 50,
               }}>
-              <View
-                style={{
-                  backgroundColor: "#ffffff",
-                  borderRadius: 30,
-                  marginVertical: 2,
-                  marginRight: 5,
-                  padding: 2,
-                }}>
-                <Ionicons name="filter" size={18} color="#751979" />
-              </View>
-
-              <Text style={{ fontSize: 10, color: "#ffffff" }}>Lọc</Text>
+              <Ionicons name="add-outline" size={30} color="#ffffff" />
             </LinearGradient>
           </TouchableOpacity>
-        </View>
-        <View style={styles.body}>
-          <BodySlips />
         </View>
       </View>
     </View>
@@ -132,42 +280,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#ffffff",
   },
-  search: {
-    zIndex: 5,
-    position: "absolute",
-    marginTop: "26%",
-    width: "100%",
+  surface: {
+    height: height * 0.1,
+    marginTop: 15,
+    padding: 8,
+    marginHorizontal: 10,
+    borderRadius: 8,
     flexDirection: "row",
-    justifyContent: "space-around",
-    alignContent: "center",
-    alignItems: "center",
-  },
-  input: {
-    height: 40,
-    padding: 10,
-    width: "82%",
-    marginLeft: 10,
-  },
-  body: {
-    backgroundColor: "#ffffff",
-    width: "100%",
-    zIndex: 5,
-    // position: "absolute",
-    marginTop: "40%",
-    borderTopRightRadius: 30,
-    borderTopLeftRadius: 30,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-
-    elevation: 5,
-  },
-  contentText: {
-    lineHeight: 25,
+    backgroundColor: "#F3F3F3",
   },
 });
 

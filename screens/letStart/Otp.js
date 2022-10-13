@@ -159,7 +159,7 @@ const Otp = ({ route }) => {
                 flexDirection: "row",
                 justifyContent: "center",
                 alignItems: "center",
-                borderRadius: 5,
+                borderRadius: 50,
                 marginBottom: 7,
                 //transform: [{ rotate: "-45deg" }],
                 shadowColor: "#000",
@@ -173,9 +173,14 @@ const Otp = ({ route }) => {
                 elevation: 5,
               }}
               onPress={() => navigation.goBack()}>
-              <Ionicons name="chevron-back-outline" size={25} color="#711775" />
+              <Ionicons name="chevron-back-outline" size={25} color="#9D85F2" />
             </TouchableOpacity>
-            <Text style={{ color: "#711775", fontSize: 25, fontWeight: "600" }}>
+            <Text
+              style={{
+                color: "#826CCF",
+                fontSize: 25,
+                fontWeight: "600",
+              }}>
               WLIN xin chào
             </Text>
             <View>
@@ -239,18 +244,32 @@ const Otp = ({ route }) => {
           <ScrollView>
             <Text
               style={{
-                fontSize: 20,
-                color: "#711775",
-                fontWeight: "600",
+                fontSize: 25,
+                color: "#9D85F2",
+                fontWeight: "800",
                 paddingLeft: 25,
                 paddingTop: 18,
+                textAlign: "center",
               }}>
               Xác nhận đăng nhập
             </Text>
             <View style={{}}>
               <View style={{ marginTop: 10, paddingHorizontal: 45 }}>
-                <Text style={styles.contentText}>
-                  Xin chào, {route.params.numberPhone}
+                <Text
+                  style={{
+                    fontSize: 15,
+                    fontWeight: "600",
+                    textAlign: "center",
+                  }}>
+                  Xin chào,
+                  <Text
+                    style={{
+                      fontSize: 13,
+                      fontWeight: "400",
+                      left: 10,
+                    }}>
+                    {route.params.numberPhone}
+                  </Text>
                 </Text>
                 <Text style={styles.contentText}>
                   Vui lòng nhập mã OTP để xác nhận đăng nhập.
@@ -331,8 +350,13 @@ const Otp = ({ route }) => {
                   flexDirection: "row",
                   marginTop: 5,
                   paddingHorizontal: 45,
+                  justifyContent: "center",
+                  marginVertical: 35,
+                  top: 10,
                 }}>
-                <Text>Bạn quên mã OTP?</Text>
+                <Text style={{ fontSize: 15, fontWeight: "600" }}>
+                  Bạn quên mã OTP?
+                </Text>
                 <TouchableOpacity
                   style={{ marginLeft: 10 }}
                   onPress={() =>
@@ -342,7 +366,7 @@ const Otp = ({ route }) => {
                   }>
                   <Text
                     style={{
-                      color: "#711775",
+                      color: "#9D85F2",
                       fontSize: 15,
                       fontWeight: "600",
                     }}>
@@ -354,7 +378,8 @@ const Otp = ({ route }) => {
             <View
               style={{
                 flexDirection: "row",
-                justifyContent: "flex-end",
+                justifyContent: "center",
+                alignItems: "center",
                 paddingHorizontal: 30,
               }}>
               <TouchableOpacity onPress={handleCheckOtp}>
@@ -362,20 +387,26 @@ const Otp = ({ route }) => {
                   start={{ x: 0, y: 0.3 }}
                   end={{ x: 1, y: 1 }}
                   colors={
-                    [
-                      "rgba(241, 108, 246, 0.8) 120.28%)",
-                      "rgba(113, 23, 117, 0.8) -6.93%",
-                    ]
+                    ["#9796F0", "#FBC7D4"]
                     //   : ["#b2b2b2", "#d8d8d8"]
                   }
                   style={{
-                    paddingHorizontal: 20,
-                    paddingVertical: 19,
+                    width: "100%",
+                    paddingHorizontal: 30,
+                    paddingVertical: 15,
                     borderRadius: 30,
                     flexDirection: "row",
-                    justifyContent: "space-around",
+                    justifyContent: "center",
                   }}>
-                  <Ionicons name="arrow-forward" size={25} color="#ffffff" />
+                  {/* <Ionicons name="arrow-forward" size={25} color="#ffffff" /> */}
+                  <Text
+                    style={{
+                      fontSize: 18,
+                      fontWeight: "600",
+                      color: "#ffffff",
+                    }}>
+                    Tiếp tục
+                  </Text>
                 </LinearGradient>
               </TouchableOpacity>
             </View>
@@ -402,6 +433,8 @@ const styles = StyleSheet.create({
   },
   contentText: {
     lineHeight: 23,
+    fontSize: 13,
+    textAlign: "center",
   },
   inputPart: {
     flexDirection: "row",

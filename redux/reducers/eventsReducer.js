@@ -2,6 +2,7 @@ import { EVENTS } from "../actions/eventsAction";
 
 const initialState = {
   getEvents: [],
+  news: [],
 };
 
 const eventReducer = (state = initialState, action) => {
@@ -10,6 +11,11 @@ const eventReducer = (state = initialState, action) => {
       return {
         ...state,
         getEvents: action.payload,
+      };
+    case EVENTS.NEWSEVENTS:
+      return {
+        ...state,
+        news: action.payload,
       };
     default:
       return state;

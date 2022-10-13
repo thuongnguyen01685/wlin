@@ -3,7 +3,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
-import React, { Component, useRef, useState } from "react";
+import Lottie from "lottie-react-native";
+import React, { Component, useEffect, useRef, useState } from "react";
 import {
   View,
   Text,
@@ -18,14 +19,14 @@ import {
   Keyboard,
   Platform,
   TextInput,
+  Animated,
+  FlatList,
+  ActivityIndicator,
 } from "react-native";
-import PhoneInput from "react-native-phone-number-input";
-
-import { RadioButton } from "react-native-paper";
-import ModalSms from "../../components/ModalSms";
-import Header from "../../components/Header";
-
-import BodyClub from "../../components/page/Club/BodyClub";
+import { useDispatch, useSelector } from "react-redux";
+import HeaderPart from "../../components/HeaderPart/HeaderPart";
+import { getCLub } from "../../redux/actions/ClupAction";
+import { URL } from "../../utils/fetchApi";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
@@ -50,59 +51,154 @@ const codeData = [
     code: "vung",
   },
 ];
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
+const { height } = Dimensions.get("screen");
 const Club = () => {
   const navigation = useNavigation();
   const [search, setSearch] = useState("");
   const [code, setCode] = useState("quocgia");
+
+  const dispatch = useDispatch();
+  const { auth, club } = useSelector((state) => state);
+  const [refreshing, setRefreshing] = React.useState(false);
+  const [page, setPage] = useState(1);
+
+  const scrollY = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    setRefreshing(true);
+    dispatch(getCLub(auth.token, page));
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, [dispatch, page, code]);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    dispatch(getCLub(auth.token, page));
+    wait(2000).then(() => setRefreshing(false));
+  }, [dispatch, page]);
+
   return (
     <View style={styles.container}>
-      <View>
-        <View>
-          <Header />
-          <View>
-            <ImageBackground
-              source={require("../../assets/EllipseLogin.png")}
+      <StatusBar barStyle="light-content" />
+      <HeaderPart />
+      <View
+        style={{
+          backgroundColor: "#ffffff",
+          shadowColor: "#000",
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
+          shadowOpacity: 0.25,
+          shadowRadius: 3.84,
+
+          elevation: 5,
+          zIndex: 3,
+          marginTop: -55,
+          marginHorizontal: 15,
+          paddingVertical: 20,
+          borderRadius: 10,
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+          paddingHorizontal: 10,
+        }}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}>
+          <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
+            Danh sách CLUB
+          </Text>
+
+          {refreshing && (
+            <View
               style={{
-                height: 455,
-                width: 325,
-                zIndex: 1,
+                left: 10,
+                padding: 30,
                 position: "absolute",
-              }}
-            />
-            <ImageBackground
-              source={require("../../assets/VctLogin.png")}
-              style={{
-                height: ratio * 1000,
-                width: w,
-                position: "absolute",
-                zIndex: 2,
-              }}
-            />
-          </View>
+                left: "100%",
+              }}>
+              <Lottie
+                source={require("../../assets/loading.json")}
+                autoPlay
+                loop
+              />
+            </View>
+          )}
         </View>
-        <View style={styles.codeHeader}>
+
+        <TouchableOpacity>
+          <Ionicons name="alert-circle-outline" size={20} color="#826CCF" />
+        </TouchableOpacity>
+      </View>
+      <View style={{ height: "100%" }}>
+        {/* <View
+          style={{
+            flexDirection: "row",
+            justifyContent: refreshing ? "space-between" : "flex-start",
+            paddingHorizontal: 20,
+          }}>
+          <Text
+            style={{
+              fontSize: 20,
+              color: "#711775",
+              fontWeight: "600",
+
+              paddingTop: 15,
+            }}>
+            Danh sách CLUB
+          </Text>
+          {refreshing && <ActivityIndicator size="large" color="#711775" />}
+        </View> */}
+
+        {/* <ScrollView
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            tintColor="#711775"
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={["#711775", "green", "blue"]}
+          />
+        }> */}
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: refreshing ? "space-between" : "flex-start",
+            paddingHorizontal: 15,
+            alignItems: "center",
+          }}>
           <View
             style={{
               flexDirection: "row",
               justifyContent: "space-between",
               alignItems: "center",
+              width: "40%",
+              marginTop: 10,
             }}>
             {codeData.map((item) => (
               <TouchableOpacity
                 style={{
                   paddingHorizontal: 10,
                   paddingVertical: 5,
-                  backgroundColor: item.code === code ? "#F3f3f3" : "#711775",
+                  backgroundColor: item.code === code ? "#F3f3f3" : "#933198",
                   borderRadius: 20,
                   marginRight: 10,
-                  borderColor: item.code === code ? "#711775" : "#711775",
+                  borderColor: item.code === code ? "#933198" : "#933198",
                   borderWidth: 0.5,
                 }}
                 onPress={() => setCode(item.code)}
                 key={item._id}>
                 <Text
                   style={{
-                    color: item.code === code ? "#711775" : "#ffffff",
+                    color: item.code === code ? "#933198" : "#ffffff",
                     fontSize: 12,
                     fontWeight: "500",
                   }}>
@@ -112,66 +208,141 @@ const Club = () => {
             ))}
           </View>
         </View>
-        <View style={styles.search}>
-          <View
-            style={{
-              flexDirection: "row",
-              backgroundColor: "#ffffff",
-              alignItems: "center",
-              alignContent: "center",
-              width: "75%",
-              borderRadius: 10,
-              justifyContent: "space-between",
-            }}>
-            <TextInput
-              style={styles.input}
-              onChangeText={(keySearch) => setSearch(keySearch)}
-              value={search}
-              placeholder="Tìm kiếm"
-            />
-            <TouchableOpacity
-              style={{
-                marginHorizontal: 10,
-                padding: 7,
 
-                borderTopRightRadius: 7,
-                borderBottomRightRadius: 7,
-              }}>
-              <Ionicons name="search-outline" size={20} color="#711775" />
-            </TouchableOpacity>
-          </View>
-          <TouchableOpacity>
-            <LinearGradient
-              start={{ x: 0, y: 0.3 }}
-              end={{ x: 1, y: 1 }}
-              colors={["#751979", "#AE40B2"]}
-              style={{
-                borderRadius: 30,
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignContent: "center",
-                alignItems: "center",
-                paddingLeft: 1,
-                paddingRight: 10,
-              }}>
-              <View
-                style={{
-                  backgroundColor: "#ffffff",
-                  borderRadius: 30,
-                  marginVertical: 2,
-                  marginRight: 5,
-                  padding: 2,
-                }}>
-                <Ionicons name="filter" size={18} color="#751979" />
-              </View>
+        <View style={{ marginTop: 10, paddingBottom: "83%" }}>
+          <Animated.FlatList
+            onScroll={Animated.event(
+              [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+              { useNativeDriver: true }
+            )}
+            data={club.getClubs}
+            onEndReachedThreshold={0.5}
+            onEndReached={() => setPage(page + 1)}
+            keyExtractor={(item, index) => index}
+            renderItem={({ item, index }) => {
+              const inputRange = [
+                -1,
+                0,
+                (height * 0.1 + 15) * index,
+                (height * 0.1 + 15) * (index + 3),
+              ];
+              const scale = 1;
+              const opacity = scrollY.interpolate({
+                inputRange,
+                outputRange: [1, 1, 1, 0],
+              });
+              const Offset = scrollY.interpolate({
+                inputRange,
+                outputRange: [0, 0, 0, 500],
+              });
+              return (
+                <Animated.View
+                  style={{
+                    transform: [{ scale: scale }, { translateX: Offset }],
+                    opacity: opacity,
+                    marginBottom: 2,
+                  }}>
+                  <TouchableOpacity
+                    key={item._id}
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-around",
+                      alignItems: "center",
+                      backgroundColor: "#Ffffff",
+                      marginTop: 15,
+                      borderRadius: 8,
+                      paddingVertical: 20,
+                      borderBottomWidth: 0.5,
 
-              <Text style={{ fontSize: 10, color: "#ffffff" }}>Lọc</Text>
-            </LinearGradient>
-          </TouchableOpacity>
+                      borderColor: "#DADADA",
+                      // shadowColor: "#000",
+                      // shadowOffset: {
+                      //   width: 0,
+                      //   height: 2,
+                      // },
+                      // shadowOpacity: 0.25,
+                      // shadowRadius: 7,
+                      // elevation: 4,
+
+                      marginHorizontal: 15,
+                    }}
+                    onPress={() =>
+                      navigation.navigate("DetailClub", { _id: item._id })
+                    }>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        width: "70%",
+                      }}>
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}>
+                        <View
+                          style={{
+                            borderRadius: 8,
+                            borderWidth: 0.4,
+                            borderColor: "#DADADA",
+                          }}>
+                          {item.hinh_anh ? (
+                            <Image
+                              source={{
+                                uri: `${URL}/`.concat(`${item.hinh_anh}`),
+                              }}
+                              style={{
+                                width: 80,
+                                height: 40,
+                                borderRadius: 7,
+                              }}
+                            />
+                          ) : (
+                            <Image
+                              source={require("../../assets/logo.png")}
+                              style={{
+                                width: 80,
+                                height: 40,
+                                resizeMode: "contain",
+                              }}
+                            />
+                          )}
+                        </View>
+
+                        <View
+                          style={{
+                            flexDirection: "column",
+                            marginLeft: 20,
+                            justifyContent: "center",
+                          }}>
+                          <Text
+                            style={{
+                              color: "#826CCF",
+                              fontSize: 15,
+                              fontWeight: "600",
+                            }}>
+                            {item.ten_club}
+                          </Text>
+                          <Text>{item.ten_partner}</Text>
+                        </View>
+                      </View>
+                    </View>
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate("DetailClub")}>
+                      <Ionicons
+                        name="chevron-forward-outline"
+                        size={25}
+                        color="#9D85F2"
+                      />
+                    </TouchableOpacity>
+                  </TouchableOpacity>
+                </Animated.View>
+              );
+            }}
+          />
         </View>
-        <View style={styles.body}>
-          <BodyClub code={code} />
-        </View>
+        {/* </ScrollView> */}
       </View>
     </View>
   );

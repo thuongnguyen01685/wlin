@@ -1,12 +1,10 @@
 //import liraries
-import React from "react";
+import React, { useRef } from "react";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import Ionicons from "react-native-vector-icons/Ionicons";
 import Home from "../screens/home/Home";
 
-import Octicons from "react-native-vector-icons/Octicons";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Club from "../screens/clup/Club";
 import DetailClub from "../screens/clup/DetailClub";
@@ -32,6 +30,9 @@ import ListMember from "../screens/other/ListMember";
 import ManagementMember from "../screens/other/ManagementMember";
 import PayBenefits from "../screens/events/PayBenefits";
 import Map from "../screens/events/Map";
+import { Animated, Dimensions, Text, View } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import { Ionicons, MaterialCommunityIcons, Octicons } from "@expo/vector-icons";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -177,99 +178,219 @@ function OtherScreen() {
   );
 }
 
+function getWidth() {
+  let width = Dimensions.get("window").width;
+  width = width - 40;
+  return width / 5;
+}
+
 // create a component
 const TabBar = () => {
-  return (
-    <Tab.Navigator
-      screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {
-          if (route.name === "Home") {
-            return (
-              <Octicons
-                name="home"
-                size={25}
-                color={focused ? "#ffffff" : "#909090"}
-              />
-            );
-          }
-          if (route.name === "SlipsScreen") {
-            return (
-              <Ionicons
-                name="reader-outline"
-                size={30}
-                color={focused ? "#ffffff" : "#909090"}
-              />
-            );
-          }
-          if (route.name === "OtherScreen") {
-            return (
-              <Ionicons
-                name="menu"
-                size={35}
-                color={focused ? "#ffffff" : "#909090"}
-              />
-            );
-          }
-          if (route.name === "ClubScreen") {
-            return (
-              <Ionicons
-                name="shield-checkmark-outline"
-                size={30}
-                color={focused ? "#ffffff" : "#909090"}
-              />
-            );
-          }
-          if (route.name === "EventsScreen") {
-            return (
-              <Ionicons
-                name="calendar-outline"
-                size={30}
-                color={focused ? "#ffffff" : "#909090"}
-              />
-            );
-          }
-        },
-        tabBarActiveTintColor: "#ffffff",
-        tabBarInactiveTintColor: "#909090",
+  const tabOffsetValue = useRef(new Animated.Value(0)).current;
+  const { auth } = useSelector((state) => state);
 
-        headerShown: false,
-        tabBarStyle: {
-          height: 70,
+  return (
+    <>
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
+            if (route.name === "Home") {
+              return (
+                <MaterialCommunityIcons
+                  name={"home-variant"}
+                  size={30}
+                  color={focused ? "#9D85F2" : "#909090"}
+                />
+              );
+            }
+            if (route.name === "SlipsScreen") {
+              return (
+                <Ionicons
+                  name="reader-outline"
+                  size={30}
+                  color={focused ? "#9D85F2" : "#909090"}
+                />
+              );
+            }
+            if (route.name === "OtherScreen") {
+              return (
+                <Ionicons
+                  name="menu"
+                  size={35}
+                  color={focused ? "#9D85F2" : "#909090"}
+                />
+              );
+            }
+            if (route.name === "ClubScreen") {
+              return (
+                <Ionicons
+                  name="shield-checkmark-outline"
+                  size={30}
+                  color={focused ? "#9D85F2" : "#909090"}
+                />
+              );
+            }
+            if (route.name === "QRScreen") {
+              return (
+                <View
+                  style={{
+                    backgroundColor: focused ? "#9D85F2" : "#909090",
+                    paddingHorizontal: 4,
+                    paddingVertical: 3,
+                    top: 2,
+                    zIndex: 3,
+                    position: "absolute",
+                    borderRadius: 50,
+                  }}>
+                  <Ionicons
+                    name="qr-code"
+                    size={30}
+                    color="#ffffff"
+                    style={{ margin: 10 }}
+                  />
+                </View>
+              );
+            }
+            if (route.name === "EventsScreen") {
+              return (
+                <Ionicons
+                  name="calendar-outline"
+                  size={30}
+                  color={focused ? "#9D85F2" : "#909090"}
+                />
+              );
+            }
+          },
+          tabBarActiveTintColor: "#9D85F2",
+          tabBarInactiveTintColor: "#909090",
+          tabBarLabelStyle: {
+            fontSize: 12,
+            fontWeight: "600",
+          },
+
+          tabBarBackground: () => (
+            <View style={{ flex: 1 }}>
+              <LinearGradient
+                start={{ x: 1, y: 0.1 }}
+                end={{ x: 1, y: 1 }}
+                colors={["#FBC7D4", "#9796F0", "#9796F0", "#9796F0"]}
+                style={{ height: 2 }}
+              />
+            </View>
+          ),
+          headerShown: false,
+          tabBarStyle: {
+            height: 75,
+            position: "absolute",
+            // bottom: 5,
+            // right: 5,
+            // left: 5,
+            // borderRadius: 10,
+            paddingHorizontal: 5,
+            paddingTop: 5,
+            paddingBottom: 15,
+            borderBottomWidth: 1,
+            backgroundColor: "#ffffff",
+          },
+        })}>
+        <Tab.Screen
+          name="Home"
+          component={Home}
+          options={{ title: "Trang chủ" }}
+          listeners={({ navigation, route }) => ({
+            tabPress: (e) => {
+              Animated.spring(tabOffsetValue, {
+                toValue: 0,
+                useNativeDriver: true,
+              }).start();
+            },
+          })}
+        />
+        {/* <Tab.Screen
+          name="SlipsScreen"
+          component={SlipsScreen}
+          options={{ title: "Phiếu" }}
+          listeners={({ navigation, route }) => ({
+            // Onpress Update....
+            tabPress: (e) => {
+              Animated.spring(tabOffsetValue, {
+                toValue: getWidth() * 1.08,
+                useNativeDriver: true,
+              }).start();
+            },
+          })}
+        /> */}
+        <Tab.Screen
+          name="ClubScreen"
+          component={ClubScreen}
+          options={{ headerShown: false, title: "CLUB" }}
+          listeners={({ navigation, route }) => ({
+            // Onpress Update....
+
+            tabPress: (e) => {
+              Animated.spring(tabOffsetValue, {
+                toValue: getWidth() * 1.08,
+                useNativeDriver: true,
+              }).start();
+            },
+          })}
+        />
+        <Tab.Screen
+          name="QRScreen"
+          component={CheckQR}
+          options={{ headerShown: false, title: "" }}
+          listeners={({ navigation, route }) => ({
+            // Onpress Update....
+            tabPress: (e) => {
+              Animated.spring(tabOffsetValue, {
+                toValue: -100,
+                useNativeDriver: true,
+              }).start();
+            },
+          })}
+        />
+        <Tab.Screen
+          name="EventsScreen"
+          component={EventsScreen}
+          options={{ headerShown: false, title: "Sự kiện" }}
+          listeners={({ navigation, route }) => ({
+            // Onpress Update....
+            tabPress: (e) => {
+              Animated.spring(tabOffsetValue, {
+                toValue: getWidth() * 3.24,
+                useNativeDriver: true,
+              }).start();
+            },
+          })}
+        />
+        <Tab.Screen
+          name="OtherScreen"
+          component={OtherScreen}
+          options={{ title: "Khác" }}
+          listeners={({ navigation, route }) => ({
+            // Onpress Update....
+            tabPress: (e) => {
+              Animated.spring(tabOffsetValue, {
+                toValue: getWidth() * 4.33,
+                useNativeDriver: true,
+              }).start();
+            },
+          })}
+        />
+      </Tab.Navigator>
+      <Animated.View
+        style={{
+          width: getWidth() - 30,
+          height: 2,
+          backgroundColor: "#9796F0",
           position: "absolute",
-          bottom: 5,
-          right: 5,
-          left: 5,
-          borderRadius: 10,
-          paddingBottom: 5,
-          backgroundColor: "#711775",
-        },
-      })}>
-      <Tab.Screen
-        name="Home"
-        component={Home}
-        options={{ title: "Trang chủ" }}
-      />
-      <Tab.Screen
-        name="SlipsScreen"
-        component={SlipsScreen}
-        options={{ title: "Slips" }}
-      />
-      <Tab.Screen
-        name="ClubScreen"
-        component={ClubScreen}
-        options={{ headerShown: false, title: "CLUB" }}
-      />
-      <Tab.Screen
-        name="EventsScreen"
-        component={EventsScreen}
-        options={{ headerShown: false, title: "Sự kiện" }}
-      />
-      <Tab.Screen
-        name="OtherScreen"
-        component={OtherScreen}
-        options={{ title: "Khác" }}
-      />
-    </Tab.Navigator>
+          bottom: 10,
+          borderRadius: 50,
+          opacity: 0.9,
+          left: 23,
+          transform: [{ translateX: tabOffsetValue }],
+        }}></Animated.View>
+    </>
   );
 };
 

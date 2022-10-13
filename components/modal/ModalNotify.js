@@ -66,7 +66,7 @@ const ModalNotify = (props) => {
   };
   return (
     <Modal
-      animationType="slide"
+      animationType={"fade"}
       transparent={true}
       isVisible={props.modalVisible}
       backdropColor="#C4C4C4"
@@ -85,7 +85,7 @@ const ModalNotify = (props) => {
           bottom: 20,
         }}>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-          <Text style={{ fontSize: 25, color: "#711775", fontWeight: "bold" }}>
+          <Text style={{ fontSize: 25, color: "#826CCF", fontWeight: "bold" }}>
             Thông báo
           </Text>
           <TouchableOpacity onPress={() => props.setModalVisible(false)}>
@@ -101,7 +101,7 @@ const ModalNotify = (props) => {
             flexDirection: "row",
             marginTop: 15,
             borderBottomWidth: 1,
-            borderColor: "#711775",
+            borderColor: "#826CCF",
             paddingBottom: 5,
           }}>
           <TouchableOpacity onPress={() => setIsRead(true)}>
@@ -114,7 +114,7 @@ const ModalNotify = (props) => {
                 <Text
                   style={{
                     fontSize: 15,
-                    color: "#711775",
+                    color: "#826CCF",
                     backgroundColor: "#B2CBF9",
                     borderRadius: 20,
                     paddingHorizontal: 15,
@@ -155,7 +155,7 @@ const ModalNotify = (props) => {
                 <Text
                   style={{
                     fontSize: 15,
-                    color: "#711775",
+                    color: "#826CCF",
                     backgroundColor: "#B2CBF9",
                     borderRadius: 20,
                     paddingHorizontal: 15,
@@ -174,7 +174,7 @@ const ModalNotify = (props) => {
             <RefreshControl
               refreshing={reload}
               onRefresh={onRefresh}
-              colors={["#711775", "green", "blue"]}
+              colors={["#826CCF", "green", "blue"]}
             />
           }>
           {isRead

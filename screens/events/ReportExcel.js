@@ -19,10 +19,7 @@ import {
   Platform,
   TextInput,
 } from "react-native";
-import PhoneInput from "react-native-phone-number-input";
 
-import { RadioButton } from "react-native-paper";
-import ModalSms from "../../components/ModalSms";
 import Header from "../../components/Header";
 import BodyReportExcel from "../../components/page/events/BodyReportExcel";
 

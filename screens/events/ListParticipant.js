@@ -24,7 +24,7 @@ import PhoneInput from "react-native-phone-number-input";
 import { RadioButton } from "react-native-paper";
 import ModalSms from "../../components/ModalSms";
 import Header from "../../components/Header";
-import BodyEvent from "../../components/page/events/BodyEvent";
+
 import BodyListPaticipant from "../../components/page/events/BodyListPaticipant";
 
 const w = Dimensions.get("window").width;

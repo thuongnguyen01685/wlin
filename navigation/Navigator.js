@@ -34,6 +34,8 @@ import CreateTYFCB from "../screens/other/CreateTYFCB";
 import ReportExcel from "../screens/events/ReportExcel";
 import UpgradeMember from "../screens/other/UpgradeMember";
 import { AUTH, getProfileAction } from "../redux/actions/authAction";
+import Slips from "../screens/slips/Slips";
+import CreateRefer from "../screens/slips/CreateRefer";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -361,6 +363,16 @@ const Navigator = () => {
         <Stack.Screen
           name="CreateTYFCB"
           component={CreateTYFCB}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Slips"
+          component={Slips}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="CreateRefer"
+          component={CreateRefer}
           options={{ headerShown: false }}
         />
         <Stack.Screen

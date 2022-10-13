@@ -5,6 +5,7 @@ const initialState = {
   err: "",
   profile: [],
   permission: [],
+  rank: [],
   alert: "",
   message: "",
   isModalRe: false,
@@ -32,6 +33,8 @@ const authReducer = (state = initialState, action) => {
       return { ...state, profile: action.payload };
     case AUTH.PERSSION:
       return { ...state, permission: action.payload[0] };
+    case AUTH.RANK:
+      return { ...state, rank: action.payload };
     default:
       return state;
   }

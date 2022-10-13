@@ -20,104 +20,251 @@ import {
   TextInput,
 } from "react-native";
 
-import Header from "../../components/Header";
-import BodyPayBenefits from "../../components/page/events/BodyPayBenefits";
-
+import HeaderPart from "../../components/HeaderPart/HeaderPart";
+import ModalSuccessRefer from "../../components/modal/ModalSuccessRefer";
+import { Picker } from "@react-native-picker/picker";
+import DropDownPicker from "react-native-dropdown-picker";
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
 const ratio = w / 720;
 
 // create a component
-const PayBenefits = () => {
+const PayBenefits = ({ route }) => {
   const navigation = useNavigation();
-  const [search, setSearch] = useState("");
+  const [select, setSelect] = useState("vinh");
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState([
+    "italy",
+    "spain",
+    "barcelona",
+    "finland",
+  ]);
+  const [items, setItems] = useState([
+    { label: "Spain", value: "spain" },
+    { label: "Madrid", value: "madrid", parent: "spain" },
+    { label: "Barcelona", value: "barcelona", parent: "spain" },
+    { label: "Italy", value: "italy" },
+    { label: "Rome", value: "rome", parent: "italy" },
+    { label: "Finland", value: "finland" },
+  ]);
+
+  const [modalSuccess, setModalSuccess] = useState(false);
 
   return (
     <View style={styles.container}>
-      <View>
-        <View>
-          <Header />
+      <StatusBar barStyle="light-content" />
+      <HeaderPart />
+      <View
+        style={{
+          backgroundColor: "#ffffff",
+          shadowColor: "#000",
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
+          shadowOpacity: 0.25,
+          shadowRadius: 3.84,
+
+          elevation: 5,
+          zIndex: 3,
+          marginTop: -40,
+          marginHorizontal: 15,
+          paddingVertical: 20,
+          borderRadius: 10,
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+          paddingHorizontal: 10,
+        }}>
+        <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
+          Trả quyền lợi hội viên
+        </Text>
+        <TouchableOpacity>
+          <Ionicons name="alert-circle-outline" size={20} color="#826CCF" />
+        </TouchableOpacity>
+      </View>
+      <View style={{ height: "100%" }}>
+        {/* <ScrollView showsVerticalScrollIndicator={false}> */}
+        <View
+          style={{
+            marginBottom: "80%",
+            paddingHorizontal: 25,
+            paddingTop: 15,
+          }}>
           <View>
-            <ImageBackground
-              source={require("../../assets/EllipseLogin.png")}
+            <Text style={styles.textHeader}>Chọn hội viên</Text>
+            <View
               style={{
-                height: 455,
-                width: 325,
-                zIndex: 1,
-                position: "absolute",
-              }}
-            />
-            <ImageBackground
-              source={require("../../assets/VctLogin.png")}
-              style={{
-                height: ratio * 1000,
-                width: w,
-                position: "absolute",
-                zIndex: 2,
-              }}
-            />
+                backgroundColor: "#FDFDFD",
+                borderRadius: 7,
+                marginVertical: 10,
+                shadowColor: "#000",
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
+
+                elevation: 5,
+                zIndex: 8,
+              }}>
+              {/* <Picker
+                  selectedValue={select}
+                  onValueChange={(itemValue, itemIndex) =>
+                    setSelect(itemValue)
+                  }>
+                  <Picker.Item label="Thành Vinh" value="vinh" />
+                  <Picker.Item label="Xuân Trường" value="truong" />
+                </Picker> */}
+              <DropDownPicker
+                open={open}
+                value={value}
+                items={items}
+                setOpen={setOpen}
+                setValue={setValue}
+                setItems={setItems}
+                theme="LIGHT"
+                multiple={true}
+                mode="BADGE"
+                badgeDotColors={[
+                  "#e76f51",
+                  "#00b4d8",
+                  "#e9c46a",
+                  "#e76f51",
+                  "#8ac926",
+                  "#00b4d8",
+                  "#e9c46a",
+                ]}
+              />
+            </View>
           </View>
-        </View>
-        <View style={styles.search}>
+          <View>
+            <Text style={styles.textHeader}>Hình ảnh xác thực</Text>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "flex-start",
+                width: "80%",
+              }}>
+              <View style={{ marginTop: 10 }}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    backgroundColor: "#F3F3F3",
+                    borderRadius: 7,
+                    height: 100,
+                    width: 150,
+                  }}>
+                  {route.params ? (
+                    <Image
+                      source={{
+                        uri: route.params.photo,
+                      }}
+                      style={{
+                        height: 100,
+                        width: 150,
+                        borderRadius: 7,
+                        // resizeMode: "contain",
+                      }}
+                    />
+                  ) : (
+                    <Ionicons
+                      name="image-outline"
+                      size={25}
+                      color="rgba(113, 23, 117, 0.3)"
+                    />
+                  )}
+                </View>
+                {!route.params && (
+                  <Text
+                    style={{
+                      fontSize: 10,
+                      color: "rgba(113, 23, 117, 0.3)",
+                      fontWeight: "500",
+                    }}>
+                    Chưa có hình ảnh
+                  </Text>
+                )}
+              </View>
+              <View
+                style={{
+                  marginLeft: 10,
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("CheckImage")}>
+                  <LinearGradient
+                    start={{ x: 0, y: 0.3 }}
+                    end={{ x: 1, y: 1 }}
+                    colors={["#751979", "#AE40B2"]}
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      alignContent: "center",
+                      alignItems: "center",
+                      borderRadius: 50,
+                      paddingHorizontal: 5,
+                      paddingVertical: 4,
+                    }}>
+                    <Ionicons name="camera-outline" size={25} color="#ffffff" />
+                  </LinearGradient>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
           <View
             style={{
               flexDirection: "row",
-              backgroundColor: "#ffffff",
-              alignItems: "center",
-              alignContent: "center",
-              width: "75%",
-              borderRadius: 10,
-              justifyContent: "space-between",
+              justifyContent: "center",
+              marginTop: 20,
             }}>
-            <TextInput
-              style={styles.input}
-              onChangeText={(keySearch) => setSearch(keySearch)}
-              value={search}
-              placeholder="Tìm kiếm"
-            />
             <TouchableOpacity
               style={{
-                marginHorizontal: 10,
-                padding: 7,
-
-                borderTopRightRadius: 7,
-                borderBottomRightRadius: 7,
-              }}>
-              <Ionicons name="search-outline" size={20} color="#711775" />
-            </TouchableOpacity>
-          </View>
-          <TouchableOpacity>
-            <LinearGradient
-              start={{ x: 0, y: 0.3 }}
-              end={{ x: 1, y: 1 }}
-              colors={["#751979", "#AE40B2"]}
-              style={{
-                borderRadius: 30,
+                borderRadius: 7,
                 flexDirection: "row",
-                justifyContent: "space-between",
                 alignContent: "center",
                 alignItems: "center",
-                paddingLeft: 1,
-                paddingRight: 10,
-              }}>
-              <View
+                width: "40%",
+                justifyContent: "center",
+                marginBottom: 10,
+              }}
+              onPress={() => setModalSuccess(true)}>
+              <LinearGradient
+                start={{ x: 0.3, y: 1 }}
+                end={{ x: 1, y: 1 }}
+                colors={["#751979", "#AE40B2"]}
                 style={{
-                  backgroundColor: "#ffffff",
-                  borderRadius: 30,
-                  marginVertical: 2,
-                  marginRight: 5,
-                  padding: 2,
+                  paddingHorizontal: 25,
+                  paddingVertical: 10,
+                  borderRadius: 7,
                 }}>
-                <Ionicons name="filter" size={18} color="#751979" />
-              </View>
-
-              <Text style={{ fontSize: 10, color: "#ffffff" }}>Lọc</Text>
-            </LinearGradient>
-          </TouchableOpacity>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    color: "#ffffff",
+                    textAlign: "center",
+                    width: "100%",
+                    fontWeight: "500",
+                  }}>
+                  Xác nhận
+                </Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          </View>
+          {modalSuccess && (
+            <ModalSuccessRefer
+              modalSuccess={modalSuccess}
+              setModalSuccess={setModalSuccess}
+              content={"Xác nhận trả quyền lợi thành công"}
+            />
+          )}
         </View>
-        <View style={styles.body}>
-          <BodyPayBenefits />
-        </View>
+        {/* </ScrollView> */}
       </View>
     </View>
   );
@@ -128,43 +275,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#ffffff",
-  },
-  search: {
-    zIndex: 5,
-    position: "absolute",
-    marginTop: "26%",
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignContent: "center",
-    alignItems: "center",
-  },
-  input: {
-    height: 40,
-    padding: 10,
-    width: "82%",
-    marginLeft: 10,
-  },
-  body: {
-    backgroundColor: "#ffffff",
-    width: "100%",
-    zIndex: 5,
-    // position: "absolute",
-    marginTop: "40%",
-    borderTopRightRadius: 30,
-    borderTopLeftRadius: 30,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-
-    elevation: 5,
-  },
-  contentText: {
-    lineHeight: 25,
   },
 });
 

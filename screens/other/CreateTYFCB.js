@@ -19,14 +19,9 @@ import {
   Platform,
   TextInput,
 } from "react-native";
-import PhoneInput from "react-native-phone-number-input";
-
-import { RadioButton } from "react-native-paper";
-import ModalSms from "../../components/ModalSms";
-import Header from "../../components/Header";
-import BodySlips from "../../components/page/Slips/BodySlips";
-import BodyCreateRefer from "../../components/page/Slips/BodyCreateRefer";
-import BodyCreateTYFCB from "../../components/page/Other/BodyCreateTYFCB";
+import CountryFlag from "react-native-country-flag";
+import HeaderPart from "../../components/HeaderPart/HeaderPart";
+import ModalSuccessRefer from "../../components/modal/ModalSuccessRefer";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
@@ -35,94 +30,242 @@ const ratio = w / 720;
 // create a component
 const CreateTYFCB = () => {
   const navigation = useNavigation();
-  const [search, setSearch] = useState("");
+  const [tyfcb, setTyfcb] = useState("");
+  const [nhlk, setNhlk] = useState("");
+  const [gtRef, setGtRef] = useState("");
+  const [mdRef, setMdRef] = useState("");
+  const [modalSuccess, setModalSuccess] = useState(false);
 
   return (
     <View style={styles.container}>
-      <View>
-        <View>
-          <Header />
-          <View>
-            <ImageBackground
-              source={require("../../assets/EllipseLogin.png")}
+      <StatusBar barStyle="light-content" />
+      <HeaderPart />
+      <View
+        style={{
+          backgroundColor: "#ffffff",
+          shadowColor: "#000",
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
+          shadowOpacity: 0.25,
+          shadowRadius: 3.84,
+
+          elevation: 5,
+          zIndex: 3,
+          marginTop: -55,
+          marginHorizontal: 15,
+          paddingVertical: 20,
+          borderRadius: 10,
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+          paddingHorizontal: 10,
+        }}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}>
+          <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
+            Tạo TYFCB
+          </Text>
+
+          {/* {refreshing && (
+            <View
               style={{
-                height: 455,
-                width: 325,
-                zIndex: 1,
+                left: 10,
+                padding: 30,
                 position: "absolute",
-              }}
-            />
-            <ImageBackground
-              source={require("../../assets/VctLogin.png")}
-              style={{
-                height: ratio * 1000,
-                width: w,
-                position: "absolute",
-                zIndex: 2,
-              }}
-            />
-          </View>
+                left: "100%",
+              }}>
+              <Lottie
+                source={require("../../assets/loading.json")}
+                autoPlay
+                loop
+              />
+            </View>
+          )} */}
         </View>
-        <View style={styles.search}>
+
+        <TouchableOpacity>
+          <Ionicons name="alert-circle-outline" size={20} color="#826CCF" />
+        </TouchableOpacity>
+      </View>
+      <View style={{ height: "100%" }}>
+        {modalSuccess && (
+          <ModalSuccessRefer
+            modalSuccess={modalSuccess}
+            setModalSuccess={setModalSuccess}
+            content={"Tạo TYFCB thành công"}
+          />
+        )}
+        <ScrollView showsVerticalScrollIndicator={false}>
           <View
             style={{
-              flexDirection: "row",
-              backgroundColor: "#ffffff",
-              alignItems: "center",
-              alignContent: "center",
-              width: "75%",
-              borderRadius: 10,
-              justifyContent: "space-between",
+              marginBottom: "80%",
+              paddingHorizontal: 30,
+              marginTop: 10,
             }}>
-            <TextInput
-              style={styles.input}
-              onChangeText={(keySearch) => setSearch(keySearch)}
-              value={search}
-              placeholder="Tìm kiếm"
-            />
-            <TouchableOpacity
-              style={{
-                marginHorizontal: 10,
-                padding: 7,
+            <View style={styles.cardContainer}>
+              <Text style={styles.headerName}>WLIN Global</Text>
+              <TouchableOpacity style={styles.card}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-around",
+                    width: "30%",
+                  }}>
+                  <CountryFlag
+                    isoCode="vn"
+                    size={15}
+                    style={{ borderRadius: 3 }}
+                  />
 
-                borderTopRightRadius: 7,
-                borderBottomRightRadius: 7,
-              }}>
-              <Ionicons name="search-outline" size={20} color="#711775" />
-            </TouchableOpacity>
-          </View>
-          <TouchableOpacity>
-            <LinearGradient
-              start={{ x: 0, y: 0.3 }}
-              end={{ x: 1, y: 1 }}
-              colors={["#751979", "#AE40B2"]}
-              style={{
-                borderRadius: 30,
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignContent: "center",
-                alignItems: "center",
-                paddingLeft: 1,
-                paddingRight: 10,
-              }}>
-              <View
-                style={{
-                  backgroundColor: "#ffffff",
-                  borderRadius: 30,
-                  marginVertical: 2,
-                  marginRight: 5,
-                  padding: 2,
-                }}>
-                <Ionicons name="filter" size={18} color="#751979" />
+                  <Text
+                    style={{
+                      color: "#711775",
+                      fontSize: 11,
+                      fontWeight: "500",
+                    }}>
+                    Vietnam
+                  </Text>
+                </View>
+                <Ionicons
+                  name="chevron-forward-outline"
+                  size={20}
+                  color="#781C7C"
+                />
+              </TouchableOpacity>
+            </View>
+            <View style={styles.cardContainer}>
+              <Text style={styles.headerName}>WLIN CLUB</Text>
+              <TouchableOpacity style={styles.card}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-around",
+                  }}>
+                  <Text
+                    style={{
+                      color: "#711775",
+                      fontSize: 11,
+                      fontWeight: "500",
+                      marginHorizontal: 10,
+                    }}>
+                    WLIN STARS ASIA
+                  </Text>
+                </View>
+                <Ionicons
+                  name="chevron-forward-outline"
+                  size={20}
+                  color="#781C7C"
+                />
+              </TouchableOpacity>
+            </View>
+            <View style={styles.cardContainer}>
+              <Text style={styles.headerName}>Thành viên</Text>
+              <TouchableOpacity style={styles.card}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-around",
+                  }}>
+                  <Text
+                    style={{
+                      color: "#711775",
+                      fontSize: 11,
+                      fontWeight: "500",
+                      marginHorizontal: 10,
+                    }}>
+                    Thành Vinh
+                  </Text>
+                </View>
+                <Ionicons
+                  name="chevron-forward-outline"
+                  size={20}
+                  color="#781C7C"
+                />
+              </TouchableOpacity>
+            </View>
+            <View style={styles.cardContainer}>
+              <Text style={styles.headerName}>Mô tả</Text>
+              <View style={styles.card}>
+                <TextInput
+                  style={styles.input}
+                  onChangeText={setTyfcb}
+                  value={tyfcb}
+                  placeholderTextColor="rgba(113, 23, 117, 0.3)"
+                  placeholder="Tên mô tả TYFCB"
+                />
+              </View>
+              <View style={styles.card}>
+                <TextInput
+                  style={styles.input}
+                  onChangeText={setMdRef}
+                  value={mdRef}
+                  placeholderTextColor="rgba(113, 23, 117, 0.3)"
+                  placeholder="Referrals tương ứng"
+                />
+              </View>
+              <View style={styles.card}>
+                <TextInput
+                  style={styles.input}
+                  onChangeText={setGtRef}
+                  value={gtRef}
+                  placeholderTextColor="rgba(113, 23, 117, 0.3)"
+                  placeholder="Giá trị referrals"
+                />
               </View>
 
-              <Text style={{ fontSize: 10, color: "#ffffff" }}>Lọc</Text>
-            </LinearGradient>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.body}>
-          <BodyCreateTYFCB />
-        </View>
+              <View
+                style={{
+                  width: "100%",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  paddingHorizontal: 15,
+                  marginTop: 10,
+                }}>
+                <TouchableOpacity
+                  style={{
+                    borderRadius: 7,
+                    flexDirection: "row",
+                    alignContent: "center",
+                    alignItems: "center",
+                    width: "35%",
+                    justifyContent: "center",
+                    marginBottom: 10,
+                  }}
+                  onPress={() => setModalSuccess(true)}>
+                  <LinearGradient
+                    start={{ x: 0.3, y: 1 }}
+                    end={{ x: 1, y: 1 }}
+                    colors={["#751979", "#AE40B2"]}
+                    style={{
+                      paddingHorizontal: 15,
+                      paddingVertical: 5,
+                      borderRadius: 7,
+                    }}>
+                    <Text
+                      style={{
+                        fontSize: 12,
+                        color: "#ffffff",
+                        textAlign: "center",
+                        width: "100%",
+                        fontWeight: "500",
+                      }}>
+                      Xác nhận
+                    </Text>
+                  </LinearGradient>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </ScrollView>
       </View>
     </View>
   );
@@ -134,30 +277,20 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#ffffff",
   },
-  search: {
-    zIndex: 5,
-    position: "absolute",
-    marginTop: "26%",
-    width: "100%",
+  headerName: {
+    color: "#781C7C",
+    fontSize: 14,
+    fontWeight: "600",
+  },
+  cardContainer: {
+    marginBottom: 5,
+  },
+  card: {
     flexDirection: "row",
-    justifyContent: "space-around",
-    alignContent: "center",
-    alignItems: "center",
-  },
-  input: {
-    height: 40,
-    padding: 10,
-    width: "82%",
-    marginLeft: 10,
-  },
-  body: {
-    backgroundColor: "#ffffff",
-    width: "100%",
-    zIndex: 5,
-    // position: "absolute",
-    marginTop: "45%",
-    borderTopRightRadius: 30,
-    borderTopLeftRadius: 30,
+    justifyContent: "space-between",
+    marginVertical: 10,
+    backgroundColor: "#FDFDFD",
+    paddingVertical: 9,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -165,11 +298,15 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-
     elevation: 5,
+    borderRadius: 8,
+    paddingHorizontal: 15,
   },
-  contentText: {
-    lineHeight: 25,
+  input: {
+    height: 25,
+    width: "100%",
+    color: "#781C7C",
+    fontSize: 11,
   },
 });
 

@@ -27,7 +27,7 @@ import PhoneInput from "react-native-phone-number-input";
 import { RadioButton } from "react-native-paper";
 import ModalSms from "../../components/ModalSms";
 import Header from "../../components/Header";
-import BodyHome from "../../components/page/BodyHome";
+
 import { useDispatch, useSelector } from "react-redux";
 import {
   AUTH,
@@ -58,51 +58,67 @@ const Profile = () => {
       name: "Số điện thoại",
       icon: "call-outline",
       value: "+84 378759723",
+      color: "rgba(136, 38, 140, 0.75)",
     },
     {
       name: "Chức vụ",
       icon: "briefcase-outline",
       value: "Trưởng ban",
+      color: "#DC5696",
     },
     {
       name: "Công ty",
       icon: "business-outline",
       value: "TNHH MTV Công Nghệ FOS",
+      color: "#F8AA4F",
     },
     {
       name: "Địa chỉ công ty",
       icon: "location-outline",
       value: "Quận 1, TPHCM",
+      color: "#FA846F",
     },
     {
       name: "Địa chỉ cá nhân",
       icon: "location-outline",
       value: "Quận 7, TPHCM",
+      color: "rgba(5, 60, 255, 0.4)",
     },
     {
       name: "Email",
       icon: "mail-outline",
       value: "vinh.nguyen@fostech.vn",
+      color: "rgba(255, 0, 0, 0.7)",
     },
     {
       name: "Nhóm hội viên",
       icon: "people-outline",
       value: "Nhóm A",
+      color: "rgba(136, 38, 140, 0.75)",
     },
     {
       name: "Ngày sinh",
       icon: "calendar-outline",
       value: "24/05/1985",
+      color: "#93DBE4",
     },
     {
       name: "Ngành hàng",
       icon: "cube-outline",
       value: "Ban Công nghệ - Phần mềm",
+      color: "rgba(255, 10, 157, 0.4)",
+    },
+    {
+      name: "Ngành hàng chi tiết",
+      icon: "cube-outline",
+      value: "Spa - Hair - Nail",
+      color: "#6CADF6",
     },
     {
       name: "Người giới thiệu",
       icon: "person-outline",
       value: "Mr. Nguyễn Xuân Trường",
+      color: "rgba(17, 141, 59, 0.5)",
     },
   ];
 
@@ -152,17 +168,6 @@ const Profile = () => {
       picture: JSON.parse(temp).image,
     });
     await dispatch(getProfileAction(auth.token));
-    // await AsyncStorage.setItem(
-    //   "@info",
-    //   JSON.stringify({
-    //     id: auth.profile.id,
-    //     name: auth.profile.name,
-    //     picture: JSON.parse(temp).image,
-    //     email: auth.profile.email,
-    //     token: auth.token,
-    //   })
-    // );
-    // await dispatch(checkLoginSession(2));
   };
 
   return (
@@ -171,9 +176,9 @@ const Profile = () => {
         <View>
           <View
             style={{
-              zIndex: 4,
+              paddingTop: StatusBar.currentHeight || 30,
+              zIndex: 2,
               position: "absolute",
-              marginTop: "11%",
               flexDirection: "row",
               justifyContent: "space-between",
               width: "100%",
@@ -193,7 +198,7 @@ const Profile = () => {
                   flexDirection: "row",
                   justifyContent: "center",
                   alignItems: "center",
-                  borderRadius: 5,
+                  borderRadius: 50,
                   //transform: [{ rotate: "-45deg" }],
                   shadowColor: "#000",
                   shadowOffset: {
@@ -213,44 +218,63 @@ const Profile = () => {
                   // style={{ transform: [{ rotate: "45deg" }] }}
                 />
               </TouchableOpacity>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  alignContent: "center",
+
+                  borderRadius: 10,
+                  paddingHorizontal: 10,
+                }}>
+                <Text
+                  style={{ color: "#ffffff", fontSize: 20, fontWeight: "800" }}>
+                  Hồ sơ cá nhân
+                </Text>
+              </View>
             </View>
           </View>
           <View>
             <ImageBackground
-              source={require("../../assets/EllipseLogin.png")}
+              source={require("../../assets/bg.png")}
               style={{
-                height: 455,
-                width: 325,
-                zIndex: 1,
-                position: "absolute",
-              }}
-            />
-            <ImageBackground
-              source={require("../../assets/VctLogin.png")}
-              style={{
-                height: ratio * 1000,
+                height: ratio * 410,
                 width: w,
-                position: "absolute",
-                zIndex: 2,
               }}
             />
           </View>
         </View>
+        <View
+          style={{
+            backgroundColor: "#ffffff",
+            shadowColor: "#000",
+            shadowOffset: {
+              width: 0,
+              height: 2,
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 3.84,
+
+            elevation: 5,
+            zIndex: 3,
+            marginTop: -40,
+            marginHorizontal: 15,
+            paddingVertical: 20,
+            borderRadius: 10,
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            paddingHorizontal: 10,
+          }}>
+          <Text style={{ fontSize: 18, fontWeight: "600", color: "#711775" }}>
+            Thông tin quản trị viên
+          </Text>
+          <TouchableOpacity>
+            <Ionicons name="alert-circle-outline" size={20} color="#711775" />
+          </TouchableOpacity>
+        </View>
         <View style={styles.search}>
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              alignContent: "center",
-              width: "75%",
-              borderRadius: 10,
-              paddingHorizontal: 10,
-            }}>
-            <Text style={{ color: "#711775", fontSize: 25, fontWeight: "800" }}>
-              Hồ sơ cá nhân
-            </Text>
-          </View>
-          <View style={{ marginTop: 10 }}>
+          <View>
             <View
               style={{
                 flexDirection: "row",
@@ -278,8 +302,8 @@ const Profile = () => {
                       borderColor: "#ffffff",
                       borderWidth: 2,
                       borderRadius: 80,
-                      width: 120,
-                      height: 120,
+                      width: 90,
+                      height: 90,
                     }}
                   />
                 ) : (
@@ -289,8 +313,8 @@ const Profile = () => {
                       borderColor: "#ffffff",
                       borderWidth: 2,
                       borderRadius: 80,
-                      width: 120,
-                      height: 120,
+                      width: 90,
+                      height: 90,
                     }}
                   />
                 )}
@@ -300,30 +324,29 @@ const Profile = () => {
                 style={{
                   backgroundColor: "rgba(150, 150, 150, 0.7)",
                   position: "absolute",
-                  width: 30,
-                  height: 30,
+                  width: 20,
+                  height: 20,
                   borderRadius: 50,
                   flexDirection: "row",
                   justifyContent: "center",
                   alignItems: "center",
-                  top: "70%",
-                  right: "34.5%",
+                  top: "75%",
                 }}
                 onPress={pickImage}>
                 <Ionicons name="camera-outline" size={20} color="#ffffff" />
               </TouchableOpacity>
             </View>
-            <View style={{ marginTop: 10 }}>
+            <View>
               <Text
                 style={{
-                  color: "#711775",
+                  color: "#ffffff",
                   fontSize: 18,
                   fontWeight: "600",
                   textAlign: "center",
                 }}>
                 {auth.profile.name}
               </Text>
-              <View
+              {/* <View
                 style={{
                   flexDirection: "row",
                   justifyContent: "center",
@@ -331,7 +354,7 @@ const Profile = () => {
                 }}>
                 <Text style={styles.contentHeader}>Gói thành viên</Text>
                 <Image source={require("../../assets/Vm.png")} />
-              </View>
+              </View> */}
             </View>
           </View>
         </View>
@@ -342,7 +365,7 @@ const Profile = () => {
                 <View
                   style={{
                     marginHorizontal: 15,
-                    paddingTop: 30,
+                    paddingTop: 20,
                   }}>
                   <View
                     style={{
@@ -508,7 +531,7 @@ const Profile = () => {
                               flexDirection: "row",
                               justifyContent: "space-between",
                               alignItems: "center",
-                              backgroundColor: "rgba(127, 32, 131, 0.2)",
+                              backgroundColor: "#90DA8A",
                               paddingVertical: 9.7,
                               paddingHorizontal: 17.8,
                               borderRadius: 50,
@@ -517,7 +540,7 @@ const Profile = () => {
                               style={{
                                 fontSize: 20,
                                 fontWeight: "600",
-                                color: "#711775",
+                                color: "#ffffff",
                               }}>
                               #
                             </Text>
@@ -593,14 +616,15 @@ const Profile = () => {
                                 flexDirection: "row",
                                 justifyContent: "space-between",
                                 alignItems: "center",
-                                backgroundColor: "rgba(127, 32, 131, 0.2)",
-                                padding: 10,
+                                backgroundColor: item.color,
+                                paddingVertical: 10,
+                                paddingHorizontal: 11,
                                 borderRadius: 50,
                               }}>
                               <Ionicons
                                 name={item.icon}
                                 size={25}
-                                color="#711775"
+                                color="#ffffff"
                               />
                             </View>
 
@@ -676,6 +700,7 @@ const Profile = () => {
                               alignItems: "center",
                               backgroundColor: "rgba(127, 32, 131, 0.2)",
                               padding: 10,
+                              paddingHorizontal: 11,
                               borderRadius: 50,
                             }}>
                             <Ionicons
@@ -723,7 +748,7 @@ const styles = StyleSheet.create({
   search: {
     zIndex: 5,
     position: "absolute",
-    marginTop: "23%",
+    marginTop: "18%",
     width: "100%",
     paddingHorizontal: 20,
   },
@@ -734,22 +759,11 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   body: {
-    backgroundColor: "#ffffff",
     width: "100%",
     zIndex: 5,
     // position: "absolute",
-    marginTop: "80%",
-    borderTopRightRadius: 30,
-    borderTopLeftRadius: 30,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
 
-    elevation: 5,
+    marginBottom: "125%",
   },
   contentText: {
     lineHeight: 20,

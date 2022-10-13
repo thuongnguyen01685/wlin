@@ -15,8 +15,9 @@
         "splash": {
             "image": "./assets/logo.png",
             "resizeMode": "contain",
-            "backgroundColor": "#711775",
-            "width": "80%"
+            "width": "100%",
+            "height": "100%",
+            "backgroundColor": "#9D85F2"
         },
         "updates": {
             "fallbackToCacheTimeout": 0
@@ -33,7 +34,7 @@
             "icon": "./assets/icon.png",
             "adaptiveIcon": {
                 "foregroundImage": "./assets/logoSpals.png",
-                "backgroundColor": "#711775"
+                "backgroundColor": "#9D85F2"
             },
             "googleServicesFile": "./google-services.json",
             "permissions": [
@@ -85,7 +86,13 @@
             ],
             "@react-native-firebase/app",
             "@react-native-firebase/perf",
-            "@react-native-firebase/crashlytics"
+            "@react-native-firebase/crashlytics", ["expo-media-library",
+                {
+                    "photosPermission": "Allow $(PRODUCT_NAME) to access your photos.",
+                    "savePhotosPermission": "Allow $(PRODUCT_NAME) to save photos.",
+                    "isAccessMediaLocationEnabled": "true"
+                }
+            ]
         ]
     }
 }
