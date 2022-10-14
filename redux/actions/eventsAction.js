@@ -1,7 +1,8 @@
-import { getdataApi, newsEvent } from "../../utils/fetchApi";
+import { getdataApi, getDetailApi, newsEvent } from "../../utils/fetchApi";
 
 export const EVENTS = {
   GETEVENTS: "GETEVENTS",
+  DETAILEVENTS: "DETAILEVENTS",
   NEWSEVENTS: "NEWSEVENTS",
 };
 
@@ -10,6 +11,16 @@ export const getEventsAction = (token) => async (dispatch) => {
     const res = await getdataApi(`dmsukien`, token);
 
     dispatch({ type: EVENTS.GETEVENTS, payload: res.data });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getDetailEventsAction = (_id, token) => async (dispatch) => {
+  try {
+    const res = await getDetailApi(`dmsukien`, _id, token);
+
+    dispatch({ type: EVENTS.DETAILEVENTS, payload: res.data });
   } catch (error) {
     console.log(error);
   }

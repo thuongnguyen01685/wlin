@@ -26,22 +26,22 @@ const ratio = w / 720;
 
 const data = [
   {
-    icon: "chart-box-outline",
+    icon: "chart-box",
     name: "Quản trị hội viên",
     navigation: "ListMember",
-    color: "#F0C24D",
+    color: "#BF1FE7",
   },
   {
-    icon: "shield-check-outline",
+    icon: "shield-check",
     name: "Quản trị CLUB",
     navigation: "ClubScreen",
-    color: "rgba(125, 18, 130, 0.7)",
+    color: "#32DBDB",
   },
   {
-    icon: "calendar-month-outline",
+    icon: "calendar-month",
     name: "Quản trị sự kiện",
     navigation: "EventsScreen",
-    color: "#689A4F",
+    color: "#1D19D4",
   },
   // {
   //   picture: require("../../assets/Chart.png"),
@@ -59,16 +59,16 @@ const data = [
   //   navigation: "TYFCB",
   // },
   {
-    icon: "note-text-outline",
+    icon: "note-text",
     name: "Danh sách nhóm quyền lợi",
     navigation: "Benefit",
-    color: "#B88FED",
+    color: "#1BB554",
   },
   {
-    icon: "account-outline",
+    icon: "account",
     name: "Hồ sơ cá nhân",
     navigation: "Profile",
-    color: "rgba(238, 37, 121, 0.7)",
+    color: "#EDA6EA",
   },
 ];
 // create a component
@@ -101,11 +101,11 @@ const Other = () => {
           justifyContent: "space-between",
           paddingHorizontal: 10,
         }}>
-        <Text style={{ fontSize: 18, fontWeight: "600", color: "#711775" }}>
+        <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
           Các mục khác
         </Text>
         <TouchableOpacity>
-          <Ionicons name="alert-circle-outline" size={20} color="#711775" />
+          <Ionicons name="alert-circle-outline" size={20} color="#9D85F2" />
         </TouchableOpacity>
       </View>
       <View style={{ height: "100%" }}>
@@ -123,20 +123,22 @@ const Other = () => {
                     flexDirection: "row",
                     justifyContent: "space-between",
                     alignItems: "center",
-                    backgroundColor: "#F3F3F3",
+                    backgroundColor: "#Ffffff",
                     marginVertical: 10,
-                    borderRadius: 8,
+                    borderRadius: 15,
                     paddingVertical: 10,
                     paddingHorizontal: 15,
-                    shadowColor: "#000",
-                    shadowOffset: {
-                      width: 0,
-                      height: 1,
-                    },
-                    shadowOpacity: 0.25,
-                    shadowRadius: 3.84,
+                    borderWidth: 0.8,
+                    borderColor: "#E8E8E8",
+                    // shadowColor: "#000",
+                    // shadowOffset: {
+                    //   width: 0,
+                    //   height: 1,
+                    // },
+                    // shadowOpacity: 0.25,
+                    // shadowRadius: 3.84,
 
-                    elevation: 5,
+                    // elevation: 5,
                   }}
                   key={index}
                   onPress={() => navigation.navigate(`${item.navigation}`)}>
@@ -153,9 +155,8 @@ const Other = () => {
                       }}>
                       <View
                         style={{
-                          padding: 20,
+                          padding: 10,
                           borderRadius: 50,
-                          backgroundColor: item.color,
                         }}>
                         {/* <Image
                           source={item.picture}
@@ -163,8 +164,8 @@ const Other = () => {
                         /> */}
                         <MaterialCommunityIcons
                           name={item.icon}
-                          size={20}
-                          color="#ffffff"
+                          size={30}
+                          color={item.color}
                         />
                       </View>
 
@@ -176,7 +177,7 @@ const Other = () => {
                         }}>
                         <Text
                           style={{
-                            color: "#711775",
+                            color: "#474747",
                             fontSize: 15,
                             fontWeight: "600",
                           }}>
@@ -191,7 +192,7 @@ const Other = () => {
                     <Ionicons
                       name="chevron-forward-outline"
                       size={25}
-                      color="#711775"
+                      color="#9D85F2"
                     />
                   </TouchableOpacity>
                 </TouchableOpacity>

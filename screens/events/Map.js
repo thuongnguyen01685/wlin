@@ -59,7 +59,7 @@ const Map = () => {
             flexDirection: "row",
             justifyContent: "center",
             alignItems: "center",
-            borderRadius: 5,
+            borderRadius: 50,
             marginBottom: 7,
             //transform: [{ rotate: "-45deg" }],
             shadowColor: "#000",
@@ -73,7 +73,7 @@ const Map = () => {
             elevation: 5,
           }}
           onPress={() => navigation.goBack()}>
-          <Ionicons name="chevron-back-outline" size={25} color="#711775" />
+          <Ionicons name="chevron-back-outline" size={25} color="#9D85F2" />
         </TouchableOpacity>
       </View>
     </View>

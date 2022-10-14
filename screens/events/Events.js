@@ -19,133 +19,562 @@ import {
   Platform,
   TextInput,
   RefreshControl,
+  useWindowDimensions,
 } from "react-native";
 import Lottie from "lottie-react-native";
+import { TabView, SceneMap, TabBar } from "react-native-tab-view";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch, useSelector } from "react-redux";
 import HeaderPart from "../../components/HeaderPart/HeaderPart";
-import { getEventsAction } from "../../redux/actions/eventsAction";
-import { formatDateDisplay, formatDateTimeDisplay } from "../../utils/datetime";
+import {
+  getDetailEventsAction,
+  getEventsAction,
+} from "../../redux/actions/eventsAction";
+import {
+  formatDateDisplay,
+  formatDateDisplays,
+  formatDateTimeDisplay,
+} from "../../utils/datetime";
 import { URL } from "../../utils/fetchApi";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
 const ratio = w / 720;
 
-const dataHeader = [
-  {
-    name: "Đang diễn ra",
-    code: "dangdienra",
-  },
-  {
-    name: "Sắp diễn ra",
-    code: "sapdienra",
-  },
-  {
-    name: "Đã diễn ra",
-    code: "dadienra",
-  },
-];
-const dataEvents = [
-  {
-    nameEvent: "Sự kiện 1",
-    picture: require("../../assets/e1.png"),
-    location: "15A Hồ Văn Huê, Phường 9, Q. Phú Nhuận, TP.HCM",
-    time: "T4, 17/08/2022 9H00",
-    save: true,
-    code: "dangdienra",
-  },
-  {
-    nameEvent: "Sự kiện 2",
-    picture: require("../../assets/e2.png"),
-    location: "15A Hồ Văn Huê, Phường 9, Q. Phú Nhuận, TP.HCM",
-    time: "T4, 17/08/2022 9H00",
-    save: true,
-    code: "dangdienra",
-  },
-  {
-    nameEvent: "Sự kiện 3",
-    picture: require("../../assets/e3.png"),
-    location: "15A Hồ Văn Huê, Phường 9, Q. Phú Nhuận, TP.HCM",
-    time: "T4, 17/08/2022 9H00",
-    save: false,
-    code: "dangdienra",
-  },
-  {
-    nameEvent: "Sự kiện 4",
-    picture: require("../../assets/e4.png"),
-    location: "15A Hồ Văn Huê, Phường 9, Q. Phú Nhuận, TP.HCM",
-    time: "T4, 17/08/2022 9H00",
-    save: false,
-    code: "dangdienra",
-  },
-  {
-    nameEvent: "Sự kiện 5",
-    picture: require("../../assets/e4.png"),
-    location: "15A Hồ Văn Huê, Phường 9, Q. Phú Nhuận, TP.HCM",
-    time: "T4, 17/08/2022 9H00",
-    save: true,
-    code: "dangdienra",
-  },
-  {
-    nameEvent: "Sự kiện 6",
-    picture: require("../../assets/e4.png"),
-    location: "15A Hồ Văn Huê, Phường 9, Q. Phú Nhuận, TP.HCM",
-    time: "T4, 17/08/2022 9H00",
-    save: false,
-    code: "sapdienra",
-  },
-  {
-    nameEvent: "Sự kiện 7",
-    picture: require("../../assets/e4.png"),
-    location: "15A Hồ Văn Huê, Phường 9, Q. Phú Nhuận, TP.HCM",
-    time: "T4, 17/08/2022 9H00",
-    save: true,
-    code: "sapdienra",
-  },
-  {
-    nameEvent: "Sự kiện 8",
-    picture: require("../../assets/e4.png"),
-    location: "15A Hồ Văn Huê, Phường 9, Q. Phú Nhuận, TP.HCM",
-    time: "T4, 17/08/2022 9H00",
-    save: false,
-    code: "dadienra",
-  },
-  {
-    nameEvent: "Sự kiện 9",
-    picture: require("../../assets/e4.png"),
-    location: "15A Hồ Văn Huê, Phường 9, Q. Phú Nhuận, TP.HCM",
-    time: "T4, 17/08/2022 9H00",
-    save: true,
-    code: "dadienra",
-  },
-];
-const wait = (timeout) => {
-  return new Promise((resolve) => setTimeout(resolve, timeout));
-};
-// create a component
-const Events = () => {
-  const [cat, setCat] = useState("dangdienra");
+const EventRoute = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [refreshing, setRefreshing] = useState(false);
-
   const { auth, event } = useSelector((state) => state);
 
-  // console.log(
-  //   event.getEvents.map((item) => formatDateTimeDisplay(item.ngay_su_kien))
-  // );
+  const handleDetail = (_id) => {
+    dispatch(getDetailEventsAction(_id, auth.token));
+    navigation.navigate("DetailEvents");
+  };
+
+  let dateNow = new Date();
+  let year = dateNow.getFullYear();
+  let month = dateNow.getMonth() + 1;
+  let day = dateNow.getDate();
+  let dayofweek = dateNow.getDay();
+
+  const dayNow = year + "-" + month + "-" + day;
+
+  const dayname = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
+
+  //console.log(dayname[dayofweek] + " ngày " + day + "/" + month + "/" + year);
+
+  const events = event.getEvents.filter(
+    (item) =>
+      new Date(formatDateDisplays(item.ngay_su_kien)).getTime() ===
+      new Date(dayNow).getTime()
+  );
+
+  //console.log(compare_date(date1, date2));
 
   useEffect(() => {
     setRefreshing(true);
     dispatch(getEventsAction(auth.token));
     wait(2000).then(() => setRefreshing(false));
-  }, [dispatch, cat]);
+  }, [dispatch]);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     dispatch(getEventsAction(auth.token));
     wait(2000).then(() => setRefreshing(false));
-  }, [dispatch, cat]);
+  }, [dispatch]);
+  return (
+    <View style={styles.container}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={["#9796F0", "green", "blue"]}
+          />
+        }>
+        <View style={{ marginBottom: "16%" }}>
+          {events.map((item) => (
+            <TouchableOpacity
+              key={item._id}
+              style={{
+                flexDirection: "row",
+                // justifyContent: "space-between",
+                // alignItems: "center",
+                marginBottom: 10,
+                borderRadius: 8,
+                paddingVertical: 5,
+                marginHorizontal: 15,
+                borderBottomColor: "#DADADA",
+                borderBottomWidth: 0.5,
+              }}
+              onPress={() => handleDetail(item._id)}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  width: "80%",
+                  marginBottom: 5,
+                }}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    borderRadius: 7,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}>
+                  <Image
+                    source={{ uri: `${URL}${item.hinh_anh}` }}
+                    style={{ width: 80, height: 80, borderRadius: 7 }}
+                  />
+                </View>
+                <View
+                  style={{
+                    width: "75%",
+                    justifyContent: "space-evenly",
+                    alignItems: "stretch",
+                    marginLeft: 10,
+                  }}>
+                  <Text
+                    style={{
+                      color: "#474747",
+                      fontSize: 14,
+                      fontWeight: "600",
+                    }}>
+                    {item.ten_su_kien}
+                  </Text>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      backgroundColor: "#EEF4FF",
+                      width: "50%",
+                      borderRadius: 13,
+                      paddingHorizontal: 4,
+                      paddingVertical: 2,
+                    }}>
+                    <Ionicons name="calendar" size={15} color="#769CEC" />
+                    <Text
+                      style={{
+                        color: "#769CEC",
+                        fontSize: 11,
+                        fontWeight: "600",
+                        left: 10,
+                      }}>
+                      {formatDateDisplay(item.ngay_su_kien)}
+                    </Text>
+                  </View>
+                  <View style={{ flexDirection: "row" }}>
+                    <Ionicons name="location" size={14} />
+                    <Text
+                      style={{
+                        color: "#000000",
+                        fontSize: 10,
+                        fontWeight: "600",
+                        left: 5,
+                      }}>
+                      {item.dia_diem}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+
+                  width: "15%",
+                  marginLeft: 10,
+                }}>
+                <TouchableOpacity>
+                  <Ionicons
+                    name={item.save ? "bookmark" : "bookmark-outline"}
+                    size={20}
+                    color={item.save ? "#FFBE17" : "#711775"}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity>
+                  <Ionicons
+                    name="alert-circle-outline"
+                    size={20}
+                    color="#9D85F2"
+                  />
+                </TouchableOpacity>
+              </View>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </ScrollView>
+    </View>
+  );
+};
+const EventingRoute = () => {
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const [refreshing, setRefreshing] = useState(false);
+  const { auth, event } = useSelector((state) => state);
+
+  const handleDetail = (_id) => {
+    dispatch(getDetailEventsAction(_id, auth.token));
+    navigation.navigate("DetailEvents");
+  };
+
+  let dateNow = new Date();
+  let year = dateNow.getFullYear();
+  let month = dateNow.getMonth() + 1;
+  let day = dateNow.getDate();
+  let dayofweek = dateNow.getDay();
+
+  const dayNow = year + "-" + month + "-" + day;
+
+  const dayname = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
+
+  //console.log(dayname[dayofweek] + " ngày " + day + "/" + month + "/" + year);
+
+  const eventing = event.getEvents.filter(
+    (item) =>
+      new Date(formatDateDisplays(item.ngay_su_kien)).getTime() >
+      new Date(dayNow).getTime()
+  );
+
+  //console.log(compare_date(date1, date2));
+
+  useEffect(() => {
+    setRefreshing(true);
+    dispatch(getEventsAction(auth.token));
+    wait(2000).then(() => setRefreshing(false));
+  }, [dispatch]);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    dispatch(getEventsAction(auth.token));
+    wait(2000).then(() => setRefreshing(false));
+  }, [dispatch]);
+  return (
+    <View style={styles.container}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={["#9796F0", "green", "blue"]}
+          />
+        }>
+        <View style={{ marginBottom: "16%" }}>
+          {eventing.map((item) => (
+            <TouchableOpacity
+              key={item._id}
+              style={{
+                flexDirection: "row",
+                // justifyContent: "space-between",
+                // alignItems: "center",
+                marginBottom: 10,
+                borderRadius: 8,
+                paddingVertical: 5,
+                marginHorizontal: 15,
+                borderBottomColor: "#DADADA",
+                borderBottomWidth: 0.5,
+              }}
+              onPress={() => handleDetail(item._id)}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  width: "80%",
+                  marginBottom: 5,
+                }}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    borderRadius: 7,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}>
+                  <Image
+                    source={{ uri: `${URL}${item.hinh_anh}` }}
+                    style={{ width: 80, height: 80, borderRadius: 7 }}
+                  />
+                </View>
+                <View
+                  style={{
+                    width: "75%",
+                    justifyContent: "space-evenly",
+                    alignItems: "stretch",
+                    marginLeft: 10,
+                  }}>
+                  <Text
+                    style={{
+                      color: "#474747",
+                      fontSize: 14,
+                      fontWeight: "600",
+                    }}>
+                    {item.ten_su_kien}
+                  </Text>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      backgroundColor: "#EEF4FF",
+                      width: "50%",
+                      borderRadius: 13,
+                      paddingHorizontal: 4,
+                      paddingVertical: 2,
+                    }}>
+                    <Ionicons name="calendar" size={15} color="#769CEC" />
+                    <Text
+                      style={{
+                        color: "#769CEC",
+                        fontSize: 11,
+                        fontWeight: "600",
+                        left: 10,
+                      }}>
+                      {formatDateDisplay(item.ngay_su_kien)}
+                    </Text>
+                  </View>
+                  <View style={{ flexDirection: "row" }}>
+                    <Ionicons name="location" size={14} />
+                    <Text
+                      style={{
+                        color: "#000000",
+                        fontSize: 10,
+                        fontWeight: "600",
+                        left: 5,
+                      }}>
+                      {item.dia_diem}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+
+                  width: "15%",
+                  marginLeft: 10,
+                }}>
+                <TouchableOpacity>
+                  <Ionicons
+                    name={item.save ? "bookmark" : "bookmark-outline"}
+                    size={20}
+                    color={item.save ? "#FFBE17" : "#711775"}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity>
+                  <Ionicons
+                    name="alert-circle-outline"
+                    size={20}
+                    color="#9D85F2"
+                  />
+                </TouchableOpacity>
+              </View>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </ScrollView>
+    </View>
+  );
+};
+const EventedRoute = () => {
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const [refreshing, setRefreshing] = useState(false);
+  const { auth, event } = useSelector((state) => state);
+
+  const handleDetail = (_id) => {
+    dispatch(getDetailEventsAction(_id, auth.token));
+    navigation.navigate("DetailEvents");
+  };
+
+  let dateNow = new Date();
+  let year = dateNow.getFullYear();
+  let month = dateNow.getMonth() + 1;
+  let day = dateNow.getDate();
+  let dayofweek = dateNow.getDay();
+
+  const dayNow = year + "-" + month + "-" + day;
+
+  const dayname = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
+
+  //console.log(dayname[dayofweek] + " ngày " + day + "/" + month + "/" + year);
+
+  const evented = event.getEvents.filter(
+    (item) =>
+      new Date(formatDateDisplays(item.ngay_su_kien)).getTime() <
+      new Date(dayNow).getTime()
+  );
+
+  //console.log(compare_date(date1, date2));
+
+  useEffect(() => {
+    setRefreshing(true);
+    dispatch(getEventsAction(auth.token));
+    wait(2000).then(() => setRefreshing(false));
+  }, [dispatch]);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    dispatch(getEventsAction(auth.token));
+    wait(2000).then(() => setRefreshing(false));
+  }, [dispatch]);
+  return (
+    <View style={styles.container}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={["#9796F0", "green", "blue"]}
+          />
+        }>
+        <View style={{ marginBottom: "16%" }}>
+          {evented.map((item) => (
+            <TouchableOpacity
+              key={item._id}
+              style={{
+                flexDirection: "row",
+                // justifyContent: "space-between",
+                // alignItems: "center",
+                marginBottom: 10,
+                borderRadius: 8,
+                paddingVertical: 5,
+                marginHorizontal: 15,
+                borderBottomColor: "#DADADA",
+                borderBottomWidth: 0.5,
+              }}
+              onPress={() => handleDetail(item._id)}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  width: "80%",
+                  marginBottom: 5,
+                }}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    borderRadius: 7,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}>
+                  <Image
+                    source={{ uri: `${URL}${item.hinh_anh}` }}
+                    style={{ width: 80, height: 80, borderRadius: 7 }}
+                  />
+                </View>
+                <View
+                  style={{
+                    width: "75%",
+                    justifyContent: "space-evenly",
+                    alignItems: "stretch",
+                    marginLeft: 10,
+                  }}>
+                  <Text
+                    style={{
+                      color: "#474747",
+                      fontSize: 14,
+                      fontWeight: "600",
+                    }}>
+                    {item.ten_su_kien}
+                  </Text>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      backgroundColor: "#EEF4FF",
+                      width: "50%",
+                      borderRadius: 13,
+                      paddingHorizontal: 4,
+                      paddingVertical: 2,
+                    }}>
+                    <Ionicons name="calendar" size={15} color="#769CEC" />
+                    <Text
+                      style={{
+                        color: "#769CEC",
+                        fontSize: 11,
+                        fontWeight: "600",
+                        left: 10,
+                      }}>
+                      {formatDateDisplay(item.ngay_su_kien)}
+                    </Text>
+                  </View>
+                  <View style={{ flexDirection: "row" }}>
+                    <Ionicons name="location" size={14} />
+                    <Text
+                      style={{
+                        color: "#000000",
+                        fontSize: 10,
+                        fontWeight: "600",
+                        left: 5,
+                      }}>
+                      {item.dia_diem}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+
+                  width: "15%",
+                  marginLeft: 10,
+                }}>
+                <TouchableOpacity>
+                  <Ionicons
+                    name={item.save ? "bookmark" : "bookmark-outline"}
+                    size={20}
+                    color={item.save ? "#FFBE17" : "#711775"}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity>
+                  <Ionicons
+                    name="alert-circle-outline"
+                    size={20}
+                    color="#9D85F2"
+                  />
+                </TouchableOpacity>
+              </View>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </ScrollView>
+    </View>
+  );
+};
+
+const renderScene = SceneMap({
+  first: EventRoute,
+  second: EventingRoute,
+  third: EventedRoute,
+});
+
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
+// create a component
+const Events = () => {
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const [refreshing, setRefreshing] = useState(false);
+  const { auth, event } = useSelector((state) => state);
+  const layout = useWindowDimensions();
+
+  const [index, setIndex] = useState(0);
+
+  const [routes] = useState([
+    { key: "first", title: "Đang diễn ra" },
+    { key: "second", title: "Sắp diễn ra" },
+    { key: "third", title: "Đã diễn ra" },
+  ]);
+
+  // console.log(
+  //   event.getEvents.map((item) => formatDateTimeDisplay(item.ngay_su_kien))
+  // );
+
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
@@ -203,8 +632,8 @@ const Events = () => {
           <Ionicons name="alert-circle-outline" size={20} color="#826CCF" />
         </TouchableOpacity>
       </View>
-      <View style={{ height: "100%" }}>
-        <View
+      {/* <View style={{ height: "100%" }}> */}
+      {/* <View
           style={{
             backgroundColor: "#f3f3f3",
             marginHorizontal: 15,
@@ -232,8 +661,27 @@ const Events = () => {
               </Text>
             </TouchableOpacity>
           ))}
-        </View>
-        <ScrollView
+        </View> */}
+      <TabView
+        navigationState={{ index, routes }}
+        renderScene={renderScene}
+        onIndexChange={setIndex}
+        initialLayout={{ width: layout.width }}
+        renderTabBar={(props) => (
+          <TabBar
+            {...props}
+            renderLabel={({ route, color }) => (
+              <Text
+                style={{ color: "#826CCF", fontSize: 12, fontWeight: "600" }}>
+                {route.title}
+              </Text>
+            )}
+            indicatorStyle={styles.indicatorStyle}
+            style={{ backgroundColor: "#ffffff" }}
+          />
+        )}
+      />
+      {/* <ScrollView
           showsVerticalScrollIndicator={false}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -349,8 +797,8 @@ const Events = () => {
               </TouchableOpacity>
             ))}
           </View>
-        </ScrollView>
-      </View>
+        </ScrollView> */}
+      {/* </View> */}
     </View>
   );
 };
@@ -365,6 +813,11 @@ const styles = StyleSheet.create({
     color: "#000",
     fontSize: 12,
     fontWeight: "400",
+  },
+  indicatorStyle: {
+    backgroundColor: "#826CCF",
+    padding: 1.5,
+    marginBottom: -2,
   },
 });
 

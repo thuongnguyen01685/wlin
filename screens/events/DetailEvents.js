@@ -23,7 +23,13 @@ import {
 import Lottie from "lottie-react-native";
 import HeaderPart from "../../components/HeaderPart/HeaderPart";
 import ModalPayment from "../../components/modal/ModalPayment";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  formatCash,
+  formatDateDisplays,
+  formatTimeDisplay,
+} from "../../utils/datetime";
+import { URL } from "../../utils/fetchApi";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
@@ -39,11 +45,30 @@ const DetailEvents = () => {
   const [modalSuccess, setModalSuccess] = useState(false);
   const dispatch = useDispatch();
 
+  const { auth, event } = useSelector((state) => state);
+
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
 
     wait(2000).then(() => setRefreshing(false));
   }, [dispatch]);
+
+  let dateEvent = new Date(formatDateDisplays(event.detailEvent.ngay_su_kien));
+  let year = dateEvent.getFullYear();
+  let month = dateEvent.getMonth() + 1;
+  let day = dateEvent.getDate();
+  let dayofweek = dateEvent.getDay();
+
+  const dayname = [
+    "Chủ nhật",
+    "Thứ 2",
+    "Thứ 3",
+    "Thứ 4",
+    "Thứ 5",
+    "Thứ 6",
+    "Thứ 7",
+  ];
+
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
@@ -121,7 +146,7 @@ const DetailEvents = () => {
               }}>
               <View style={{ marginHorizontal: 15 }}>
                 <Image
-                  source={require("../../assets/bannerevent.png")}
+                  source={{ uri: `${URL}${event.detailEvent.hinh_anh}` }}
                   style={{
                     width: "100%",
                     height: 180,
@@ -147,7 +172,7 @@ const DetailEvents = () => {
                       fontWeight: "600",
                       color: "#ffffff",
                     }}>
-                    Sự kiện 1
+                    {event.detailEvent.ten_su_kien}
                   </Text>
                 </View>
               </View>
@@ -235,7 +260,10 @@ const DetailEvents = () => {
                   </View>
 
                   <Text style={{ fontSize: 10, marginLeft: 2 }}>
-                    300 người tham gia
+                    {event.detailEvent.ds_tham_gia
+                      ? event.detailEvent.ds_tham_gia.length
+                      : 0}{" "}
+                    người tham gia
                   </Text>
 
                   {/* <Ionicons
@@ -388,7 +416,7 @@ const DetailEvents = () => {
                       fontWeight: "800",
                       color: "#ffffff",
                     }}>
-                    17
+                    {day}
                   </Text>
                   <View
                     style={{
@@ -402,7 +430,7 @@ const DetailEvents = () => {
                         fontWeight: "600",
                         color: "#ffffff",
                       }}>
-                      Thứ 4
+                      {dayname[dayofweek]}
                     </Text>
                     <Text
                       style={{
@@ -410,7 +438,7 @@ const DetailEvents = () => {
                         fontWeight: "600",
                         color: "#ffffff",
                       }}>
-                      Tháng 8, 2022
+                      Tháng {month}, {year}
                     </Text>
                   </View>
                 </View>
@@ -423,94 +451,232 @@ const DetailEvents = () => {
                       color: "#ffffff",
                       left: 10,
                     }}>
-                    9:00 - 11:00
+                    {formatTimeDisplay(event.detailEvent.ngay_su_kien)}
                   </Text>
                 </View>
               </LinearGradient>
-            </View>
-            <View style={{ paddingHorizontal: 15 }}>
-              <View style={styles.containerCheckin}>
-                <Text style={{ fontWeight: "600", fontSize: 14 }}>
-                  Checkin bằng
-                </Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}>
+                <View>
+                  <Ionicons name="location" size={30} color="#E51104" />
+                </View>
                 <View
                   style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
                     marginLeft: 10,
-                    width: "50%",
+                    paddingHorizontal: 10,
                   }}>
-                  <TouchableOpacity
-                    onPress={() => navigation.navigate("CheckQR")}>
-                    <LinearGradient
-                      start={{ x: 0, y: 0.3 }}
-                      end={{ x: 1, y: 1 }}
-                      colors={["#9D85F2", "#FBC7D4"]}
+                  <Text style={styles.headerContent}>
+                    {event.detailEvent.dia_diem}
+                  </Text>
+                  {/* <Text style={styles.bodyContent}>
+                    15A Hồ Văn Huê, Phường 9, Quận Phú Nhuận, TP.HCM
+                  </Text> */}
+                  <View>
+                    <TouchableOpacity
                       style={{
+                        borderRadius: 7,
                         flexDirection: "row",
-                        justifyContent: "space-between",
-                        alignContent: "center",
                         alignItems: "center",
-                        borderRadius: 30,
-                      }}>
-                      <View style={styles.borderBacRounded}>
-                        <Ionicons
-                          name="qr-code-outline"
-                          size={20}
-                          color="#ffffff"
-                        />
-                      </View>
-                    </LinearGradient>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={() => navigation.navigate("PayBenefits")}>
-                    <LinearGradient
-                      start={{ x: 0, y: 0.3 }}
-                      end={{ x: 1, y: 1 }}
-                      colors={["#9D85F2", "#FBC7D4"]}
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        alignContent: "center",
-                        alignItems: "center",
-                        borderRadius: 30,
-                      }}>
-                      <View style={styles.borderBacRounded}>
-                        <Ionicons
-                          name="image-outline"
-                          size={20}
-                          color="#ffffff"
-                        />
-                      </View>
-                    </LinearGradient>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={() => {
-                      setModalSuccess(true);
-                    }}>
-                    <LinearGradient
-                      start={{ x: 0, y: 0.3 }}
-                      end={{ x: 1, y: 1 }}
-                      colors={["#9D85F2", "#FBC7D4"]}
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        alignContent: "center",
-                        alignItems: "center",
-                        borderRadius: 30,
-                      }}>
-                      <View style={styles.borderBacRounded}>
-                        <Image
-                          source={require("../../assets/coin.png")}
-                          style={styles.imageCheckin}
-                        />
-                      </View>
-                    </LinearGradient>
-                  </TouchableOpacity>
+                        width: "100%",
+                      }}
+                      onPress={() => navigation.navigate("Map")}>
+                      <LinearGradient
+                        start={{ x: 1, y: 0.3 }}
+                        end={{ x: 1, y: 1 }}
+                        colors={["#9D85F2", "#9D85F2"]}
+                        style={{
+                          borderRadius: 20,
+                          paddingVertical: 3,
+                          paddingHorizontal: 8,
+                          flexDirection: "row",
+                          justifyContent: "center",
+                        }}>
+                        <Ionicons name="location" size={15} color="#ffffff" />
+                        <Text
+                          style={{
+                            fontSize: 12,
+                            color: "#ffffff",
+                            textAlign: "center",
+                            fontWeight: "500",
+                          }}>
+                          Xem bản đồ
+                        </Text>
+                      </LinearGradient>
+                    </TouchableOpacity>
+                  </View>
                 </View>
               </View>
+              <View>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <Text style={styles.headerText}>Thời gian</Text>
+                  <Text style={styles.headerText}>Nội dung chương trình</Text>
+                </View>
+                {event.detailEvent.noi_dung &&
+                  event.detailEvent.noi_dung.map((item, index) => (
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        width: "100%",
+                        justifyContent: "flex-start",
+                        paddingHorizontal: 5,
+                        marginBottom: 5,
+                      }}
+                      key={index}>
+                      <View
+                        style={{
+                          borderRightWidth: 1,
+                          borderColor: "#B0B0B0",
+                        }}>
+                        <Text style={styles.timeEvent}>
+                          {formatTimeDisplay(item.thoi_gian)}
+                        </Text>
+                      </View>
+
+                      <View
+                        style={{
+                          paddingLeft: 10,
+
+                          width: "75%",
+                        }}>
+                        <View
+                          style={{
+                            backgroundColor: "#F6F6F5",
+                            borderRadius: 10,
+                          }}>
+                          <Text
+                            style={{
+                              fontSize: 13,
+                              fontWeight: "400",
+                              marginVertical: 5,
+                              marginHorizontal: 10,
+                            }}>
+                            {item.noi_dung}
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+                  ))}
+              </View>
             </View>
+            <View style={styles.containerBox}>
+              <View>
+                <MaterialCommunityIcons
+                  name="ticket-confirmation"
+                  size={30}
+                  color="#2BA600"
+                />
+              </View>
+              <View style={{ marginHorizontal: 10 }}>
+                <Text style={styles.headerContent}>Giá vé</Text>
+              </View>
+
+              <View style={styles.conText}>
+                {event.detailEvent.cs_ve &&
+                  event.detailEvent.cs_ve.map((item) => (
+                    <Text style={styles.bodyContent} key={item.line}>
+                      {item.loai_ve}: {formatCash(item.gia_ve)} VND
+                    </Text>
+                  ))}
+              </View>
+            </View>
+
+            <View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-around",
+                  alignItems: "center",
+                  paddingHorizontal: 15,
+                }}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("CheckQR")}>
+                  <LinearGradient
+                    start={{ x: 0, y: 0.3 }}
+                    end={{ x: 1, y: 1 }}
+                    colors={["#9D85F2", "rgba(157, 133, 242, 0.4)"]}
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      alignContent: "center",
+                      alignItems: "center",
+                      borderRadius: 15,
+                    }}>
+                    <View
+                      style={
+                        auth.permission.admin
+                          ? styles.buttonEx
+                          : styles.buttonCheckin
+                      }>
+                      <Text style={styles.buttonText}>Check-in</Text>
+                    </View>
+                  </LinearGradient>
+                </TouchableOpacity>
+                {auth.permission.admin && (
+                  <>
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate("PayBenefits")}>
+                      <LinearGradient
+                        start={{ x: 0, y: 0.3 }}
+                        end={{ x: 1, y: 1 }}
+                        colors={["#9D85F2", "rgba(157, 133, 242, 0.4)"]}
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                          alignContent: "center",
+                          alignItems: "center",
+                          borderRadius: 15,
+                        }}>
+                        <View style={styles.buttonEx}>
+                          <Text style={styles.buttonText}>Trả quyền lợi</Text>
+                        </View>
+                      </LinearGradient>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => {
+                        setModalSuccess(true);
+                      }}>
+                      <LinearGradient
+                        start={{ x: 0, y: 0.3 }}
+                        end={{ x: 1, y: 1 }}
+                        colors={["#9D85F2", "rgba(157, 133, 242, 0.4)"]}
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                          alignContent: "center",
+                          alignItems: "center",
+                          borderRadius: 15,
+                        }}>
+                        <View style={styles.buttonEx}>
+                          <Text style={styles.buttonText}>Thanh toán</Text>
+                        </View>
+                      </LinearGradient>
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                      <LinearGradient
+                        start={{ x: 0, y: 0.3 }}
+                        end={{ x: 1, y: 1 }}
+                        colors={["#9D85F2", "rgba(157, 133, 242, 0.4)"]}
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                          alignContent: "center",
+                          alignItems: "center",
+                          borderRadius: 15,
+                        }}>
+                        <View style={styles.buttonEx}>
+                          <Text style={styles.buttonText}>Báo cáo</Text>
+                        </View>
+                      </LinearGradient>
+                    </TouchableOpacity>
+                  </>
+                )}
+              </View>
+            </View>
+
             {modalSuccess && (
               <ModalPayment
                 modalSuccess={modalSuccess}
@@ -532,15 +698,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#ffffff",
   },
-  contentHeader: {
-    color: "#000",
-    fontSize: 12,
-    fontWeight: "400",
-  },
+
   containerBox: {
     flexDirection: "row",
     marginVertical: 10,
     alignItems: "center",
+    paddingHorizontal: 20,
   },
   backBorder: {
     padding: 15,
@@ -554,15 +717,16 @@ const styles = StyleSheet.create({
     marginRight: "10%",
   },
   headerContent: {
-    fontSize: 14,
+    fontSize: 15,
     fontWeight: "600",
     lineHeight: 20,
   },
   bodyContent: {
-    fontSize: 10,
+    fontSize: 12,
     fontWeight: "400",
     textAlign: "justify",
     marginVertical: 3,
+    color: "#474747",
   },
   containerCheckin: {
     flexDirection: "row",
@@ -575,6 +739,34 @@ const styles = StyleSheet.create({
   imageCheckin: {
     width: 20,
     height: 20,
+  },
+  headerText: {
+    fontSize: 12,
+    fontWeight: "400",
+    color: "#B0B0B0",
+    paddingHorizontal: 20,
+    paddingVertical: 5,
+  },
+  timeEvent: {
+    fontSize: 13,
+    fontWeight: "400",
+    color: "#000",
+    paddingHorizontal: 13,
+    paddingVertical: 5,
+  },
+  buttonCheckin: {
+    paddingHorizontal: 30,
+    paddingVertical: 10,
+  },
+  buttonEx: {
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+  },
+
+  buttonText: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#ffffff",
   },
 });
 

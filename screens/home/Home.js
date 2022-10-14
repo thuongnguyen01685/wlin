@@ -51,7 +51,13 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Toast from "react-native-root-toast";
 import Carousel from "react-native-banner-carousel-updated";
-import { newsEventsAction } from "../../redux/actions/eventsAction";
+import {
+  getDetailEventsAction,
+  getEventsAction,
+  newsEventsAction,
+} from "../../redux/actions/eventsAction";
+import { URL } from "../../utils/fetchApi";
+import { formatDateDisplays } from "../../utils/datetime";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
@@ -87,34 +93,6 @@ const data = {
   // legend: ["Rainy Days"], // optional
 };
 
-//data event
-const dataEvents = [
-  {
-    _id: 1,
-    image: require("../../assets/news.png"),
-    name: "Tin tức sự kiện 1",
-    time: "01/02/2022",
-  },
-  {
-    _id: 2,
-    image: require("../../assets/news.png"),
-    name: "Tin tức sự kiện 2",
-    time: "01/02/2022",
-  },
-  {
-    _id: 3,
-    image: require("../../assets/news.png"),
-    name: "Tin tức sự kiện 3",
-    time: "01/02/2022",
-  },
-  {
-    _id: 4,
-    image: require("../../assets/news.png"),
-    name: "Tin tức sự kiện 4",
-    time: "01/02/2022",
-  },
-];
-
 const ListQL = [
   {
     nameHV: "Lisa",
@@ -140,6 +118,26 @@ const Home = () => {
   const animatedValue = useRef(new Animated.Value(0)).current;
   const { auth, notify, event } = useSelector((state) => state);
   const insets = useSafeAreaInsets();
+
+  //eventing
+
+  let dateNow = new Date();
+  let year = dateNow.getFullYear();
+  let month = dateNow.getMonth() + 1;
+  let day = dateNow.getDate();
+  let dayofweek = dateNow.getDay();
+
+  const dayNow = year + "-" + month + "-" + day;
+
+  const dayname = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
+
+  //console.log(dayname[dayofweek] + " ngày " + day + "/" + month + "/" + year);
+
+  const eventing = event.getEvents.filter(
+    (item) =>
+      new Date(formatDateDisplays(item.ngay_su_kien)).getTime() >
+      new Date(dayNow).getTime()
+  );
 
   const headerHeight = animatedValue.interpolate({
     inputRange: [0, HEADER_HEIGHT + insets.top],
@@ -175,7 +173,7 @@ const Home = () => {
 
       dispatch(getPermissionAction(auth.token, auth.profile.email));
       dispatch(getRankAction(auth.token, auth.profile.email));
-      dispatch(newsEventsAction());
+      dispatch(getEventsAction(auth.token));
     }
   }, [auth.token, dispatch, auth.profile.email]);
 
@@ -187,16 +185,22 @@ const Home = () => {
       BackHandler.removeEventListener("hardwareBackPress", backButtonHandler);
     };
   }, [backHome]);
-  const images = event.news.map((item) => item);
+
+  const handleDetail = (_id) => {
+    dispatch(getDetailEventsAction(_id, auth.token));
+    navigation.navigate("DetailEvents");
+  };
+  const images = eventing.map((item) => item);
   const renderPage = (item, index) => {
     return (
-      <View
-        key={index}
+      <TouchableOpacity
+        key={item._id}
         style={{
           flexDirection: "row",
           justifyContent: "center",
           marginVertical: 10,
-        }}>
+        }}
+        onPress={() => handleDetail(item._id)}>
         <Image
           style={{
             width: "93%",
@@ -204,12 +208,12 @@ const Home = () => {
             borderRadius: 10,
           }}
           source={{
-            uri: `https://api.fostech.vn/`.concat(`${item.picture}`),
+            uri: `${URL}`.concat(`${item.hinh_anh}`),
           }}
         />
-        <Text style={styles.titleNews}>{item.title}</Text>
+        <Text style={styles.titleNews}>{item.ten_su_kien}</Text>
         {/* <Text style={styles.body}>{item.body}</Text> */}
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -217,7 +221,7 @@ const Home = () => {
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
       <HeaderPart backHome={backHome} setBackHome={setBackHome} />
-      {auth.permission.group_id === "631c254a7a3a837ce2c22995" ? (
+      {auth.permission && auth.permission.admin ? (
         <View
           style={{
             backgroundColor: "#ffffff",
@@ -413,7 +417,10 @@ const Home = () => {
                 style={{ fontSize: 15, fontWeight: "600", color: "#826CCF" }}>
                 Sự kiện sắp diễn ra
               </Text>
-              <TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("EventsScreen");
+                }}>
                 <Text
                   style={{
                     fontSize: 12,
@@ -466,7 +473,7 @@ const Home = () => {
             </ScrollView> */}
             <Carousel
               autoplay
-              autoplayTimeout={3000}
+              autoplayTimeout={7000}
               loop
               index={0}
               pageSize={w}>
@@ -975,19 +982,21 @@ const Home = () => {
             {ListQL.map((item, index) => (
               <View
                 style={{
-                  backgroundColor: "#f3f3f3",
+                  backgroundColor: "#ffffff",
                   borderRadius: 7,
                   marginHorizontal: 15,
                   paddingVertical: 5,
                   marginVertical: 10,
-                  shadowColor: "#000",
-                  shadowOffset: {
-                    width: 0,
-                    height: 2,
-                  },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 3.84,
-                  elevation: 5,
+                  borderWidth: 0.8,
+                  borderColor: "#E8E8E8",
+                  // shadowColor: "#000",
+                  // shadowOffset: {
+                  //   width: 0,
+                  //   height: 2,
+                  // },
+                  // shadowOpacity: 0.25,
+                  // shadowRadius: 3.84,
+                  // elevation: 5,
                 }}
                 key={index}>
                 <View
@@ -1012,9 +1021,7 @@ const Home = () => {
                 <View
                   style={{
                     flexDirection: "row",
-                    justifyContent: "space-between",
                     paddingLeft: 18,
-                    marginLeft: 10,
                     paddingRight: 5,
                     alignItems: "center",
                   }}>
@@ -1022,8 +1029,10 @@ const Home = () => {
                     style={{
                       fontSize: 11,
                       fontWeight: "500",
-                      width: "75%",
+                      width: "70%",
                       textAlign: "justify",
+
+                      marginHorizontal: 15,
                     }}>
                     {item.des}
                   </Text>
@@ -1076,7 +1085,7 @@ const styles = StyleSheet.create({
   titleNews: {
     color: "#F8f8f8",
     fontSize: 15,
-    fontWeight: "600",
+    fontWeight: "800",
     position: "absolute",
     top: "70%",
     textAlign: "center",

@@ -68,11 +68,11 @@ const DetailClub = ({ route }) => {
   const insets = useSafeAreaInsets();
   const animatedValue = useRef(new Animated.Value(0)).current;
 
-  const headerHeight = animatedValue.interpolate({
-    inputRange: [0, HEADER_HEIGHT + insets.top],
-    outputRange: [HEADER_HEIGHT + insets.top - 100, insets.top + 24],
-    extrapolate: "clamp",
-  });
+  // const headerHeight = animatedValue.interpolate({
+  //   inputRange: [0, HEADER_HEIGHT + insets.top],
+  //   outputRange: [HEADER_HEIGHT + insets.top - 100, insets.top + 24],
+  //   extrapolate: "clamp",
+  // });
   useEffect(() => {
     setRefreshing(true);
     dispatch(getDetailClub(route.params._id, auth.token));
@@ -139,24 +139,23 @@ const DetailClub = ({ route }) => {
         }}>
         <Animated.View
           style={{
-            position: "absolute",
             marginTop: 2,
             left: 0,
             right: 0,
             zIndex: 10,
-            height: headerHeight,
-            backgroundColor: "#ffffff",
-            marginHorizontal: 15,
+            height: 130,
             borderRadius: 7,
+            marginHorizontal: 15,
           }}>
           <Animated.View
-            style={{
-              opacity: animatedValue.interpolate({
-                inputRange: [0, 25],
-                outputRange: [1, 0],
-                extrapolate: "clamp",
-              }),
-            }}>
+          // style={{
+          //   opacity: animatedValue.interpolate({
+          //     inputRange: [0, 25],
+          //     outputRange: [1, 0],
+          //     extrapolate: "clamp",
+          //   }),
+          // }}
+          >
             <View style={{ marginTop: 5 }}>
               <Text
                 style={{
@@ -172,28 +171,24 @@ const DetailClub = ({ route }) => {
             <View
               style={{
                 flexDirection: "row",
-                justifyContent: "space-between",
                 alignItems: "center",
-                paddingHorizontal: 20,
-                width: w,
+                paddingHorizontal: 10,
               }}>
               <View
                 style={{
                   flexDirection: "column",
-                  justifyContent: "flex-end",
-                  width: "40%",
                 }}>
                 {club.detailClub.hinh_anh ? (
                   <Image
                     source={{
                       uri: `${URL}/`.concat(`${club.detailClub.hinh_anh}`),
                     }}
-                    style={{ width: "80%", height: 90, borderRadius: 7 }}
+                    style={{ width: 120, height: 70, borderRadius: 7 }}
                   />
                 ) : (
                   <Image
                     source={require("../../assets/logo.png")}
-                    style={{ width: "80%", height: 50, borderRadius: 7 }}
+                    style={{ width: 120, height: 50, borderRadius: 7 }}
                   />
                 )}
               </View>
@@ -266,24 +261,22 @@ const DetailClub = ({ route }) => {
           <View>
             <Animated.View
               style={{
-                backgroundColor: "#f3f3f3",
-                width: "98%",
                 marginTop: 10,
                 marginBottom: 10,
                 borderRadius: 20,
                 flexDirection: "row",
                 justifyContent: "space-between",
-                transform: [
-                  {
-                    translateY: animatedValue.interpolate({
-                      inputRange: [0, 50],
-                      outputRange: [0, -120],
-                      extrapolate: "clamp",
-                    }),
-                  },
-                ],
+                // transform: [
+                //   {
+                //     translateY: animatedValue.interpolate({
+                //       inputRange: [0, 50],
+                //       outputRange: [0, -120],
+                //       extrapolate: "clamp",
+                //     }),
+                //   },
+                // ],
               }}>
-              {dataHeader.map((item) => (
+              {/* {dataHeader.map((item) => (
                 <TouchableOpacity
                   style={{
                     backgroundColor: item.value === cat ? "#826CCF" : "#f3f3f3",
@@ -300,9 +293,9 @@ const DetailClub = ({ route }) => {
                     {item.cat}
                   </Text>
                 </TouchableOpacity>
-              ))}
+              ))} */}
             </Animated.View>
-            {cat === "banquantri" && (
+            {/* {cat === "banquantri" && (
               <Animated.View
                 style={{
                   flexDirection: "row",
@@ -352,15 +345,15 @@ const DetailClub = ({ route }) => {
                   </Picker>
                 </View>
               </Animated.View>
-            )}
+            )} */}
           </View>
         </Animated.View>
 
         <ScrollView
-          onScroll={Animated.event(
-            [{ nativeEvent: { contentOffset: { y: animatedValue } } }],
-            { useNativeDriver: false }
-          )}
+          // onScroll={Animated.event(
+          //   [{ nativeEvent: { contentOffset: { y: animatedValue } } }],
+          //   { useNativeDriver: false }
+          // )}
           showsVerticalScrollIndicator={false}
           refreshControl={
             <RefreshControl
@@ -372,17 +365,18 @@ const DetailClub = ({ route }) => {
           }>
           <Animated.View
             style={{
-              marginBottom: "70%",
-              marginTop: cat === "banquantri" ? "55%" : "45%",
-              transform: [
-                {
-                  translateY: animatedValue.interpolate({
-                    inputRange: [0, 50],
-                    outputRange: [0, -50],
-                    extrapolate: "clamp",
-                  }),
-                },
-              ],
+              marginBottom: "80%",
+
+              // marginTop: cat === "banquantri" ? "55%" : "45%",
+              // transform: [
+              //   {
+              //     translateY: animatedValue.interpolate({
+              //       inputRange: [0, 50],
+              //       outputRange: [0, -50],
+              //       extrapolate: "clamp",
+              //     }),
+              //   },
+              // ],
             }}>
             {club.detailClub.ds_thanh_vien &&
               club.detailClub.ds_thanh_vien.map(
@@ -398,7 +392,7 @@ const DetailClub = ({ route }) => {
                         marginVertical: 10,
                         borderRadius: 10,
                         paddingVertical: 5,
-                        marginHorizontal: 10,
+                        marginHorizontal: 15,
                         paddingHorizontal: 10,
                         borderWidth: 0.2,
                       }}>

@@ -80,7 +80,7 @@ const Header = (props) => {
       style={{
         zIndex: 2,
         position: "absolute",
-        paddingTop: StatusBar.currentHeight || 30,
+        paddingTop: StatusBar.currentHeight || 45,
         flexDirection: "row",
         justifyContent: "space-between",
         width: "100%",

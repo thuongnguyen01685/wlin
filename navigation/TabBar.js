@@ -234,7 +234,7 @@ const TabBar = () => {
               return (
                 <View
                   style={{
-                    backgroundColor: focused ? "#9D85F2" : "#909090",
+                    backgroundColor: "#9D85F2",
                     paddingHorizontal: 4,
                     paddingVertical: 3,
                     top: 2,
@@ -273,8 +273,8 @@ const TabBar = () => {
               <LinearGradient
                 start={{ x: 1, y: 0.1 }}
                 end={{ x: 1, y: 1 }}
-                colors={["#FBC7D4", "#9796F0", "#9796F0", "#9796F0"]}
-                style={{ height: 2 }}
+                colors={["#474747", "#f8f8f8"]}
+                style={{ height: 0.2 }}
               />
             </View>
           ),

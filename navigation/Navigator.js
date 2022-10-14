@@ -36,6 +36,7 @@ import UpgradeMember from "../screens/other/UpgradeMember";
 import { AUTH, getProfileAction } from "../redux/actions/authAction";
 import Slips from "../screens/slips/Slips";
 import CreateRefer from "../screens/slips/CreateRefer";
+import DetailEvents from "../screens/events/DetailEvents";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -383,6 +384,11 @@ const Navigator = () => {
         <Stack.Screen
           name="UpgradeMember"
           component={UpgradeMember}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="DetailEvents"
+          component={DetailEvents}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

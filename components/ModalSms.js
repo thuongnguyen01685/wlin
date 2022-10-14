@@ -20,7 +20,7 @@ const ModalSms = (props) => {
       <View
         style={{
           backgroundColor: "white",
-          borderRadius: 7,
+          borderRadius: 10,
           padding: 10,
           elevation: 5,
           marginHorizontal: 20,
