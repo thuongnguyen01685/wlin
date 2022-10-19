@@ -25,7 +25,7 @@ const ModalSuccessRefer = (props) => {
       <View
         style={{
           backgroundColor: "white",
-          borderRadius: 10,
+          borderRadius: 20,
           padding: 10,
           elevation: 5,
           marginHorizontal: 20,

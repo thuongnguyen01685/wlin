@@ -2,7 +2,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 
 import Modal from "react-native-modal";
@@ -22,7 +22,7 @@ const ModalSuccessCheck = (props) => {
       <View
         style={{
           backgroundColor: "white",
-          borderRadius: 10,
+          borderRadius: 20,
           padding: 10,
           elevation: 5,
           marginHorizontal: 20,
@@ -80,7 +80,8 @@ const ModalSuccessCheck = (props) => {
           <TouchableOpacity
             onPress={() => {
               props.setModalSuccess(!props.modalSuccess);
-              navigation.goBack();
+              props.setShowModalPayment(true);
+              // navigation.goBack();
             }}>
             <LinearGradient
               start={{ x: 0, y: 0.3 }}
@@ -94,7 +95,7 @@ const ModalSuccessCheck = (props) => {
                 borderRadius: 10,
               }}>
               <View style={styles.borderBacRounded}>
-                <Text style={{ color: "#ffffff" }}>Tiếp tục</Text>
+                <Text style={{ color: "#ffffff" }}>Thanh toán</Text>
               </View>
             </LinearGradient>
           </TouchableOpacity>

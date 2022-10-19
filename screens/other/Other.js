@@ -26,7 +26,7 @@ const ratio = w / 720;
 
 const data = [
   {
-    icon: "chart-box",
+    icon: "account-multiple",
     name: "Quản trị hội viên",
     navigation: "ListMember",
     color: "#BF1FE7",
@@ -92,7 +92,7 @@ const Other = () => {
 
           elevation: 5,
           zIndex: 3,
-          marginTop: -55,
+          marginTop: -50,
           marginHorizontal: 15,
           paddingVertical: 20,
           borderRadius: 10,

@@ -6,6 +6,7 @@ export const CLUB = {
   GETBENEFIT: "GETBENEFIT",
   GETMEMBER: "GETMEMBER",
   DETAILMEMBER: "DETAILMEMBER",
+  DETAILBENEFIT: "DETAILBENEFIT",
 };
 
 export const getCLub = (token, page) => async (dispatch) => {
@@ -31,6 +32,16 @@ export const getListBenefit = (token) => async (dispatch) => {
   try {
     const res = await getdataApi(`dmnhomquyenloi`, token);
     dispatch({ type: CLUB.GETBENEFIT, payload: res.data });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getDetailBenefit = (_id, token) => async (dispatch) => {
+  try {
+    const res = await getDetailApi(`dmnhomquyenloi`, _id, token);
+
+    dispatch({ type: CLUB.DETAILBENEFIT, payload: res.data });
   } catch (error) {
     console.log(error);
   }

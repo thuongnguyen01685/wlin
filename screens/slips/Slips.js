@@ -33,54 +33,24 @@ const data = [
     picture: require("../../assets/logo.png"),
     nameAreas: "WLIN PIONEER EU+",
     person: "Mai Thu Huyền",
+    bg: "#FEEAEA",
+    color: "#F96F6D",
   },
   {
     key: 2,
     picture: require("../../assets/logo.png"),
     nameAreas: "WLIN PASSION USA+",
     person: "Mai Thu Huyền",
+    bg: "#EEF4FF",
+    color: "#769CEC",
   },
   {
     key: 3,
     picture: require("../../assets/logo.png"),
     nameAreas: "WLIN STARS ASIA+",
     person: "Mai Thu Huyền",
-  },
-  {
-    key: 4,
-    picture: require("../../assets/logo.png"),
-    nameAreas: "WLIN PIONEER EU+",
-    person: "Mai Thu Huyền",
-  },
-  {
-    key: 5,
-    picture: require("../../assets/logo.png"),
-    nameAreas: "WLIN PASSION USA+",
-    person: "Mai Thu Huyền",
-  },
-  {
-    key: 6,
-    picture: require("../../assets/logo.png"),
-    nameAreas: "WLIN STARS ASIA+",
-    person: "Mai Thu Huyền",
-  },
-  {
-    key: 7,
-    picture: require("../../assets/logo.png"),
-    nameAreas: "WLIN PIONEER EU+",
-    person: "Mai Thu Huyền",
-  },
-  {
-    key: 8,
-    picture: require("../../assets/logo.png"),
-    nameAreas: "WLIN PASSION USA+",
-    person: "Mai Thu Huyền",
-  },
-  {
-    key: 9,
-    picture: require("../../assets/logo.png"),
-    nameAreas: "WLIN STARS ASIA+",
-    person: "Mai Thu Huyền",
+    bg: "#E9FBEF",
+    color: "#47CE96",
   },
 ];
 const wait = (timeout) => {
@@ -114,7 +84,7 @@ const Slips = () => {
 
           elevation: 5,
           zIndex: 3,
-          marginTop: -55,
+          marginTop: -50,
           marginHorizontal: 15,
           paddingVertical: 20,
           borderRadius: 10,
@@ -157,7 +127,7 @@ const Slips = () => {
       <View style={{ height: "100%" }}>
         <View
           style={{
-            marginBottom: "70%",
+            marginBottom: "75%",
             paddingHorizontal: 15,
             marginTop: 10,
           }}>
@@ -192,28 +162,68 @@ const Slips = () => {
                   }}>
                   <TouchableOpacity>
                     <Surface style={styles.surface}>
-                      <View style={{ flex: 0.3, justifyContent: "center" }}>
+                      <View
+                        style={{
+                          flex: 0.3,
+                          justifyContent: "center",
+                          alignItems: "center",
+                          flexDirection: "row",
+                        }}>
                         {/* <Avatar.Image size={42} source={item.picture} /> */}
-                        <Image
-                          source={item.picture}
-                          style={{ width: 90, height: 40, marginLeft: 10 }}
-                        />
+                        <Ionicons name="reader" size={30} color={item.color} />
+                        <View
+                          style={{
+                            borderColor: "#dadada",
+                            borderRadius: 15,
+                            borderWidth: 0.7,
+                            paddingVertical: 18,
+                            paddingHorizontal: 5,
+                            flexDirection: "row",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            marginHorizontal: 5,
+                          }}>
+                          <Image
+                            source={item.picture}
+                            style={{ width: 60, height: 30 }}
+                          />
+                        </View>
                       </View>
                       <View
                         style={{
                           flex: 0.6,
                           flexDirection: "column",
                           justifyContent: "center",
+                          marginLeft: 10,
                         }}>
                         <Text
                           style={{
-                            color: "#711775",
+                            color: "#474747",
                             fontSize: 15,
                             fontWeight: "600",
                           }}>
                           {item.nameAreas}
                         </Text>
-                        <Text>{item.person}</Text>
+                        <View
+                          style={{
+                            backgroundColor: item.bg,
+                            width: "50%",
+                            flexDirection: "row",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            borderRadius: 15,
+                            paddingVertical: 2,
+                          }}>
+                          <Text
+                            style={{
+                              color: "#474747",
+                              fontSize: 12,
+                              fontWeight: "400",
+                              color: item.color,
+                            }}>
+                            {item.person}
+                          </Text>
+                        </View>
                       </View>
                       <View
                         style={{
@@ -227,7 +237,7 @@ const Slips = () => {
                           <Ionicons
                             name="chevron-forward-outline"
                             size={25}
-                            color="#711775"
+                            color="#9D85F2"
                           />
                         </TouchableOpacity>
                       </View>
@@ -237,37 +247,38 @@ const Slips = () => {
               );
             }}
           />
-
-          <TouchableOpacity
+          <View
             style={{
               flexDirection: "row",
-              justifyContent: "flex-end",
-              alignItems: "flex-end",
-              position: "absolute",
-              top: "85%",
-              zIndex: 10,
-              left: "85%",
-            }}
-            onPress={() => {
-              navigation.navigate("CreateRefer");
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
             }}>
-            <LinearGradient
-              start={{ x: 0.8, y: 1 }}
-              end={{ x: 0.3, y: 0.3 }}
-              colors={[
-                "rgba(241, 108, 246, 0.8) 120.28%)",
-                "rgba(113, 23, 117, 0.8) -6.93%",
-              ]}
+            <TouchableOpacity
               style={{
-                width: 70,
-                paddingVertical: 18,
-                flexDirection: "row",
-                justifyContent: "center",
-                borderRadius: 50,
+                top: 15,
+              }}
+              onPress={() => {
+                navigation.navigate("CreateRefer");
               }}>
-              <Ionicons name="add-outline" size={30} color="#ffffff" />
-            </LinearGradient>
-          </TouchableOpacity>
+              <LinearGradient
+                start={{ x: 0.3, y: 0.5 }}
+                end={{ x: 1, y: 0 }}
+                colors={["#9D85F2", "#9D85F2"]}
+                style={{
+                  padding: 10,
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  borderRadius: 20,
+                }}>
+                <Text
+                  style={{ fontSize: 15, fontWeight: "600", color: "#ffffff" }}>
+                  Tạo mới
+                </Text>
+                {/* <Ionicons name="add-outline" size={30} color="#ffffff" /> */}
+              </LinearGradient>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </View>
@@ -287,7 +298,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     borderRadius: 8,
     flexDirection: "row",
-    backgroundColor: "#F3F3F3",
+    backgroundColor: "#Ffffff",
+    borderBottomWidth: 0.5,
+    borderColor: "#DADADA",
   },
 });
 

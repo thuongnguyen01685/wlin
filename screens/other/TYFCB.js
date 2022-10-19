@@ -1,5 +1,5 @@
 //import liraries
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
@@ -18,32 +18,42 @@ import {
   Keyboard,
   Platform,
   TextInput,
+  Animated,
 } from "react-native";
-import HeaderPart from "../../components/HeaderPart/HeaderPart";
 import Lottie from "lottie-react-native";
+import HeaderPart from "../../components/HeaderPart/HeaderPart";
 import { useDispatch } from "react-redux";
-
+import { Avatar, Surface } from "react-native-paper";
 const w = Dimensions.get("window").width;
-const h = Dimensions.get("window").height;
+const { height } = Dimensions.get("screen");
 const ratio = w / 720;
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 const data = [
   {
+    key: 1,
     picture: require("../../assets/logo.png"),
     nameAreas: "WLIN PIONEER EU+",
     person: "Mai Thu Huyền",
+    bg: "#FEEAEA",
+    color: "#F96F6D",
   },
   {
+    key: 2,
     picture: require("../../assets/logo.png"),
     nameAreas: "WLIN PASSION USA+",
     person: "Mai Thu Huyền",
+    bg: "#EEF4FF",
+    color: "#769CEC",
   },
   {
+    key: 3,
     picture: require("../../assets/logo.png"),
     nameAreas: "WLIN STARS ASIA+",
     person: "Mai Thu Huyền",
+    bg: "#E9FBEF",
+    color: "#47CE96",
   },
 ];
 // create a component
@@ -51,7 +61,7 @@ const TYFCB = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [refreshing, setRefreshing] = useState(false);
-
+  const scrollY = React.useRef(new Animated.Value(0)).current;
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
 
@@ -75,7 +85,7 @@ const TYFCB = () => {
 
           elevation: 5,
           zIndex: 3,
-          marginTop: -55,
+          marginTop: -50,
           marginHorizontal: 15,
           paddingVertical: 20,
           borderRadius: 10,
@@ -116,110 +126,168 @@ const TYFCB = () => {
         </TouchableOpacity>
       </View>
       <View style={{ height: "100%" }}>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <View
-            style={{
-              marginBottom: "80%",
-              paddingHorizontal: 15,
-              marginTop: 10,
-            }}>
-            <View>
-              {data.map((item, index) => (
-                <TouchableOpacity
-                  key={index}
+        <View
+          style={{
+            marginBottom: "75%",
+            paddingHorizontal: 15,
+            marginTop: 10,
+          }}>
+          <Animated.FlatList
+            onScroll={Animated.event(
+              [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+              { useNativeDriver: true }
+            )}
+            data={data}
+            keyExtractor={(item) => item.key}
+            renderItem={({ item, index }) => {
+              const inputRange = [
+                -1,
+                0,
+                (height * 0.1 + 15) * index,
+                (height * 0.1 + 15) * (index + 3),
+              ];
+              const scale = 1;
+              const opacity = scrollY.interpolate({
+                inputRange,
+                outputRange: [1, 1, 1, 0],
+              });
+              const Offset = scrollY.interpolate({
+                inputRange,
+                outputRange: [0, 0, 0, 500],
+              });
+              return (
+                <Animated.View
                   style={{
-                    flexDirection: "row",
-                    justifyContent: "space-around",
-                    alignItems: "center",
-                    backgroundColor: "#F3F3F3",
-                    marginVertical: 10,
-                    borderRadius: 8,
-                    paddingVertical: 20,
-                  }}
-                  // onPress={() => navigation.navigate("DetailClub")}
-                >
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                    }}>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                      }}>
-                      {/* <Ionicons name="reader-outline" size={30} color="#711775" /> */}
-                      <Image
-                        source={require("../../assets/like.png")}
-                        style={{ width: 30, height: 20 }}
-                      />
-                      <Image
-                        source={item.picture}
-                        style={{ width: 90, height: 40, marginLeft: 10 }}
-                      />
+                    transform: [{ scale: scale }, { translateX: Offset }],
+                    opacity: opacity,
+                  }}>
+                  <TouchableOpacity>
+                    <Surface style={styles.surface}>
                       <View
                         style={{
-                          flexDirection: "column",
-                          marginLeft: 10,
+                          flex: 0.3,
                           justifyContent: "center",
+                          alignItems: "center",
+                          flexDirection: "row",
+                        }}>
+                        {/* <Avatar.Image size={42} source={item.picture} /> */}
+                        <MaterialCommunityIcons
+                          name="handshake-outline"
+                          size={35}
+                          color={item.color}
+                          style={{
+                            transform: [{ rotate: "45deg" }],
+                          }}
+                        />
+                        <View
+                          style={{
+                            borderColor: "#dadada",
+                            borderRadius: 15,
+                            borderWidth: 0.7,
+                            paddingVertical: 18,
+                            paddingHorizontal: 5,
+                            flexDirection: "row",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            marginHorizontal: 5,
+                          }}>
+                          <Image
+                            source={item.picture}
+                            style={{ width: 60, height: 30 }}
+                          />
+                        </View>
+                      </View>
+                      <View
+                        style={{
+                          flex: 0.6,
+                          flexDirection: "column",
+                          justifyContent: "center",
+                          marginLeft: 10,
                         }}>
                         <Text
                           style={{
-                            color: "#711775",
+                            color: "#474747",
                             fontSize: 15,
                             fontWeight: "600",
                           }}>
                           {item.nameAreas}
                         </Text>
-                        <Text>{item.person}</Text>
+                        <View
+                          style={{
+                            backgroundColor: item.bg,
+                            width: "50%",
+                            flexDirection: "row",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            borderRadius: 15,
+                            paddingVertical: 2,
+                          }}>
+                          <Text
+                            style={{
+                              color: "#474747",
+                              fontSize: 12,
+                              fontWeight: "400",
+                              color: item.color,
+                            }}>
+                            {item.person}
+                          </Text>
+                        </View>
                       </View>
-                    </View>
-                  </View>
-                  <TouchableOpacity
-                  // onPress={() => navigation.navigate("DetailClub")}
-                  >
-                    <Ionicons
-                      name="chevron-forward-outline"
-                      size={25}
-                      color="#711775"
-                    />
+                      <View
+                        style={{
+                          flex: 0.1,
+                          flexDirection: "column",
+                          justifyContent: "center",
+                        }}>
+                        <TouchableOpacity
+                        // onPress={() => navigation.navigate("DetailClub")}
+                        >
+                          <Ionicons
+                            name="chevron-forward-outline"
+                            size={25}
+                            color="#9D85F2"
+                          />
+                        </TouchableOpacity>
+                      </View>
+                    </Surface>
                   </TouchableOpacity>
-                </TouchableOpacity>
-              ))}
-            </View>
-          </View>
-        </ScrollView>
-        <TouchableOpacity
-          style={{
-            flexDirection: "row",
-            justifyContent: "flex-end",
-            alignItems: "flex-end",
-            position: "absolute",
-            top: "55%",
-            zIndex: 10,
-            left: "80%",
-          }}
-          onPress={() => {
-            navigation.navigate("CreateTYFCB");
-          }}>
-          <LinearGradient
-            start={{ x: 0.8, y: 1 }}
-            end={{ x: 0.3, y: 0.3 }}
-            colors={[
-              "rgba(241, 108, 246, 0.8) 120.28%)",
-              "rgba(113, 23, 117, 0.8) -6.93%",
-            ]}
+                </Animated.View>
+              );
+            }}
+          />
+          <View
             style={{
-              width: 70,
-              paddingVertical: 18,
               flexDirection: "row",
               justifyContent: "center",
-              borderRadius: 50,
+              alignItems: "center",
+              width: "100%",
             }}>
-            <Ionicons name="add-outline" size={30} color="#ffffff" />
-          </LinearGradient>
-        </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                top: 15,
+              }}
+              onPress={() => {
+                navigation.navigate("CreateTYFCB");
+              }}>
+              <LinearGradient
+                start={{ x: 0.3, y: 0.5 }}
+                end={{ x: 1, y: 0 }}
+                colors={["#9D85F2", "#9D85F2"]}
+                style={{
+                  padding: 10,
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  borderRadius: 20,
+                }}>
+                <Text
+                  style={{ fontSize: 15, fontWeight: "600", color: "#ffffff" }}>
+                  Tạo mới
+                </Text>
+                {/* <Ionicons name="add-outline" size={30} color="#ffffff" /> */}
+              </LinearGradient>
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
     </View>
   );
@@ -230,6 +298,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#ffffff",
+  },
+  surface: {
+    height: height * 0.1,
+    marginTop: 15,
+    padding: 8,
+    marginHorizontal: 10,
+    borderRadius: 8,
+    flexDirection: "row",
+    backgroundColor: "#Ffffff",
+    borderBottomWidth: 0.5,
+    borderColor: "#DADADA",
   },
 });
 

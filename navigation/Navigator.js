@@ -37,6 +37,9 @@ import { AUTH, getProfileAction } from "../redux/actions/authAction";
 import Slips from "../screens/slips/Slips";
 import CreateRefer from "../screens/slips/CreateRefer";
 import DetailEvents from "../screens/events/DetailEvents";
+import AccuracyImage from "../screens/events/AccuracyImage";
+import Map from "../screens/events/Map";
+import ListPaticipant from "../screens/events/ListParticipant";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -389,6 +392,21 @@ const Navigator = () => {
         <Stack.Screen
           name="DetailEvents"
           component={DetailEvents}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="AccuracyImage"
+          component={AccuracyImage}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Map"
+          component={Map}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ListParticipant"
+          component={ListPaticipant}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

@@ -10,7 +10,7 @@ export const getData = async (url, number) => {
 //wlin_clup
 export const getdataApiClub = async (url, token, page) => {
   const res = await axios.get(
-    `${URL}/api/62e0b3885271e2560e8bb7d3/${url}?access_token=${token}&limit=5&page=${page}`
+    `${URL}/api/62e0b3885271e2560e8bb7d3/${url}?access_token=${token}&limit=10&page=${page}`
   );
   return res;
 };

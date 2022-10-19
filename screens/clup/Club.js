@@ -28,7 +28,7 @@ import {
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import { useDispatch, useSelector } from "react-redux";
 import HeaderPart from "../../components/HeaderPart/HeaderPart";
-import { getCLub } from "../../redux/actions/ClupAction";
+import { getCLub, getDetailClub } from "../../redux/actions/ClupAction";
 import { URL } from "../../utils/fetchApi";
 
 const w = Dimensions.get("window").width;
@@ -46,20 +46,27 @@ const Nation = () => {
 
   useEffect(() => {
     setRefreshing(true);
+    // console.log(auth.token, page);
     dispatch(getCLub(auth.token, page));
     setTimeout(() => {
       setRefreshing(false);
     }, 2000);
-  }, [dispatch, page]);
+  }, [page]);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     dispatch(getCLub(auth.token, page));
     wait(2000).then(() => setRefreshing(false));
-  }, [dispatch, page]);
+  }, [page]);
+
+  const handleDetail = (_id) => {
+    dispatch(getDetailClub(_id, auth.token));
+    navigation.navigate("DetailClub");
+  };
+
   return (
     <View style={styles.container}>
-      <View style={{ marginTop: 10, paddingBottom: "18%" }}>
+      <View style={{ marginTop: 10, paddingBottom: "25%" }}>
         <Animated.FlatList
           onScroll={Animated.event(
             [{ nativeEvent: { contentOffset: { y: scrollY } } }],
@@ -75,7 +82,7 @@ const Nation = () => {
           data={club.getClubs}
           onEndReachedThreshold={0.5}
           onEndReached={() => setPage(page + 1)}
-          keyExtractor={(item, index) => index}
+          keyExtractor={(item) => item._id}
           renderItem={({ item, index }) => {
             const inputRange = [
               -1,
@@ -123,9 +130,7 @@ const Nation = () => {
 
                     marginHorizontal: 15,
                   }}
-                  onPress={() =>
-                    navigation.navigate("DetailClub", { _id: item._id })
-                  }>
+                  onPress={() => handleDetail(item._id)}>
                   <View
                     style={{
                       flexDirection: "row",
@@ -185,8 +190,7 @@ const Nation = () => {
                       </View>
                     </View>
                   </View>
-                  <TouchableOpacity
-                    onPress={() => navigation.navigate("DetailClub")}>
+                  <TouchableOpacity onPress={() => handleDetail(item._id)}>
                     <Ionicons
                       name="chevron-forward-outline"
                       size={25}
@@ -242,25 +246,25 @@ const Club = () => {
   ]);
 
   const dispatch = useDispatch();
-  const { auth, club } = useSelector((state) => state);
+  // const { auth, club } = useSelector((state) => state);
   const [refreshing, setRefreshing] = React.useState(false);
-  const [page, setPage] = useState(1);
+  // const [page, setPage] = useState(0);
 
-  const scrollY = useRef(new Animated.Value(0)).current;
+  // const scrollY = useRef(new Animated.Value(0)).current;
 
-  useEffect(() => {
-    setRefreshing(true);
-    dispatch(getCLub(auth.token, page));
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 2000);
-  }, [dispatch, page]);
+  // useEffect(() => {
+  //   setRefreshing(true);
+  //   dispatch(getCLub(auth.token, page));
+  //   setTimeout(() => {
+  //     setRefreshing(false);
+  //   }, 2000);
+  // }, [dispatch, page]);
 
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    dispatch(getCLub(auth.token, page));
-    wait(2000).then(() => setRefreshing(false));
-  }, [dispatch, page]);
+  // const onRefresh = React.useCallback(() => {
+  //   setRefreshing(true);
+  //   dispatch(getCLub(auth.token, page));
+  //   wait(2000).then(() => setRefreshing(false));
+  // }, [dispatch, page]);
 
   return (
     <View style={styles.container}>
@@ -306,11 +310,11 @@ const Club = () => {
                 position: "absolute",
                 left: "100%",
               }}>
-              <Lottie
+              {/* <Lottie
                 source={require("../../assets/loading.json")}
                 autoPlay
                 loop
-              />
+              /> */}
             </View>
           )}
         </View>
@@ -319,26 +323,35 @@ const Club = () => {
           <Ionicons name="alert-circle-outline" size={20} color="#826CCF" />
         </TouchableOpacity>
       </View>
-
-      <TabView
-        navigationState={{ index, routes }}
-        renderScene={renderScene}
-        onIndexChange={setIndex}
-        initialLayout={{ width: layout.width }}
-        renderTabBar={(props) => (
-          <TabBar
-            {...props}
-            renderLabel={({ route, color }) => (
-              <Text
-                style={{ color: "#826CCF", fontSize: 12, fontWeight: "600" }}>
-                {route.title}
-              </Text>
-            )}
-            indicatorStyle={styles.indicatorStyle}
-            style={{ backgroundColor: "#ffffff" }}
-          />
-        )}
-      />
+      <View
+        style={{
+          height: "100%",
+          paddingHorizontal: 15,
+        }}>
+        <TabView
+          navigationState={{ index, routes }}
+          renderScene={renderScene}
+          onIndexChange={setIndex}
+          initialLayout={{ width: layout.width }}
+          renderTabBar={(props) => (
+            <TabBar
+              {...props}
+              renderLabel={({ route, focused }) => (
+                <Text
+                  style={{
+                    color: focused ? "#826CCF" : "#dadada",
+                    fontSize: 12,
+                    fontWeight: "600",
+                  }}>
+                  {route.title}
+                </Text>
+              )}
+              indicatorStyle={styles.indicatorStyle}
+              style={{ backgroundColor: "#ffffff" }}
+            />
+          )}
+        />
+      </View>
     </View>
   );
 };

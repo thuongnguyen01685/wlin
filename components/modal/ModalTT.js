@@ -26,7 +26,7 @@ const ModalTT = (props) => {
       <View
         style={{
           backgroundColor: "white",
-          borderRadius: 7,
+          borderRadius: 20,
           padding: 10,
           elevation: 5,
           width: "100%",

@@ -80,7 +80,7 @@ const Header = (props) => {
       style={{
         zIndex: 2,
         position: "absolute",
-        paddingTop: StatusBar.currentHeight || 45,
+        paddingTop: StatusBar.currentHeight || 35,
         flexDirection: "row",
         justifyContent: "space-between",
         width: "100%",
@@ -183,7 +183,7 @@ const Header = (props) => {
             <Text
               style={{
                 color: "#FFFFFF",
-                fontSize: 25,
+                fontSize: 22,
                 fontWeight: "600",
               }}>
               {auth.profile.name}

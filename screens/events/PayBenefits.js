@@ -24,6 +24,7 @@ import HeaderPart from "../../components/HeaderPart/HeaderPart";
 import ModalSuccessRefer from "../../components/modal/ModalSuccessRefer";
 import { Picker } from "@react-native-picker/picker";
 import DropDownPicker from "react-native-dropdown-picker";
+
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
 const ratio = w / 720;
@@ -40,14 +41,14 @@ const PayBenefits = ({ route }) => {
     "finland",
   ]);
   const [items, setItems] = useState([
-    { label: "Spain", value: "spain" },
-    { label: "Madrid", value: "madrid", parent: "spain" },
-    { label: "Barcelona", value: "barcelona", parent: "spain" },
-    { label: "Italy", value: "italy" },
-    { label: "Rome", value: "rome", parent: "italy" },
-    { label: "Finland", value: "finland" },
+    { label: "Thúy", value: "spain" },
+    { label: "Thu", value: "madrid" },
+    { label: "Trâm", value: "barcelona" },
+    { label: "Hồng", value: "italy" },
+    { label: "Chanh", value: "rome" },
+    { label: "Quýt", value: "finland" },
   ]);
-
+  const [selectedPermission, setSelectedPermission] = useState("");
   const [modalSuccess, setModalSuccess] = useState(false);
 
   return (
@@ -140,6 +141,78 @@ const PayBenefits = ({ route }) => {
             </View>
           </View>
           <View>
+            <Text style={styles.textHeader}>Gói thành viên</Text>
+            <TouchableOpacity style={styles.card}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-around",
+                }}>
+                <LinearGradient
+                  start={{ x: 1, y: 0.7 }}
+                  end={{ x: 0.3, y: 0.8 }}
+                  colors={["#F9C271", "#F4EFB8", "#F4EFB8", "#F9C271"]}
+                  style={{ width: 20, height: 20, borderRadius: 5 }}>
+                  <View
+                    style={{
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      height: "100%",
+                    }}>
+                    <Image
+                      source={require("../../assets/logo.png")}
+                      style={{ width: 10, height: 10 }}
+                    />
+                    <Text style={{ fontSize: 3, color: "#969696" }}>
+                      Gói vàng
+                    </Text>
+                  </View>
+                </LinearGradient>
+                <Text
+                  style={{
+                    color: "#D9BD9C",
+                    fontSize: 11,
+                    fontWeight: "500",
+                    marginHorizontal: 10,
+                  }}>
+                  Gói vàng
+                </Text>
+              </View>
+              <Ionicons
+                name="chevron-forward-outline"
+                size={20}
+                color="#474747"
+              />
+            </TouchableOpacity>
+          </View>
+          <View>
+            <Text style={styles.textHeader}>Chọn chỉ số quyền lợi</Text>
+            <Picker
+              selectedValue={selectedPermission}
+              onValueChange={(itemValue, itemIndex) =>
+                setSelectedPermission(itemValue)
+              }
+              style={{ backgroundColor: "#f9f9f9", fontWeight: "600" }}>
+              <Picker.Item
+                label="Trở thành thành viên chính thức của WLIN Global và được tham gia các group Members để quảng bá, truyền thông và kết nối."
+                value="1"
+                style={styles.itemPick}
+              />
+              <Picker.Item
+                label="Được 1 bằng chứng nhận & hoa kết nạp thành viên Vàng của WLIN Global"
+                value="2"
+                style={styles.itemPick}
+              />
+              <Picker.Item
+                label="Được 2 bài viết truyền thông về thương hiệu cá nhân trên trang wlin.com.vn/ năm"
+                value="3"
+                style={styles.itemPick}
+              />
+            </Picker>
+          </View>
+          <View>
             <Text style={styles.textHeader}>Hình ảnh xác thực</Text>
             <View
               style={{
@@ -174,7 +247,7 @@ const PayBenefits = ({ route }) => {
                     <Ionicons
                       name="image-outline"
                       size={25}
-                      color="rgba(113, 23, 117, 0.3)"
+                      color="rgba(157, 133, 242, 0.35)"
                     />
                   )}
                 </View>
@@ -182,7 +255,7 @@ const PayBenefits = ({ route }) => {
                   <Text
                     style={{
                       fontSize: 10,
-                      color: "rgba(113, 23, 117, 0.3)",
+                      color: "rgba(157, 133, 242, 0.35)",
                       fontWeight: "500",
                     }}>
                     Chưa có hình ảnh
@@ -201,7 +274,7 @@ const PayBenefits = ({ route }) => {
                   <LinearGradient
                     start={{ x: 0, y: 0.3 }}
                     end={{ x: 1, y: 1 }}
-                    colors={["#751979", "#AE40B2"]}
+                    colors={["#9D85F2", "#9D85F2"]}
                     style={{
                       flexDirection: "row",
                       justifyContent: "space-between",
@@ -237,11 +310,11 @@ const PayBenefits = ({ route }) => {
               <LinearGradient
                 start={{ x: 0.3, y: 1 }}
                 end={{ x: 1, y: 1 }}
-                colors={["#751979", "#AE40B2"]}
+                colors={["#9D85F2", "#9D85F2"]}
                 style={{
                   paddingHorizontal: 25,
                   paddingVertical: 10,
-                  borderRadius: 7,
+                  borderRadius: 15,
                 }}>
                 <Text
                   style={{
@@ -275,6 +348,33 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#ffffff",
+  },
+  textHeader: {
+    fontSize: 14,
+    color: "#474747",
+    fontWeight: "600",
+  },
+  card: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginVertical: 10,
+    backgroundColor: "#F9f9f9",
+    paddingVertical: 9,
+    // shadowColor: "#000",
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 2,
+    // },
+    // shadowOpacity: 0.25,
+    // shadowRadius: 3.84,
+    // elevation: 5,
+    borderRadius: 8,
+    paddingHorizontal: 15,
+  },
+  itemPick: {
+    fontSize: 10,
+    borderRadius: 30,
+    fontWeight: "600",
   },
 });
 

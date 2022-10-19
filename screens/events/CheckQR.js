@@ -18,7 +18,9 @@ import {
   Keyboard,
   Platform,
   TextInput,
+  ToastAndroid,
 } from "react-native";
+import * as Clipboard from "expo-clipboard";
 
 import HeaderPart from "../../components/HeaderPart/HeaderPart";
 
@@ -26,6 +28,8 @@ import { BarCodeScanner } from "expo-barcode-scanner";
 import ModalSuccessCheck from "../../components/modal/ModalSuccessCheck";
 import ModalFailCheck from "../../components/modal/ModalFailCheck";
 import { useEffect } from "react";
+import ModalChoosePayment from "../../components/modal/ModalChoosePayment";
+import { useSelector } from "react-redux";
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
 const ratio = w / 720;
@@ -33,10 +37,14 @@ const ratio = w / 720;
 // create a component
 const CheckQR = () => {
   const navigation = useNavigation();
+  const { auth } = useSelector((state) => state);
+
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [modalSuccess, setModalSuccess] = useState(false);
+
   const [modalFail, setModalFail] = useState(false);
+  const [showModalPayment, setShowModalPayment] = useState(false);
   const [dataCheck, setDataCheck] = useState("");
 
   useEffect(() => {
@@ -83,7 +91,7 @@ const CheckQR = () => {
 
           elevation: 5,
           zIndex: 3,
-          marginTop: -55,
+          marginTop: -50,
           marginHorizontal: 15,
           paddingVertical: 20,
           borderRadius: 10,
@@ -105,81 +113,190 @@ const CheckQR = () => {
             <ModalSuccessCheck
               modalSuccess={modalSuccess}
               setModalSuccess={setModalSuccess}
+              showModalPayment={showModalPayment}
+              setShowModalPayment={setShowModalPayment}
               dataCheck={dataCheck}
             />
           )}
           {modalFail && (
             <ModalFailCheck modalFail={modalFail} setModalFail={setModalFail} />
           )}
-          <View style={{ marginBottom: "80%" }}>
-            <View style={{ marginVertical: 12 }}>
-              <Text
+
+          {showModalPayment && (
+            <ModalChoosePayment
+              showModalPayment={showModalPayment}
+              setShowModalPayment={setShowModalPayment}
+            />
+          )}
+
+          {!auth.permission.admin ? (
+            <View style={{ marginBottom: "80%" }}>
+              <View
                 style={{
-                  textAlign: "center",
-                  fontSize: 12,
-                  fontWeight: "600",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
                 }}>
-                Quét mã QR bằng thiết bị của bạn để checkin sự kiện
-              </Text>
-            </View>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
-              }}>
-              <View style={styles.barcodebox}>
-                <BarCodeScanner
-                  onBarCodeScanned={scanned ? handleBarCodeScanned : undefined}
-                  style={{ height: 400, width: 300 }}
+                <View style={{ marginTop: "10%" }}>
+                  <Text
+                    style={{
+                      textAlign: "center",
+                      fontSize: 15,
+                      fontWeight: "600",
+                    }}>
+                    Mã QR của bạn
+                  </Text>
+                </View>
+                <Image
+                  source={require("../../assets/QRFigma.png")}
+                  style={{ resizeMode: "contain", width: "60%", height: 300 }}
                 />
+                <View>
+                  <Text
+                    style={{
+                      textAlign: "center",
+                      fontSize: 12,
+                      fontWeight: "600",
+                    }}>
+                    Đưa mã QR cho QTV để checkin sự kiện
+                  </Text>
+                </View>
+                <View style={{ marginTop: "5%" }}>
+                  <Text
+                    style={{
+                      textAlign: "center",
+                      fontSize: 15,
+                      fontWeight: "600",
+                    }}>
+                    Mã hội viên
+                  </Text>
+                  <View>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        paddingHorizontal: 10,
+                        backgroundColor: "#F9F9F9",
+                        paddingVertical: 5,
+                        borderRadius: 10,
+                        marginTop: 10,
+                      }}>
+                      <Text
+                        style={{
+                          fontSize: 15,
+                          fontWeight: "300",
+                          color: "#474747",
+                        }}>
+                        3RWXO1
+                      </Text>
+                      <TouchableOpacity
+                        style={{
+                          backgroundColor: "#EFD445",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          marginLeft: 10,
+                          borderRadius: 5,
+                          paddingVertical: 5,
+                          paddingHorizontal: 20,
+                        }}
+                        onPress={() => {
+                          Clipboard.setString("3RWXO1");
+                          ToastAndroid.showWithGravityAndOffset(
+                            "Sao chép thành công !",
+                            ToastAndroid.SHORT,
+                            ToastAndroid.TOP,
+                            25,
+                            50
+                          );
+                        }}>
+                        <Text
+                          style={{
+                            fontSize: 12,
+                            fontWeight: "400",
+                            color: "#ffffff",
+                          }}>
+                          Chép
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </View>
               </View>
             </View>
-
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
-                marginVertical: 10,
-              }}>
-              <TouchableOpacity
-                style={{ width: "15%" }}
-                onPress={() => setScanned(true)}>
-                <LinearGradient
-                  start={{ x: 0, y: 0.3 }}
-                  end={{ x: 1, y: 1 }}
-                  colors={["#9796F0", "#FBC7D4"]}
+          ) : (
+            <View style={{ marginBottom: "80%" }}>
+              <View style={{ marginVertical: 12 }}>
+                <Text
                   style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignContent: "center",
-                    alignItems: "center",
-                    borderRadius: 30,
+                    textAlign: "center",
+                    fontSize: 12,
+                    fontWeight: "600",
                   }}>
-                  <View style={styles.borderBacRounded}>
-                    <Image
-                      source={require("../../assets/btncheckqr.png")}
-                      style={styles.imageCheckin}
-                    />
-                  </View>
-                </LinearGradient>
+                  Quét mã QR bằng thiết bị của bạn để checkin sự kiện
+                </Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}>
+                <View style={styles.barcodebox}>
+                  <BarCodeScanner
+                    onBarCodeScanned={
+                      scanned ? handleBarCodeScanned : undefined
+                    }
+                    style={{ height: 400, width: 300 }}
+                  />
+                </View>
+              </View>
+
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginVertical: 10,
+                }}>
+                <TouchableOpacity
+                  style={{ width: "15%" }}
+                  onPress={() => setScanned(true)}>
+                  <LinearGradient
+                    start={{ x: 0, y: 0.3 }}
+                    end={{ x: 1, y: 1 }}
+                    colors={["#9796F0", "#FBC7D4"]}
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      alignContent: "center",
+                      alignItems: "center",
+                      borderRadius: 30,
+                    }}>
+                    <View style={styles.borderBacRounded}>
+                      <Image
+                        source={require("../../assets/btncheckqr.png")}
+                        style={styles.imageCheckin}
+                      />
+                    </View>
+                  </LinearGradient>
+                </TouchableOpacity>
+              </View>
+
+              <TouchableOpacity
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginTop: 10,
+                }}>
+                <Ionicons name="image-outline" size={20} />
+                <Text
+                  style={{ fontSize: 12, fontWeight: "600", marginLeft: 5 }}>
+                  Tải mã QR có sẵn
+                </Text>
               </TouchableOpacity>
             </View>
-
-            <TouchableOpacity
-              style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
-                marginTop: 10,
-              }}>
-              <Ionicons name="image-outline" size={20} />
-              <Text style={{ fontSize: 12, fontWeight: "600", marginLeft: 5 }}>
-                Tải mã QR có sẵn
-              </Text>
-            </TouchableOpacity>
-          </View>
+          )}
         </ScrollView>
       </View>
     </View>

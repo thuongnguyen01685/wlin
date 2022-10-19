@@ -176,7 +176,7 @@ const Profile = () => {
         <View>
           <View
             style={{
-              paddingTop: StatusBar.currentHeight || 30,
+              paddingTop: StatusBar.currentHeight || 40,
               zIndex: 2,
               position: "absolute",
               flexDirection: "row",
@@ -214,7 +214,7 @@ const Profile = () => {
                 <Ionicons
                   name="chevron-back-outline"
                   size={25}
-                  color="#711775"
+                  color="#826CCF"
                   // style={{ transform: [{ rotate: "45deg" }] }}
                 />
               </TouchableOpacity>
@@ -266,11 +266,11 @@ const Profile = () => {
             justifyContent: "space-between",
             paddingHorizontal: 10,
           }}>
-          <Text style={{ fontSize: 18, fontWeight: "600", color: "#711775" }}>
+          <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
             Thông tin quản trị viên
           </Text>
           <TouchableOpacity>
-            <Ionicons name="alert-circle-outline" size={20} color="#711775" />
+            <Ionicons name="alert-circle-outline" size={20} color="#826CCF" />
           </TouchableOpacity>
         </View>
         <View style={styles.search}>
@@ -331,6 +331,7 @@ const Profile = () => {
                   justifyContent: "center",
                   alignItems: "center",
                   top: "75%",
+                  left: "55%",
                 }}
                 onPress={pickImage}>
                 <Ionicons name="camera-outline" size={20} color="#ffffff" />

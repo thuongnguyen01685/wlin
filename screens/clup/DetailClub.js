@@ -21,71 +21,406 @@ import {
   Animated,
   RefreshControl,
   ActivityIndicator,
+  useWindowDimensions,
 } from "react-native";
 
 import HeaderPart from "../../components/HeaderPart/HeaderPart";
 import { URL } from "../../utils/fetchApi";
 import { useSelector, useDispatch } from "react-redux";
-
+import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import { Picker } from "@react-native-picker/picker";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { getDetailClub } from "../../redux/actions/ClupAction";
+import { formatDateDisplay } from "../../utils/datetime";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
 const ratio = w / 720;
-const dataHeader = [
-  {
-    _id: 1,
-    cat: "Thành viên",
-    value: "thanhvien",
-  },
-  {
-    _id: 2,
-    cat: "Nhiệm kỳ",
-    value: "nhiemky",
-  },
-  {
-    _id: 3,
-    cat: "Ban quản trị",
-    value: "banquantri",
-  },
-];
+
 const HEADER_HEIGHT = 130;
+
+const Member = () => {
+  const dispatch = useDispatch();
+  const { auth, club } = useSelector((state) => state);
+
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  return (
+    <View style={styles.container}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View
+          style={{
+            marginBottom: "80%",
+            marginTop: 10,
+          }}>
+          {club.detailClub.ds_thanh_vien &&
+            club.detailClub.ds_thanh_vien.map((item, index) => (
+              <View
+                key={index}
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  marginVertical: 10,
+                  borderRadius: 15,
+                  paddingVertical: 10,
+                  marginHorizontal: 5,
+                  paddingHorizontal: 10,
+                  borderColor: "#dadada",
+                  borderWidth: 0.7,
+                }}>
+                <View
+                  style={{
+                    flexDirection: "row",
+
+                    width: "55%",
+                  }}>
+                  <View style={{ flexDirection: "row" }}>
+                    <Image
+                      source={require("../../assets/truong.png")}
+                      style={{ width: 70, height: 70 }}
+                    />
+                    <Image
+                      source={require("../../assets/vmvang.png")}
+                      style={{ width: 20, height: 20 }}
+                    />
+                  </View>
+
+                  <View
+                    style={{
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      marginLeft: 4,
+                    }}>
+                    <Text
+                      style={{
+                        color: "#474747",
+                        fontSize: 14,
+                        fontWeight: "600",
+                      }}>
+                      {item.ten_kh}
+                    </Text>
+                    <View
+                      style={{
+                        backgroundColor: "#FEEAEA",
+                        padding: 5,
+                        borderRadius: 15,
+                      }}>
+                      <Text
+                        style={{
+                          color: "#F96F6D",
+                          fontSize: 12,
+                          fontWeight: "600",
+                        }}>
+                        {item.ten_chuc_vu}
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "flex-end",
+                    width: "20%",
+                    height: "50%",
+                  }}>
+                  <TouchableOpacity>
+                    <Ionicons name="mail-outline" size={20} color="#EBAF81" />
+                  </TouchableOpacity>
+                  <TouchableOpacity>
+                    <Ionicons name="call-outline" size={20} color="#FBC7D4" />
+                  </TouchableOpacity>
+                  <TouchableOpacity>
+                    <Ionicons name="logo-facebook" size={20} color="#5457A6" />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            ))}
+        </View>
+      </ScrollView>
+    </View>
+  );
+};
+const Term = () => {
+  const dispatch = useDispatch();
+  const { auth, club } = useSelector((state) => state);
+
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  return (
+    <View style={styles.container}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View
+          style={{
+            marginBottom: "80%",
+            marginTop: 10,
+          }}>
+          {club.detailClub.nhiem_ky &&
+            club.detailClub.nhiem_ky.map((item, index) => (
+              <View
+                key={index}
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  backgroundColor: "#Ffffff",
+                  marginVertical: 10,
+                  borderRadius: 15,
+                  paddingVertical: 15,
+                  marginHorizontal: 10,
+                  paddingHorizontal: 10,
+                  // shadowColor: "#000",
+                  // shadowOffset: {
+                  //   width: 0,
+                  //   height: 1,
+                  // },
+                  // shadowOpacity: 0.25,
+                  // shadowRadius: 3.84,
+
+                  // elevation: 5,
+                  borderColor: "#dadada",
+                  borderWidth: 0.7,
+                }}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      borderColor: "#dadada",
+                      borderWidth: 0.7,
+                      borderRadius: 15,
+                      paddingHorizontal: 2,
+                      paddingVertical: 15,
+                    }}>
+                    <Image
+                      source={require("../../assets/logo.png")}
+                      style={{
+                        width: 60,
+                        height: 30,
+                        resizeMode: "contain",
+                      }}
+                    />
+                  </View>
+
+                  <View
+                    style={{
+                      flexDirection: "column",
+                      marginLeft: 20,
+                      justifyContent: "center",
+                    }}>
+                    <Text
+                      style={{
+                        color: "#474747",
+                        fontSize: 18,
+                        fontWeight: "600",
+                        marginBottom: 5,
+                      }}>
+                      {item.ten_nhiem_ky}
+                    </Text>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        backgroundColor: "#F0ECFF",
+                        borderRadius: 15,
+                        paddingHorizontal: 10,
+                      }}>
+                      <Ionicons
+                        name="calendar-outline"
+                        size={20}
+                        color="rgba(157, 133, 242, 0.6)"
+                      />
+                      <Text
+                        style={{
+                          color: "rgba(157, 133, 242, 0.6)",
+                          fontSize: 12,
+                          fontWeight: "600",
+                          marginLeft: 5,
+                        }}>
+                        {formatDateDisplay(item.tu_ngay)} -{" "}
+                        {formatDateDisplay(item.den_ngay)}
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+                <TouchableOpacity
+                  style={{
+                    marginRight: 15,
+                    backgroundColor: "#ffffff",
+                    borderColor: "#9D85F2",
+                    borderWidth: 1,
+                    borderRadius: 7,
+                  }}>
+                  <MaterialIcons name="add" size={15} color="#9D85F2" />
+                </TouchableOpacity>
+              </View>
+            ))}
+        </View>
+      </ScrollView>
+    </View>
+  );
+};
+const Board = () => {
+  const dispatch = useDispatch();
+  const { auth, club } = useSelector((state) => state);
+
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  return (
+    <View style={styles.container}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View
+          style={{
+            marginBottom: "80%",
+          }}>
+          {club.detailClub.quan_tri &&
+            club.detailClub.quan_tri.map((item, index) => (
+              <View
+                key={index}
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  backgroundColor: "#Ffffff",
+                  marginVertical: 10,
+                  borderRadius: 15,
+                  paddingVertical: 10,
+                  marginHorizontal: 10,
+                  paddingHorizontal: 10,
+                  // shadowColor: "#000",
+                  // shadowOffset: {
+                  //   width: 0,
+                  //   height: 1,
+                  // },
+                  // shadowOpacity: 0.25,
+                  // shadowRadius: 3.84,
+
+                  // elevation: 5,
+                  borderColor: "#dadada",
+                  borderWidth: 0.7,
+                }}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      borderColor: "#dadada",
+                      borderWidth: 0.7,
+                      borderRadius: 15,
+                      paddingHorizontal: 2,
+                      paddingVertical: 15,
+                    }}>
+                    <Image
+                      source={require("../../assets/logo.png")}
+                      style={{ width: 60, height: 30 }}
+                    />
+                  </View>
+
+                  <View
+                    style={{
+                      flexDirection: "column",
+                      marginLeft: 20,
+                      justifyContent: "center",
+                      width: "50%",
+                    }}>
+                    <Text
+                      style={{
+                        color: "#474747",
+                        fontSize: 16,
+                        fontWeight: "600",
+                      }}>
+                      {item.ten_kh}
+                    </Text>
+                    <Text
+                      style={{
+                        color: "rgba(67, 67, 67, 0.4)",
+                        fontSize: 12,
+                        fontWeight: "600",
+                        marginVertical: 5,
+                      }}>
+                      {item.chuc_vu2}
+                    </Text>
+                    <View
+                      style={{
+                        padding: 5,
+                        backgroundColor: "#EEF4FF",
+                        borderRadius: 10,
+                      }}>
+                      <Text
+                        style={{
+                          color: "#769CEC",
+                          fontSize: 12,
+                          fontWeight: "600",
+                        }}>
+                        {item.ten_chuc_vu}
+                      </Text>
+                    </View>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-evenly",
+                      alignItems: "center",
+                      width: "25%",
+                      marginHorizontal: 5,
+                    }}>
+                    <TouchableOpacity>
+                      <Ionicons
+                        name="create-outline"
+                        size={20}
+                        color="#9D85F2"
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                      <Ionicons
+                        name="trash-outline"
+                        size={20}
+                        color="#E55656"
+                      />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+            ))}
+        </View>
+      </ScrollView>
+    </View>
+  );
+};
+const renderScene = SceneMap({
+  first: Member,
+  second: Term,
+  third: Board,
+});
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 // create a component
-const DetailClub = ({ route }) => {
+const DetailClub = () => {
   const navigation = useNavigation();
 
-  const [cat, setCat] = useState("thanhvien");
-  const [nk, setNk] = useState("nk1");
   const dispatch = useDispatch();
   const { auth, club } = useSelector((state) => state);
-  const [select, setSelect] = useState("nk1");
+
   const [refreshing, setRefreshing] = React.useState(false);
-  const insets = useSafeAreaInsets();
-  const animatedValue = useRef(new Animated.Value(0)).current;
 
-  // const headerHeight = animatedValue.interpolate({
-  //   inputRange: [0, HEADER_HEIGHT + insets.top],
-  //   outputRange: [HEADER_HEIGHT + insets.top - 100, insets.top + 24],
-  //   extrapolate: "clamp",
-  // });
-  useEffect(() => {
-    setRefreshing(true);
-    dispatch(getDetailClub(route.params._id, auth.token));
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 2000);
-  }, [dispatch, route.params._id]);
+  const layout = useWindowDimensions();
+  const [index, setIndex] = useState(0);
 
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    dispatch(getDetailClub(route.params._id, auth.token));
-    wait(2000).then(() => setRefreshing(false));
-  }, [dispatch, route.params._id]);
+  const [routes] = useState([
+    { key: "first", title: "Thành viên" },
+    { key: "second", title: "Nhiệm kì" },
+    { key: "third", title: "Ban quản trị" },
+  ]);
 
   return (
     <View style={styles.container}>
@@ -136,6 +471,7 @@ const DetailClub = ({ route }) => {
       <View
         style={{
           height: "100%",
+          paddingHorizontal: 15,
         }}>
         <Animated.View
           style={{
@@ -145,7 +481,6 @@ const DetailClub = ({ route }) => {
             zIndex: 10,
             height: 130,
             borderRadius: 7,
-            marginHorizontal: 15,
           }}>
           <Animated.View
           // style={{
@@ -177,6 +512,7 @@ const DetailClub = ({ route }) => {
               <View
                 style={{
                   flexDirection: "column",
+                  width: "40%",
                 }}>
                 {club.detailClub.hinh_anh ? (
                   <Image
@@ -193,7 +529,7 @@ const DetailClub = ({ route }) => {
                 )}
               </View>
 
-              <View style={{ width: "55%", paddingRight: 15 }}>
+              <View style={{ width: "55%" }}>
                 <View
                   style={{
                     flexDirection: "row",
@@ -257,388 +593,30 @@ const DetailClub = ({ route }) => {
               </View>
             </View>
           </Animated.View>
-
-          <View>
-            <Animated.View
-              style={{
-                marginTop: 10,
-                marginBottom: 10,
-                borderRadius: 20,
-                flexDirection: "row",
-                justifyContent: "space-between",
-                // transform: [
-                //   {
-                //     translateY: animatedValue.interpolate({
-                //       inputRange: [0, 50],
-                //       outputRange: [0, -120],
-                //       extrapolate: "clamp",
-                //     }),
-                //   },
-                // ],
-              }}>
-              {/* {dataHeader.map((item) => (
-                <TouchableOpacity
-                  style={{
-                    backgroundColor: item.value === cat ? "#826CCF" : "#f3f3f3",
-                    borderRadius: 20,
-                    paddingHorizontal: "7%",
-                  }}
-                  key={item._id}
-                  onPress={() => setCat(item.value)}>
-                  <Text
-                    style={{
-                      color: item.value === cat ? "#ffffff" : "#A0A0A0",
-                      marginVertical: 5,
-                    }}>
-                    {item.cat}
-                  </Text>
-                </TouchableOpacity>
-              ))} */}
-            </Animated.View>
-            {/* {cat === "banquantri" && (
-              <Animated.View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "flex-end",
-                  marginHorizontal: 15,
-                  zIndex: 13,
-                  transform: [
-                    {
-                      translateY: animatedValue.interpolate({
-                        inputRange: [0, 50],
-                        outputRange: [0, -120],
-                        extrapolate: "clamp",
-                      }),
-                    },
-                  ],
-                }}>
-                <View
-                  style={{
-                    borderRadius: 7,
-                    width: 150,
-                    height: 40,
-                    backgroundColor: "#fdfdfd",
-                    shadowOffset: {
-                      width: 0,
-                      height: 2,
-                    },
-                    shadowOpacity: 0.25,
-                    shadowRadius: 3.84,
-
-                    elevation: 5,
-                  }}>
-                  <Picker
-                    selectedValue={select}
-                    onValueChange={(itemValue, itemIndex) =>
-                      setSelect(itemValue)
-                    }>
-                    <Picker.Item
-                      label="Nhiệm kì 1"
-                      value="nk1"
-                      style={styles.itemSelect}
-                    />
-                    <Picker.Item
-                      label="Nhiệm kì 2"
-                      value="nk2"
-                      style={styles.itemSelect}
-                    />
-                  </Picker>
-                </View>
-              </Animated.View>
-            )} */}
-          </View>
         </Animated.View>
-
-        <ScrollView
-          // onScroll={Animated.event(
-          //   [{ nativeEvent: { contentOffset: { y: animatedValue } } }],
-          //   { useNativeDriver: false }
-          // )}
-          showsVerticalScrollIndicator={false}
-          refreshControl={
-            <RefreshControl
-              tintColor="#711775"
-              refreshing={refreshing}
-              onRefresh={onRefresh}
-              colors={["#711775", "green", "blue"]}
+        <TabView
+          navigationState={{ index, routes }}
+          renderScene={renderScene}
+          onIndexChange={setIndex}
+          initialLayout={{ width: layout.width }}
+          renderTabBar={(props) => (
+            <TabBar
+              {...props}
+              renderLabel={({ route, focused }) => (
+                <Text
+                  style={{
+                    color: focused ? "#826CCF" : "#dadada",
+                    fontSize: 12,
+                    fontWeight: "600",
+                  }}>
+                  {route.title}
+                </Text>
+              )}
+              indicatorStyle={styles.indicatorStyle}
+              style={{ backgroundColor: "#ffffff" }}
             />
-          }>
-          <Animated.View
-            style={{
-              marginBottom: "80%",
-
-              // marginTop: cat === "banquantri" ? "55%" : "45%",
-              // transform: [
-              //   {
-              //     translateY: animatedValue.interpolate({
-              //       inputRange: [0, 50],
-              //       outputRange: [0, -50],
-              //       extrapolate: "clamp",
-              //     }),
-              //   },
-              // ],
-            }}>
-            {club.detailClub.ds_thanh_vien &&
-              club.detailClub.ds_thanh_vien.map(
-                (item) =>
-                  cat === "thanhvien" && (
-                    <View
-                      key={item._id}
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-
-                        marginVertical: 10,
-                        borderRadius: 10,
-                        paddingVertical: 5,
-                        marginHorizontal: 15,
-                        paddingHorizontal: 10,
-                        borderWidth: 0.2,
-                      }}>
-                      <View
-                        style={{
-                          flexDirection: "row",
-
-                          width: "70%",
-                        }}>
-                        <View style={{ flexDirection: "row" }}>
-                          <Image
-                            source={require("../../assets/truong.png")}
-                            style={{ width: 70, height: 70 }}
-                          />
-                          <Image
-                            source={require("../../assets/vmvang.png")}
-                            style={{ width: 20, height: 20 }}
-                          />
-                        </View>
-
-                        <View
-                          style={{
-                            flexDirection: "column",
-                            justifyContent: "center",
-                            marginLeft: 4,
-                          }}>
-                          <Text
-                            style={{
-                              color: "#474747",
-                              fontSize: 13,
-                              fontWeight: "600",
-                            }}>
-                            {item.ten_kh}
-                          </Text>
-                          <Text
-                            style={{
-                              color: "#E0ABDF",
-                              fontSize: 12,
-                              fontWeight: "600",
-                            }}>
-                            {item.ten_chuc_vu}
-                          </Text>
-                        </View>
-                      </View>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          alignItems: "flex-end",
-                          width: "20%",
-                          height: "50%",
-                        }}>
-                        <TouchableOpacity>
-                          <Ionicons
-                            name="mail-outline"
-                            size={20}
-                            color="#EBAF81"
-                          />
-                        </TouchableOpacity>
-                        <TouchableOpacity>
-                          <Ionicons
-                            name="call-outline"
-                            size={20}
-                            color="#FBC7D4"
-                          />
-                        </TouchableOpacity>
-                        <TouchableOpacity>
-                          <Ionicons
-                            name="logo-facebook"
-                            size={20}
-                            color="#5457A6"
-                          />
-                        </TouchableOpacity>
-                      </View>
-                    </View>
-                  )
-              )}
-            {club.detailClub.nhiem_ky &&
-              club.detailClub.nhiem_ky.map(
-                (item, index) =>
-                  cat === "nhiemky" && (
-                    <View
-                      key={index}
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        backgroundColor: "#F3F3F3",
-                        marginVertical: 10,
-                        borderRadius: 8,
-                        paddingVertical: 15,
-                        marginHorizontal: 10,
-                        paddingHorizontal: 10,
-                        shadowColor: "#000",
-                        shadowOffset: {
-                          width: 0,
-                          height: 1,
-                        },
-                        shadowOpacity: 0.25,
-                        shadowRadius: 3.84,
-
-                        elevation: 5,
-                      }}>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                        }}>
-                        <View style={{ flexDirection: "row" }}>
-                          <Image
-                            source={require("../../assets/logo.png")}
-                            style={{
-                              width: 100,
-                              height: 40,
-                              resizeMode: "contain",
-                            }}
-                          />
-                        </View>
-
-                        <View
-                          style={{
-                            flexDirection: "column",
-                            marginLeft: 20,
-                            justifyContent: "center",
-                          }}>
-                          <Text
-                            style={{
-                              color: "#711775",
-                              fontSize: 18,
-                              fontWeight: "600",
-                            }}>
-                            {item.ten_nhiem_ky}
-                          </Text>
-                          <View
-                            style={{
-                              flexDirection: "row",
-                              alignItems: "center",
-                            }}>
-                            <Ionicons
-                              name="calendar-outline"
-                              size={20}
-                              color="#E0ABDF"
-                            />
-                            <Text
-                              style={{
-                                color: "#E0ABDF",
-                                fontSize: 12,
-                                fontWeight: "600",
-                              }}>
-                              {item.tu_ngay.slice(0, 10)} -{" "}
-                              {item.den_ngay.slice(0, 10)}
-                            </Text>
-                          </View>
-                        </View>
-                      </View>
-                      <TouchableOpacity
-                        style={{
-                          marginRight: 15,
-                          backgroundColor: "#ffffff",
-                          borderColor: "#A3A3A3",
-                          borderWidth: 1,
-                          borderRadius: 7,
-                        }}>
-                        <MaterialIcons name="add" size={18} color="#A3A3A3" />
-                      </TouchableOpacity>
-                    </View>
-                  )
-              )}
-            {club.detailClub.quan_tri &&
-              club.detailClub.quan_tri.map(
-                (item) =>
-                  cat === "banquantri" && (
-                    <View
-                      key={item._id}
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        backgroundColor: "#F3F3F3",
-                        marginVertical: 10,
-                        borderRadius: 8,
-                        paddingVertical: 10,
-                        marginHorizontal: 10,
-                        paddingHorizontal: 10,
-                        shadowColor: "#000",
-                        shadowOffset: {
-                          width: 0,
-                          height: 1,
-                        },
-                        shadowOpacity: 0.25,
-                        shadowRadius: 3.84,
-
-                        elevation: 5,
-                      }}>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                        }}>
-                        <View style={{ flexDirection: "row" }}>
-                          <Image
-                            source={require("../../assets/logo.png")}
-                            style={{ width: 100, height: 40 }}
-                          />
-                        </View>
-
-                        <View
-                          style={{
-                            flexDirection: "column",
-                            marginLeft: 20,
-                            justifyContent: "center",
-                          }}>
-                          <Text
-                            style={{
-                              color: "#711775",
-                              fontSize: 18,
-                              fontWeight: "600",
-                            }}>
-                            {item.ten_kh}
-                          </Text>
-                          <Text
-                            style={{
-                              color: "#E0ABDF",
-                              fontSize: 12,
-                              fontWeight: "600",
-                              marginVertical: 5,
-                            }}>
-                            Chức danh: {item.chuc_vu2}
-                          </Text>
-                          <Text
-                            style={{
-                              color: "#E0ABDF",
-                              fontSize: 12,
-                              fontWeight: "600",
-                            }}>
-                            Đầy đủ: {item.ten_chuc_vu}
-                          </Text>
-                        </View>
-                      </View>
-                    </View>
-                  )
-              )}
-          </Animated.View>
-        </ScrollView>
+          )}
+        />
       </View>
     </View>
   );
@@ -664,6 +642,11 @@ const styles = StyleSheet.create({
   textContent: {
     fontSize: 12,
     fontWeight: "400",
+  },
+  indicatorStyle: {
+    backgroundColor: "#826CCF",
+    padding: 1.5,
+    marginBottom: -2,
   },
 });
 

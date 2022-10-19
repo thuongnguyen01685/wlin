@@ -30,6 +30,7 @@ import {
   formatTimeDisplay,
 } from "../../utils/datetime";
 import { URL } from "../../utils/fetchApi";
+import ModalChoosePayment from "../../components/modal/ModalChoosePayment";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
@@ -43,6 +44,7 @@ const DetailEvents = () => {
   const navigation = useNavigation();
   const [refreshing, setRefreshing] = useState(false);
   const [modalSuccess, setModalSuccess] = useState(false);
+
   const dispatch = useDispatch();
 
   const { auth, event } = useSelector((state) => state);
@@ -86,7 +88,7 @@ const DetailEvents = () => {
 
           elevation: 5,
           zIndex: 3,
-          marginTop: -55,
+          marginTop: -50,
           marginHorizontal: 15,
           paddingVertical: 20,
           borderRadius: 10,
@@ -151,6 +153,9 @@ const DetailEvents = () => {
                     width: "100%",
                     height: 180,
                     borderRadius: 8,
+                    opacity: 0.5,
+                    backgroundColor: "#474747",
+                    resizeMode: "contain",
                   }}
                 />
                 <View
@@ -266,132 +271,15 @@ const DetailEvents = () => {
                     người tham gia
                   </Text>
 
-                  {/* <Ionicons
+                  <Ionicons
                     name="arrow-forward-outline"
-                    color="#711775"
+                    color="#9D85F2"
                     size={20}
-                  /> */}
-                </TouchableOpacity>
-              </View>
-            </View>
-            {/* <View style={{ paddingHorizontal: 15 }}>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Text style={{ fontSize: 20, fontWeight: "500" }}>
-                  Sự kiện 1
-                </Text>
-                <TouchableOpacity
-                  onPress={() => navigation.navigate("UpdateEvent")}>
-                  <Image
-                    source={require("../../assets/Edit.png")}
-                    style={{
-                      width: 25,
-                      height: 12,
-                      resizeMode: "contain",
-                      marginLeft: 2,
-                    }}
                   />
                 </TouchableOpacity>
               </View>
-              <View style={{ paddingLeft: 5 }}>
-                <View style={styles.containerBox}>
-                  <View>
-                    <Ionicons name="calendar" size={30} color="#0F49C3" />
-                  </View>
-                  <View style={styles.conText}>
-                    <Text style={styles.headerContent}>17 tháng 8, 2022</Text>
-                    <Text style={styles.bodyContent}>Thứ 4, 9:00 - 11:00</Text>
-                  </View>
-                </View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                  }}>
-                  <View>
-                    <Ionicons name="location" size={30} color="#E51104" />
-                  </View>
-                  <View
-                    style={{
-                      marginLeft: 10,
-                    }}>
-                    <Text style={styles.headerContent}>
-                      Trung tâm sự kiện Diamond Place
-                    </Text>
-                    <Text style={styles.bodyContent}>
-                      15A Hồ Văn Huê, Phường 9, Quận Phú Nhuận, TP.HCM
-                    </Text>
-                    <View>
-                      <TouchableOpacity
-                        style={{
-                          borderRadius: 7,
-                          flexDirection: "row",
-                          alignItems: "center",
-                          width: "100%",
-                        }}
-                        onPress={() => navigation.navigate("Map")}>
-                        <LinearGradient
-                          start={{ x: 1, y: 0.3 }}
-                          end={{ x: 1, y: 1 }}
-                          colors={["#9D85F2", "#FBC7D4"]}
-                          style={{
-                            borderRadius: 7,
-                            paddingVertical: 3,
-                            paddingHorizontal: 6,
-                            flexDirection: "row",
-                            justifyContent: "center",
-                          }}>
-                          <Ionicons name="location" size={15} color="#ffffff" />
-                          <Text
-                            style={{
-                              fontSize: 10,
-                              color: "#ffffff",
-                              textAlign: "center",
-                              fontWeight: "500",
-                            }}>
-                            Xem bản đồ
-                          </Text>
-                        </LinearGradient>
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                </View>
-                <View style={styles.containerBox}>
-                  <View>
-                    <Ionicons name="document-text" size={30} color="#7F04E0" />
-                  </View>
-                  <View style={styles.conText}>
-                    <Text style={styles.headerContent}>
-                      Nội dung chương trình
-                    </Text>
-                    <Text style={styles.bodyContent}>
-                      Lorem Ipsum is simply dummy text of the printing and
-                      typesetting industry. Lorem Ipsum has been the industry's
-                      standard dummy text ever since the 1500s, when an unknown
-                      printer took a galley of type and scrambled it to make a
-                      type specimen book
-                    </Text>
-                  </View>
-                </View>
-                <View style={styles.containerBox}>
-                  <View>
-                    <MaterialCommunityIcons
-                      name="ticket-confirmation"
-                      size={30}
-                      color="#2BA600"
-                    />
-                  </View>
-                  <View style={styles.conText}>
-                    <Text style={styles.headerContent}>Giá vé</Text>
-                    <Text style={styles.bodyContent}>
-                      Thành viên: 500.000 VND
-                    </Text>
-                    <Text style={styles.bodyContent}>
-                      Khách mời: 450.000 VND
-                    </Text>
-                  </View>
-                </View>
-              </View>
-            </View> */}
+            </View>
+
             <View style={{ paddingHorizontal: 15 }}>
               <LinearGradient
                 start={{ x: 0, y: 0.3 }}
@@ -655,7 +543,8 @@ const DetailEvents = () => {
                         </View>
                       </LinearGradient>
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate("ReportExcel")}>
                       <LinearGradient
                         start={{ x: 0, y: 0.3 }}
                         end={{ x: 1, y: 1 }}

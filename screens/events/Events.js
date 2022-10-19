@@ -94,116 +94,137 @@ const EventRoute = () => {
             colors={["#9796F0", "green", "blue"]}
           />
         }>
-        <View style={{ marginBottom: "16%" }}>
-          {events.map((item) => (
-            <TouchableOpacity
-              key={item._id}
-              style={{
-                flexDirection: "row",
-                // justifyContent: "space-between",
-                // alignItems: "center",
-                marginBottom: 10,
-                borderRadius: 8,
-                paddingVertical: 5,
-                marginHorizontal: 15,
-                borderBottomColor: "#DADADA",
-                borderBottomWidth: 0.5,
-              }}
-              onPress={() => handleDetail(item._id)}>
-              <View
+        <View
+          style={{
+            marginBottom: "40%",
+            marginTop: 10,
+            height: h,
+          }}>
+          {events.length > 0 ? (
+            events.map((item) => (
+              <TouchableOpacity
+                key={item._id}
                 style={{
                   flexDirection: "row",
-                  width: "80%",
-                  marginBottom: 5,
-                }}>
+                  // justifyContent: "space-between",
+                  // alignItems: "center",
+                  marginBottom: 10,
+                  borderRadius: 8,
+                  paddingVertical: 5,
+                  marginHorizontal: 15,
+                  borderBottomColor: "#DADADA",
+                  borderBottomWidth: 0.5,
+                }}
+                onPress={() => handleDetail(item._id)}>
                 <View
                   style={{
                     flexDirection: "row",
-                    borderRadius: 7,
-                    justifyContent: "center",
-                    alignItems: "center",
+                    width: "80%",
+                    marginBottom: 5,
                   }}>
-                  <Image
-                    source={{ uri: `${URL}${item.hinh_anh}` }}
-                    style={{ width: 80, height: 80, borderRadius: 7 }}
-                  />
-                </View>
-                <View
-                  style={{
-                    width: "75%",
-                    justifyContent: "space-evenly",
-                    alignItems: "stretch",
-                    marginLeft: 10,
-                  }}>
-                  <Text
-                    style={{
-                      color: "#474747",
-                      fontSize: 14,
-                      fontWeight: "600",
-                    }}>
-                    {item.ten_su_kien}
-                  </Text>
                   <View
                     style={{
                       flexDirection: "row",
+                      borderRadius: 7,
+                      justifyContent: "center",
                       alignItems: "center",
-                      backgroundColor: "#EEF4FF",
-                      width: "50%",
-                      borderRadius: 13,
-                      paddingHorizontal: 4,
-                      paddingVertical: 2,
                     }}>
-                    <Ionicons name="calendar" size={15} color="#769CEC" />
-                    <Text
-                      style={{
-                        color: "#769CEC",
-                        fontSize: 11,
-                        fontWeight: "600",
-                        left: 10,
-                      }}>
-                      {formatDateDisplay(item.ngay_su_kien)}
-                    </Text>
+                    <Image
+                      source={{ uri: `${URL}${item.hinh_anh}` }}
+                      style={{ width: 80, height: 80, borderRadius: 7 }}
+                    />
                   </View>
-                  <View style={{ flexDirection: "row" }}>
-                    <Ionicons name="location" size={14} />
+                  <View
+                    style={{
+                      width: "75%",
+                      justifyContent: "space-evenly",
+                      alignItems: "stretch",
+                      marginLeft: 10,
+                    }}>
                     <Text
                       style={{
-                        color: "#000000",
-                        fontSize: 10,
+                        color: "#474747",
+                        fontSize: 14,
                         fontWeight: "600",
-                        left: 5,
                       }}>
-                      {item.dia_diem}
+                      {item.ten_su_kien}
                     </Text>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        backgroundColor: "#EEF4FF",
+                        width: "50%",
+                        borderRadius: 13,
+                        paddingHorizontal: 4,
+                        paddingVertical: 2,
+                      }}>
+                      <Ionicons name="calendar" size={15} color="#769CEC" />
+                      <Text
+                        style={{
+                          color: "#769CEC",
+                          fontSize: 11,
+                          fontWeight: "600",
+                          left: 10,
+                        }}>
+                        {formatDateDisplay(item.ngay_su_kien)}
+                      </Text>
+                    </View>
+                    <View style={{ flexDirection: "row" }}>
+                      <Ionicons name="location" size={14} />
+                      <Text
+                        style={{
+                          color: "#000000",
+                          fontSize: 10,
+                          fontWeight: "600",
+                          left: 5,
+                        }}>
+                        {item.dia_diem}
+                      </Text>
+                    </View>
                   </View>
                 </View>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
 
-                  width: "15%",
-                  marginLeft: 10,
-                }}>
-                <TouchableOpacity>
-                  <Ionicons
-                    name={item.save ? "bookmark" : "bookmark-outline"}
-                    size={20}
-                    color={item.save ? "#FFBE17" : "#711775"}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity>
-                  <Ionicons
-                    name="alert-circle-outline"
-                    size={20}
-                    color="#9D85F2"
-                  />
-                </TouchableOpacity>
-              </View>
-            </TouchableOpacity>
-          ))}
+                    width: "15%",
+                    marginLeft: 10,
+                  }}>
+                  <TouchableOpacity>
+                    <Ionicons
+                      name={item.save ? "bookmark" : "bookmark-outline"}
+                      size={20}
+                      color={item.save ? "#FFBE17" : "#FEC90F"}
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity>
+                    <Ionicons
+                      name="alert-circle-outline"
+                      size={20}
+                      color="#9D85F2"
+                    />
+                  </TouchableOpacity>
+                </View>
+              </TouchableOpacity>
+            ))
+          ) : (
+            <View
+              style={{
+                paddingVertical: 15,
+                height: 200,
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+              }}>
+              <Text
+                style={{ fontSize: 15, color: "#474747", fontWeight: "600" }}>
+                Không có sự kiện nào đang diễn ra.
+              </Text>
+            </View>
+          )}
         </View>
       </ScrollView>
     </View>
@@ -262,116 +283,137 @@ const EventingRoute = () => {
             colors={["#9796F0", "green", "blue"]}
           />
         }>
-        <View style={{ marginBottom: "16%" }}>
-          {eventing.map((item) => (
-            <TouchableOpacity
-              key={item._id}
-              style={{
-                flexDirection: "row",
-                // justifyContent: "space-between",
-                // alignItems: "center",
-                marginBottom: 10,
-                borderRadius: 8,
-                paddingVertical: 5,
-                marginHorizontal: 15,
-                borderBottomColor: "#DADADA",
-                borderBottomWidth: 0.5,
-              }}
-              onPress={() => handleDetail(item._id)}>
-              <View
+        <View
+          style={{
+            marginTop: 10,
+            height: "100%",
+            marginBottom: "75%",
+          }}>
+          {eventing.length > 0 ? (
+            eventing.map((item) => (
+              <TouchableOpacity
+                key={item._id}
                 style={{
                   flexDirection: "row",
-                  width: "80%",
-                  marginBottom: 5,
-                }}>
+                  // justifyContent: "space-between",
+                  // alignItems: "center",
+                  marginBottom: 10,
+                  borderRadius: 8,
+                  paddingVertical: 5,
+                  marginHorizontal: 15,
+                  borderBottomColor: "#DADADA",
+                  borderBottomWidth: 0.5,
+                }}
+                onPress={() => handleDetail(item._id)}>
                 <View
                   style={{
                     flexDirection: "row",
-                    borderRadius: 7,
-                    justifyContent: "center",
-                    alignItems: "center",
+                    width: "80%",
+                    marginBottom: 5,
                   }}>
-                  <Image
-                    source={{ uri: `${URL}${item.hinh_anh}` }}
-                    style={{ width: 80, height: 80, borderRadius: 7 }}
-                  />
-                </View>
-                <View
-                  style={{
-                    width: "75%",
-                    justifyContent: "space-evenly",
-                    alignItems: "stretch",
-                    marginLeft: 10,
-                  }}>
-                  <Text
-                    style={{
-                      color: "#474747",
-                      fontSize: 14,
-                      fontWeight: "600",
-                    }}>
-                    {item.ten_su_kien}
-                  </Text>
                   <View
                     style={{
                       flexDirection: "row",
+                      borderRadius: 7,
+                      justifyContent: "center",
                       alignItems: "center",
-                      backgroundColor: "#EEF4FF",
-                      width: "50%",
-                      borderRadius: 13,
-                      paddingHorizontal: 4,
-                      paddingVertical: 2,
                     }}>
-                    <Ionicons name="calendar" size={15} color="#769CEC" />
-                    <Text
-                      style={{
-                        color: "#769CEC",
-                        fontSize: 11,
-                        fontWeight: "600",
-                        left: 10,
-                      }}>
-                      {formatDateDisplay(item.ngay_su_kien)}
-                    </Text>
+                    <Image
+                      source={{ uri: `${URL}${item.hinh_anh}` }}
+                      style={{ width: 80, height: 80, borderRadius: 7 }}
+                    />
                   </View>
-                  <View style={{ flexDirection: "row" }}>
-                    <Ionicons name="location" size={14} />
+                  <View
+                    style={{
+                      width: "75%",
+                      justifyContent: "space-evenly",
+                      alignItems: "stretch",
+                      marginLeft: 10,
+                    }}>
                     <Text
                       style={{
-                        color: "#000000",
-                        fontSize: 10,
+                        color: "#474747",
+                        fontSize: 14,
                         fontWeight: "600",
-                        left: 5,
                       }}>
-                      {item.dia_diem}
+                      {item.ten_su_kien}
                     </Text>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        backgroundColor: "#EEF4FF",
+                        width: "50%",
+                        borderRadius: 13,
+                        paddingHorizontal: 4,
+                        paddingVertical: 2,
+                      }}>
+                      <Ionicons name="calendar" size={15} color="#769CEC" />
+                      <Text
+                        style={{
+                          color: "#769CEC",
+                          fontSize: 11,
+                          fontWeight: "600",
+                          left: 10,
+                        }}>
+                        {formatDateDisplay(item.ngay_su_kien)}
+                      </Text>
+                    </View>
+                    <View style={{ flexDirection: "row" }}>
+                      <Ionicons name="location" size={14} />
+                      <Text
+                        style={{
+                          color: "#000000",
+                          fontSize: 10,
+                          fontWeight: "600",
+                          left: 5,
+                        }}>
+                        {item.dia_diem}
+                      </Text>
+                    </View>
                   </View>
                 </View>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
 
-                  width: "15%",
-                  marginLeft: 10,
-                }}>
-                <TouchableOpacity>
-                  <Ionicons
-                    name={item.save ? "bookmark" : "bookmark-outline"}
-                    size={20}
-                    color={item.save ? "#FFBE17" : "#711775"}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity>
-                  <Ionicons
-                    name="alert-circle-outline"
-                    size={20}
-                    color="#9D85F2"
-                  />
-                </TouchableOpacity>
-              </View>
-            </TouchableOpacity>
-          ))}
+                    width: "15%",
+                    marginLeft: 10,
+                  }}>
+                  <TouchableOpacity>
+                    <Ionicons
+                      name={item.save ? "bookmark" : "bookmark-outline"}
+                      size={20}
+                      color={item.save ? "#FFBE17" : "#FEC90F"}
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity>
+                    <Ionicons
+                      name="alert-circle-outline"
+                      size={20}
+                      color="#9D85F2"
+                    />
+                  </TouchableOpacity>
+                </View>
+              </TouchableOpacity>
+            ))
+          ) : (
+            <View
+              style={{
+                paddingVertical: 15,
+                height: 200,
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+              }}>
+              <Text
+                style={{ fontSize: 15, color: "#474747", fontWeight: "600" }}>
+                Không có sự kiện nào sắp diễn ra.
+              </Text>
+            </View>
+          )}
         </View>
       </ScrollView>
     </View>
@@ -430,116 +472,137 @@ const EventedRoute = () => {
             colors={["#9796F0", "green", "blue"]}
           />
         }>
-        <View style={{ marginBottom: "16%" }}>
-          {evented.map((item) => (
-            <TouchableOpacity
-              key={item._id}
-              style={{
-                flexDirection: "row",
-                // justifyContent: "space-between",
-                // alignItems: "center",
-                marginBottom: 10,
-                borderRadius: 8,
-                paddingVertical: 5,
-                marginHorizontal: 15,
-                borderBottomColor: "#DADADA",
-                borderBottomWidth: 0.5,
-              }}
-              onPress={() => handleDetail(item._id)}>
-              <View
+        <View
+          style={{
+            marginTop: 10,
+            height: "100%",
+            marginBottom: "75%",
+          }}>
+          {evented.length > 0 ? (
+            evented.map((item) => (
+              <TouchableOpacity
+                key={item._id}
                 style={{
                   flexDirection: "row",
-                  width: "80%",
-                  marginBottom: 5,
-                }}>
+                  // justifyContent: "space-between",
+                  // alignItems: "center",
+                  marginBottom: 10,
+                  borderRadius: 8,
+                  paddingVertical: 5,
+                  marginHorizontal: 15,
+                  borderBottomColor: "#DADADA",
+                  borderBottomWidth: 0.5,
+                }}
+                onPress={() => handleDetail(item._id)}>
                 <View
                   style={{
                     flexDirection: "row",
-                    borderRadius: 7,
-                    justifyContent: "center",
-                    alignItems: "center",
+                    width: "80%",
+                    marginBottom: 5,
                   }}>
-                  <Image
-                    source={{ uri: `${URL}${item.hinh_anh}` }}
-                    style={{ width: 80, height: 80, borderRadius: 7 }}
-                  />
-                </View>
-                <View
-                  style={{
-                    width: "75%",
-                    justifyContent: "space-evenly",
-                    alignItems: "stretch",
-                    marginLeft: 10,
-                  }}>
-                  <Text
-                    style={{
-                      color: "#474747",
-                      fontSize: 14,
-                      fontWeight: "600",
-                    }}>
-                    {item.ten_su_kien}
-                  </Text>
                   <View
                     style={{
                       flexDirection: "row",
+                      borderRadius: 7,
+                      justifyContent: "center",
                       alignItems: "center",
-                      backgroundColor: "#EEF4FF",
-                      width: "50%",
-                      borderRadius: 13,
-                      paddingHorizontal: 4,
-                      paddingVertical: 2,
                     }}>
-                    <Ionicons name="calendar" size={15} color="#769CEC" />
-                    <Text
-                      style={{
-                        color: "#769CEC",
-                        fontSize: 11,
-                        fontWeight: "600",
-                        left: 10,
-                      }}>
-                      {formatDateDisplay(item.ngay_su_kien)}
-                    </Text>
+                    <Image
+                      source={{ uri: `${URL}${item.hinh_anh}` }}
+                      style={{ width: 80, height: 80, borderRadius: 7 }}
+                    />
                   </View>
-                  <View style={{ flexDirection: "row" }}>
-                    <Ionicons name="location" size={14} />
+                  <View
+                    style={{
+                      width: "75%",
+                      justifyContent: "space-evenly",
+                      alignItems: "stretch",
+                      marginLeft: 10,
+                    }}>
                     <Text
                       style={{
-                        color: "#000000",
-                        fontSize: 10,
+                        color: "#474747",
+                        fontSize: 14,
                         fontWeight: "600",
-                        left: 5,
                       }}>
-                      {item.dia_diem}
+                      {item.ten_su_kien}
                     </Text>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        backgroundColor: "#EEF4FF",
+                        width: "50%",
+                        borderRadius: 13,
+                        paddingHorizontal: 4,
+                        paddingVertical: 2,
+                      }}>
+                      <Ionicons name="calendar" size={15} color="#769CEC" />
+                      <Text
+                        style={{
+                          color: "#769CEC",
+                          fontSize: 11,
+                          fontWeight: "600",
+                          left: 10,
+                        }}>
+                        {formatDateDisplay(item.ngay_su_kien)}
+                      </Text>
+                    </View>
+                    <View style={{ flexDirection: "row" }}>
+                      <Ionicons name="location" size={14} />
+                      <Text
+                        style={{
+                          color: "#000000",
+                          fontSize: 10,
+                          fontWeight: "600",
+                          left: 5,
+                        }}>
+                        {item.dia_diem}
+                      </Text>
+                    </View>
                   </View>
                 </View>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
 
-                  width: "15%",
-                  marginLeft: 10,
-                }}>
-                <TouchableOpacity>
-                  <Ionicons
-                    name={item.save ? "bookmark" : "bookmark-outline"}
-                    size={20}
-                    color={item.save ? "#FFBE17" : "#711775"}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity>
-                  <Ionicons
-                    name="alert-circle-outline"
-                    size={20}
-                    color="#9D85F2"
-                  />
-                </TouchableOpacity>
-              </View>
-            </TouchableOpacity>
-          ))}
+                    width: "15%",
+                    marginLeft: 10,
+                  }}>
+                  <TouchableOpacity>
+                    <Ionicons
+                      name={item.save ? "bookmark" : "bookmark-outline"}
+                      size={20}
+                      color={item.save ? "#FFBE17" : "#FEC90F"}
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity>
+                    <Ionicons
+                      name="alert-circle-outline"
+                      size={20}
+                      color="#9D85F2"
+                    />
+                  </TouchableOpacity>
+                </View>
+              </TouchableOpacity>
+            ))
+          ) : (
+            <View
+              style={{
+                paddingVertical: 15,
+                height: 200,
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+              }}>
+              <Text
+                style={{ fontSize: 15, color: "#474747", fontWeight: "600" }}>
+                Không có sự kiện nào đã diễn ra.
+              </Text>
+            </View>
+          )}
         </View>
       </ScrollView>
     </View>
@@ -592,7 +655,7 @@ const Events = () => {
 
           elevation: 5,
           zIndex: 3,
-          marginTop: -55,
+          marginTop: -50,
           marginHorizontal: 15,
           paddingVertical: 20,
           borderRadius: 10,
@@ -662,25 +725,32 @@ const Events = () => {
             </TouchableOpacity>
           ))}
         </View> */}
-      <TabView
-        navigationState={{ index, routes }}
-        renderScene={renderScene}
-        onIndexChange={setIndex}
-        initialLayout={{ width: layout.width }}
-        renderTabBar={(props) => (
-          <TabBar
-            {...props}
-            renderLabel={({ route, color }) => (
-              <Text
-                style={{ color: "#826CCF", fontSize: 12, fontWeight: "600" }}>
-                {route.title}
-              </Text>
-            )}
-            indicatorStyle={styles.indicatorStyle}
-            style={{ backgroundColor: "#ffffff" }}
-          />
-        )}
-      />
+      <View
+        style={{
+          height: "100%",
+          paddingHorizontal: 15,
+        }}>
+        <TabView
+          navigationState={{ index, routes }}
+          renderScene={renderScene}
+          onIndexChange={setIndex}
+          initialLayout={{ width: layout.width }}
+          renderTabBar={(props) => (
+            <TabBar
+              {...props}
+              renderLabel={({ route, color }) => (
+                <Text
+                  style={{ color: "#826CCF", fontSize: 12, fontWeight: "600" }}>
+                  {route.title}
+                </Text>
+              )}
+              indicatorStyle={styles.indicatorStyle}
+              style={{ backgroundColor: "#ffffff" }}
+            />
+          )}
+        />
+      </View>
+
       {/* <ScrollView
           showsVerticalScrollIndicator={false}
           refreshControl={

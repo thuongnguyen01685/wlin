@@ -12,6 +12,7 @@ const ModalPayment = (props) => {
   const navigation = useNavigation();
   const handleClose = () => {
     props.setModalSuccess(!props.modalSuccess);
+    navigation.navigate("DetailEvents");
   };
   return (
     <Modal
@@ -25,7 +26,7 @@ const ModalPayment = (props) => {
       <View
         style={{
           backgroundColor: "white",
-          borderRadius: 7,
+          borderRadius: 20,
           padding: 10,
           elevation: 5,
           width: "100%",
@@ -49,13 +50,28 @@ const ModalPayment = (props) => {
           }}>
           <View style={{ flexDirection: "row", justifyContent: "center" }}>
             <Image
-              source={require("../../assets/emojione_white-heavy-check-mark.png")}
-              style={{ width: 70, height: 70 }}
+              source={require("../../assets/Chat.png")}
+              style={{
+                width: 150,
+                height: 100,
+                marginVertical: 10,
+                resizeMode: "contain",
+              }}
             />
           </View>
           <View style={{ marginVertical: 10 }}>
             <Text
-              style={{ fontSize: 12, fontWeight: "600", textAlign: "center" }}>
+              style={{ fontSize: 18, fontWeight: "800", textAlign: "center" }}>
+              Chúc mừng
+            </Text>
+            <Text
+              style={{
+                fontSize: 14,
+                fontWeight: "600",
+                textAlign: "center",
+                color: "#9D85F2",
+                marginVertical: 10,
+              }}>
               {props.content}
             </Text>
           </View>
@@ -70,13 +86,13 @@ const ModalPayment = (props) => {
               <LinearGradient
                 start={{ x: 0, y: 0.3 }}
                 end={{ x: 1, y: 1 }}
-                colors={["#751979", "#AE40B2"]}
+                colors={["#9D85F2", "rgba(157, 133, 242, 0.4)"]}
                 style={{
                   flexDirection: "row",
                   justifyContent: "space-between",
                   alignContent: "center",
                   alignItems: "center",
-                  borderRadius: 7,
+                  borderRadius: 10,
                 }}>
                 <View style={styles.borderBacRounded}>
                   <Text style={{ color: "#ffffff" }}>{props.textButton}</Text>

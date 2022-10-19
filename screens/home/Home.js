@@ -23,6 +23,7 @@ import {
   BackHandler,
   Alert,
   ToastAndroid,
+  RefreshControl,
 } from "react-native";
 import PhoneInput from "react-native-phone-number-input";
 
@@ -107,29 +108,51 @@ const ListQL = [
     des: "Được 2 bài viết truyền thông về thương hiệu cá nhân trên trang wlin.com.vn/ năm",
   },
 ];
-
-const HEADER_HEIGHT = 225;
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
+const HEADER_HEIGHT = 145;
 let backHandlerClickCount = 0;
 // create a component
 const Home = () => {
   const navigation = useNavigation();
   const [backHome, setBackHome] = useState(false);
   const dispatch = useDispatch();
+  const [refreshing, setRefreshing] = useState(false);
   const animatedValue = useRef(new Animated.Value(0)).current;
   const { auth, notify, event } = useSelector((state) => state);
   const insets = useSafeAreaInsets();
-
-  //eventing
 
   let dateNow = new Date();
   let year = dateNow.getFullYear();
   let month = dateNow.getMonth() + 1;
   let day = dateNow.getDate();
   let dayofweek = dateNow.getDay();
-
   const dayNow = year + "-" + month + "-" + day;
+  //eventing
+  function formatDate(time, string) {
+    let dateNow = new Date(formatDateDisplays(time));
+    let year = dateNow.getFullYear();
+    let month = dateNow.getMonth() + 1;
+    let day = dateNow.getDate();
+    let dayofweek = dateNow.getDay();
 
-  const dayname = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
+    const dayNow = year + "-" + month + "-" + day;
+
+    const dayname = [
+      "Chủ nhật",
+      "Thứ 2",
+      "Thứ 3",
+      "Thứ 4",
+      "Thứ 5",
+      "Thứ 6",
+      "Thứ 7",
+    ];
+
+    if (string === "thang") return month;
+    if (string === "ngay") return day;
+    if (string === "thu") return dayname[dayofweek];
+  }
 
   //console.log(dayname[dayofweek] + " ngày " + day + "/" + month + "/" + year);
 
@@ -141,7 +164,7 @@ const Home = () => {
 
   const headerHeight = animatedValue.interpolate({
     inputRange: [0, HEADER_HEIGHT + insets.top],
-    outputRange: [HEADER_HEIGHT + insets.top, insets.top + 33],
+    outputRange: [HEADER_HEIGHT + insets.top, insets.top + 30],
     extrapolate: "clamp",
   });
   const backButtonHandler = () => {
@@ -186,6 +209,14 @@ const Home = () => {
     };
   }, [backHome]);
 
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    dispatch(getPermissionAction(auth.token, auth.profile.email));
+    dispatch(getRankAction(auth.token, auth.profile.email));
+    dispatch(getEventsAction(auth.token));
+    wait(2000).then(() => setRefreshing(false));
+  }, [auth.token, dispatch, auth.profile.email]);
+
   const handleDetail = (_id) => {
     dispatch(getDetailEventsAction(_id, auth.token));
     navigation.navigate("DetailEvents");
@@ -204,14 +235,67 @@ const Home = () => {
         <Image
           style={{
             width: "93%",
-            height: 200,
+            height: 150,
             borderRadius: 10,
+            opacity: 0.5,
+            backgroundColor: "#474747",
           }}
           source={{
             uri: `${URL}`.concat(`${item.hinh_anh}`),
           }}
         />
-        <Text style={styles.titleNews}>{item.ten_su_kien}</Text>
+        <View
+          style={{
+            position: "absolute",
+            width: "100%",
+            height: 150,
+            flexDirection: "column",
+            justifyContent: "space-between",
+            paddingVertical: 5,
+            alignItems: "flex-start",
+            paddingHorizontal: 10,
+          }}>
+          <View
+            style={{
+              width: "15%",
+              marginLeft: 10,
+              backgroundColor: "#FCFCFC",
+              borderRadius: 8,
+              padding: 5,
+              opacity: 0.7,
+            }}>
+            <Text
+              style={{
+                color: "#503F8A",
+                fontSize: 8,
+                fontWeight: "600",
+                textAlign: "center",
+              }}>
+              Tháng {formatDate(item.ngay_su_kien, "thang")}
+            </Text>
+            <View
+              style={{
+                padding: 5,
+                backgroundColor: "#BEB0EF",
+                borderRadius: 8,
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop: 2,
+              }}>
+              <Text
+                style={{ color: "#503F8A", fontSize: 12, fontWeight: "600" }}>
+                {formatDate(item.ngay_su_kien, "ngay")}
+              </Text>
+              <Text
+                style={{ color: "#503F8A", fontSize: 10, fontWeight: "600" }}>
+                {formatDate(item.ngay_su_kien, "thu")}
+              </Text>
+            </View>
+          </View>
+          <Text style={styles.titleNews}>{item.ten_su_kien}</Text>
+        </View>
+
         {/* <Text style={styles.body}>{item.body}</Text> */}
       </TouchableOpacity>
     );
@@ -235,7 +319,7 @@ const Home = () => {
 
             elevation: 5,
             zIndex: 3,
-            marginTop: -55,
+            marginTop: -50,
             marginHorizontal: 15,
             paddingVertical: 20,
             borderRadius: 10,
@@ -264,9 +348,8 @@ const Home = () => {
             shadowRadius: 3.84,
             elevation: 5,
             zIndex: 3,
-            marginTop: -55,
+            marginTop: -50,
             marginHorizontal: 15,
-            paddingVertical: 10,
             borderRadius: 10,
             height: headerHeight,
           }}>
@@ -291,8 +374,7 @@ const Home = () => {
           </Animated.View>
           <Animated.View
             style={{
-              paddingHorizontal: 15,
-              paddingVertical: 10,
+              paddingHorizontal: 10,
               // height: headerHeight,
               opacity: animatedValue.interpolate({
                 inputRange: [0, 25],
@@ -331,21 +413,6 @@ const Home = () => {
                   alignItems: "center",
                   marginHorizontal: 10,
                 }}>
-                {/* <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                  }}>
-                  <MaterialCommunityIcons
-                    name="crown-outline"
-                    color="rgba(238, 221, 176, 0.93)"
-                    size={30}
-                  />
-                  <Text
-                    style={{ color: "#ff0", fontWeight: "600", fontSize: 17 }}>
-                    Thành viên vàng
-                  </Text>
-                </View> */}
                 <TouchableOpacity>
                   <MaterialCommunityIcons
                     name="dots-horizontal"
@@ -362,19 +429,11 @@ const Home = () => {
                     fontWeight: "600",
                     textAlign: "center",
                   }}>
-                  {auth.permission.name}
-                </Text>
-                <Text
-                  style={{
-                    color: "#8D6B48",
-                    fontSize: 15,
-                    fontWeight: "500",
-                    textAlign: "center",
-                  }}>
-                  UXUI Designer
+                  {/* {auth.permission.name} */}
+                  Thương
                 </Text>
               </View>
-              <View style={{ padding: 10 }}>
+              <View style={{ paddingHorizontal: 10, bottom: 5 }}>
                 <View
                   style={{
                     flexDirection: "row",
@@ -399,7 +458,14 @@ const Home = () => {
           [{ nativeEvent: { contentOffset: { y: animatedValue } } }],
           { useNativeDriver: false }
         )}
-        scrollEventThrottle={16}>
+        scrollEventThrottle={16}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={["#9796F0", "green", "blue"]}
+          />
+        }>
         <Animated.View
           style={{
             marginBottom: "20%",
@@ -722,8 +788,7 @@ const Home = () => {
 
                   elevation: 5,
                   backgroundColor: "#EBD2F6",
-                  marginTop: 10,
-                  marginBottom: 10,
+
                   width: "45%",
                 }}
                 onPress={() => navigation.navigate("ClubScreen")}>
@@ -823,8 +888,7 @@ const Home = () => {
 
                   elevation: 5,
                   backgroundColor: "#F2FCED",
-                  marginTop: 10,
-                  marginBottom: 10,
+
                   width: "45%",
                 }}
                 onPress={() => navigation.navigate("EventsScreen")}>
@@ -1083,13 +1147,10 @@ const styles = StyleSheet.create({
     color: "#ffffff",
   },
   titleNews: {
-    color: "#F8f8f8",
+    color: "#Ffffff",
     fontSize: 15,
     fontWeight: "800",
-    position: "absolute",
-    top: "70%",
     textAlign: "center",
-    width: "90%",
     paddingHorizontal: 15,
     flexWrap: "wrap",
   },

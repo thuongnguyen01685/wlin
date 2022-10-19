@@ -115,10 +115,11 @@ const Splash = () => {
         <View
           style={{
             flexDirection: "row",
-            justifyContent: "flex-end",
+            justifyContent: "center",
+            alignItems: "center",
             paddingHorizontal: 10,
             top: "10%",
-            width: "100%",
+
             height: 150,
             zIndex: 1,
           }}>
@@ -135,13 +136,21 @@ const Splash = () => {
               <Ionicons name="arrow-forward" size={25} color="#711775" />
             </View>
           </TouchableOpacity> */}
+          {/* <Lottie
+            source={require("../../assets/animationloader.json")}
+            autoPlay
+            loop
+          /> */}
           {/* <ActivityIndicator size="large" color="#00ff00" /> */}
           {loading && (
-            <Lottie
-              source={require("../../assets/animationloader.json")}
-              autoPlay
-              loop
-            />
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+              }}>
+              <ActivityIndicator size="large" color="#00ff00" />
+            </View>
           )}
         </View>
       </LinearGradient>

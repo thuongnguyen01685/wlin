@@ -53,7 +53,7 @@ const CreateTYFCB = () => {
 
           elevation: 5,
           zIndex: 3,
-          marginTop: -55,
+          marginTop: -50,
           marginHorizontal: 15,
           paddingVertical: 20,
           borderRadius: 10,
@@ -126,7 +126,7 @@ const CreateTYFCB = () => {
 
                   <Text
                     style={{
-                      color: "#711775",
+                      color: "#474747",
                       fontSize: 11,
                       fontWeight: "500",
                     }}>
@@ -136,7 +136,7 @@ const CreateTYFCB = () => {
                 <Ionicons
                   name="chevron-forward-outline"
                   size={20}
-                  color="#781C7C"
+                  color="#474747"
                 />
               </TouchableOpacity>
             </View>
@@ -151,7 +151,7 @@ const CreateTYFCB = () => {
                   }}>
                   <Text
                     style={{
-                      color: "#711775",
+                      color: "#474747",
                       fontSize: 11,
                       fontWeight: "500",
                       marginHorizontal: 10,
@@ -162,7 +162,7 @@ const CreateTYFCB = () => {
                 <Ionicons
                   name="chevron-forward-outline"
                   size={20}
-                  color="#781C7C"
+                  color="#474747"
                 />
               </TouchableOpacity>
             </View>
@@ -177,7 +177,7 @@ const CreateTYFCB = () => {
                   }}>
                   <Text
                     style={{
-                      color: "#711775",
+                      color: "#474747",
                       fontSize: 11,
                       fontWeight: "500",
                       marginHorizontal: 10,
@@ -188,7 +188,7 @@ const CreateTYFCB = () => {
                 <Ionicons
                   name="chevron-forward-outline"
                   size={20}
-                  color="#781C7C"
+                  color="#474747"
                 />
               </TouchableOpacity>
             </View>
@@ -199,7 +199,7 @@ const CreateTYFCB = () => {
                   style={styles.input}
                   onChangeText={setTyfcb}
                   value={tyfcb}
-                  placeholderTextColor="rgba(113, 23, 117, 0.3)"
+                  placeholderTextColor="rgba(71, 71, 71, 0.3)"
                   placeholder="Tên mô tả TYFCB"
                 />
               </View>
@@ -208,7 +208,7 @@ const CreateTYFCB = () => {
                   style={styles.input}
                   onChangeText={setMdRef}
                   value={mdRef}
-                  placeholderTextColor="rgba(113, 23, 117, 0.3)"
+                  placeholderTextColor="rgba(71, 71, 71, 0.3)"
                   placeholder="Referrals tương ứng"
                 />
               </View>
@@ -217,7 +217,7 @@ const CreateTYFCB = () => {
                   style={styles.input}
                   onChangeText={setGtRef}
                   value={gtRef}
-                  placeholderTextColor="rgba(113, 23, 117, 0.3)"
+                  placeholderTextColor="rgba(71, 71, 71, 0.3)"
                   placeholder="Giá trị referrals"
                 />
               </View>
@@ -244,11 +244,11 @@ const CreateTYFCB = () => {
                   <LinearGradient
                     start={{ x: 0.3, y: 1 }}
                     end={{ x: 1, y: 1 }}
-                    colors={["#751979", "#AE40B2"]}
+                    colors={["#826CCF", "#826CCF"]}
                     style={{
-                      paddingHorizontal: 15,
-                      paddingVertical: 5,
-                      borderRadius: 7,
+                      paddingHorizontal: 20,
+                      paddingVertical: 10,
+                      borderRadius: 15,
                     }}>
                     <Text
                       style={{
@@ -278,7 +278,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
   },
   headerName: {
-    color: "#781C7C",
+    color: "#474747",
     fontSize: 14,
     fontWeight: "600",
   },

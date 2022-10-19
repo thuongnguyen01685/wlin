@@ -51,7 +51,7 @@ const CreateRefer = () => {
 
           elevation: 5,
           zIndex: 3,
-          marginTop: -55,
+          marginTop: -50,
           marginHorizontal: 15,
           paddingVertical: 20,
           borderRadius: 10,
@@ -122,19 +122,12 @@ const CreateRefer = () => {
                     style={{ borderRadius: 3 }}
                   />
 
-                  <Text
-                    style={{
-                      color: "#711775",
-                      fontSize: 11,
-                      fontWeight: "500",
-                    }}>
-                    Vietnam
-                  </Text>
+                  <Text style={styles.textInput}>Vietnam</Text>
                 </View>
                 <Ionicons
                   name="chevron-forward-outline"
                   size={20}
-                  color="#781C7C"
+                  color="#474747"
                 />
               </TouchableOpacity>
             </View>
@@ -147,20 +140,12 @@ const CreateRefer = () => {
                     alignItems: "center",
                     justifyContent: "space-around",
                   }}>
-                  <Text
-                    style={{
-                      color: "#711775",
-                      fontSize: 11,
-                      fontWeight: "500",
-                      marginHorizontal: 10,
-                    }}>
-                    WLIN STARS ASIA
-                  </Text>
+                  <Text style={styles.textInput}>WLIN STARS ASIA</Text>
                 </View>
                 <Ionicons
                   name="chevron-forward-outline"
                   size={20}
-                  color="#781C7C"
+                  color="#474747"
                 />
               </TouchableOpacity>
             </View>
@@ -173,20 +158,12 @@ const CreateRefer = () => {
                     alignItems: "center",
                     justifyContent: "space-around",
                   }}>
-                  <Text
-                    style={{
-                      color: "#711775",
-                      fontSize: 11,
-                      fontWeight: "500",
-                      marginHorizontal: 10,
-                    }}>
-                    Thành Vinh
-                  </Text>
+                  <Text style={styles.textInput}>Thành Vinh</Text>
                 </View>
                 <Ionicons
                   name="chevron-forward-outline"
                   size={20}
-                  color="#781C7C"
+                  color="#474747"
                 />
               </TouchableOpacity>
             </View>
@@ -197,7 +174,7 @@ const CreateRefer = () => {
                   style={styles.input}
                   onChangeText={setTyfcb}
                   value={tyfcb}
-                  placeholderTextColor="rgba(113, 23, 117, 0.3)"
+                  placeholderTextColor="rgba(71, 71, 71, 0.3)"
                   placeholder="Tên mô tả TYFCB"
                 />
               </View>
@@ -206,7 +183,7 @@ const CreateRefer = () => {
                   style={styles.input}
                   onChangeText={setNhlk}
                   value={nhlk}
-                  placeholderTextColor="rgba(113, 23, 117, 0.3)"
+                  placeholderTextColor="rgba(71, 71, 71, 0.3)"
                   placeholder="Ngành hàng liên kết"
                 />
               </View>
@@ -215,7 +192,7 @@ const CreateRefer = () => {
                   style={styles.input}
                   onChangeText={setGtRef}
                   value={gtRef}
-                  placeholderTextColor="rgba(113, 23, 117, 0.3)"
+                  placeholderTextColor="rgba(71, 71, 71, 0.3)"
                   placeholder="Giá trị referrals"
                 />
               </View>
@@ -224,7 +201,7 @@ const CreateRefer = () => {
                   style={styles.input}
                   onChangeText={setMdRef}
                   value={mdRef}
-                  placeholderTextColor="rgba(113, 23, 117, 0.3)"
+                  placeholderTextColor="rgba(71, 71, 71, 0.3)"
                   placeholder="Mức độ ưu tiên referrals"
                 />
               </View>
@@ -238,7 +215,6 @@ const CreateRefer = () => {
                 }}>
                 <TouchableOpacity
                   style={{
-                    borderRadius: 7,
                     flexDirection: "row",
                     alignContent: "center",
                     alignItems: "center",
@@ -250,11 +226,11 @@ const CreateRefer = () => {
                   <LinearGradient
                     start={{ x: 0.3, y: 1 }}
                     end={{ x: 1, y: 1 }}
-                    colors={["#751979", "#AE40B2"]}
+                    colors={["#826CCF", "#826CCF"]}
                     style={{
-                      paddingHorizontal: 15,
-                      paddingVertical: 5,
-                      borderRadius: 7,
+                      paddingHorizontal: 20,
+                      paddingVertical: 10,
+                      borderRadius: 15,
                     }}>
                     <Text
                       style={{
@@ -262,7 +238,7 @@ const CreateRefer = () => {
                         color: "#ffffff",
                         textAlign: "center",
                         width: "100%",
-                        fontWeight: "500",
+                        fontWeight: "600",
                       }}>
                       Xác nhận
                     </Text>
@@ -284,7 +260,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
   },
   headerName: {
-    color: "#781C7C",
+    color: "#474747",
     fontSize: 14,
     fontWeight: "600",
   },
@@ -311,8 +287,14 @@ const styles = StyleSheet.create({
   input: {
     height: 25,
     width: "100%",
-    color: "#781C7C",
+    color: "rgba(71, 71, 71, 0.3)",
     fontSize: 11,
+  },
+  textInput: {
+    color: "#474747",
+    fontSize: 11,
+    fontWeight: "500",
+    marginHorizontal: 10,
   },
 });
 

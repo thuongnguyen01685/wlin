@@ -2,25 +2,46 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
-
+import RadioGroup from "react-native-radio-buttons-group";
 import Modal from "react-native-modal";
 
+const radioButtonsData = [
+  {
+    id: "1", // acts as primary key, should be unique and non-empty string
+    label: "Tiền mặt",
+    value: "tienmat",
+  },
+  {
+    id: "2",
+    label: "Chuyển khoản",
+    value: "chuyenkhoan",
+  },
+];
 // create a component
-const ModalNotPermission = (props) => {
+const ModalChoosePayment = (props) => {
+  const [radioButtons, setRadioButtons] = useState(radioButtonsData);
   const navigation = useNavigation();
+  const handleClose = () => {
+    props.setShowModalPayment(!props.showModalPayment);
+    // navigation.goBack();
+
+    setTimeout(() => {
+      navigation.navigate("AccuracyImage");
+    }, 1500);
+  };
+  function onPressRadioButton(radioButtonsArray) {
+    setRadioButtons(radioButtonsArray);
+  }
   return (
     <Modal
       animationType="fade"
       transparent={true}
-      isVisible={props.modalNotAccess}
+      isVisible={props.showModalPayment}
       backdropColor="#C4C4C4"
       backdropOpacity={0.5}
-      onBackdropPress={() => {
-        props.setModalNotAccess(!props.modalNotAccess);
-        navigation.goBack();
-      }}
+      onBackdropPress={handleClose}
       style={{ paddingHorizontal: 10 }}>
       <View
         style={{
@@ -38,11 +59,7 @@ const ModalNotPermission = (props) => {
             justifyContent: "flex-end",
             alignItems: "center",
           }}>
-          <TouchableOpacity
-            onPress={() => {
-              props.setModalNotAccess(!props.modalNotAccess);
-              navigation.goBack();
-            }}>
+          <TouchableOpacity onPress={handleClose}>
             <Ionicons name="close-outline" size={20} />
           </TouchableOpacity>
         </View>
@@ -53,15 +70,26 @@ const ModalNotPermission = (props) => {
           }}>
           <View style={{ flexDirection: "row", justifyContent: "center" }}>
             <Image
-              source={require("../../assets/notconfetti.png")}
-              style={{ width: 70, height: 70 }}
+              source={require("../../assets/coin3.png")}
+              style={{
+                resizeMode: "contain",
+                width: 150,
+                height: 100,
+                marginVertical: 10,
+              }}
             />
           </View>
           <View style={{ marginVertical: 10 }}>
             <Text
-              style={{ fontSize: 12, fontWeight: "600", textAlign: "center" }}>
-              Tạo Referrals thành công
+              style={{ fontSize: 18, fontWeight: "800", textAlign: "center" }}>
+              Phương thức thanh toán
             </Text>
+          </View>
+          <View>
+            <RadioGroup
+              radioButtons={radioButtons}
+              onPress={onPressRadioButton}
+            />
           </View>
           <View
             style={{
@@ -70,15 +98,11 @@ const ModalNotPermission = (props) => {
               alignItems: "center",
               marginVertical: 10,
             }}>
-            <TouchableOpacity
-              onPress={() => {
-                props.setModalNotAccess(!props.modalNotAccess);
-                navigation.goBack();
-              }}>
+            <TouchableOpacity onPress={handleClose}>
               <LinearGradient
                 start={{ x: 0, y: 0.3 }}
                 end={{ x: 1, y: 1 }}
-                colors={["#751979", "#AE40B2"]}
+                colors={["#9D85F2", "rgba(157, 133, 242, 0.4)"]}
                 style={{
                   flexDirection: "row",
                   justifyContent: "space-between",
@@ -87,7 +111,7 @@ const ModalNotPermission = (props) => {
                   borderRadius: 7,
                 }}>
                 <View style={styles.borderBacRounded}>
-                  <Text style={{ color: "#ffffff" }}>OK</Text>
+                  <Text style={{ color: "#ffffff" }}>Thanh toán</Text>
                 </View>
               </LinearGradient>
             </TouchableOpacity>
@@ -113,4 +137,4 @@ const styles = StyleSheet.create({
 });
 
 //make this component available to the app
-export default ModalNotPermission;
+export default ModalChoosePayment;

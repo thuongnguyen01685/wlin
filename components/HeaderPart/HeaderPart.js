@@ -36,7 +36,7 @@ const HeaderPart = (props) => {
           <ImageBackground
             source={require("../../assets/bg.png")}
             style={{
-              height: ratio * 380,
+              height: 180,
               width: w,
             }}
           />
@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
   search: {
     zIndex: 5,
     position: "absolute",
-    marginTop: "25%",
+    marginTop: "21%",
     width: "100%",
     flexDirection: "row",
     justifyContent: "space-between",

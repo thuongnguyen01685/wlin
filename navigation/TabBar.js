@@ -33,6 +33,8 @@ import Map from "../screens/events/Map";
 import { Animated, Dimensions, Text, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons, MaterialCommunityIcons, Octicons } from "@expo/vector-icons";
+import AccuracyImage from "../screens/events/AccuracyImage";
+import DetailBenefit from "../screens/other/DetailBenefit";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -107,6 +109,11 @@ function EventsScreen() {
         component={Map}
         options={{ headerShown: false }}
       />
+      <Stack.Screen
+        name="AccuracyImage"
+        component={AccuracyImage}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 }
@@ -147,6 +154,11 @@ function OtherScreen() {
       <Stack.Screen
         name="Benefit"
         component={Benefit}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="DetailBenefit"
+        component={DetailBenefit}
         options={{ headerShown: false }}
       />
       <Stack.Screen
