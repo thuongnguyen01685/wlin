@@ -3,7 +3,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
-import React, { Component, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import React, { Component, useRef, useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -18,106 +19,414 @@ import {
   Keyboard,
   Platform,
   TextInput,
+  RefreshControl,
+  Animated,
 } from "react-native";
 
-import Header from "../../components/Header";
+import HeaderPart from "../../components/HeaderPart/HeaderPart";
+import {
+  getCLub,
+  getDetailClub,
+  getDetailMember,
+} from "../../redux/actions/ClupAction";
+import { Avatar, Surface } from "react-native-paper";
+import { URL } from "../../utils/fetchApi";
 
-import BodyManagementMember from "../../components/page/Other/BodyManagementMember";
-
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
 const ratio = w / 720;
 
+const { height } = Dimensions.get("screen");
 // create a component
 const ManagementMember = () => {
   const navigation = useNavigation();
-  const [search, setSearch] = useState("");
+  const dispatch = useDispatch();
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const { auth, club } = useSelector((state) => state);
+
+  //////////////
+
+  const [page, setPage] = useState(1);
+
+  const scrollY = useRef(new Animated.Value(0)).current;
+
+  const handleDetail = (_id) => {
+    dispatch(getDetailClub(_id, auth.token));
+    navigation.navigate("DetailClub");
+  };
+  ///////////////////
+  useEffect(() => {
+    setRefreshing(true);
+    dispatch(getCLub(auth.token, page));
+    dispatch(getDetailMember(auth.token));
+    wait(2000).then(() => setRefreshing(false));
+  }, [dispatch]);
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    dispatch(getCLub(auth.token, page));
+    dispatch(getDetailMember(auth.token));
+    wait(2000).then(() => setRefreshing(false));
+  }, [dispatch]);
 
   return (
     <View style={styles.container}>
-      <View>
-        <View>
-          <Header />
-          <View>
-            <ImageBackground
-              source={require("../../assets/EllipseLogin.png")}
+      <StatusBar barStyle="light-content" />
+      <HeaderPart />
+      <View
+        style={{
+          backgroundColor: "#ffffff",
+          shadowColor: "#000",
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
+          shadowOpacity: 0.25,
+          shadowRadius: 3.84,
+
+          elevation: 5,
+          zIndex: 3,
+          marginTop: -55,
+          marginHorizontal: 15,
+          paddingVertical: 20,
+          borderRadius: 10,
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+          paddingHorizontal: 10,
+        }}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}>
+          <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
+            Chi tiết hội viên
+          </Text>
+
+          {refreshing && (
+            <View
               style={{
-                height: 455,
-                width: 325,
-                zIndex: 1,
+                left: 10,
+                padding: 30,
                 position: "absolute",
-              }}
-            />
-            <ImageBackground
-              source={require("../../assets/VctLogin.png")}
-              style={{
-                height: ratio * 1000,
-                width: w,
-                position: "absolute",
-                zIndex: 2,
-              }}
-            />
-          </View>
+                left: "100%",
+              }}>
+              {/* <Lottie
+                source={require("../../assets/loading.json")}
+                autoPlay
+                loop
+              /> */}
+            </View>
+          )}
         </View>
-        <View style={styles.search}>
+
+        <TouchableOpacity>
+          <Ionicons name="alert-circle-outline" size={20} color="#826CCF" />
+        </TouchableOpacity>
+      </View>
+      <View style={{ height: "100%" }}>
+        <View showsVerticalScrollIndicator={false}>
           <View
             style={{
-              flexDirection: "row",
-              backgroundColor: "#ffffff",
-              alignItems: "center",
-              alignContent: "center",
-              width: "75%",
-              borderRadius: 10,
-              justifyContent: "space-between",
+              marginBottom: "70%",
+              paddingHorizontal: 25,
+              marginTop: 15,
             }}>
-            <TextInput
-              style={styles.input}
-              onChangeText={(keySearch) => setSearch(keySearch)}
-              value={search}
-              placeholder="Tìm kiếm"
-            />
-            <TouchableOpacity
+            <View
               style={{
-                marginHorizontal: 10,
-                padding: 7,
-
-                borderTopRightRadius: 7,
-                borderBottomRightRadius: 7,
-              }}>
-              <Ionicons name="search-outline" size={20} color="#711775" />
-            </TouchableOpacity>
-          </View>
-          <TouchableOpacity>
-            <LinearGradient
-              start={{ x: 0, y: 0.3 }}
-              end={{ x: 1, y: 1 }}
-              colors={["#751979", "#AE40B2"]}
-              style={{
-                borderRadius: 30,
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignContent: "center",
+                flexDirection: "column",
+                justifyContent: "center",
+                width: "100%",
                 alignItems: "center",
-                paddingLeft: 1,
-                paddingRight: 10,
               }}>
+              {club.detailMember.hinh_anh ? (
+                <Image
+                  source={{
+                    uri: `${URL}/`.concat(`${club.detailMember.hinh_anh}`),
+                  }}
+                  style={{
+                    width: 80,
+                    height: 80,
+                    borderRadius: 50,
+                    resizeMode: "contain",
+                  }}
+                />
+              ) : (
+                <Image
+                  source={require("../../assets/logo.png")}
+                  style={{
+                    width: 80,
+                    height: 80,
+                    borderRadius: 50,
+                    resizeMode: "contain",
+                  }}
+                />
+              )}
+              <Text
+                style={{ fontSize: 13, fontWeight: "600", marginVertical: 10 }}>
+                {club.detailMember.ten_kh}
+              </Text>
+            </View>
+            <View style={styles.containerView}>
+              <Text style={styles.header}>Gói thành viên</Text>
+              <TouchableOpacity style={styles.card}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-around",
+                  }}>
+                  <LinearGradient
+                    start={{ x: 1, y: 0.7 }}
+                    end={{ x: 0.3, y: 0.8 }}
+                    colors={["#F9C271", "#F4EFB8", "#F4EFB8", "#F9C271"]}
+                    style={{ width: 20, height: 20, borderRadius: 5 }}>
+                    <View
+                      style={{
+                        flexDirection: "column",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        height: "100%",
+                      }}>
+                      <Image
+                        source={require("../../assets/logo.png")}
+                        style={{ width: 10, height: 10 }}
+                      />
+                      <Text style={{ fontSize: 3, color: "#969696" }}>
+                        Gói vàng
+                      </Text>
+                    </View>
+                  </LinearGradient>
+                  <Text
+                    style={{
+                      color: "#F9C271",
+                      fontSize: 11,
+                      fontWeight: "500",
+                      marginHorizontal: 10,
+                    }}>
+                    Gói vàng
+                  </Text>
+                </View>
+                <Ionicons name="caret-down-outline" size={20} color="#474747" />
+              </TouchableOpacity>
+            </View>
+            <View>
+              <Text style={styles.header}>Danh sách CLUB</Text>
               <View
                 style={{
-                  backgroundColor: "#ffffff",
-                  borderRadius: 30,
-                  marginVertical: 2,
-                  marginRight: 5,
-                  padding: 2,
+                  paddingBottom: "400%",
+                  height: "100%",
                 }}>
-                <Ionicons name="filter" size={18} color="#751979" />
-              </View>
+                <Animated.FlatList
+                  // onScroll={Animated.event(
+                  //   [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+                  //   { useNativeDriver: true }
+                  // )}
+                  refreshControl={
+                    <RefreshControl
+                      refreshing={refreshing}
+                      onRefresh={onRefresh}
+                      colors={["#9796F0", "green", "blue"]}
+                    />
+                  }
+                  data={club.getClubs}
+                  onEndReachedThreshold={0.5}
+                  onEndReached={() => setPage(page + 1)}
+                  keyExtractor={(item, index) => index}
+                  renderItem={({ item, index }) => {
+                    const inputRange = [
+                      -1,
+                      0,
+                      (height * 0.1 + 15) * index,
+                      (height * 0.1 + 15) * (index + 3),
+                    ];
+                    const scale = 1;
+                    const opacity = scrollY.interpolate({
+                      inputRange,
+                      outputRange: [1, 1, 1, 0],
+                    });
+                    const Offset = scrollY.interpolate({
+                      inputRange,
+                      outputRange: [0, 0, 0, 500],
+                    });
+                    return (
+                      <Animated.View
+                        style={{
+                          transform: [{ scale: scale }, { translateX: Offset }],
+                          opacity: opacity,
+                        }}>
+                        <TouchableOpacity
+                          key={item._id}
+                          onPress={() => handleDetail(item._id)}>
+                          <Surface style={styles.surface}>
+                            <View
+                              style={{
+                                borderRadius: 8,
+                                borderWidth: 0.4,
+                                borderColor: "#DADADA",
+                                paddingVertical: 15,
+                                paddingHorizontal: 5,
+                                top: -10,
+                              }}>
+                              {item.hinh_anh ? (
+                                <Image
+                                  source={{
+                                    uri: `${URL}/`.concat(`${item.hinh_anh}`),
+                                  }}
+                                  style={{
+                                    width: 80,
+                                    height: 40,
+                                    borderRadius: 7,
+                                  }}
+                                />
+                              ) : (
+                                <Image
+                                  source={require("../../assets/logo.png")}
+                                  style={{
+                                    width: 80,
+                                    height: 40,
+                                    resizeMode: "contain",
+                                  }}
+                                />
+                              )}
+                            </View>
 
-              <Text style={{ fontSize: 10, color: "#ffffff" }}>Lọc</Text>
-            </LinearGradient>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.body}>
-          <BodyManagementMember />
+                            <View
+                              style={{
+                                width: "55%",
+                                top: -10,
+                              }}>
+                              <Text
+                                style={{
+                                  color: "#474747",
+                                  fontSize: 14,
+                                  fontWeight: "600",
+                                }}>
+                                {item.ten_club}
+                              </Text>
+                              <View
+                                style={{
+                                  flexDirection: "row",
+                                  flexWrap: "wrap",
+                                  justifyContent: "space-between",
+                                }}>
+                                <View
+                                  style={{
+                                    backgroundColor: "#EDF8FC",
+                                    flexDirection: "row",
+                                    paddingHorizontal: 2,
+                                    borderRadius: 10,
+                                    alignItems: "center",
+                                    marginTop: 5,
+                                  }}>
+                                  <Ionicons
+                                    name="people"
+                                    color="#139ECA"
+                                    size={20}
+                                  />
+                                  <Text
+                                    style={{
+                                      fontSize: 10,
+                                      fontWeight: "600",
+                                      color: "#139ECA",
+                                    }}>
+                                    20 thành viên
+                                  </Text>
+                                </View>
+                                <View
+                                  style={{
+                                    backgroundColor: "#ECECF9",
+                                    flexDirection: "row",
+                                    paddingHorizontal: 2,
+                                    borderRadius: 10,
+                                    alignItems: "center",
+                                    marginTop: 5,
+                                  }}>
+                                  <Ionicons
+                                    name="calendar"
+                                    color="#1D19D4"
+                                    size={20}
+                                  />
+                                  <Text
+                                    style={{
+                                      fontSize: 10,
+                                      fontWeight: "600",
+                                      color: "#1D19D4",
+                                    }}>
+                                    20 sự kiện
+                                  </Text>
+                                </View>
+                                <View
+                                  style={{
+                                    backgroundColor: "#FAEEF0",
+                                    flexDirection: "row",
+                                    paddingHorizontal: 2,
+                                    borderRadius: 10,
+                                    alignItems: "center",
+                                    marginTop: 5,
+                                  }}>
+                                  <Ionicons
+                                    name="reader"
+                                    color="#F12247"
+                                    size={20}
+                                  />
+                                  <Text
+                                    style={{
+                                      fontSize: 10,
+                                      fontWeight: "600",
+                                      color: "#F12247",
+                                    }}>
+                                    20 referrals
+                                  </Text>
+                                </View>
+                                <View
+                                  style={{
+                                    backgroundColor: "#EEFBEE",
+                                    flexDirection: "row",
+                                    paddingHorizontal: 2,
+                                    borderRadius: 10,
+                                    alignItems: "center",
+                                    marginTop: 5,
+                                  }}>
+                                  <Ionicons
+                                    name="leaf"
+                                    color="#058602"
+                                    size={20}
+                                  />
+                                  <Text
+                                    style={{
+                                      fontSize: 10,
+                                      fontWeight: "600",
+                                      color: "#058602",
+                                    }}>
+                                    20 TYFCBs
+                                  </Text>
+                                </View>
+                              </View>
+                            </View>
+                            <TouchableOpacity
+                              onPress={() => handleDetail(item._id)}
+                              style={{ top: -10 }}>
+                              <Ionicons
+                                name="chevron-forward-outline"
+                                size={25}
+                                color="#9D85F2"
+                              />
+                            </TouchableOpacity>
+                          </Surface>
+                        </TouchableOpacity>
+                      </Animated.View>
+                    );
+                  }}
+                />
+              </View>
+            </View>
+          </View>
         </View>
       </View>
     </View>
@@ -130,30 +439,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#ffffff",
   },
-  search: {
-    zIndex: 5,
-    position: "absolute",
-    marginTop: "26%",
-    width: "100%",
+  contentHeader: {
+    color: "#000",
+    fontSize: 12,
+    fontWeight: "400",
+  },
+  card: {
     flexDirection: "row",
-    justifyContent: "space-around",
-    alignContent: "center",
-    alignItems: "center",
-  },
-  input: {
-    height: 40,
-    padding: 10,
-    width: "82%",
-    marginLeft: 10,
-  },
-  body: {
-    backgroundColor: "#ffffff",
-    width: "100%",
-    zIndex: 5,
-    // position: "absolute",
-    marginTop: "40%",
-    borderTopRightRadius: 30,
-    borderTopLeftRadius: 30,
+    justifyContent: "space-between",
+    marginVertical: 10,
+    backgroundColor: "#F9F9F9",
+    paddingVertical: 9,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -161,11 +457,63 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-
+    elevation: 5,
+    borderRadius: 8,
+    paddingHorizontal: 15,
+  },
+  textArea: {
+    flexDirection: "row",
+    backgroundColor: "#ffffff",
+    alignItems: "center",
+    alignContent: "center",
+    borderRadius: 7,
+    justifyContent: "space-between",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
     elevation: 5,
   },
-  contentText: {
-    lineHeight: 25,
+  bgInput: {
+    flexDirection: "row",
+    backgroundColor: "#ffffff",
+    alignItems: "center",
+    alignContent: "center",
+    borderRadius: 7,
+    justifyContent: "space-between",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  header: {
+    fontSize: 14,
+    color: "#474747",
+    fontWeight: "600",
+    marginBottom: 7,
+  },
+  surface: {
+    height: height * 0.1,
+    marginTop: 20,
+    padding: 8,
+    marginHorizontal: 10,
+    borderRadius: 8,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    borderBottomWidth: 0.5,
+    borderColor: "#DADADA",
+  },
+
+  containerView: {
+    marginBottom: 8,
   },
 });
 

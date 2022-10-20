@@ -40,6 +40,7 @@ import DetailEvents from "../screens/events/DetailEvents";
 import AccuracyImage from "../screens/events/AccuracyImage";
 import Map from "../screens/events/Map";
 import ListPaticipant from "../screens/events/ListParticipant";
+import DetailClub from "../screens/clup/DetailClub";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -407,6 +408,11 @@ const Navigator = () => {
         <Stack.Screen
           name="ListParticipant"
           component={ListPaticipant}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="DetailClub"
+          component={DetailClub}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

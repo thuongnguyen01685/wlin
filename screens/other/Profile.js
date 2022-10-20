@@ -21,13 +21,9 @@ import {
   TextInput,
   ToastAndroid,
   TouchableHighlight,
+  Animated,
 } from "react-native";
-import PhoneInput from "react-native-phone-number-input";
-
-import { RadioButton } from "react-native-paper";
-import ModalSms from "../../components/ModalSms";
-import Header from "../../components/Header";
-
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import {
   AUTH,
@@ -37,91 +33,94 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import callApi from "../../utils/callApi";
 import { URL } from "../../utils/fetchApi";
+import CardInfo from "../../components/CardInfo";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
 const ratio = w / 720;
-
+const data = [
+  {
+    name: "Số điện thoại",
+    icon: "call",
+    value: "+84 378759723",
+    color: "rgba(136, 38, 140, 0.75)",
+  },
+  {
+    name: "Chức vụ",
+    icon: "briefcase",
+    value: "Trưởng ban",
+    color: "#DC5696",
+  },
+  {
+    name: "Công ty",
+    icon: "business",
+    value: "TNHH MTV Công Nghệ FOS",
+    color: "#F8AA4F",
+  },
+  {
+    name: "Địa chỉ công ty",
+    icon: "location",
+    value: "Quận 1, TPHCM",
+    color: "#FA846F",
+  },
+  {
+    name: "Địa chỉ cá nhân",
+    icon: "location",
+    value: "Quận 7, TPHCM",
+    color: "rgba(5, 60, 255, 0.4)",
+  },
+  {
+    name: "Email",
+    icon: "mail",
+    value: "vinh.nguyen@fostech.vn",
+    color: "rgba(255, 0, 0, 0.7)",
+  },
+  {
+    name: "Nhóm hội viên",
+    icon: "people",
+    value: "Nhóm A",
+    color: "rgba(136, 38, 140, 0.75)",
+  },
+  {
+    name: "Ngày sinh",
+    icon: "calendar",
+    value: "24/05/1985",
+    color: "#93DBE4",
+  },
+  {
+    name: "Ngành hàng",
+    icon: "cube",
+    value: "Ban Công nghệ - Phần mềm",
+    color: "rgba(255, 10, 157, 0.4)",
+  },
+  {
+    name: "Ngành hàng chi tiết",
+    icon: "cube",
+    value: "Spa - Hair - Nail",
+    color: "#6CADF6",
+  },
+  {
+    name: "Người giới thiệu",
+    icon: "person",
+    value: "Mr. Nguyễn Xuân Trường",
+    color: "rgba(17, 141, 59, 0.5)",
+  },
+];
+const HEADER_HEIGHT = 145;
 // create a component
 const Profile = () => {
   const navigation = useNavigation();
   const [search, setSearch] = useState("");
   const dispatch = useDispatch();
+
+  const { auth } = useSelector((state) => state);
+  const [image, setImage] = useState(null);
+  const animatedValue = useRef(new Animated.Value(0)).current;
+  const insets = useSafeAreaInsets();
+
   const handleCloseProfile = () => {
     navigation.goBack();
   };
-  const { auth } = useSelector((state) => state);
-  const [image, setImage] = useState(null);
-
-  const data = [
-    {
-      name: "Số điện thoại",
-      icon: "call-outline",
-      value: "+84 378759723",
-      color: "rgba(136, 38, 140, 0.75)",
-    },
-    {
-      name: "Chức vụ",
-      icon: "briefcase-outline",
-      value: "Trưởng ban",
-      color: "#DC5696",
-    },
-    {
-      name: "Công ty",
-      icon: "business-outline",
-      value: "TNHH MTV Công Nghệ FOS",
-      color: "#F8AA4F",
-    },
-    {
-      name: "Địa chỉ công ty",
-      icon: "location-outline",
-      value: "Quận 1, TPHCM",
-      color: "#FA846F",
-    },
-    {
-      name: "Địa chỉ cá nhân",
-      icon: "location-outline",
-      value: "Quận 7, TPHCM",
-      color: "rgba(5, 60, 255, 0.4)",
-    },
-    {
-      name: "Email",
-      icon: "mail-outline",
-      value: "vinh.nguyen@fostech.vn",
-      color: "rgba(255, 0, 0, 0.7)",
-    },
-    {
-      name: "Nhóm hội viên",
-      icon: "people-outline",
-      value: "Nhóm A",
-      color: "rgba(136, 38, 140, 0.75)",
-    },
-    {
-      name: "Ngày sinh",
-      icon: "calendar-outline",
-      value: "24/05/1985",
-      color: "#93DBE4",
-    },
-    {
-      name: "Ngành hàng",
-      icon: "cube-outline",
-      value: "Ban Công nghệ - Phần mềm",
-      color: "rgba(255, 10, 157, 0.4)",
-    },
-    {
-      name: "Ngành hàng chi tiết",
-      icon: "cube-outline",
-      value: "Spa - Hair - Nail",
-      color: "#6CADF6",
-    },
-    {
-      name: "Người giới thiệu",
-      icon: "person-outline",
-      value: "Mr. Nguyễn Xuân Trường",
-      color: "rgba(17, 141, 59, 0.5)",
-    },
-  ];
-
   useEffect(() => {
     if (auth.token === null || auth.token === "") {
       navigation.navigate("Splash");
@@ -169,6 +168,12 @@ const Profile = () => {
     });
     await dispatch(getProfileAction(auth.token));
   };
+
+  const headerHeight = animatedValue.interpolate({
+    inputRange: [0, HEADER_HEIGHT + insets.top],
+    outputRange: [HEADER_HEIGHT + insets.top, insets.top + 30],
+    extrapolate: "clamp",
+  });
 
   return (
     <View style={styles.container}>
@@ -244,7 +249,7 @@ const Profile = () => {
             />
           </View>
         </View>
-        <View
+        {/* <View
           style={{
             backgroundColor: "#ffffff",
             shadowColor: "#000",
@@ -272,7 +277,98 @@ const Profile = () => {
           <TouchableOpacity>
             <Ionicons name="alert-circle-outline" size={20} color="#826CCF" />
           </TouchableOpacity>
-        </View>
+        </View> */}
+        {auth.permission && auth.permission.admin ? (
+          <View
+            style={{
+              backgroundColor: "#ffffff",
+              shadowColor: "#000",
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.84,
+
+              elevation: 5,
+              zIndex: 3,
+              marginTop: -40,
+              marginHorizontal: 15,
+              paddingVertical: 20,
+              borderRadius: 10,
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              paddingHorizontal: 10,
+            }}>
+            <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
+              Thông tin quản trị viên
+            </Text>
+            <TouchableOpacity>
+              <Ionicons name="alert-circle-outline" size={20} color="#9D85F2" />
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <Animated.View
+            style={{
+              backgroundColor: "#ffffff",
+              shadowColor: "#000",
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.84,
+              elevation: 5,
+              zIndex: 3,
+              marginTop: -40,
+              marginHorizontal: 15,
+              borderRadius: 10,
+              height: headerHeight,
+            }}>
+            <Animated.View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                paddingHorizontal: 10,
+                marginTop: 10,
+                zIndex: 4,
+              }}>
+              <Text
+                style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
+                Thông tin thành viên
+              </Text>
+              {/* <TouchableOpacity>
+                <Text
+                  style={{ fontSize: 12, fontWeight: "400", color: "#909090" }}>
+                  Xem chi tiết
+                </Text>
+              </TouchableOpacity> */}
+            </Animated.View>
+            <Animated.View
+              style={{
+                paddingHorizontal: 10,
+                // height: headerHeight,
+                opacity: animatedValue.interpolate({
+                  inputRange: [0, 25],
+                  outputRange: [1, 0],
+                  extrapolate: "clamp",
+                }),
+                transform: [
+                  {
+                    translateY: animatedValue.interpolate({
+                      inputRange: [0, 100],
+                      outputRange: [0, -55],
+                      extrapolate: "clamp",
+                    }),
+                  },
+                ],
+              }}>
+              <CardInfo />
+            </Animated.View>
+          </Animated.View>
+        )}
         <View style={styles.search}>
           <View>
             <View
@@ -361,14 +457,20 @@ const Profile = () => {
         </View>
         <View style={styles.body}>
           <View style={{ height: "100%" }}>
-            <ScrollView showsVerticalScrollIndicator={false}>
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              onScroll={Animated.event(
+                [{ nativeEvent: { contentOffset: { y: animatedValue } } }],
+                { useNativeDriver: false }
+              )}
+              scrollEventThrottle={16}>
               <View style={{ marginBottom: "5%" }}>
                 <View
                   style={{
                     marginHorizontal: 15,
                     paddingTop: 20,
                   }}>
-                  <View
+                  {/* <View
                     style={{
                       paddingHorizontal: 15,
                       paddingBottom: 10,
@@ -495,26 +597,20 @@ const Profile = () => {
                         </LinearGradient>
                       </TouchableOpacity>
                     </View>
-                  </View>
+                  </View> */}
                   <View style={{ paddingHorizontal: 10 }}>
                     <View
                       style={{
                         flexDirection: "row",
                         justifyContent: "space-between",
                         alignItems: "center",
-                        backgroundColor: "#F3F3F3",
+                        backgroundColor: "#Ffffff",
                         marginVertical: 10,
-                        borderRadius: 8,
+                        borderRadius: 15,
                         paddingVertical: 10,
                         paddingHorizontal: 20,
-                        shadowColor: "#000",
-                        shadowOffset: {
-                          width: 0,
-                          height: 1,
-                        },
-                        shadowOpacity: 0.25,
-                        shadowRadius: 3.84,
-                        elevation: 5,
+                        borderColor: "#dadada",
+                        borderWidth: 0.5,
                       }}>
                       <View
                         style={{
@@ -532,7 +628,7 @@ const Profile = () => {
                               flexDirection: "row",
                               justifyContent: "space-between",
                               alignItems: "center",
-                              backgroundColor: "#90DA8A",
+                              backgroundColor: "#ffffff",
                               paddingVertical: 9.7,
                               paddingHorizontal: 17.8,
                               borderRadius: 50,
@@ -541,7 +637,7 @@ const Profile = () => {
                               style={{
                                 fontSize: 20,
                                 fontWeight: "600",
-                                color: "#ffffff",
+                                color: "#9D85F2",
                               }}>
                               #
                             </Text>
@@ -555,7 +651,7 @@ const Profile = () => {
                             }}>
                             <Text
                               style={{
-                                color: "#711775",
+                                color: "#474747",
                                 fontSize: 15,
                                 fontWeight: "600",
                               }}>
@@ -563,7 +659,7 @@ const Profile = () => {
                             </Text>
                             <Text
                               style={{
-                                color: "#7C1E80",
+                                color: "#434343",
                                 fontSize: 12,
                                 fontWeight: "400",
                               }}>
@@ -576,7 +672,7 @@ const Profile = () => {
                         <Ionicons
                           name="create-outline"
                           size={25}
-                          color="#711775"
+                          color="#9D85F2"
                         />
                       </TouchableOpacity>
                     </View>
@@ -586,19 +682,13 @@ const Profile = () => {
                           flexDirection: "row",
                           justifyContent: "space-between",
                           alignItems: "center",
-                          backgroundColor: "#F3F3F3",
+                          backgroundColor: "#Ffffff",
                           marginVertical: 10,
-                          borderRadius: 8,
+                          borderRadius: 15,
                           paddingVertical: 10,
                           paddingHorizontal: 20,
-                          shadowColor: "#000",
-                          shadowOffset: {
-                            width: 0,
-                            height: 1,
-                          },
-                          shadowOpacity: 0.25,
-                          shadowRadius: 3.84,
-                          elevation: 5,
+                          borderColor: "#dadada",
+                          borderWidth: 0.5,
                         }}
                         key={index}>
                         <View
@@ -617,7 +707,7 @@ const Profile = () => {
                                 flexDirection: "row",
                                 justifyContent: "space-between",
                                 alignItems: "center",
-                                backgroundColor: item.color,
+                                backgroundColor: "#ffffff",
                                 paddingVertical: 10,
                                 paddingHorizontal: 11,
                                 borderRadius: 50,
@@ -625,7 +715,7 @@ const Profile = () => {
                               <Ionicons
                                 name={item.icon}
                                 size={25}
-                                color="#ffffff"
+                                color={item.color}
                               />
                             </View>
 
@@ -637,7 +727,7 @@ const Profile = () => {
                               }}>
                               <Text
                                 style={{
-                                  color: "#711775",
+                                  color: "#474747",
                                   fontSize: 15,
                                   fontWeight: "600",
                                 }}>
@@ -645,7 +735,7 @@ const Profile = () => {
                               </Text>
                               <Text
                                 style={{
-                                  color: "#7C1E80",
+                                  color: "#434343",
                                   fontSize: 12,
                                   fontWeight: "400",
                                 }}>
@@ -658,7 +748,7 @@ const Profile = () => {
                           <Ionicons
                             name="create-outline"
                             size={25}
-                            color="#711775"
+                            color="#9D85F2"
                           />
                         </TouchableOpacity>
                       </View>
@@ -668,19 +758,13 @@ const Profile = () => {
                         flexDirection: "row",
                         justifyContent: "space-between",
                         alignItems: "center",
-                        backgroundColor: "#F3F3F3",
+                        backgroundColor: "#Ffffff",
                         marginVertical: 10,
-                        borderRadius: 8,
+                        borderRadius: 15,
                         paddingVertical: 10,
                         paddingHorizontal: 20,
-                        shadowColor: "#000",
-                        shadowOffset: {
-                          width: 0,
-                          height: 1,
-                        },
-                        shadowOpacity: 0.25,
-                        shadowRadius: 3.84,
-                        elevation: 5,
+                        borderColor: "#dadada",
+                        borderWidth: 0.5,
                       }}
                       onPress={handleLogout}>
                       <View
@@ -699,7 +783,7 @@ const Profile = () => {
                               flexDirection: "row",
                               justifyContent: "space-between",
                               alignItems: "center",
-                              backgroundColor: "rgba(127, 32, 131, 0.2)",
+                              backgroundColor: "#ffffff",
                               padding: 10,
                               paddingHorizontal: 11,
                               borderRadius: 50,
@@ -719,7 +803,7 @@ const Profile = () => {
                             }}>
                             <Text
                               style={{
-                                color: "#711775",
+                                color: "#474747",
                                 fontSize: 15,
                                 fontWeight: "600",
                               }}>

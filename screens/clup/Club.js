@@ -26,6 +26,7 @@ import {
   RefreshControl,
 } from "react-native";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
+import { Avatar, Surface } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
 import HeaderPart from "../../components/HeaderPart/HeaderPart";
 import { getCLub, getDetailClub } from "../../redux/actions/ClupAction";
@@ -66,7 +67,7 @@ const Nation = () => {
 
   return (
     <View style={styles.container}>
-      <View style={{ marginTop: 10, paddingBottom: "25%" }}>
+      <View style={{ marginTop: 10, paddingBottom: "70%" }}>
         <Animated.FlatList
           onScroll={Animated.event(
             [{ nativeEvent: { contentOffset: { y: scrollY } } }],
@@ -82,7 +83,7 @@ const Nation = () => {
           data={club.getClubs}
           onEndReachedThreshold={0.5}
           onEndReached={() => setPage(page + 1)}
-          keyExtractor={(item) => item._id}
+          keyExtractor={(item, index) => index}
           renderItem={({ item, index }) => {
             const inputRange = [
               -1,
@@ -104,99 +105,201 @@ const Nation = () => {
                 style={{
                   transform: [{ scale: scale }, { translateX: Offset }],
                   opacity: opacity,
-                  marginBottom: 2,
                 }}>
                 <TouchableOpacity
                   key={item._id}
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-around",
-                    alignItems: "center",
-                    backgroundColor: "#Ffffff",
-                    marginTop: 15,
-                    borderRadius: 8,
-                    paddingVertical: 20,
-                    borderBottomWidth: 0.5,
-
-                    borderColor: "#DADADA",
-                    // shadowColor: "#000",
-                    // shadowOffset: {
-                    //   width: 0,
-                    //   height: 2,
-                    // },
-                    // shadowOpacity: 0.25,
-                    // shadowRadius: 7,
-                    // elevation: 4,
-
-                    marginHorizontal: 15,
-                  }}
                   onPress={() => handleDetail(item._id)}>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      width: "70%",
-                    }}>
+                  <Surface style={styles.surface}>
                     <View
                       style={{
                         flexDirection: "row",
                         justifyContent: "space-between",
-                        alignItems: "center",
+                        flex: 0.9,
+                        top: -10,
                       }}>
                       <View
                         style={{
-                          borderRadius: 8,
-                          borderWidth: 0.4,
-                          borderColor: "#DADADA",
+                          flexDirection: "row",
+                          justifyContent: "space-between",
                         }}>
-                        {item.hinh_anh ? (
-                          <Image
-                            source={{
-                              uri: `${URL}/`.concat(`${item.hinh_anh}`),
-                            }}
-                            style={{
-                              width: 80,
-                              height: 40,
-                              borderRadius: 7,
-                            }}
-                          />
-                        ) : (
-                          <Image
-                            source={require("../../assets/logo.png")}
-                            style={{
-                              width: 80,
-                              height: 40,
-                              resizeMode: "contain",
-                            }}
-                          />
-                        )}
-                      </View>
-
-                      <View
-                        style={{
-                          flexDirection: "column",
-                          marginLeft: 20,
-                          justifyContent: "center",
-                        }}>
-                        <Text
+                        <View
                           style={{
-                            color: "#826CCF",
-                            fontSize: 15,
-                            fontWeight: "600",
+                            borderRadius: 8,
+                            borderWidth: 0.4,
+                            borderColor: "#DADADA",
+                            paddingVertical: 15,
+                            paddingHorizontal: 5,
                           }}>
-                          {item.ten_club}
-                        </Text>
-                        <Text>{item.ten_partner}</Text>
+                          {item.hinh_anh ? (
+                            <Image
+                              source={{
+                                uri: `${URL}/`.concat(`${item.hinh_anh}`),
+                              }}
+                              style={{
+                                width: 80,
+                                height: 40,
+                                borderRadius: 7,
+                              }}
+                            />
+                          ) : (
+                            <Image
+                              source={require("../../assets/logo.png")}
+                              style={{
+                                width: 80,
+                                height: 40,
+                                resizeMode: "contain",
+                              }}
+                            />
+                          )}
+                        </View>
+
+                        <View
+                          style={{
+                            flexDirection: "column",
+                            marginLeft: 20,
+                          }}>
+                          <Text
+                            style={{
+                              color: "#474747",
+                              fontSize: 16,
+                              fontWeight: "600",
+                            }}>
+                            {item.ten_club}
+                          </Text>
+                          <View
+                            style={{
+                              flexDirection: "row",
+                              justifyContent: "space-between",
+                              flexWrap: "wrap",
+                              width: "70%",
+                            }}>
+                            <View
+                              style={{
+                                backgroundColor: "#EDF8FC",
+                                flexDirection: "row",
+                                paddingHorizontal: 2,
+                                borderRadius: 10,
+                                alignItems: "center",
+                                marginTop: 5,
+                              }}>
+                              <Ionicons
+                                name="people"
+                                color="#139ECA"
+                                size={20}
+                              />
+                              <Text
+                                style={{
+                                  fontSize: 10,
+                                  fontWeight: "600",
+                                  color: "#139ECA",
+                                }}>
+                                20 thành viên
+                              </Text>
+                            </View>
+                            <View
+                              style={{
+                                backgroundColor: "#ECECF9",
+                                flexDirection: "row",
+                                paddingHorizontal: 2,
+                                borderRadius: 10,
+                                alignItems: "center",
+                                marginTop: 5,
+                              }}>
+                              <Ionicons
+                                name="calendar"
+                                color="#1D19D4"
+                                size={20}
+                              />
+                              <Text
+                                style={{
+                                  fontSize: 10,
+                                  fontWeight: "600",
+                                  color: "#1D19D4",
+                                }}>
+                                20 sự kiện
+                              </Text>
+                            </View>
+                            <View
+                              style={{
+                                backgroundColor: "#FAEEF0",
+                                flexDirection: "row",
+                                paddingHorizontal: 2,
+                                borderRadius: 10,
+                                alignItems: "center",
+                                marginTop: 5,
+                              }}>
+                              <Ionicons
+                                name="reader"
+                                color="#F12247"
+                                size={20}
+                              />
+                              <Text
+                                style={{
+                                  fontSize: 10,
+                                  fontWeight: "600",
+                                  color: "#F12247",
+                                }}>
+                                20 referrals
+                              </Text>
+                            </View>
+                            <View
+                              style={{
+                                backgroundColor: "#EEFBEE",
+                                flexDirection: "row",
+                                paddingHorizontal: 2,
+                                borderRadius: 10,
+                                alignItems: "center",
+                                marginTop: 5,
+                              }}>
+                              <Ionicons name="leaf" color="#058602" size={20} />
+                              <Text
+                                style={{
+                                  fontSize: 10,
+                                  fontWeight: "600",
+                                  color: "#058602",
+                                }}>
+                                20 TYFCBs
+                              </Text>
+                            </View>
+                            {/* {dataFrameClub.map((item, index) => (
+                              <View
+                                style={{
+                                  backgroundColor: item.backgroundColor,
+                                  flexDirection: "row",
+                                  paddingHorizontal: 2,
+                                  borderRadius: 10,
+                                  alignItems: "center",
+                                  marginTop: 5,
+                                }}>
+                                <Ionicons
+                                  name={item.icon}
+                                  color={item.color}
+                                  size={20}
+                                />
+                                <Text
+                                  style={{
+                                    fontSize: 10,
+                                    fontWeight: "600",
+                                    color: item.color,
+                                  }}>
+                                  20 {item.name}
+                                </Text>
+                              </View>
+                            ))} */}
+                          </View>
+                        </View>
                       </View>
                     </View>
-                  </View>
-                  <TouchableOpacity onPress={() => handleDetail(item._id)}>
-                    <Ionicons
-                      name="chevron-forward-outline"
-                      size={25}
-                      color="#9D85F2"
-                    />
-                  </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => handleDetail(item._id)}
+                      style={{ top: -10 }}>
+                      <Ionicons
+                        name="chevron-forward-outline"
+                        size={25}
+                        color="#9D85F2"
+                      />
+                    </TouchableOpacity>
+                  </Surface>
                 </TouchableOpacity>
               </Animated.View>
             );
@@ -361,6 +464,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#ffffff",
+  },
+  surface: {
+    height: height * 0.1,
+    marginTop: 15,
+    padding: 8,
+    marginHorizontal: 10,
+    borderRadius: 8,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "#Ffffff",
+    borderBottomWidth: 0.5,
+    borderColor: "#DADADA",
   },
   indicatorStyle: {
     backgroundColor: "#826CCF",

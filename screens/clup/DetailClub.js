@@ -72,7 +72,6 @@ const Member = () => {
                 <View
                   style={{
                     flexDirection: "row",
-
                     width: "55%",
                   }}>
                   <View style={{ flexDirection: "row" }}>
@@ -111,6 +110,7 @@ const Member = () => {
                           color: "#F96F6D",
                           fontSize: 12,
                           fontWeight: "600",
+                          textAlign: "center",
                         }}>
                         {item.ten_chuc_vu}
                       </Text>
@@ -120,19 +120,17 @@ const Member = () => {
                 <View
                   style={{
                     flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "flex-end",
+                    justifyContent: "center",
+                    alignItems: "center",
                     width: "20%",
                     height: "50%",
                   }}>
                   <TouchableOpacity>
-                    <Ionicons name="mail-outline" size={20} color="#EBAF81" />
-                  </TouchableOpacity>
-                  <TouchableOpacity>
-                    <Ionicons name="call-outline" size={20} color="#FBC7D4" />
-                  </TouchableOpacity>
-                  <TouchableOpacity>
-                    <Ionicons name="logo-facebook" size={20} color="#5457A6" />
+                    <Ionicons
+                      name="alert-circle-outline"
+                      size={20}
+                      color="#5457A6"
+                    />
                   </TouchableOpacity>
                 </View>
               </View>
@@ -268,11 +266,43 @@ const Term = () => {
 const Board = () => {
   const dispatch = useDispatch();
   const { auth, club } = useSelector((state) => state);
-
+  const [select, setSelect] = useState("nk1");
   const [refreshing, setRefreshing] = React.useState(false);
 
   return (
     <View style={styles.container}>
+      <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
+        <View
+          style={{
+            borderRadius: 7,
+            width: 120,
+            height: 40,
+            backgroundColor: "#ffffff",
+            shadowOffset: {
+              width: 0,
+              height: 2,
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 3.84,
+
+            elevation: 5,
+          }}>
+          <Picker
+            selectedValue={select}
+            onValueChange={(itemValue, itemIndex) => setSelect(itemValue)}>
+            <Picker.Item
+              label="Nhiệm kì 1"
+              value="nk1"
+              style={styles.itemSelect}
+            />
+            <Picker.Item
+              label="Nhiệm kì 2"
+              value="nk2"
+              style={styles.itemSelect}
+            />
+          </Picker>
+        </View>
+      </View>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View
           style={{
@@ -360,6 +390,7 @@ const Board = () => {
                           color: "#769CEC",
                           fontSize: 12,
                           fontWeight: "600",
+                          textAlign: "center",
                         }}>
                         {item.ten_chuc_vu}
                       </Text>
@@ -482,15 +513,7 @@ const DetailClub = () => {
             height: 130,
             borderRadius: 7,
           }}>
-          <Animated.View
-          // style={{
-          //   opacity: animatedValue.interpolate({
-          //     inputRange: [0, 25],
-          //     outputRange: [1, 0],
-          //     extrapolate: "clamp",
-          //   }),
-          // }}
-          >
+          <Animated.View>
             <View style={{ marginTop: 5 }}>
               <Text
                 style={{
@@ -634,9 +657,9 @@ const styles = StyleSheet.create({
     fontWeight: "400",
   },
   itemSelect: {
-    fontSize: 13,
-    fontWeight: "500",
-    color: "#711775",
+    fontSize: 10,
+    fontWeight: "800",
+    color: "#474747",
     textAlign: "center",
   },
   textContent: {
