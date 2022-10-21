@@ -3,6 +3,7 @@ import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
+
 import React, { Component, useRef, useState } from "react";
 import {
   View,
@@ -25,11 +26,6 @@ import {
   ToastAndroid,
   RefreshControl,
 } from "react-native";
-import PhoneInput from "react-native-phone-number-input";
-
-import { RadioButton } from "react-native-paper";
-import ModalSms from "../../components/ModalSms";
-import Header from "../../components/Header";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -122,6 +118,7 @@ const Home = () => {
   const [refreshing, setRefreshing] = useState(false);
   const animatedValue = useRef(new Animated.Value(0)).current;
   const { auth, notify, event } = useSelector((state) => state);
+
   const insets = useSafeAreaInsets();
 
   let dateNow = new Date();
@@ -306,7 +303,10 @@ const Home = () => {
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
       <HeaderPart backHome={backHome} setBackHome={setBackHome} />
-      {auth.permission && auth.permission.admin ? (
+      {(auth.permission &&
+        auth.permission.group_id === "631c254a7a3a837ce2c22995") ||
+      auth.permission.group_id === "631c254a7a3a837ce2c229b3" ||
+      auth.permission.group_id === "631c254a7a3a837ce2c229a1" ? (
         <View
           style={{
             backgroundColor: "#ffffff",
@@ -425,7 +425,11 @@ const Home = () => {
                 paddingHorizontal: 15,
               }}>
               <Text
-                style={{ fontSize: 15, fontWeight: "600", color: "#826CCF" }}>
+                style={{
+                  fontSize: 15,
+                  fontWeight: "600",
+                  color: "#826CCF",
+                }}>
                 Sự kiện sắp diễn ra
               </Text>
               <TouchableOpacity

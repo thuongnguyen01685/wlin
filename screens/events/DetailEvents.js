@@ -466,8 +466,8 @@ const DetailEvents = () => {
                 {event.detailEvent.cs_ve &&
                   event.detailEvent.cs_ve.map((item) => (
                     <Text style={styles.bodyContent} key={item.line}>
-                      {item.loai_ve}: {item.gia_ve && formatCash(item.gia_ve)}{" "}
-                      VND
+                      {item.loai_ve}:{" "}
+                      {item.gia_ve && formatCash(item.gia_ve.toString(10))} VND
                     </Text>
                   ))}
               </View>
