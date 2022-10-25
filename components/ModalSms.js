@@ -72,7 +72,10 @@ const ModalSms = (props) => {
             }}>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate("Otp", { numberPhone: props.numberphone });
+                navigation.navigate("Otp", {
+                  numberPhone: props.numberphone,
+                  value: props.value,
+                });
                 props.setModalSms(!props.modalSms);
               }}>
               <LinearGradient

@@ -80,6 +80,7 @@ const Login = () => {
           modalSms={modalSms}
           setModalSms={setModalSms}
           numberphone={formattedValue}
+          value={value}
         />
       )}
       <View>

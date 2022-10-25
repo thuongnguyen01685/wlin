@@ -19,9 +19,10 @@ export const getdataApiClub = async (url, token, page) => {
 //news
 //customer
 //dmgoithanhvien
+//https://api.wlin.com.vn/api/62e0b3885271e2560e8bb7d3/customer_wlin?access_token=df547311eec7959837f2d8e275e2555e&limit=1000
 export const getdataApi = async (url, token) => {
   const res = await axios.get(
-    `${URL}/api/62e0b3885271e2560e8bb7d3/${url}?access_token=${token}&limit=100`
+    `${URL}/api/62e0b3885271e2560e8bb7d3/${url}?access_token=${token}&limit=1000`
   );
   return res;
 };

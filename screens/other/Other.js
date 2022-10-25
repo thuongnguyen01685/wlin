@@ -53,16 +53,23 @@ const data = [
   //   name: "Quản trị Referrals",
   //   navigation: "SlipsScreen",
   // },
-  // {
-  //   picture: require("../../assets/Chart.png"),
-  //   name: "Quản trị TYFCB",
-  //   navigation: "TYFCB",
-  // },
+  {
+    icon: "chart-box",
+    name: "Referrals",
+    navigation: "Slips",
+    color: "#F12247",
+  },
+  {
+    icon: "chart-box",
+    name: "TYFCBs",
+    navigation: "TYFCB",
+    color: "#058602",
+  },
   {
     icon: "note-text",
     name: "Danh sách nhóm quyền lợi",
     navigation: "Benefit",
-    color: "#1BB554",
+    color: "#FEC90F",
   },
   {
     icon: "account",

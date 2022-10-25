@@ -193,8 +193,7 @@ const Nation = () => {
                                   fontWeight: "600",
                                   color: "#139ECA",
                                 }}>
-                                {item.ds_thanh_vien.length}/{item.so_luong}{" "}
-                                thành viên
+                                {item.ds_thanh_vien.length} thành viên
                               </Text>
                             </View>
                             <View

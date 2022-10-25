@@ -337,7 +337,7 @@ const DetailEvents = () => {
                       fontSize: 12,
                       fontWeight: "400",
                       color: "#ffffff",
-                      left: 10,
+                      left: 5,
                     }}>
                     {formatTimeDisplay(event.detailEvent.ngay_su_kien)}
                   </Text>

@@ -14,6 +14,7 @@ export const AUTH = {
   TOKEN: "TOKEN",
   PROFILE: "PROFILE",
   PERSSION: "PERSSION",
+  CUSTOMER_WLIN: "CUSTOMER_WLIN",
   RANK: "RANK",
   ERROR: "ERROR",
 };
@@ -62,6 +63,26 @@ export const getPermissionAction = (token, email) => async (dispatch) => {
     const res = await getPermission(`participant`, token, email);
 
     dispatch({ type: AUTH.PERSSION, payload: res.data });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getCustomerWlinAction = (token, phone) => async (dispatch) => {
+  try {
+    // console.log(phone);
+
+    const res = await getdataApi(`customer_wlin`, token);
+
+    //console.log(res.data.filter((item) => item.of_user === phone));
+
+    // dispatch({
+    //   type: AUTH.CUSTOMER_WLIN,
+    //   payload: res.data.filter((item) => item.ma_kh === phone),
+    // });
+    return res.data.filter(
+      (item) => item.of_user === phone && item.trang_thai !== 0
+    );
   } catch (error) {
     console.log(error);
   }

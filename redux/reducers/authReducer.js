@@ -13,6 +13,7 @@ const initialState = {
   banner: [],
   dmnv: [],
   otp: [],
+  customer: [],
 };
 
 const authReducer = (state = initialState, action) => {
@@ -29,10 +30,16 @@ const authReducer = (state = initialState, action) => {
       };
     case AUTH.TOKEN:
       return { ...state, token: action.payload };
+
     case AUTH.PROFILE:
       return { ...state, profile: action.payload };
     case AUTH.PERSSION:
       return { ...state, permission: action.payload[0] };
+    case AUTH.CUSTOMER_WLIN:
+      return {
+        ...state,
+        customer: action.payload[0],
+      };
     case AUTH.RANK:
       return { ...state, rank: action.payload };
     default:

@@ -48,7 +48,7 @@ const ListMember = () => {
     setRefreshing(true);
     dispatch(getMemberAction(auth.token));
     wait(2000).then(() => setRefreshing(false));
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     setRefreshing(true);
@@ -56,7 +56,7 @@ const ListMember = () => {
     setTimeout(() => {
       setRefreshing(false);
     }, 1000);
-  }, []);
+  }, [dispatch]);
 
   const handleDetailMember = (_id) => {
     dispatch(getDetailMember(_id, auth.token));

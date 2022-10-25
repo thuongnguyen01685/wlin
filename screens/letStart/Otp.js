@@ -28,6 +28,7 @@ import { RadioButton } from "react-native-paper";
 import ModalSms from "../../components/ModalSms";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  getCustomerWlinAction,
   getProfileAction,
   getTokenAction,
 } from "../../redux/actions/authAction";
@@ -124,6 +125,8 @@ const Otp = ({ route }) => {
       if (res) {
         dispatch(getProfileAction(res.token));
         dispatch(getNotify(res.token));
+        //route.params.numberPhone
+        dispatch(getCustomerWlinAction(res.token, route.params.value));
         setStatus("success");
         setTimeout(() => {
           navigation.navigate("TabBar");
