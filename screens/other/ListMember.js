@@ -47,7 +47,7 @@ const ListMember = () => {
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     dispatch(getMemberAction(auth.token));
-    wait(2000).then(() => setRefreshing(false));
+    wait(4000).then(() => setRefreshing(false));
   }, [dispatch]);
 
   useEffect(() => {
@@ -55,7 +55,7 @@ const ListMember = () => {
     dispatch(getMemberAction(auth.token));
     setTimeout(() => {
       setRefreshing(false);
-    }, 1000);
+    }, 3000);
   }, [dispatch]);
 
   const handleDetailMember = (_id) => {
@@ -184,6 +184,7 @@ const ListMember = () => {
                     style={{
                       flexDirection: "column",
                       justifyContent: "space-between",
+                      alignItems: "center",
                       width: "80%",
                     }}>
                     <Text
@@ -191,6 +192,7 @@ const ListMember = () => {
                         color: "#474747",
                         fontSize: 15,
                         fontWeight: "600",
+                        textAlign: "center",
                       }}>
                       {item.ten_kh}
                     </Text>

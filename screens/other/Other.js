@@ -18,6 +18,7 @@ import {
   Platform,
   TextInput,
 } from "react-native";
+import { useSelector } from "react-redux";
 import HeaderPart from "../../components/HeaderPart/HeaderPart";
 
 const w = Dimensions.get("window").width;
@@ -30,18 +31,21 @@ const data = [
     name: "Quản trị hội viên",
     navigation: "ListMember",
     color: "#BF1FE7",
+    permission: ["631c254a7a3a837ce2c229a7", "631c254a7a3a837ce2c22995"],
   },
   {
     icon: "shield-check",
     name: "Quản trị CLUB",
     navigation: "ClubScreen",
     color: "#32DBDB",
+    permission: ["631c254a7a3a837ce2c22995"],
   },
   {
     icon: "calendar-month",
     name: "Quản trị sự kiện",
     navigation: "EventsScreen",
     color: "#1D19D4",
+    permission: ["631c254a7a3a837ce2c22995"],
   },
   // {
   //   picture: require("../../assets/Chart.png"),
@@ -58,29 +62,51 @@ const data = [
     name: "Referrals",
     navigation: "Slips",
     color: "#F12247",
+    permission: ["631c254a7a3a837ce2c229ac", "631c254a7a3a837ce2c229a7"],
   },
   {
     icon: "chart-box",
     name: "TYFCBs",
     navigation: "TYFCB",
     color: "#058602",
+    permission: ["631c254a7a3a837ce2c229ac", "631c254a7a3a837ce2c229a7"],
   },
   {
     icon: "note-text",
     name: "Danh sách nhóm quyền lợi",
     navigation: "Benefit",
     color: "#FEC90F",
+    permission: [
+      "631c254a7a3a837ce2c229ac",
+      "631c254a7a3a837ce2c229a7",
+      "631c254a7a3a837ce2c22995",
+    ],
   },
   {
     icon: "account",
     name: "Hồ sơ cá nhân",
     navigation: "Profile",
     color: "#EDA6EA",
+    permission: [
+      "631c254a7a3a837ce2c229ac",
+      "631c254a7a3a837ce2c229a7",
+      "631c254a7a3a837ce2c22995",
+    ],
   },
 ];
 // create a component
 const Other = () => {
   const navigation = useNavigation();
+
+  const { auth } = useSelector((state) => state);
+
+  let dataHas = [];
+
+  data.map((item) => {
+    if (item.permission.includes(auth.permission.group_id) === true) {
+      dataHas.push(item);
+    }
+  });
 
   return (
     <View style={styles.container}>
@@ -124,7 +150,7 @@ const Other = () => {
               marginTop: 10,
             }}>
             <View>
-              {data.map((item, index) => (
+              {dataHas.map((item, index) => (
                 <TouchableOpacity
                   style={{
                     flexDirection: "row",

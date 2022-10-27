@@ -15,7 +15,13 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { AUTH, getProfileAction } from "../../redux/actions/authAction";
+import {
+  AUTH,
+  getCustomerWlinAction,
+  getPermissionAction,
+  getProfileAction,
+  getRankAction,
+} from "../../redux/actions/authAction";
 import { getNotify } from "../../redux/actions/notifyAction";
 import Lottie from "lottie-react-native";
 // import {
@@ -43,7 +49,13 @@ const Splash = () => {
       setTimeout(async () => {
         if (token) {
           await dispatch({ type: AUTH.TOKEN, payload: token });
-          dispatch(getProfileAction(token));
+          const res = await dispatch(getProfileAction(token));
+          if (res) {
+            dispatch(getPermissionAction(token, res));
+            const goi = await dispatch(getRankAction(token, res));
+            dispatch({ type: AUTH.GOI, payload: goi });
+            dispatch(getCustomerWlinAction(token, res));
+          }
           dispatch(getNotify(token));
           setLoading(false);
           navigation.navigate("TabBar");
@@ -55,6 +67,8 @@ const Splash = () => {
     };
     it();
   }, [dispatch, auth.token]);
+
+  // console.log(auth.rank.ma_goi, "g091");
   // const handleGo = async () => {
   //   const token = await AsyncStorage.getItem("@token_key");
 

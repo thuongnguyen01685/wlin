@@ -1,20 +1,45 @@
 //import liraries
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { Component } from "react";
+import React, { Component, useEffect, useState } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import { getRankAction } from "../redux/actions/authAction";
 
 // create a component
 const CardInfo = () => {
+  const { auth } = useSelector((state) => state);
+
   return (
     <View>
       <LinearGradient
-        start={{ x: 0.9, y: 1 }}
-        end={{ x: 0.2, y: 0.6 }}
-        colors={["#DEC1A1", "#FBECD7", "#F5DFC7", "#D5B59C"]}
-        style={{ borderRadius: 7 }}>
+        start={{ x: 0.05, y: 0.05 }}
+        end={{ x: 0.9, y: 1 }}
+        colors={
+          auth.ma_goi === "01"
+            ? ["#ABABAB", "#DFDFDF", "#C5C5C5", "#B9B9B9"]
+            : auth.ma_goi === "02"
+            ? ["#DEC1A1", "#FBECD7", "#F5DFC7", "#D5B59C"]
+            : auth.ma_goi === "03"
+            ? ["#7289DD", "#D0DAFF", "#ABBCF8", "#7E96E9"]
+            : auth.ma_goi === "04" && [
+                "#1F1F1f",
+                "#646464",
+                "#484848",
+                "#373737",
+              ]
+        }
+        style={{ borderRadius: 7, marginTop: 8 }}>
         <Image
-          source={require("../assets/cchuong.png")}
+          source={
+            auth.ma_goi === "01"
+              ? require("../assets/bac.png")
+              : auth.ma_goi === "02"
+              ? require("../assets/cchuong.png")
+              : auth.ma_goi === "03"
+              ? require("../assets/kc.png")
+              : auth.ma_goi === "04" && require("../assets/partner.png")
+          }
           style={{
             width: 60,
             height: 60,
@@ -38,16 +63,22 @@ const CardInfo = () => {
             />
           </TouchableOpacity>
         </View>
-        <View style={{ width: "100%", padding: 20 }}>
+        <View style={{ width: "100%", padding: 15 }}>
           <Text
             style={{
-              color: "#8D6B48",
+              color:
+                auth.ma_goi === "01"
+                  ? "#FFFFFF"
+                  : auth.ma_goi === "02"
+                  ? "#8D6B48"
+                  : auth.ma_goi === "03"
+                  ? "#5A54A5"
+                  : auth.ma_goi === "04" && "#6A6A6A",
               fontSize: 25,
-              fontWeight: "600",
+              fontWeight: "800",
               textAlign: "center",
             }}>
-            {/* {auth.permission.name} */}
-            Thương
+            {auth.permission.name}
           </Text>
         </View>
         <View style={{ paddingHorizontal: 10, bottom: 5 }}>
@@ -57,10 +88,53 @@ const CardInfo = () => {
               justifyContent: "space-between",
               alignItems: "center",
             }}>
-            <Text style={styles.textContent}>Start date: 1/2/2021</Text>
-            <Text style={styles.textContent}>Due date: 1/2/2022</Text>
+            <Text
+              style={[
+                styles.textContent,
+                {
+                  color:
+                    auth.ma_goi === "01"
+                      ? "rgba(103, 103, 103, 0.5)"
+                      : auth.ma_goi === "02"
+                      ? "#CAAD8B"
+                      : auth.ma_goi === "03"
+                      ? "rgba(90, 84, 165, 0.5)"
+                      : auth.ma_goi === "04" && "rgba(255, 255, 255, 0.6)",
+                },
+              ]}>
+              Start date: 1/2/2021
+            </Text>
+            <Text
+              style={[
+                styles.textContent,
+                {
+                  color:
+                    auth.ma_goi === "01"
+                      ? "rgba(103, 103, 103, 0.5)"
+                      : auth.ma_goi === "02"
+                      ? "#CAAD8B"
+                      : auth.ma_goi === "03"
+                      ? "rgba(90, 84, 165, 0.5)"
+                      : auth.ma_goi === "04" && "rgba(255, 255, 255, 0.6)",
+                },
+              ]}>
+              Due date: 1/2/2022
+            </Text>
           </View>
-          <Text style={styles.textContent}>
+          <Text
+            style={[
+              styles.textContent,
+              {
+                color:
+                  auth.ma_goi === "01"
+                    ? "rgba(103, 103, 103, 0.5)"
+                    : auth.ma_goi === "02"
+                    ? "#CAAD8B"
+                    : auth.ma_goi === "03"
+                    ? "rgba(90, 84, 165, 0.5)"
+                    : auth.ma_goi === "04" && "rgba(255, 255, 255, 0.6)",
+              },
+            ]}>
             Thời gian hoạt động còn lại: 20 ngày
           </Text>
         </View>
@@ -78,9 +152,8 @@ const styles = StyleSheet.create({
     marginVertical: 1,
   },
   textContent: {
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: "400",
-    color: "#ffffff",
   },
 });
 

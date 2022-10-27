@@ -160,7 +160,7 @@ const Header = (props) => {
                 style={{
                   color: "#FFFFFF",
                   fontSize: 15,
-                  fontWeight: "600",
+                  fontWeight: "400",
                 }}>
                 Chào buổi sáng
               </Text>
@@ -215,7 +215,7 @@ const Header = (props) => {
                 transform: [{ rotate: rotation }],
               }}>
               <TouchableOpacity onPress={() => setModalVisible(true)}>
-                <Ionicons name="notifications" size={28} color="#F2AF4A" />
+                <Ionicons name="notifications" size={25} color="#F2AF4A" />
                 <View
                   style={{
                     position: "absolute",
@@ -228,9 +228,7 @@ const Header = (props) => {
                     style={{
                       fontSize: 8,
                       paddingHorizontal: notify.getNotify.length > 9 ? 2 : 4,
-                      color: "#711775",
-                      borderColor: "#ffffff",
-                      borderWidth: 0.1,
+                      color: "#ffffff",
                       fontWeight: "600",
                     }}>
                     {notify.getNotify.length > 9
@@ -242,7 +240,7 @@ const Header = (props) => {
             </Animated.View>
           ) : (
             <TouchableOpacity onPress={() => setModalVisible(true)}>
-              <Ionicons name="notifications" size={28} color="#F2AF4A" />
+              <Ionicons name="notifications" size={25} color="#F2AF4A" />
               {/* <View
               style={{
                 position: "absolute",

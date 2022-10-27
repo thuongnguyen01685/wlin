@@ -34,78 +34,12 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import callApi from "../../utils/callApi";
 import { URL } from "../../utils/fetchApi";
 import CardInfo from "../../components/CardInfo";
+import { formatDateDisplays } from "../../utils/datetime";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
 const ratio = w / 720;
-const data = [
-  {
-    name: "Số điện thoại",
-    icon: "call",
-    value: "+84 378759723",
-    color: "rgba(136, 38, 140, 0.75)",
-  },
-  {
-    name: "Chức vụ",
-    icon: "briefcase",
-    value: "Trưởng ban",
-    color: "#DC5696",
-  },
-  {
-    name: "Công ty",
-    icon: "business",
-    value: "TNHH MTV Công Nghệ FOS",
-    color: "#F8AA4F",
-  },
-  {
-    name: "Địa chỉ công ty",
-    icon: "location",
-    value: "Quận 1, TPHCM",
-    color: "#FA846F",
-  },
-  {
-    name: "Địa chỉ cá nhân",
-    icon: "location",
-    value: "Quận 7, TPHCM",
-    color: "rgba(5, 60, 255, 0.4)",
-  },
-  {
-    name: "Email",
-    icon: "mail",
-    value: "vinh.nguyen@fostech.vn",
-    color: "rgba(255, 0, 0, 0.7)",
-  },
-  {
-    name: "Nhóm hội viên",
-    icon: "people",
-    value: "Nhóm A",
-    color: "rgba(136, 38, 140, 0.75)",
-  },
-  {
-    name: "Ngày sinh",
-    icon: "calendar",
-    value: "24/05/1985",
-    color: "#93DBE4",
-  },
-  {
-    name: "Ngành hàng",
-    icon: "cube",
-    value: "Ban Công nghệ - Phần mềm",
-    color: "rgba(255, 10, 157, 0.4)",
-  },
-  {
-    name: "Ngành hàng chi tiết",
-    icon: "cube",
-    value: "Spa - Hair - Nail",
-    color: "#6CADF6",
-  },
-  {
-    name: "Người giới thiệu",
-    icon: "person",
-    value: "Mr. Nguyễn Xuân Trường",
-    color: "rgba(17, 141, 59, 0.5)",
-  },
-];
+
 const HEADER_HEIGHT = 145;
 // create a component
 const Profile = () => {
@@ -117,6 +51,102 @@ const Profile = () => {
   const [image, setImage] = useState(null);
   const animatedValue = useRef(new Animated.Value(0)).current;
   const insets = useSafeAreaInsets();
+  const data = [
+    {
+      name: "Số điện thoại",
+      icon: "call",
+      value: auth.customer.dien_thoai,
+      color: "rgba(136, 38, 140, 0.75)",
+      permission: [
+        "631c254a7a3a837ce2c229ac",
+        "631c254a7a3a837ce2c229a7",
+        "631c254a7a3a837ce2c22995",
+      ],
+    },
+    {
+      name: "Chức vụ",
+      icon: "briefcase",
+      value: auth.customer.chuc_vu,
+      color: "#DC5696",
+      permission: ["631c254a7a3a837ce2c229ac", "631c254a7a3a837ce2c229a7"],
+    },
+    {
+      name: "Công ty",
+      icon: "business",
+      value: auth.customer.ten_cong_ty,
+      color: "#F8AA4F",
+      permission: ["631c254a7a3a837ce2c229ac", "631c254a7a3a837ce2c229a7"],
+    },
+    {
+      name: "Địa chỉ công ty",
+      icon: "location",
+      value: auth.customer.address_cong_ty,
+      color: "#FA846F",
+      permission: ["631c254a7a3a837ce2c229ac", "631c254a7a3a837ce2c229a7"],
+    },
+    {
+      name: "Địa chỉ cá nhân",
+      icon: "location",
+      value: auth.customer.address,
+      color: "rgba(5, 60, 255, 0.4)",
+      permission: [
+        "631c254a7a3a837ce2c229ac",
+        "631c254a7a3a837ce2c229a7",
+        "631c254a7a3a837ce2c22995",
+      ],
+    },
+    {
+      name: "Email",
+      icon: "mail",
+      value: auth.customer.email,
+      color: "rgba(255, 0, 0, 0.7)",
+      permission: [
+        "631c254a7a3a837ce2c229ac",
+        "631c254a7a3a837ce2c229a7",
+        "631c254a7a3a837ce2c22995",
+      ],
+    },
+    {
+      name: "Ngày sinh",
+      icon: "calendar",
+      value: formatDateDisplays(auth.customer.ngay_sinh),
+      color: "#93DBE4",
+      permission: [
+        "631c254a7a3a837ce2c229ac",
+        "631c254a7a3a837ce2c229a7",
+        "631c254a7a3a837ce2c22995",
+      ],
+    },
+    {
+      name: "Ngành hàng",
+      icon: "cube",
+      value: auth.customer.ten_nganh_hang,
+      color: "rgba(255, 10, 157, 0.4)",
+      permission: ["631c254a7a3a837ce2c229ac", "631c254a7a3a837ce2c229a7"],
+    },
+    {
+      name: "Ngành hàng chi tiết",
+      icon: "cube",
+      value: auth.customer.nganh_hang_con,
+      color: "#6CADF6",
+      permission: ["631c254a7a3a837ce2c229ac", "631c254a7a3a837ce2c229a7"],
+    },
+    {
+      name: "Người giới thiệu",
+      icon: "person",
+      value: auth.customer.nguoi_gioi_thieu,
+      color: "rgba(17, 141, 59, 0.5)",
+      permission: ["631c254a7a3a837ce2c229ac", "631c254a7a3a837ce2c229a7"],
+    },
+  ];
+
+  let dataHas = [];
+
+  data.map((item) => {
+    if (item.permission.includes(auth.permission.group_id) === true) {
+      dataHas.push(item);
+    }
+  });
 
   const handleCloseProfile = () => {
     navigation.goBack();
@@ -278,7 +308,10 @@ const Profile = () => {
             <Ionicons name="alert-circle-outline" size={20} color="#826CCF" />
           </TouchableOpacity>
         </View> */}
-        {auth.permission && auth.permission.admin ? (
+        {(auth.permission &&
+          auth.permission.group_id === "631c254a7a3a837ce2c22995") ||
+        auth.permission.group_id === "631c254a7a3a837ce2c229b3" ||
+        auth.permission.group_id === "631c254a7a3a837ce2c229a1" ? (
           <View
             style={{
               backgroundColor: "#ffffff",
@@ -334,6 +367,15 @@ const Profile = () => {
                 paddingHorizontal: 10,
                 marginTop: 10,
                 zIndex: 4,
+                transform: [
+                  {
+                    translateY: animatedValue.interpolate({
+                      inputRange: [0, 100],
+                      outputRange: [0, 10],
+                      extrapolate: "clamp",
+                    }),
+                  },
+                ],
               }}>
               <Text
                 style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
@@ -348,11 +390,11 @@ const Profile = () => {
             </Animated.View>
             <Animated.View
               style={{
-                paddingHorizontal: 10,
+                paddingHorizontal: 20,
                 // height: headerHeight,
                 opacity: animatedValue.interpolate({
-                  inputRange: [0, 25],
-                  outputRange: [1, 0],
+                  inputRange: [0, 4, 8, 25],
+                  outputRange: [1, 0.5, 0.9, 0],
                   extrapolate: "clamp",
                 }),
                 transform: [
@@ -599,84 +641,89 @@ const Profile = () => {
                     </View>
                   </View> */}
                   <View style={{ paddingHorizontal: 10 }}>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        backgroundColor: "#Ffffff",
-                        marginVertical: 10,
-                        borderRadius: 15,
-                        paddingVertical: 10,
-                        paddingHorizontal: 20,
-                        borderColor: "#dadada",
-                        borderWidth: 0.5,
-                      }}>
+                    {auth.permission.group_id !==
+                      "631c254a7a3a837ce2c22995" && (
                       <View
                         style={{
                           flexDirection: "row",
                           justifyContent: "space-between",
+                          alignItems: "center",
+                          backgroundColor: "#Ffffff",
+                          marginVertical: 10,
+                          borderRadius: 15,
+                          paddingVertical: 10,
+                          paddingHorizontal: 20,
+                          borderColor: "#dadada",
+                          borderWidth: 0.5,
                         }}>
                         <View
                           style={{
                             flexDirection: "row",
                             justifyContent: "space-between",
-                            alignItems: "center",
                           }}>
                           <View
                             style={{
                               flexDirection: "row",
                               justifyContent: "space-between",
                               alignItems: "center",
-                              backgroundColor: "#ffffff",
-                              paddingVertical: 9.7,
-                              paddingHorizontal: 17.8,
-                              borderRadius: 50,
                             }}>
-                            <Text
+                            <View
                               style={{
-                                fontSize: 20,
-                                fontWeight: "600",
-                                color: "#9D85F2",
+                                flexDirection: "row",
+                                justifyContent: "space-between",
+                                alignItems: "center",
+                                backgroundColor: "#ffffff",
+                                paddingVertical: 9.7,
+                                paddingHorizontal: 17.8,
+                                borderRadius: 50,
                               }}>
-                              #
-                            </Text>
-                          </View>
+                              <Text
+                                style={{
+                                  fontSize: 20,
+                                  fontWeight: "600",
+                                  color: "#9D85F2",
+                                }}>
+                                #
+                              </Text>
+                            </View>
 
-                          <View
-                            style={{
-                              flexDirection: "column",
-                              marginLeft: 10,
-                              justifyContent: "center",
-                            }}>
-                            <Text
+                            <View
                               style={{
-                                color: "#474747",
-                                fontSize: 15,
-                                fontWeight: "600",
+                                flexDirection: "column",
+                                marginLeft: 10,
+                                justifyContent: "center",
+                                width: "70%",
                               }}>
-                              Mã hội viên
-                            </Text>
-                            <Text
-                              style={{
-                                color: "#434343",
-                                fontSize: 12,
-                                fontWeight: "400",
-                              }}>
-                              +84 378759723
-                            </Text>
+                              <Text
+                                style={{
+                                  color: "#474747",
+                                  fontSize: 15,
+                                  fontWeight: "600",
+                                }}>
+                                Mã hội viên
+                              </Text>
+                              <Text
+                                style={{
+                                  color: "#434343",
+                                  fontSize: 12,
+                                  fontWeight: "400",
+                                }}>
+                                {auth.customer.ma_kh}
+                              </Text>
+                            </View>
                           </View>
                         </View>
+                        <TouchableOpacity>
+                          <Ionicons
+                            name="create-outline"
+                            size={25}
+                            color="#9D85F2"
+                          />
+                        </TouchableOpacity>
                       </View>
-                      <TouchableOpacity>
-                        <Ionicons
-                          name="create-outline"
-                          size={25}
-                          color="#9D85F2"
-                        />
-                      </TouchableOpacity>
-                    </View>
-                    {data.map((item, index) => (
+                    )}
+
+                    {dataHas.map((item, index) => (
                       <View
                         style={{
                           flexDirection: "row",
@@ -724,6 +771,7 @@ const Profile = () => {
                                 flexDirection: "column",
                                 marginLeft: 10,
                                 justifyContent: "center",
+                                width: "70%",
                               }}>
                               <Text
                                 style={{
@@ -789,7 +837,7 @@ const Profile = () => {
                               borderRadius: 50,
                             }}>
                             <Ionicons
-                              name="log-out-outline"
+                              name="log-out"
                               size={25}
                               color="#711775"
                             />
@@ -800,6 +848,7 @@ const Profile = () => {
                               flexDirection: "column",
                               marginLeft: 10,
                               justifyContent: "center",
+                              width: "70%",
                             }}>
                             <Text
                               style={{

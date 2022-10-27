@@ -17,6 +17,7 @@ export const AUTH = {
   CUSTOMER_WLIN: "CUSTOMER_WLIN",
   RANK: "RANK",
   ERROR: "ERROR",
+  GOI: "GOI",
 };
 
 export const getOTP = (number) => async (dispatch) => {
@@ -28,7 +29,7 @@ export const getOTP = (number) => async (dispatch) => {
   } catch (error) {
     // dispatch({ type: AUTH.ERROR, payload: error.response.data.error });
     // console.log(error.response.data.error);
-    //console.log(error);
+    console.log(error);
     return;
   }
 };
@@ -52,7 +53,9 @@ export const getProfileAction = (token) => async (dispatch) => {
   try {
     const res = await getProfile(`profile`, token);
 
+    getRankAction(token, res.data.email);
     dispatch({ type: AUTH.PROFILE, payload: res.data });
+    return res.data.email;
   } catch (error) {
     console.log(error);
   }
@@ -80,6 +83,14 @@ export const getCustomerWlinAction = (token, phone) => async (dispatch) => {
     //   type: AUTH.CUSTOMER_WLIN,
     //   payload: res.data.filter((item) => item.ma_kh === phone),
     // });
+    //console.log(res.data);
+    //console.log(res.data);
+    dispatch({
+      type: AUTH.CUSTOMER_WLIN,
+      payload: res.data.filter(
+        (item) => item.of_user === phone && item.trang_thai !== 0
+      ),
+    });
     return res.data.filter(
       (item) => item.of_user === phone && item.trang_thai !== 0
     );
@@ -101,6 +112,7 @@ export const getRankAction = (token, email) => async (dispatch) => {
     }
 
     dispatch({ type: AUTH.RANK, payload: { ...dataFilter, ...res.data[0] } });
+    return res.data[0].goi_thanh_vien;
   } catch (error) {
     console.log(error);
   }

@@ -209,25 +209,25 @@ const TabBar = () => {
             if (route.name === "Home") {
               return (
                 <MaterialCommunityIcons
-                  name={"home-variant"}
-                  size={30}
+                  name="home-variant"
+                  size={35}
                   color={focused ? "#9D85F2" : "#909090"}
                 />
               );
             }
-            if (route.name === "SlipsScreen") {
-              return (
-                <Ionicons
-                  name="reader-outline"
-                  size={30}
-                  color={focused ? "#9D85F2" : "#909090"}
-                />
-              );
-            }
+            // if (route.name === "SlipsScreen") {
+            //   return (
+            //     <Ionicons
+            //       name="reader-outline"
+            //       size={30}
+            //       color={focused ? "#9D85F2" : "#909090"}
+            //     />
+            //   );
+            // }
             if (route.name === "OtherScreen") {
               return (
                 <Ionicons
-                  name="menu"
+                  name={focused ? "menu" : "menu-outline"}
                   size={35}
                   color={focused ? "#9D85F2" : "#909090"}
                 />
@@ -236,7 +236,9 @@ const TabBar = () => {
             if (route.name === "ClubScreen") {
               return (
                 <Ionicons
-                  name="shield-checkmark-outline"
+                  name={
+                    focused ? "shield-checkmark" : "shield-checkmark-outline"
+                  }
                   size={30}
                   color={focused ? "#9D85F2" : "#909090"}
                 />
@@ -266,8 +268,8 @@ const TabBar = () => {
             if (route.name === "EventsScreen") {
               return (
                 <Ionicons
-                  name="calendar-outline"
-                  size={30}
+                  name={focused ? "calendar" : "calendar-outline"}
+                  size={29}
                   color={focused ? "#9D85F2" : "#909090"}
                 />
               );

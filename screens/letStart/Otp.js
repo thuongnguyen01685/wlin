@@ -29,7 +29,9 @@ import ModalSms from "../../components/ModalSms";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getCustomerWlinAction,
+  getPermissionAction,
   getProfileAction,
+  getRankAction,
   getTokenAction,
 } from "../../redux/actions/authAction";
 import { AntDesign, Entypo } from "@expo/vector-icons";
@@ -127,11 +129,13 @@ const Otp = ({ route }) => {
         dispatch(getNotify(res.token));
         //route.params.numberPhone
         dispatch(getCustomerWlinAction(res.token, route.params.value));
+        dispatch(getPermissionAction(res.token, route.params.value));
+        dispatch(getRankAction(res.token, route.params.value));
         setStatus("success");
+        popIn();
         setTimeout(() => {
           navigation.navigate("TabBar");
         }, 1000);
-        popIn();
       }
     } else {
       //Alert.alert("Sai mật mã. Vui lòng nhập lại mã OTP !");

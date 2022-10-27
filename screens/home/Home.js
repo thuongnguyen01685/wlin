@@ -31,6 +31,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
+  AUTH,
   getPermissionAction,
   getProfileAction,
   getRankAction,
@@ -45,6 +46,7 @@ import {
   ContributionGraph,
   StackedBarChart,
 } from "react-native-chart-kit";
+
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Toast from "react-native-root-toast";
 import Carousel from "react-native-banner-carousel-updated";
@@ -90,6 +92,27 @@ const data = {
   ],
   // legend: ["Rainy Days"], // optional
 };
+//stackbar chart
+
+const dataX = {
+  labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
+  legend: ["Referrals", "TYFCBs", "Event"],
+  data: [
+    [60, 60, 60],
+    [30, 30, 60],
+    [60, 60, 60],
+    [70, 30, 60],
+    [20, 30, 60],
+    [30, 50, 60],
+    [50, 80, 60],
+    [50, 30, 60],
+    [20, 60, 60],
+    [10, 30, 60],
+    [60, 20, 60],
+    [30, 50, 20],
+  ],
+  barColors: ["#9D85F2", "#5144A6", "#78B1E5"],
+};
 
 const ListQL = [
   {
@@ -108,7 +131,7 @@ const ListQL = [
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
-const HEADER_HEIGHT = 145;
+const HEADER_HEIGHT = 140;
 let backHandlerClickCount = 0;
 // create a component
 const Home = () => {
@@ -192,10 +215,16 @@ const Home = () => {
       // dispatch(getProfileAction(auth.token));
       // dispatch(getNotify(auth.token));
 
-      dispatch(getPermissionAction(auth.token, auth.profile.email));
+      // dispatch(getPermissionAction(auth.token, auth.profile.email));
       dispatch(getRankAction(auth.token, auth.profile.email));
       dispatch(getEventsAction(auth.token));
     }
+    async function it() {
+      const goi = await dispatch(getRankAction(auth.token, auth.profile.email));
+
+      dispatch({ type: AUTH.GOI, payload: goi });
+    }
+    it();
   }, [auth.token, dispatch, auth.profile.email]);
 
   useEffect(() => {
@@ -210,8 +239,14 @@ const Home = () => {
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     dispatch(getPermissionAction(auth.token, auth.profile.email));
-    dispatch(getRankAction(auth.token, auth.profile.email));
+
     dispatch(getEventsAction(auth.token));
+    async function it() {
+      const goi = await dispatch(getRankAction(auth.token, auth.profile.email));
+
+      dispatch({ type: AUTH.GOI, payload: goi });
+    }
+    it();
     wait(2000).then(() => setRefreshing(false));
   }, [auth.token, dispatch, auth.profile.email]);
 
@@ -227,7 +262,7 @@ const Home = () => {
         style={{
           flexDirection: "row",
           justifyContent: "center",
-          marginVertical: 10,
+          marginVertical: 5,
         }}
         onPress={() => handleDetail(item._id)}>
         <Image
@@ -362,6 +397,15 @@ const Home = () => {
               paddingHorizontal: 10,
               marginTop: 10,
               zIndex: 4,
+              transform: [
+                {
+                  translateY: animatedValue.interpolate({
+                    inputRange: [0, 100],
+                    outputRange: [0, 10],
+                    extrapolate: "clamp",
+                  }),
+                },
+              ],
             }}>
             <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
               Thông tin thành viên
@@ -375,11 +419,11 @@ const Home = () => {
           </Animated.View>
           <Animated.View
             style={{
-              paddingHorizontal: 10,
+              paddingHorizontal: 20,
               // height: headerHeight,
               opacity: animatedValue.interpolate({
-                inputRange: [0, 25],
-                outputRange: [1, 0],
+                inputRange: [0, 4, 8, 25],
+                outputRange: [1, 0.5, 0.9, 0],
                 extrapolate: "clamp",
               }),
               transform: [
@@ -414,87 +458,52 @@ const Home = () => {
         <Animated.View
           style={{
             marginBottom: "20%",
-            marginTop: 10,
+            marginTop: 5,
           }}>
-          <View>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                paddingHorizontal: 15,
-              }}>
-              <Text
-                style={{
-                  fontSize: 15,
-                  fontWeight: "600",
-                  color: "#826CCF",
-                }}>
-                Sự kiện sắp diễn ra
-              </Text>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("EventsScreen");
-                }}>
-                <Text
+          {auth.permission &&
+            auth.permission.group_id !== "631c254a7a3a837ce2c22995" && (
+              <View>
+                <View
                   style={{
-                    fontSize: 12,
-                    fontWeight: "400",
-                    color: "#909090",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    paddingHorizontal: 15,
                   }}>
-                  Xem chi tiết
-                </Text>
-              </TouchableOpacity>
-            </View>
-            {/* <ScrollView>
-              <View
-                style={{
-                  flexDirection: "row",
-                  flexWrap: "wrap",
-                  justifyContent: "space-evenly",
-                }}>
-                {dataEvents.map((item) => (
-                  <TouchableOpacity
+                  <Text
                     style={{
-                      width: "45%",
-                      height: 150,
-                      marginVertical: 15,
-                    }}
-                    key={item._id}>
-                    <Image
-                      source={item.image}
+                      fontSize: 15,
+                      fontWeight: "600",
+                      color: "#826CCF",
+                    }}>
+                    Sự kiện sắp diễn ra
+                  </Text>
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate("EventsScreen");
+                    }}>
+                    <Text
                       style={{
-                        width: "100%",
-                        height: 130,
-                        borderRadius: 10,
-                      }}
-                    />
-                    <View style={{ marginTop: 5 }}>
-                      <Text style={{ fontSize: 12, fontWeight: "600" }}>
-                        {item.name}
-                      </Text>
-                      <Text
-                        style={{
-                          fontSize: 10,
-                          fontWeight: "400",
-                          color: "#909090",
-                        }}>
-                        {item.time}
-                      </Text>
-                    </View>
+                        fontSize: 12,
+                        fontWeight: "400",
+                        color: "#909090",
+                      }}>
+                      Xem chi tiết
+                    </Text>
                   </TouchableOpacity>
-                ))}
+                </View>
+
+                <Carousel
+                  autoplay
+                  autoplayTimeout={7000}
+                  loop
+                  index={0}
+                  pageSize={w}>
+                  {images.map((image, index) => renderPage(image, index))}
+                </Carousel>
               </View>
-            </ScrollView> */}
-            <Carousel
-              autoplay
-              autoplayTimeout={7000}
-              loop
-              index={0}
-              pageSize={w}>
-              {images.map((image, index) => renderPage(image, index))}
-            </Carousel>
-          </View>
+            )}
+
           <View>
             <View
               style={{
@@ -528,9 +537,8 @@ const Home = () => {
                   shadowRadius: 3.84,
 
                   elevation: 5,
-                  backgroundColor: "#E7F2FF",
-                  marginTop: 10,
-                  marginBottom: 10,
+                  backgroundColor: "#E8E2FE",
+                  marginVertical: 5,
                   width: "45%",
                 }}
                 onPress={() => navigation.navigate("Slips")}>
@@ -541,14 +549,13 @@ const Home = () => {
                     alignItems: "center",
                     width: "100%",
                     paddingHorizontal: 10,
-                    paddingTop: 10,
+                    paddingVertical: 5,
                   }}>
                   <View
                     style={{
                       borderRadius: 7,
                       flexDirection: "row",
                       alignItems: "center",
-                      marginBottom: 10,
                     }}>
                     <Image
                       source={require("../../assets/notepad.png")}
@@ -557,7 +564,7 @@ const Home = () => {
                     <Text
                       style={{
                         fontSize: 12,
-                        color: "#6CADF6",
+                        color: "#5144A6",
                         marginLeft: 5,
                       }}>
                       Referrals
@@ -569,7 +576,6 @@ const Home = () => {
                       justifyContent: "center",
                       alignItems: "center",
                       height: "100%",
-                      marginBottom: 10,
                     }}>
                     <Text
                       style={{
@@ -584,7 +590,6 @@ const Home = () => {
                 <View
                   style={{
                     paddingHorizontal: 15,
-                    paddingBottom: 10,
                     flexDirection: "row",
                     justifyContent: "space-between",
                     alignItems: "center",
@@ -595,12 +600,13 @@ const Home = () => {
                       flexDirection: "row",
                       justifyContent: "center",
                       alignItems: "center",
+                      marginBottom: 7,
                     }}>
                     <View
                       style={{
                         paddingHorizontal: 15,
                         paddingVertical: 12,
-                        backgroundColor: "#6CADF6",
+                        backgroundColor: "#9D85F2",
                         borderRadius: 50,
                       }}>
                       <Text
@@ -610,12 +616,13 @@ const Home = () => {
                           textAlign: "center",
                           fontWeight: "700",
                         }}>
-                        10
+                        20
                       </Text>
                     </View>
                   </View>
                 </View>
               </TouchableOpacity>
+
               <TouchableOpacity
                 style={{
                   //   paddingHorizontal: 10,
@@ -630,9 +637,8 @@ const Home = () => {
                   shadowRadius: 3.84,
 
                   elevation: 5,
-                  backgroundColor: "#FBF3F1",
-                  marginTop: 10,
-                  marginBottom: 10,
+                  backgroundColor: "#E8E4FF",
+                  marginVertical: 5,
                   width: "45%",
                 }}
                 onPress={() => navigation.navigate("TYFCB")}>
@@ -643,14 +649,13 @@ const Home = () => {
                     alignItems: "center",
                     width: "100%",
                     paddingHorizontal: 10,
-                    paddingTop: 10,
+                    paddingVertical: 5,
                   }}>
                   <View
                     style={{
                       borderRadius: 7,
                       flexDirection: "row",
                       alignItems: "center",
-                      marginBottom: 10,
                     }}>
                     <Image
                       source={require("../../assets/people.png")}
@@ -659,7 +664,7 @@ const Home = () => {
                     <Text
                       style={{
                         fontSize: 12,
-                        color: "#FA846F",
+                        color: "#5144A6",
                         marginLeft: 5,
                       }}>
                       TYFCBs
@@ -671,7 +676,6 @@ const Home = () => {
                       justifyContent: "center",
                       alignItems: "center",
                       height: "100%",
-                      marginBottom: 10,
                     }}>
                     <Text
                       style={{
@@ -696,12 +700,13 @@ const Home = () => {
                       flexDirection: "row",
                       justifyContent: "center",
                       alignItems: "center",
+                      marginBottom: 7,
                     }}>
                     <View
                       style={{
                         paddingHorizontal: 15,
                         paddingVertical: 12,
-                        backgroundColor: "#FA846F",
+                        backgroundColor: "#5144A6",
                         borderRadius: 50,
                       }}>
                       <Text
@@ -726,6 +731,8 @@ const Home = () => {
               }}>
               <TouchableOpacity
                 style={{
+                  //   paddingHorizontal: 10,
+                  // marginHorizontal: 15,
                   borderRadius: 8,
                   shadowColor: "#000",
                   shadowOffset: {
@@ -736,8 +743,8 @@ const Home = () => {
                   shadowRadius: 3.84,
 
                   elevation: 5,
-                  backgroundColor: "#EBD2F6",
-
+                  backgroundColor: "#FFEDF8",
+                  marginVertical: 5,
                   width: "45%",
                 }}
                 onPress={() => navigation.navigate("ClubScreen")}>
@@ -748,14 +755,13 @@ const Home = () => {
                     alignItems: "center",
                     width: "100%",
                     paddingHorizontal: 10,
-                    paddingTop: 10,
+                    paddingVertical: 5,
                   }}>
                   <View
                     style={{
                       borderRadius: 7,
                       flexDirection: "row",
                       alignItems: "center",
-                      marginBottom: 10,
                       width: "40%",
                     }}>
                     <Image
@@ -765,10 +771,10 @@ const Home = () => {
                     <Text
                       style={{
                         fontSize: 12,
-                        color: "#A245B0",
+                        color: "#DE83BC",
                         marginLeft: 5,
                       }}>
-                      Club tham gia
+                      CLUB
                     </Text>
                   </View>
                   <View
@@ -777,7 +783,6 @@ const Home = () => {
                       justifyContent: "center",
                       alignItems: "center",
                       height: "100%",
-                      marginBottom: 10,
                     }}>
                     <Text
                       style={{
@@ -792,7 +797,6 @@ const Home = () => {
                 <View
                   style={{
                     paddingHorizontal: 15,
-                    paddingBottom: 10,
                     flexDirection: "row",
                     justifyContent: "space-between",
                     alignItems: "center",
@@ -803,12 +807,13 @@ const Home = () => {
                       flexDirection: "row",
                       justifyContent: "center",
                       alignItems: "center",
+                      marginBottom: 7,
                     }}>
                     <View
                       style={{
                         paddingHorizontal: 15,
                         paddingVertical: 12,
-                        backgroundColor: "#A245B0",
+                        backgroundColor: "#DE83BC",
                         borderRadius: 50,
                       }}>
                       <Text
@@ -818,12 +823,13 @@ const Home = () => {
                           textAlign: "center",
                           fontWeight: "700",
                         }}>
-                        10
+                        15
                       </Text>
                     </View>
                   </View>
                 </View>
               </TouchableOpacity>
+
               <TouchableOpacity
                 style={{
                   borderRadius: 8,
@@ -836,8 +842,8 @@ const Home = () => {
                   shadowRadius: 3.84,
 
                   elevation: 5,
-                  backgroundColor: "#F2FCED",
-
+                  backgroundColor: "#E8F1FA",
+                  marginVertical: 5,
                   width: "45%",
                 }}
                 onPress={() => navigation.navigate("EventsScreen")}>
@@ -848,14 +854,13 @@ const Home = () => {
                     alignItems: "center",
                     width: "100%",
                     paddingHorizontal: 10,
-                    paddingTop: 10,
+                    paddingVertical: 5,
                   }}>
                   <View
                     style={{
                       borderRadius: 7,
                       flexDirection: "row",
                       alignItems: "center",
-                      marginBottom: 10,
                       width: "40%",
                     }}>
                     <Image
@@ -865,10 +870,10 @@ const Home = () => {
                     <Text
                       style={{
                         fontSize: 12,
-                        color: "#689A4F",
+                        color: "#78B1E5",
                         marginLeft: 5,
                       }}>
-                      Sự kiện tham gia
+                      Sự kiện
                     </Text>
                   </View>
                   <View
@@ -877,7 +882,6 @@ const Home = () => {
                       justifyContent: "center",
                       alignItems: "center",
                       height: "100%",
-                      marginBottom: 10,
                     }}>
                     <Text
                       style={{
@@ -892,7 +896,6 @@ const Home = () => {
                 <View
                   style={{
                     paddingHorizontal: 15,
-                    paddingBottom: 10,
                     flexDirection: "row",
                     justifyContent: "space-between",
                     alignItems: "center",
@@ -903,12 +906,13 @@ const Home = () => {
                       flexDirection: "row",
                       justifyContent: "center",
                       alignItems: "center",
+                      marginBottom: 7,
                     }}>
                     <View
                       style={{
                         paddingHorizontal: 15,
                         paddingVertical: 12,
-                        backgroundColor: "#689A4F",
+                        backgroundColor: "#78B1E5",
                         borderRadius: 50,
                       }}>
                       <Text
@@ -926,152 +930,197 @@ const Home = () => {
               </TouchableOpacity>
             </View>
           </View>
-          <View
-            style={{
-              borderRadius: 15,
-            }}>
+          {(auth.permission.group_id === "631c254a7a3a837ce2c22995" ||
+            auth.permission.group_id === "631c254a7a3a837ce2c229a7") && (
             <View
               style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                paddingHorizontal: 15,
-                marginVertical: 10,
+                borderRadius: 15,
               }}>
-              <Text
-                style={{ fontSize: 15, fontWeight: "600", color: "#826CCF" }}>
-                Số liệu chi tiết
-              </Text>
-              <TouchableOpacity>
-                <Text
-                  style={{
-                    fontSize: 12,
-                    fontWeight: "400",
-                    color: "#909090",
-                  }}>
-                  Xem chi tiết
-                </Text>
-              </TouchableOpacity>
-            </View>
-
-            <View
-              style={{
-                paddingHorizontal: 10,
-                paddingBottom: 10,
-                marginTop: 10,
-              }}>
-              <LineChart
-                data={data}
-                width={screenWidth / 1.13}
-                height={200}
-                chartConfig={chartConfig}
-              />
-            </View>
-          </View>
-
-          <View style={{ marginTop: 10 }}>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                paddingHorizontal: 15,
-              }}>
-              <Text
-                style={{ fontSize: 15, fontWeight: "600", color: "#826CCF" }}>
-                Danh sách chỉ số quyền lợi
-              </Text>
-              <TouchableOpacity>
-                <Text
-                  style={{
-                    fontSize: 12,
-                    fontWeight: "400",
-                    color: "#909090",
-                  }}>
-                  Xem thêm
-                </Text>
-              </TouchableOpacity>
-            </View>
-            {ListQL.map((item, index) => (
               <View
                 style={{
-                  backgroundColor: "#ffffff",
-                  borderRadius: 7,
-                  marginHorizontal: 15,
-                  paddingVertical: 5,
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  paddingHorizontal: 15,
                   marginVertical: 10,
-                  borderWidth: 0.8,
-                  borderColor: "#E8E8E8",
-                  // shadowColor: "#000",
-                  // shadowOffset: {
-                  //   width: 0,
-                  //   height: 2,
-                  // },
-                  // shadowOpacity: 0.25,
-                  // shadowRadius: 3.84,
-                  // elevation: 5,
-                }}
-                key={index}>
+                }}>
+                <Text
+                  style={{
+                    fontSize: 15,
+                    fontWeight: "600",
+                    color: "#826CCF",
+                  }}>
+                  Số liệu chi tiết
+                </Text>
+                <TouchableOpacity>
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      fontWeight: "400",
+                      color: "#909090",
+                    }}>
+                    Xem chi tiết
+                  </Text>
+                </TouchableOpacity>
+              </View>
+
+              <View
+                style={{
+                  paddingHorizontal: 10,
+                  paddingBottom: 10,
+                  marginTop: 10,
+                }}>
+                {/* <LineChart
+                  data={data}
+                  width={screenWidth / 1.13}
+                  height={200}
+                  chartConfig={chartConfig}
+                /> */}
+                <StackedBarChart
+                  data={dataX}
+                  width={screenWidth / 1.07}
+                  height={220}
+                  strokeWidth={16}
+                  radius={1}
+                  chartConfig={{
+                    backgroundGradientFrom: "#f0f0f0",
+                    backgroundGradientFromOpacity: 0,
+                    backgroundGradientTo: "#ffffff",
+                    backgroundGradientToOpacity: 0.5,
+                    barPercentage: 0.3,
+                    useShadowColorFromDataset: false,
+                    barRadius: 1,
+                    decimalPlaces: 2, // optional, defaults to 2dp
+                    color: (opacity = 1) => `rgba(13, 136, 56, ${opacity})`,
+                    labelColor: (opacity = 1) => `rgba(0, 0,0, ${opacity})`,
+                    style: {
+                      borderRadius: 16,
+                    },
+                    propsForDots: {
+                      r: "6",
+                      strokeWidth: "2",
+                      stroke: "#ffff",
+                    },
+                  }}
+                  style={{
+                    borderRadius: 1,
+                    paddingHorizontal: 5,
+                  }}
+                  hideLegend={true}
+                />
+              </View>
+            </View>
+          )}
+
+          {auth.permission.group_id === "631c254a7a3a837ce2c22995" && (
+            <View style={{ marginTop: 10 }}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  paddingHorizontal: 15,
+                }}>
+                <Text
+                  style={{
+                    fontSize: 15,
+                    fontWeight: "600",
+                    color: "#826CCF",
+                  }}>
+                  Danh sách chỉ số quyền lợi
+                </Text>
+                <TouchableOpacity>
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      fontWeight: "400",
+                      color: "#909090",
+                    }}>
+                    Xem thêm
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              {ListQL.map((item, index) => (
                 <View
                   style={{
-                    flexDirection: "row",
-                    paddingHorizontal: 5,
-                    alignItems: "center",
-                  }}>
-                  {/* <MaterialCommunityIcons
+                    backgroundColor: "#ffffff",
+                    borderRadius: 7,
+                    marginHorizontal: 15,
+                    paddingVertical: 5,
+                    marginVertical: 10,
+                    borderWidth: 0.8,
+                    borderColor: "#E8E8E8",
+                    // shadowColor: "#000",
+                    // shadowOffset: {
+                    //   width: 0,
+                    //   height: 2,
+                    // },
+                    // shadowOpacity: 0.25,
+                    // shadowRadius: 3.84,
+                    // elevation: 5,
+                  }}
+                  key={index}>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      paddingHorizontal: 5,
+                      alignItems: "center",
+                    }}>
+                    {/* <MaterialCommunityIcons
                     name="crown-outline"
                     color="rgba(238, 221, 176, 0.93)"
                     size={25}
                   /> */}
-                  <Image
-                    source={require("../../assets/cup.png")}
-                    style={{ width: 30, height: 30, top: 3 }}
-                  />
-                  <Text style={{ fontSize: 14, fontWeight: "600" }}>
-                    Tên hội viên: {item.nameHV}
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    paddingLeft: 18,
-                    paddingRight: 5,
-                    alignItems: "center",
-                  }}>
-                  <Text
-                    style={{
-                      fontSize: 11,
-                      fontWeight: "500",
-                      width: "70%",
-                      textAlign: "justify",
-
-                      marginHorizontal: 15,
-                    }}>
-                    {item.des}
-                  </Text>
-                  <TouchableOpacity
+                    <Image
+                      source={require("../../assets/cup.png")}
+                      style={{ width: 30, height: 30, top: 3 }}
+                    />
+                    <Text style={{ fontSize: 14, fontWeight: "600" }}>
+                      Tên hội viên: {item.nameHV}
+                    </Text>
+                  </View>
+                  <View
                     style={{
                       flexDirection: "row",
-                      justifyContent: "space-between",
+                      paddingLeft: 18,
+                      paddingRight: 5,
                       alignItems: "center",
-                      marginTop: 5,
-                      backgroundColor: "#826CCF",
-                      paddingHorizontal: 5,
-                      borderRadius: 10,
                     }}>
-                    <MaterialCommunityIcons
-                      name="hand-extended-outline"
-                      size={20}
-                      color="#ffffff"
-                    />
-                    <Text style={{ fontSize: 11, color: "#ffffff" }}>
-                      Trả QL
+                    <Text
+                      style={{
+                        fontSize: 11,
+                        fontWeight: "500",
+                        width: "70%",
+                        textAlign: "justify",
+
+                        marginHorizontal: 15,
+                      }}>
+                      {item.des}
                     </Text>
-                  </TouchableOpacity>
+                    <TouchableOpacity
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        marginTop: 5,
+                        backgroundColor: "#826CCF",
+                        paddingHorizontal: 5,
+                        borderRadius: 10,
+                      }}>
+                      <MaterialCommunityIcons
+                        name="hand-extended-outline"
+                        size={20}
+                        color="#ffffff"
+                      />
+                      <Text style={{ fontSize: 11, color: "#ffffff" }}>
+                        Trả QL
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
-              </View>
-            ))}
-          </View>
+              ))}
+            </View>
+          )}
         </Animated.View>
       </ScrollView>
     </View>

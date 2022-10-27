@@ -129,7 +129,10 @@ const CheckQR = () => {
             />
           )}
 
-          {!auth.permission.admin ? (
+          {(auth.permission &&
+            auth.permission.group_id !== "631c254a7a3a837ce2c22995") ||
+          auth.permission.group_id !== "631c254a7a3a837ce2c229b3" ||
+          auth.permission.group_id !== "631c254a7a3a837ce2c229a1" ? (
             <View style={{ marginBottom: "80%" }}>
               <View
                 style={{

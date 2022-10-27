@@ -14,6 +14,7 @@ const initialState = {
   dmnv: [],
   otp: [],
   customer: [],
+  ma_goi: "",
 };
 
 const authReducer = (state = initialState, action) => {
@@ -42,6 +43,8 @@ const authReducer = (state = initialState, action) => {
       };
     case AUTH.RANK:
       return { ...state, rank: action.payload };
+    case AUTH.GOI:
+      return { ...state, ma_goi: action.payload };
     default:
       return state;
   }
