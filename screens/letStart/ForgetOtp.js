@@ -2,8 +2,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import { StatusBar } from "expo-status-bar";
-import React, { Component, useRef, useState } from "react";
+import React from "react";
 import {
   View,
   Text,
@@ -13,16 +12,7 @@ import {
   ImageBackground,
   TouchableOpacity,
   ScrollView,
-  KeyboardAvoidingView,
-  TouchableWithoutFeedback,
-  Keyboard,
-  Platform,
-  TextInput,
 } from "react-native";
-import PhoneInput from "react-native-phone-number-input";
-
-import { RadioButton } from "react-native-paper";
-import ModalSms from "../../components/ModalSms";
 import { useSelector } from "react-redux";
 import { formatDateTimeDisplay } from "../../utils/datetime";
 
@@ -45,7 +35,8 @@ const ForgetOtp = ({ route }) => {
               zIndex: 4,
               position: "absolute",
               top: "10%",
-            }}>
+            }}
+          >
             <TouchableOpacity
               style={{
                 backgroundColor: "#ffffff",
@@ -67,7 +58,8 @@ const ForgetOtp = ({ route }) => {
 
                 elevation: 5,
               }}
-              onPress={() => navigation.goBack()}>
+              onPress={() => navigation.goBack()}
+            >
               <Ionicons name="chevron-back-outline" size={25} color="#9D85F2" />
             </TouchableOpacity>
             <Text style={{ color: "#826CCF", fontSize: 25, fontWeight: "600" }}>
@@ -110,7 +102,8 @@ const ForgetOtp = ({ route }) => {
                 paddingLeft: 25,
                 paddingTop: 18,
                 textAlign: "center",
-              }}>
+              }}
+            >
               Quên mã OTP
             </Text>
             <View style={{ paddingHorizontal: 36 }}>
@@ -120,7 +113,8 @@ const ForgetOtp = ({ route }) => {
                     fontSize: 14,
                     fontWeight: "600",
                     textAlign: "center",
-                  }}>
+                  }}
+                >
                   Xin chào,
                   <Text style={{ fontSize: 14, fontWeight: "400" }}>
                     {route.params.numberPhone} !
@@ -161,13 +155,15 @@ const ForgetOtp = ({ route }) => {
                 alignItems: "center",
                 paddingHorizontal: 30,
                 marginTop: 30,
-              }}>
+              }}
+            >
               <TouchableOpacity
                 onPress={() =>
                   navigation.navigate("Otp", {
                     numberPhone: route.params.numberPhone,
                   })
-                }>
+                }
+              >
                 <LinearGradient
                   start={{ x: 0, y: 0.3 }}
                   end={{ x: 1, y: 1 }}
@@ -182,14 +178,16 @@ const ForgetOtp = ({ route }) => {
                     borderRadius: 30,
                     flexDirection: "row",
                     justifyContent: "center",
-                  }}>
+                  }}
+                >
                   {/* <Ionicons name="arrow-forward" size={25} color="#ffffff" /> */}
                   <Text
                     style={{
                       fontSize: 18,
                       fontWeight: "600",
                       color: "#ffffff",
-                    }}>
+                    }}
+                  >
                     Tiếp tục
                   </Text>
                 </LinearGradient>

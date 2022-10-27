@@ -94,21 +94,24 @@ const Splash = () => {
           alignContent: "center",
           alignItems: "center",
           paddingHorizontal: 20,
-        }}>
+        }}
+      >
         <View
           style={{
             paddingHorizontal: 20,
 
             flexDirection: "column",
             justifyContent: "center",
-          }}>
+          }}
+        >
           <View
             style={{
               flexDirection: "column",
               justifyContent: "center",
               alignItems: "center",
               marginTop: 20,
-            }}>
+            }}
+          >
             <Image
               source={require("../../assets/logo.png")}
               style={{ width: 330, height: 150 }}
@@ -120,7 +123,8 @@ const Splash = () => {
                 fontWeight: "600",
                 textAlign: "center",
                 marginTop: 10,
-              }}>
+              }}
+            >
               Kiến tạo mạng lưới Nữ lãnh đạo thịnh vượng
             </Text>
           </View>
@@ -136,7 +140,8 @@ const Splash = () => {
 
             height: 150,
             zIndex: 1,
-          }}>
+          }}
+        >
           {/* <TouchableOpacity onPress={handleGo}>
             <View
               style={{
@@ -162,7 +167,8 @@ const Splash = () => {
                 flexDirection: "row",
                 justifyContent: "center",
                 alignItems: "center",
-              }}>
+              }}
+            >
               <ActivityIndicator size="large" color="#00ff00" />
             </View>
           )}

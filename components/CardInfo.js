@@ -22,14 +22,12 @@ const CardInfo = () => {
             ? ["#DEC1A1", "#FBECD7", "#F5DFC7", "#D5B59C"]
             : auth.ma_goi === "03"
             ? ["#7289DD", "#D0DAFF", "#ABBCF8", "#7E96E9"]
-            : auth.ma_goi === "04" && [
-                "#1F1F1f",
-                "#646464",
-                "#484848",
-                "#373737",
-              ]
+            : auth.ma_goi === "04"
+            ? ["#1F1F1f", "#646464", "#484848", "#373737"]
+            : ["#000", "#000"]
         }
-        style={{ borderRadius: 7, marginTop: 8 }}>
+        style={{ borderRadius: 7, marginTop: 8 }}
+      >
         <Image
           source={
             auth.ma_goi === "01"
@@ -54,7 +52,8 @@ const CardInfo = () => {
             justifyContent: "flex-end",
             alignItems: "center",
             marginHorizontal: 10,
-          }}>
+          }}
+        >
           <TouchableOpacity>
             <MaterialCommunityIcons
               name="dots-horizontal"
@@ -77,7 +76,8 @@ const CardInfo = () => {
               fontSize: 25,
               fontWeight: "800",
               textAlign: "center",
-            }}>
+            }}
+          >
             {auth.permission.name}
           </Text>
         </View>
@@ -87,7 +87,8 @@ const CardInfo = () => {
               flexDirection: "row",
               justifyContent: "space-between",
               alignItems: "center",
-            }}>
+            }}
+          >
             <Text
               style={[
                 styles.textContent,
@@ -101,7 +102,8 @@ const CardInfo = () => {
                       ? "rgba(90, 84, 165, 0.5)"
                       : auth.ma_goi === "04" && "rgba(255, 255, 255, 0.6)",
                 },
-              ]}>
+              ]}
+            >
               Start date: 1/2/2021
             </Text>
             <Text
@@ -117,7 +119,8 @@ const CardInfo = () => {
                       ? "rgba(90, 84, 165, 0.5)"
                       : auth.ma_goi === "04" && "rgba(255, 255, 255, 0.6)",
                 },
-              ]}>
+              ]}
+            >
               Due date: 1/2/2022
             </Text>
           </View>
@@ -134,7 +137,8 @@ const CardInfo = () => {
                     ? "rgba(90, 84, 165, 0.5)"
                     : auth.ma_goi === "04" && "rgba(255, 255, 255, 0.6)",
               },
-            ]}>
+            ]}
+          >
             Thời gian hoạt động còn lại: 20 ngày
           </Text>
         </View>

@@ -88,11 +88,11 @@ export const getCustomerWlinAction = (token, phone) => async (dispatch) => {
     dispatch({
       type: AUTH.CUSTOMER_WLIN,
       payload: res.data.filter(
-        (item) => item.of_user === phone && item.trang_thai !== 0
+        (item) => item.of_user === phone && item.trang_thai !== 0,
       ),
     });
     return res.data.filter(
-      (item) => item.of_user === phone && item.trang_thai !== 0
+      (item) => item.of_user === phone && item.trang_thai !== 0,
     );
   } catch (error) {
     console.log(error);
@@ -105,14 +105,14 @@ export const getRankAction = (token, email) => async (dispatch) => {
 
     const getRankMember = await getdataApi(`dmgoithanhvien`, token);
 
-    if (getRankMember.data) {
+    if (getRankMember.data && res?.data[0]) {
       var dataFilter = getRankMember.data.filter(
-        (item) => item.ma_goi == res.data[0].goi_thanh_vien
+        (item) => item.ma_goi == res.data[0].goi_thanh_vien,
       )[0];
     }
 
     dispatch({ type: AUTH.RANK, payload: { ...dataFilter, ...res.data[0] } });
-    return res.data[0].goi_thanh_vien;
+    return res.data[0]?.goi_thanh_vien;
   } catch (error) {
     console.log(error);
   }
@@ -152,7 +152,7 @@ export const getImageUserAction = (image, token) => {
 
         request.open(
           "POST",
-          `${URL}/api/uploadfile?json=1&access_token=${token}&folder=avatars`
+          `${URL}/api/uploadfile?json=1&access_token=${token}&folder=avatars`,
         );
         request.setRequestHeader("Content-Type", "multipart/form-data");
         request.send(body);
