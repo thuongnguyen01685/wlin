@@ -9,11 +9,11 @@ export const CLUB = {
   DETAILBENEFIT: "DETAILBENEFIT",
 };
 
-export const getCLub = (token, page) => async (dispatch) => {
+export const getCLub = (auth, page, permission) => async (dispatch) => {
   try {
-    const res = await getdataApiClub(`wlin_club`, token, page);
-
+    const res = await getdataApiClub(`wlin_club`, auth, page, permission);
     dispatch({ type: CLUB.GETCLUB, payload: res.data });
+    return res.data;
   } catch (error) {
     console.log(error);
   }

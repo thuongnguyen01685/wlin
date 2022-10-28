@@ -36,6 +36,7 @@ import {
   getProfileAction,
   getRankAction,
 } from "../../redux/actions/authAction";
+
 import { getNotify } from "../../redux/actions/notifyAction";
 import HeaderPart from "../../components/HeaderPart/HeaderPart";
 import {
@@ -53,12 +54,12 @@ import Carousel from "react-native-banner-carousel-updated";
 import {
   getDetailEventsAction,
   getEventsAction,
-  newsEventsAction,
 } from "../../redux/actions/eventsAction";
 import { URL } from "../../utils/fetchApi";
 import { formatDateDisplays } from "../../utils/datetime";
 import CardInfo from "../../components/CardInfo";
 import StatisticsHome from "./statistics/statistics.home";
+import { getCLub } from "../../redux/actions/ClupAction";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
@@ -96,8 +97,6 @@ const data = {
 //stackbar chart
 
 const dataX = {
-  labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
-  legend: ["Referrals", "TYFCBs", "Event"],
   data: [
     [60, 60, 60],
     [30, 30, 60],
@@ -112,6 +111,9 @@ const dataX = {
     [60, 20, 60],
     [30, 50, 20],
   ],
+  labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
+  legend: ["Referrals", "TYFCBs", "Event"],
+
   barColors: ["#9D85F2", "#5144A6", "#78B1E5"],
 };
 
@@ -141,7 +143,7 @@ const Home = () => {
   const dispatch = useDispatch();
   const [refreshing, setRefreshing] = useState(false);
   const animatedValue = useRef(new Animated.Value(0)).current;
-  const { auth, notify, event } = useSelector((state) => state);
+  const { auth, notify, event, club } = useSelector((state) => state);
 
   const insets = useSafeAreaInsets();
 
@@ -181,7 +183,7 @@ const Home = () => {
   const eventing = event.getEvents.filter(
     (item) =>
       new Date(formatDateDisplays(item.ngay_su_kien)).getTime() >
-      new Date(dayNow).getTime(),
+      new Date(dayNow).getTime()
   );
 
   const headerHeight = animatedValue.interpolate({
@@ -213,20 +215,23 @@ const Home = () => {
   };
   useEffect(() => {
     if (auth.token) {
-      // dispatch(getProfileAction(auth.token));
-      // dispatch(getNotify(auth.token));
-
-      // dispatch(getPermissionAction(auth.token, auth.profile.email));
+      dispatch(getProfileAction(auth.token));
+      dispatch(getNotify(auth.token));
       dispatch(getRankAction(auth.token, auth.profile.email));
-      dispatch(getEventsAction(auth.token));
     }
     async function it() {
       const goi = await dispatch(getRankAction(auth.token, auth.profile.email));
 
       dispatch({ type: AUTH.GOI, payload: goi });
+
+      const res = await dispatch(getCLub(auth, 1, auth.permission.group_id));
+
+      const arrayClub = res.map((item) => item.ma_club);
+
+      dispatch(getEventsAction(auth, arrayClub, auth.permission.group_id));
     }
     it();
-  }, [auth.token, dispatch, auth.profile.email]);
+  }, [auth.token, dispatch, auth.profile.email, auth.permission.group_id]);
 
   useEffect(() => {
     if (backHome === false) {
@@ -240,22 +245,27 @@ const Home = () => {
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     dispatch(getPermissionAction(auth.token, auth.profile.email));
-
+    //dispatch(getCLub(auth, 1, auth.permission.group_id));
     dispatch(getEventsAction(auth.token));
     async function it() {
       const goi = await dispatch(getRankAction(auth.token, auth.profile.email));
-
       dispatch({ type: AUTH.GOI, payload: goi });
+      const res = await dispatch(getCLub(auth, 1, auth.permission.group_id));
+
+      const arrayClub = res.map((item) => item.ma_club);
+
+      dispatch(getEventsAction(auth, arrayClub, auth.permission.group_id));
     }
     it();
     wait(2000).then(() => setRefreshing(false));
-  }, [auth.token, dispatch, auth.profile.email]);
+  }, [auth.token, dispatch, auth.profile.email, auth.permission.group_id]);
 
   const handleDetail = (_id) => {
     dispatch(getDetailEventsAction(_id, auth.token));
     navigation.navigate("DetailEvents");
   };
   const images = eventing.map((item) => item);
+
   const renderPage = (item, index) => {
     return (
       <TouchableOpacity
@@ -265,8 +275,7 @@ const Home = () => {
           justifyContent: "center",
           marginVertical: 5,
         }}
-        onPress={() => handleDetail(item._id)}
-      >
+        onPress={() => handleDetail(item._id)}>
         <Image
           style={{
             width: "93%",
@@ -289,8 +298,7 @@ const Home = () => {
             paddingVertical: 5,
             alignItems: "flex-start",
             paddingHorizontal: 10,
-          }}
-        >
+          }}>
           <View
             style={{
               width: "15%",
@@ -299,16 +307,14 @@ const Home = () => {
               borderRadius: 8,
               padding: 5,
               opacity: 0.7,
-            }}
-          >
+            }}>
             <Text
               style={{
                 color: "#503F8A",
                 fontSize: 8,
                 fontWeight: "600",
                 textAlign: "center",
-              }}
-            >
+              }}>
               Tháng {formatDate(item.ngay_su_kien, "thang")}
             </Text>
             <View
@@ -320,16 +326,13 @@ const Home = () => {
                 justifyContent: "center",
                 alignItems: "center",
                 marginTop: 2,
-              }}
-            >
+              }}>
               <Text
-                style={{ color: "#503F8A", fontSize: 12, fontWeight: "600" }}
-              >
+                style={{ color: "#503F8A", fontSize: 12, fontWeight: "600" }}>
                 {formatDate(item.ngay_su_kien, "ngay")}
               </Text>
               <Text
-                style={{ color: "#503F8A", fontSize: 10, fontWeight: "600" }}
-              >
+                style={{ color: "#503F8A", fontSize: 10, fontWeight: "600" }}>
                 {formatDate(item.ngay_su_kien, "thu")}
               </Text>
             </View>
@@ -346,10 +349,7 @@ const Home = () => {
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
       <HeaderPart backHome={backHome} setBackHome={setBackHome} />
-      {(auth.permission &&
-        auth.permission.group_id === "631c254a7a3a837ce2c22995") ||
-      auth.permission.group_id === "631c254a7a3a837ce2c229b3" ||
-      auth.permission.group_id === "631c254a7a3a837ce2c229a1" ? (
+      {auth.permission?.group_id === "631c254a7a3a837ce2c22995" ? (
         <View
           style={{
             backgroundColor: "#ffffff",
@@ -371,8 +371,7 @@ const Home = () => {
             alignItems: "center",
             justifyContent: "space-between",
             paddingHorizontal: 10,
-          }}
-        >
+          }}>
           <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
             Trang Chủ
           </Text>
@@ -397,8 +396,7 @@ const Home = () => {
             marginHorizontal: 15,
             borderRadius: 10,
             height: headerHeight,
-          }}
-        >
+          }}>
           <Animated.View
             style={{
               flexDirection: "row",
@@ -416,15 +414,13 @@ const Home = () => {
                   }),
                 },
               ],
-            }}
-          >
+            }}>
             <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
               Thông tin thành viên
             </Text>
             <TouchableOpacity>
               <Text
-                style={{ fontSize: 12, fontWeight: "400", color: "#909090" }}
-              >
+                style={{ fontSize: 12, fontWeight: "400", color: "#909090" }}>
                 Xem chi tiết
               </Text>
             </TouchableOpacity>
@@ -447,8 +443,7 @@ const Home = () => {
                   }),
                 },
               ],
-            }}
-          >
+            }}>
             <CardInfo />
           </Animated.View>
         </Animated.View>
@@ -458,7 +453,7 @@ const Home = () => {
         showsVerticalScrollIndicator={false}
         onScroll={Animated.event(
           [{ nativeEvent: { contentOffset: { y: animatedValue } } }],
-          { useNativeDriver: false },
+          { useNativeDriver: false }
         )}
         scrollEventThrottle={16}
         refreshControl={
@@ -467,14 +462,12 @@ const Home = () => {
             onRefresh={onRefresh}
             colors={["#9796F0", "green", "blue"]}
           />
-        }
-      >
+        }>
         <Animated.View
           style={{
             marginBottom: "20%",
             marginTop: 5,
-          }}
-        >
+          }}>
           {auth.permission &&
             auth.permission.group_id !== "631c254a7a3a837ce2c22995" && (
               <View>
@@ -484,29 +477,25 @@ const Home = () => {
                     justifyContent: "space-between",
                     alignItems: "center",
                     paddingHorizontal: 15,
-                  }}
-                >
+                  }}>
                   <Text
                     style={{
                       fontSize: 15,
                       fontWeight: "600",
                       color: "#826CCF",
-                    }}
-                  >
+                    }}>
                     Sự kiện sắp diễn ra
                   </Text>
                   <TouchableOpacity
                     onPress={() => {
                       navigation.navigate("EventsScreen");
-                    }}
-                  >
+                    }}>
                     <Text
                       style={{
                         fontSize: 12,
                         fontWeight: "400",
                         color: "#909090",
-                      }}
-                    >
+                      }}>
                       Xem chi tiết
                     </Text>
                   </TouchableOpacity>
@@ -517,8 +506,7 @@ const Home = () => {
                   autoplayTimeout={7000}
                   loop
                   index={0}
-                  pageSize={w}
-                >
+                  pageSize={w}>
                   {images.map((image, index) => renderPage(image, index))}
                 </Carousel>
               </View>
@@ -530,8 +518,7 @@ const Home = () => {
             <View
               style={{
                 borderRadius: 15,
-              }}
-            >
+              }}>
               <View
                 style={{
                   flexDirection: "row",
@@ -539,15 +526,13 @@ const Home = () => {
                   alignItems: "center",
                   paddingHorizontal: 15,
                   marginVertical: 10,
-                }}
-              >
+                }}>
                 <Text
                   style={{
                     fontSize: 15,
                     fontWeight: "600",
                     color: "#826CCF",
-                  }}
-                >
+                  }}>
                   Số liệu chi tiết
                 </Text>
                 <TouchableOpacity>
@@ -556,8 +541,7 @@ const Home = () => {
                       fontSize: 12,
                       fontWeight: "400",
                       color: "#909090",
-                    }}
-                  >
+                    }}>
                     Xem chi tiết
                   </Text>
                 </TouchableOpacity>
@@ -568,8 +552,7 @@ const Home = () => {
                   paddingHorizontal: 10,
                   paddingBottom: 10,
                   marginTop: 10,
-                }}
-              >
+                }}>
                 {/* <LineChart
                   data={data}
                   width={screenWidth / 1.13}
@@ -620,15 +603,13 @@ const Home = () => {
                   justifyContent: "space-between",
                   alignItems: "center",
                   paddingHorizontal: 15,
-                }}
-              >
+                }}>
                 <Text
                   style={{
                     fontSize: 15,
                     fontWeight: "600",
                     color: "#826CCF",
-                  }}
-                >
+                  }}>
                   Danh sách chỉ số quyền lợi
                 </Text>
                 <TouchableOpacity>
@@ -637,8 +618,7 @@ const Home = () => {
                       fontSize: 12,
                       fontWeight: "400",
                       color: "#909090",
-                    }}
-                  >
+                    }}>
                     Xem thêm
                   </Text>
                 </TouchableOpacity>
@@ -662,15 +642,13 @@ const Home = () => {
                     // shadowRadius: 3.84,
                     // elevation: 5,
                   }}
-                  key={index}
-                >
+                  key={index}>
                   <View
                     style={{
                       flexDirection: "row",
                       paddingHorizontal: 5,
                       alignItems: "center",
-                    }}
-                  >
+                    }}>
                     {/* <MaterialCommunityIcons
                     name="crown-outline"
                     color="rgba(238, 221, 176, 0.93)"
@@ -690,8 +668,7 @@ const Home = () => {
                       paddingLeft: 18,
                       paddingRight: 5,
                       alignItems: "center",
-                    }}
-                  >
+                    }}>
                     <Text
                       style={{
                         fontSize: 11,
@@ -700,8 +677,7 @@ const Home = () => {
                         textAlign: "justify",
 
                         marginHorizontal: 15,
-                      }}
-                    >
+                      }}>
                       {item.des}
                     </Text>
                     <TouchableOpacity
@@ -713,8 +689,7 @@ const Home = () => {
                         backgroundColor: "#826CCF",
                         paddingHorizontal: 5,
                         borderRadius: 10,
-                      }}
-                    >
+                      }}>
                       <MaterialCommunityIcons
                         name="hand-extended-outline"
                         size={20}

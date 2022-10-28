@@ -1,3 +1,4 @@
+import callApis from "../../utils/callApis";
 import { getdataApi, getDetailApi, newsEvent } from "../../utils/fetchApi";
 
 export const EVENTS = {
@@ -6,15 +7,30 @@ export const EVENTS = {
   NEWSEVENTS: "NEWSEVENTS",
 };
 
-export const getEventsAction = (token) => async (dispatch) => {
-  try {
-    const res = await getdataApi(`dmsukien`, token);
-
-    dispatch({ type: EVENTS.GETEVENTS, payload: res.data });
-  } catch (error) {
-    console.log(error);
-  }
-};
+export const getEventsAction =
+  (auth, array, permission) => async (dispatch) => {
+    try {
+      //admin || partner
+      if (
+        permission === "631c254a7a3a837ce2c22995" ||
+        permission === "631c254a7a3a837ce2c229a7"
+      ) {
+        const res = await callApis(
+          `dmsukien?access_token=${auth.token}&q={"club":{"$in":[${array}]}}`
+        );
+        dispatch({ type: EVENTS.GETEVENTS, payload: res.data });
+      }
+      //dmsukien?access_token=a32ace19895e836dc9c11ef730a86dac&limit=200&q={"ds_tham_gia":{"$elemMatch":{"ma_kh":"0338634204"}}}
+      if (permission === "631c254a7a3a837ce2c229ac") {
+        const res = await callApis(
+          `dmsukien?access_token=${auth.token}&limit=200&q={"ds_tham_gia":{"$elemMatch":{"ma_kh":"${auth.profile.email}"}}}`
+        );
+        dispatch({ type: EVENTS.GETEVENTS, payload: res.data });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
 export const getDetailEventsAction = (_id, token) => async (dispatch) => {
   try {

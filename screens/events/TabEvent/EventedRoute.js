@@ -13,6 +13,7 @@ import {
   Dimensions,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
+import { getCLub } from "../../../redux/actions/ClupAction";
 import {
   getDetailEventsAction,
   getEventsAction,
@@ -56,15 +57,30 @@ const EventedRoute = () => {
 
   useEffect(() => {
     setRefreshing(true);
-    dispatch(getEventsAction(auth.token));
+    async function it() {
+      const res = await dispatch(getCLub(auth, 1, auth.permission.group_id));
+
+      const arrayClub = res.map((item) => item.ma_club);
+
+      dispatch(getEventsAction(auth, arrayClub, auth.permission.group_id));
+    }
+    it();
     wait(2000).then(() => setRefreshing(false));
-  }, [dispatch]);
+  }, [dispatch, auth.profile.email, auth.permission.group_id]);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    dispatch(getEventsAction(auth.token));
+    async function it() {
+      const res = await dispatch(getCLub(auth, 1, auth.permission.group_id));
+
+      const arrayClub = res.map((item) => item.ma_club);
+
+      dispatch(getEventsAction(auth, arrayClub, auth.permission.group_id));
+    }
+    it();
+    // dispatch(getEventsAction(auth.token));
     wait(2000).then(() => setRefreshing(false));
-  }, [dispatch]);
+  }, [dispatch, auth.profile.email, auth.permission.group_id]);
   return (
     <View style={styles.container}>
       <ScrollView
