@@ -48,7 +48,7 @@ const Nation = () => {
   useEffect(() => {
     setRefreshing(true);
     // console.log(auth.token, page);
-    dispatch(getCLub(auth.token, page));
+    dispatch(getCLub(auth, page, auth.permission.group_id));
     setTimeout(() => {
       setRefreshing(false);
     }, 2000);
@@ -56,7 +56,7 @@ const Nation = () => {
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    dispatch(getCLub(auth.token, page));
+    dispatch(getCLub(auth, page, auth.permission.group_id));
     wait(2000).then(() => setRefreshing(false));
   }, [page]);
 
@@ -82,7 +82,7 @@ const Nation = () => {
           }
           data={club.getClubs}
           onEndReachedThreshold={0.5}
-          onEndReached={() => setPage(page + 1)}
+          // onEndReached={() => setPage(page + 1)}
           keyExtractor={(item, index) => index}
           renderItem={({ item, index }) => {
             const inputRange = [

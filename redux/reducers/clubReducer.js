@@ -16,7 +16,7 @@ const clubReducer = (state = initialState, action) => {
 
       return {
         ...state,
-        getClubs: [...state.getClubs, ...action.payload],
+        getClubs: action.payload,
       };
     case CLUB.DETAILCLUB:
       return {
