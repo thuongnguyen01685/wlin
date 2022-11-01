@@ -51,7 +51,7 @@ const EventRoute = () => {
   const events = event.getEvents.filter(
     (item) =>
       new Date(formatDateDisplays(item.ngay_su_kien)).getTime() ===
-      new Date(dayNow).getTime()
+      new Date().getTime()
   );
 
   useEffect(() => {

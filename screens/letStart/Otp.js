@@ -134,8 +134,7 @@ const Otp = ({ route }) => {
           zIndex: 4,
           position: "absolute",
           top: "10%",
-        }}
-      >
+        }}>
         <TouchableOpacity
           style={{
             backgroundColor: "#ffffff",
@@ -157,8 +156,7 @@ const Otp = ({ route }) => {
             shadowRadius: 3.84,
             elevation: 5,
           }}
-          onPress={() => navigation.goBack()}
-        >
+          onPress={() => navigation.goBack()}>
           <Ionicons name="chevron-back-outline" size={25} color="#9D85F2" />
         </TouchableOpacity>
         <Text
@@ -166,8 +164,7 @@ const Otp = ({ route }) => {
             color: "#826CCF",
             fontSize: 25,
             fontWeight: "600",
-          }}
-        >
+          }}>
           WLIN xin chào
         </Text>
         <View>
@@ -177,8 +174,7 @@ const Otp = ({ route }) => {
               {
                 transform: [{ translateY: popAnim }],
               },
-            ]}
-          >
+            ]}>
             <View style={styles.toastRow}>
               <AntDesign
                 name={status === "success" ? "checkcircleo" : "closecircleo"}
@@ -235,8 +231,7 @@ const Otp = ({ route }) => {
               paddingLeft: 25,
               paddingTop: 18,
               textAlign: "center",
-            }}
-          >
+            }}>
             Xác nhận đăng nhập
           </Text>
           <View style={{ marginTop: 10, paddingHorizontal: 45 }}>
@@ -245,16 +240,14 @@ const Otp = ({ route }) => {
                 fontSize: 15,
                 fontWeight: "600",
                 textAlign: "center",
-              }}
-            >
+              }}>
               Xin chào,
               <Text
                 style={{
                   fontSize: 13,
                   fontWeight: "400",
                   left: 10,
-                }}
-              >
+                }}>
                 {route.params.numberPhone}
               </Text>
             </Text>
@@ -334,8 +327,7 @@ const Otp = ({ route }) => {
               justifyContent: "center",
               marginVertical: 35,
               top: 10,
-            }}
-          >
+            }}>
             <Text style={{ fontSize: 15, fontWeight: "600" }}>
               Bạn quên mã OTP?
             </Text>
@@ -345,15 +337,13 @@ const Otp = ({ route }) => {
                 navigation.navigate("ForgetOtp", {
                   numberPhone: route.params.numberPhone,
                 })
-              }
-            >
+              }>
               <Text
                 style={{
                   color: "#9D85F2",
                   fontSize: 15,
                   fontWeight: "600",
-                }}
-              >
+                }}>
                 Xem tại đây.
               </Text>
             </TouchableOpacity>
@@ -365,8 +355,7 @@ const Otp = ({ route }) => {
               justifyContent: "center",
               alignItems: "center",
               marginBottom: 30,
-            }}
-          >
+            }}>
             <LinearGradient
               start={{ x: 0, y: 0.3 }}
               end={{ x: 1, y: 1 }}
@@ -375,15 +364,13 @@ const Otp = ({ route }) => {
                 paddingHorizontal: 50,
                 paddingVertical: 15,
                 borderRadius: 30,
-              }}
-            >
+              }}>
               <Text
                 style={{
                   fontSize: 18,
                   fontWeight: "600",
                   color: "#ffffff",
-                }}
-              >
+                }}>
                 Tiếp tục
               </Text>
             </LinearGradient>

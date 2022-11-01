@@ -40,8 +40,9 @@ import DetailEvents from "../screens/events/DetailEvents";
 import AccuracyImage from "../screens/events/AccuracyImage";
 import Map from "../screens/events/Map";
 import ListPaticipant from "../screens/events/ListParticipant";
-import DetailClub from "../screens/clup/DetailClub";
+
 import { initSocket } from "../utils/pushNotify";
+import DetailClub from "../screens/clup/detail/DetailClub";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
