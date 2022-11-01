@@ -11,19 +11,10 @@ import {
   StyleSheet,
   Image,
   Dimensions,
-  ImageBackground,
   TouchableOpacity,
   ScrollView,
-  KeyboardAvoidingView,
-  TouchableWithoutFeedback,
-  Keyboard,
-  Platform,
-  TextInput,
-  FlatList,
   Animated,
   BackHandler,
-  Alert,
-  ToastAndroid,
   RefreshControl,
 } from "react-native";
 
@@ -32,6 +23,7 @@ import { useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   AUTH,
+  getCustomerWlinAction,
   getPermissionAction,
   getProfileAction,
   getRankAction,
@@ -39,15 +31,6 @@ import {
 
 import { getNotify } from "../../redux/actions/notifyAction";
 import HeaderPart from "../../components/HeaderPart/HeaderPart";
-import {
-  LineChart,
-  BarChart,
-  PieChart,
-  ProgressChart,
-  ContributionGraph,
-  StackedBarChart,
-} from "react-native-chart-kit";
-
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Toast from "react-native-root-toast";
 import Carousel from "react-native-banner-carousel-updated";
@@ -56,81 +39,19 @@ import {
   getEventsAction,
 } from "../../redux/actions/eventsAction";
 import { URL } from "../../utils/fetchApi";
-import { formatDateDisplays } from "../../utils/datetime";
+import { formatDate, formatDateDisplays } from "../../utils/datetime";
 import CardInfo from "../../components/CardInfo";
 import StatisticsHome from "./statistics/statistics.home";
 import { getCLub } from "../../redux/actions/ClupAction";
+import { getBenefitAction } from "../../redux/actions/benefitAction";
+
+import Loading from "../../components/loading/Loading";
+import BenefitHome from "./Benefit.home";
+import Chart from "./Chart.home";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
 const ratio = w / 720;
-
-const screenWidth = Dimensions.get("window").width;
-
-const chartConfig = {
-  backgroundColor: "#e26a00",
-  backgroundGradientFrom: "#ffffff",
-  backgroundGradientTo: "#ffffff",
-  decimalPlaces: 2, // optional, defaults to 2dp
-  color: (opacity = 0) => `rgba(113, 23, 117, 0.8)`,
-  labelColor: (opacity = 0) => `rgba(113, 23, 117, 0.8)`,
-  style: {
-    borderRadius: 16,
-  },
-  propsForDots: {
-    r: "6",
-    strokeWidth: "2",
-    stroke: "#f8f8f8",
-  },
-};
-const data = {
-  labels: ["January", "February", "March", "April", "May", "June"],
-  datasets: [
-    {
-      data: [20, 45, 28, 80, 99, 43],
-      color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, // optional
-      strokeWidth: 2, // optional
-    },
-  ],
-  // legend: ["Rainy Days"], // optional
-};
-//stackbar chart
-
-const dataX = {
-  data: [
-    [60, 60, 60],
-    [30, 30, 60],
-    [60, 60, 60],
-    [70, 30, 60],
-    [20, 30, 60],
-    [30, 50, 60],
-    [50, 80, 60],
-    [50, 30, 60],
-    [20, 60, 60],
-    [10, 30, 60],
-    [60, 20, 60],
-    [30, 50, 20],
-  ],
-  labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
-  legend: ["Referrals", "TYFCBs", "Event"],
-
-  barColors: ["#9D85F2", "#5144A6", "#78B1E5"],
-};
-
-const ListQL = [
-  {
-    nameHV: "Lisa",
-    des: "Trở thành thành viên chính thức của WLIN Global và được tham gia các group Members để quảng bá, truyền thông và kết nối.",
-  },
-  {
-    nameHV: "Sen oi",
-    des: "Được 1 bằng chứng nhận & hoa kết nạp thành viên Vàng của WLIN Global ",
-  },
-  {
-    nameHV: "Jenni Wilson",
-    des: "Được 2 bài viết truyền thông về thương hiệu cá nhân trên trang wlin.com.vn/ năm",
-  },
-];
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
@@ -143,7 +64,7 @@ const Home = () => {
   const dispatch = useDispatch();
   const [refreshing, setRefreshing] = useState(false);
   const animatedValue = useRef(new Animated.Value(0)).current;
-  const { auth, notify, event, club } = useSelector((state) => state);
+  const { auth, notify, event, club, benefit } = useSelector((state) => state);
 
   const insets = useSafeAreaInsets();
 
@@ -154,38 +75,12 @@ const Home = () => {
   let dayofweek = dateNow.getDay();
   const dayNow = year + "-" + month + "-" + day;
   //eventing
-  function formatDate(time, string) {
-    let dateNow = new Date(formatDateDisplays(time));
-    let year = dateNow.getFullYear();
-    let month = dateNow.getMonth() + 1;
-    let day = dateNow.getDate();
-    let dayofweek = dateNow.getDay();
-
-    const dayNow = year + "-" + month + "-" + day;
-
-    const dayname = [
-      "Chủ nhật",
-      "Thứ 2",
-      "Thứ 3",
-      "Thứ 4",
-      "Thứ 5",
-      "Thứ 6",
-      "Thứ 7",
-    ];
-
-    if (string === "thang") return month;
-    if (string === "ngay") return day;
-    if (string === "thu") return dayname[dayofweek];
-  }
-
-  //console.log(dayname[dayofweek] + " ngày " + day + "/" + month + "/" + year);
 
   const eventing = event.getEvents.filter(
     (item) =>
       new Date(formatDateDisplays(item.ngay_su_kien)).getTime() >
-      new Date(dayNow).getTime()
+      new Date().getTime()
   );
-
   const headerHeight = animatedValue.interpolate({
     inputRange: [0, HEADER_HEIGHT + insets.top],
     outputRange: [HEADER_HEIGHT + insets.top, insets.top + 30],
@@ -205,7 +100,6 @@ const Home = () => {
     } else {
       BackHandler.exitApp();
     }
-
     // timeout for fade and exit
     setTimeout(() => {
       backHandlerClickCount = 0;
@@ -218,20 +112,17 @@ const Home = () => {
       dispatch(getProfileAction(auth.token));
       dispatch(getNotify(auth.token));
       dispatch(getRankAction(auth.token, auth.profile.email));
+      dispatch(getBenefitAction(auth.token, auth.profile.email));
     }
     async function it() {
       const goi = await dispatch(getRankAction(auth.token, auth.profile.email));
-
       dispatch({ type: AUTH.GOI, payload: goi });
-
       const res = await dispatch(getCLub(auth, 1, auth.permission.group_id));
-
-      const arrayClub = res.map((item) => item.ma_club);
-
+      const arrayClub = res?.map((item) => item.ma_club);
       dispatch(getEventsAction(auth, arrayClub, auth.permission.group_id));
     }
     it();
-  }, [auth.token, dispatch, auth.profile.email, auth.permission.group_id]);
+  }, [dispatch, auth.profile.email, auth.permission.group_id]);
 
   useEffect(() => {
     if (backHome === false) {
@@ -245,25 +136,25 @@ const Home = () => {
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     dispatch(getPermissionAction(auth.token, auth.profile.email));
-    //dispatch(getCLub(auth, 1, auth.permission.group_id));
     dispatch(getEventsAction(auth.token));
+    dispatch(getCustomerWlinAction(auth.token, auth.profile.email));
+    dispatch(getBenefitAction(auth.token, auth.profile.email));
     async function it() {
       const goi = await dispatch(getRankAction(auth.token, auth.profile.email));
       dispatch({ type: AUTH.GOI, payload: goi });
       const res = await dispatch(getCLub(auth, 1, auth.permission.group_id));
-
       const arrayClub = res.map((item) => item.ma_club);
-
       dispatch(getEventsAction(auth, arrayClub, auth.permission.group_id));
     }
     it();
     wait(2000).then(() => setRefreshing(false));
-  }, [auth.token, dispatch, auth.profile.email, auth.permission.group_id]);
+  }, [dispatch, auth.profile.email, auth.permission.group_id]);
 
   const handleDetail = (_id) => {
     dispatch(getDetailEventsAction(_id, auth.token));
     navigation.navigate("DetailEvents");
   };
+
   const images = eventing.map((item) => item);
 
   const renderPage = (item, index) => {
@@ -339,8 +230,6 @@ const Home = () => {
           </View>
           <Text style={styles.titleNews}>{item.ten_su_kien}</Text>
         </View>
-
-        {/* <Text style={styles.body}>{item.body}</Text> */}
       </TouchableOpacity>
     );
   };
@@ -515,84 +404,7 @@ const Home = () => {
           <StatisticsHome />
           {(auth.permission.group_id === "631c254a7a3a837ce2c22995" ||
             auth.permission.group_id === "631c254a7a3a837ce2c229a7") && (
-            <View
-              style={{
-                borderRadius: 15,
-              }}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  paddingHorizontal: 15,
-                  marginVertical: 10,
-                }}>
-                <Text
-                  style={{
-                    fontSize: 15,
-                    fontWeight: "600",
-                    color: "#826CCF",
-                  }}>
-                  Số liệu chi tiết
-                </Text>
-                <TouchableOpacity>
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      fontWeight: "400",
-                      color: "#909090",
-                    }}>
-                    Xem chi tiết
-                  </Text>
-                </TouchableOpacity>
-              </View>
-
-              <View
-                style={{
-                  paddingHorizontal: 10,
-                  paddingBottom: 10,
-                  marginTop: 10,
-                }}>
-                {/* <LineChart
-                  data={data}
-                  width={screenWidth / 1.13}
-                  height={200}
-                  chartConfig={chartConfig}
-                /> */}
-                <StackedBarChart
-                  data={dataX}
-                  width={screenWidth / 1.07}
-                  height={220}
-                  strokeWidth={16}
-                  radius={1}
-                  chartConfig={{
-                    backgroundGradientFrom: "#f0f0f0",
-                    backgroundGradientFromOpacity: 0,
-                    backgroundGradientTo: "#ffffff",
-                    backgroundGradientToOpacity: 0.5,
-                    barPercentage: 0.3,
-                    useShadowColorFromDataset: false,
-                    barRadius: 1,
-                    decimalPlaces: 2, // optional, defaults to 2dp
-                    color: (opacity = 1) => `rgba(13, 136, 56, ${opacity})`,
-                    labelColor: (opacity = 1) => `rgba(0, 0,0, ${opacity})`,
-                    style: {
-                      borderRadius: 16,
-                    },
-                    propsForDots: {
-                      r: "6",
-                      strokeWidth: "2",
-                      stroke: "#ffff",
-                    },
-                  }}
-                  style={{
-                    borderRadius: 1,
-                    paddingHorizontal: 5,
-                  }}
-                  hideLegend={true}
-                />
-              </View>
-            </View>
+            <Chart />
           )}
 
           {auth.permission.group_id === "631c254a7a3a837ce2c22995" && (
@@ -623,85 +435,13 @@ const Home = () => {
                   </Text>
                 </TouchableOpacity>
               </View>
-              {ListQL.map((item, index) => (
-                <View
-                  style={{
-                    backgroundColor: "#ffffff",
-                    borderRadius: 7,
-                    marginHorizontal: 15,
-                    paddingVertical: 5,
-                    marginVertical: 10,
-                    borderWidth: 0.8,
-                    borderColor: "#E8E8E8",
-                    // shadowColor: "#000",
-                    // shadowOffset: {
-                    //   width: 0,
-                    //   height: 2,
-                    // },
-                    // shadowOpacity: 0.25,
-                    // shadowRadius: 3.84,
-                    // elevation: 5,
-                  }}
-                  key={index}>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      paddingHorizontal: 5,
-                      alignItems: "center",
-                    }}>
-                    {/* <MaterialCommunityIcons
-                    name="crown-outline"
-                    color="rgba(238, 221, 176, 0.93)"
-                    size={25}
-                  /> */}
-                    <Image
-                      source={require("../../assets/cup.png")}
-                      style={{ width: 30, height: 30, top: 3 }}
-                    />
-                    <Text style={{ fontSize: 14, fontWeight: "600" }}>
-                      Tên hội viên: {item.nameHV}
-                    </Text>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      paddingLeft: 18,
-                      paddingRight: 5,
-                      alignItems: "center",
-                    }}>
-                    <Text
-                      style={{
-                        fontSize: 11,
-                        fontWeight: "500",
-                        width: "70%",
-                        textAlign: "justify",
-
-                        marginHorizontal: 15,
-                      }}>
-                      {item.des}
-                    </Text>
-                    <TouchableOpacity
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        marginTop: 5,
-                        backgroundColor: "#826CCF",
-                        paddingHorizontal: 5,
-                        borderRadius: 10,
-                      }}>
-                      <MaterialCommunityIcons
-                        name="hand-extended-outline"
-                        size={20}
-                        color="#ffffff"
-                      />
-                      <Text style={{ fontSize: 11, color: "#ffffff" }}>
-                        Trả QL
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              ))}
+              {benefit.loading ? (
+                <Loading />
+              ) : (
+                benefit.getPayBenefit.map((item, index) => (
+                  <BenefitHome item={item} key={index} />
+                ))
+              )}
             </View>
           )}
         </Animated.View>

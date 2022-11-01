@@ -14,15 +14,9 @@ import {
   ImageBackground,
   TouchableOpacity,
   ScrollView,
-  KeyboardAvoidingView,
-  TouchableWithoutFeedback,
-  Keyboard,
-  Platform,
-  TextInput,
-  ToastAndroid,
-  TouchableHighlight,
   Animated,
 } from "react-native";
+import Toast from "react-native-root-toast";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -165,13 +159,10 @@ const Profile = () => {
       await dispatch({ type: AUTH.TOKEN, payload: null });
       await dispatch({ type: AUTH.PROFILE, payload: [] });
 
-      ToastAndroid.showWithGravityAndOffset(
-        "Bạn đã đăng xuất !",
-        ToastAndroid.SHORT,
-        ToastAndroid.TOP,
-        25,
-        50
-      );
+      Toast.show("Bạn đã đăng xuất !", {
+        duration: Toast.durations.LONG,
+        position: Toast.positions.BOTTOM,
+      });
       // BackHandler.exitApp();
     } catch (error) {
       console.log(error);

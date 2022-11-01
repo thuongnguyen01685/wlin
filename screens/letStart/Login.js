@@ -16,7 +16,7 @@ import {
 } from "react-native";
 import PhoneInput from "react-native-phone-number-input";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-
+import Toast from "react-native-root-toast";
 import { RadioButton } from "react-native-paper";
 import ModalSms from "../../components/ModalSms";
 import { useDispatch, useSelector } from "react-redux";
@@ -51,13 +51,10 @@ const Login = () => {
           dispatch({ type: AUTH.OTP, payload: "" });
         }, 300 * 1000);
       } else {
-        ToastAndroid.showWithGravityAndOffset(
-          "Tài khoản này không tồn tại !",
-          ToastAndroid.SHORT,
-          ToastAndroid.TOP,
-          25,
-          50,
-        );
+        Toast.show("Tài khoản này không tồn tại !", {
+          duration: Toast.durations.LONG,
+          position: Toast.positions.BOTTOM,
+        });
       }
     }
   };
@@ -79,8 +76,7 @@ const Login = () => {
             zIndex: 4,
             position: "absolute",
             top: "10%",
-          }}
-        >
+          }}>
           <TouchableOpacity
             style={{
               backgroundColor: "#ffffff",
@@ -103,8 +99,7 @@ const Login = () => {
 
               elevation: 5,
             }}
-            onPress={() => navigation.goBack()}
-          >
+            onPress={() => navigation.goBack()}>
             <Ionicons
               name="chevron-back-outline"
               size={25}
@@ -149,8 +144,7 @@ const Login = () => {
               color: "#9D85F2",
               fontWeight: "800",
               textAlign: "center",
-            }}
-          >
+            }}>
             Đăng nhập
           </Text>
           <View style={{ marginTop: "13%" }}>
@@ -192,8 +186,7 @@ const Login = () => {
                 flexDirection: "row",
                 justifyContent: "center",
                 alignItems: "center",
-              }}
-            >
+              }}>
               <RadioButton
                 value={false}
                 status={checked === true ? "checked" : "unchecked"}
@@ -213,8 +206,7 @@ const Login = () => {
               flexDirection: "row",
               justifyContent: "center",
               marginTop: 20,
-            }}
-          >
+            }}>
             <LinearGradient
               start={{ x: 0, y: 0.3 }}
               end={{ x: 1, y: 1 }}
@@ -225,15 +217,13 @@ const Login = () => {
                 borderRadius: 30,
                 flexDirection: "row",
                 justifyContent: "center",
-              }}
-            >
+              }}>
               <Text
                 style={{
                   fontSize: 18,
                   fontWeight: "600",
                   color: "#ffffff",
-                }}
-              >
+                }}>
                 Tiếp tục
               </Text>
             </LinearGradient>

@@ -31,12 +31,617 @@ import { useDispatch, useSelector } from "react-redux";
 import HeaderPart from "../../components/HeaderPart/HeaderPart";
 import { getCLub, getDetailClub } from "../../redux/actions/ClupAction";
 import { URL } from "../../utils/fetchApi";
+import {
+  AUTH,
+  getCustomerWlinAction,
+  getRankAction,
+} from "../../redux/actions/authAction";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
 const ratio = w / 720;
 
 const Nation = () => {
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const { auth, club } = useSelector((state) => state);
+  const [refreshing, setRefreshing] = React.useState(false);
+  const [page, setPage] = useState(1);
+
+  const scrollY = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    setRefreshing(true);
+    dispatch(getCLub(auth, page, auth.permission.group_id));
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, [page]);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    dispatch(getCLub(auth, page, auth.permission.group_id));
+    dispatch(getCustomerWlinAction(auth.token, auth.profile.email));
+    wait(2000).then(() => setRefreshing(false));
+  }, [page]);
+
+  const handleDetail = (_id) => {
+    dispatch(getDetailClub(_id, auth.token));
+    navigation.navigate("DetailClub");
+  };
+
+  const clubNation = club.getClubs
+    .filter((item) => item.quoc_gia === auth.customer.quoc_gia)
+    .map((i) => i);
+
+  return (
+    <View style={styles.container}>
+      {auth.customer.goi_thanh_vien === "03" ||
+      auth.customer.goi_thanh_vien === "04" ||
+      auth.permission.group_id === "631c254a7a3a837ce2c22995" ? (
+        <View style={{ marginTop: 10, paddingBottom: "70%" }}>
+          <Animated.FlatList
+            onScroll={Animated.event(
+              [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+              { useNativeDriver: true }
+            )}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+                colors={["#9796F0", "green", "blue"]}
+              />
+            }
+            data={clubNation}
+            onEndReachedThreshold={0.5}
+            // onEndReached={() => setPage(page + 1)}
+            keyExtractor={(item, index) => index}
+            renderItem={({ item, index }) => {
+              const inputRange = [
+                -1,
+                0,
+                (height * 0.1 + 15) * index,
+                (height * 0.1 + 15) * (index + 3),
+              ];
+              const scale = 1;
+              const opacity = scrollY.interpolate({
+                inputRange,
+                outputRange: [1, 1, 1, 0],
+              });
+              const Offset = scrollY.interpolate({
+                inputRange,
+                outputRange: [0, 0, 0, 500],
+              });
+              return (
+                <Animated.View
+                  style={{
+                    transform: [{ scale: scale }, { translateX: Offset }],
+                    opacity: opacity,
+                  }}>
+                  <TouchableOpacity
+                    key={item._id}
+                    onPress={() => handleDetail(item._id)}>
+                    <Surface style={styles.surface}>
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                          flex: 0.9,
+                          top: -10,
+                        }}>
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                          }}>
+                          <View
+                            style={{
+                              borderRadius: 8,
+                              borderWidth: 0.4,
+                              borderColor: "#DADADA",
+                              paddingVertical: 25,
+                              paddingHorizontal: 5,
+                              flexDirection: "column",
+                              justifyContent: "center",
+                              alignItems: "center",
+                            }}>
+                            {item.hinh_anh ? (
+                              <Image
+                                source={{
+                                  uri: `${URL}/`.concat(`${item.hinh_anh}`),
+                                }}
+                                style={{
+                                  width: 80,
+                                  height: 40,
+                                  borderRadius: 7,
+                                }}
+                              />
+                            ) : (
+                              <Image
+                                source={require("../../assets/logo.png")}
+                                style={{
+                                  width: 80,
+                                  height: 40,
+                                  resizeMode: "contain",
+                                }}
+                              />
+                            )}
+                          </View>
+
+                          <View
+                            style={{
+                              flexDirection: "column",
+                              marginLeft: 20,
+                            }}>
+                            <Text
+                              style={{
+                                color: "#474747",
+                                fontSize: 16,
+                                fontWeight: "600",
+                              }}>
+                              {item.ten_club}
+                            </Text>
+                            <View
+                              style={{
+                                flexDirection: "row",
+                                justifyContent: "space-between",
+                                flexWrap: "wrap",
+                                width: "70%",
+                              }}>
+                              <View
+                                style={{
+                                  backgroundColor: "#EDF8FC",
+                                  flexDirection: "row",
+                                  paddingHorizontal: 2,
+                                  borderRadius: 10,
+                                  alignItems: "center",
+                                  marginTop: 5,
+                                }}>
+                                <Ionicons
+                                  name="people"
+                                  color="#139ECA"
+                                  size={20}
+                                />
+                                <Text
+                                  style={{
+                                    fontSize: 10,
+                                    fontWeight: "600",
+                                    color: "#139ECA",
+                                  }}>
+                                  {item.ds_thanh_vien.length} thành viên
+                                </Text>
+                              </View>
+                              <View
+                                style={{
+                                  backgroundColor: "#ECECF9",
+                                  flexDirection: "row",
+                                  paddingHorizontal: 2,
+                                  borderRadius: 10,
+                                  alignItems: "center",
+                                  marginTop: 5,
+                                }}>
+                                <Ionicons
+                                  name="calendar"
+                                  color="#1D19D4"
+                                  size={20}
+                                />
+                                <Text
+                                  style={{
+                                    fontSize: 10,
+                                    fontWeight: "600",
+                                    color: "#1D19D4",
+                                  }}>
+                                  20 sự kiện
+                                </Text>
+                              </View>
+                              <View
+                                style={{
+                                  backgroundColor: "#FAEEF0",
+                                  flexDirection: "row",
+                                  paddingHorizontal: 2,
+                                  borderRadius: 10,
+                                  alignItems: "center",
+                                  marginTop: 5,
+                                }}>
+                                <Ionicons
+                                  name="reader"
+                                  color="#F12247"
+                                  size={20}
+                                />
+                                <Text
+                                  style={{
+                                    fontSize: 10,
+                                    fontWeight: "600",
+                                    color: "#F12247",
+                                  }}>
+                                  20 referrals
+                                </Text>
+                              </View>
+                              <View
+                                style={{
+                                  backgroundColor: "#EEFBEE",
+                                  flexDirection: "row",
+                                  paddingHorizontal: 2,
+                                  borderRadius: 10,
+                                  alignItems: "center",
+                                  marginTop: 5,
+                                }}>
+                                <Ionicons
+                                  name="leaf"
+                                  color="#058602"
+                                  size={20}
+                                />
+                                <Text
+                                  style={{
+                                    fontSize: 10,
+                                    fontWeight: "600",
+                                    color: "#058602",
+                                  }}>
+                                  20 TYFCBs
+                                </Text>
+                              </View>
+                              {/* {dataFrameClub.map((item, index) => (
+                              <View
+                                style={{
+                                  backgroundColor: item.backgroundColor,
+                                  flexDirection: "row",
+                                  paddingHorizontal: 2,
+                                  borderRadius: 10,
+                                  alignItems: "center",
+                                  marginTop: 5,
+                                }}>
+                                <Ionicons
+                                  name={item.icon}
+                                  color={item.color}
+                                  size={20}
+                                />
+                                <Text
+                                  style={{
+                                    fontSize: 10,
+                                    fontWeight: "600",
+                                    color: item.color,
+                                  }}>
+                                  20 {item.name}
+                                </Text>
+                              </View>
+                            ))} */}
+                            </View>
+                          </View>
+                        </View>
+                      </View>
+                      <TouchableOpacity
+                        onPress={() => handleDetail(item._id)}
+                        style={{ top: -10 }}>
+                        <Ionicons
+                          name="chevron-forward-outline"
+                          size={25}
+                          color="#9D85F2"
+                        />
+                      </TouchableOpacity>
+                    </Surface>
+                  </TouchableOpacity>
+                </Animated.View>
+              );
+            }}
+          />
+        </View>
+      ) : (
+        <Text
+          style={{
+            textAlign: "center",
+            marginTop: 20,
+            fontSize: 15,
+            fontWeight: "500",
+          }}>
+          Bạn không có quyền xem tab này.
+        </Text>
+      )}
+    </View>
+  );
+};
+
+const Area = () => {
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const { auth, club } = useSelector((state) => state);
+  const [refreshing, setRefreshing] = React.useState(false);
+  const [page, setPage] = useState(1);
+
+  const scrollY = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    setRefreshing(true);
+    dispatch(getCLub(auth, 1, auth.permission.group_id));
+    dispatch(getRankAction(auth.token, auth.profile.email));
+    dispatch(getCustomerWlinAction(auth.token, auth.profile.email));
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, [auth.permission.group_id]);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    dispatch(getCustomerWlinAction(auth.token, auth.profile.email));
+    dispatch(getCLub(auth, 1, auth.permission.group_id));
+    wait(2000).then(() => setRefreshing(false));
+  }, [auth.permission.group_id]);
+
+  const handleDetail = (_id) => {
+    dispatch(getDetailClub(_id, auth.token));
+    navigation.navigate("DetailClub");
+  };
+  const clubArea = club.getClubs
+    .filter((item) => item.khu_vuc === auth.customer.khu_vuc)
+    .map((i) => i);
+
+  return (
+    <View style={styles.container}>
+      {auth.customer.goi_thanh_vien === "02" ||
+      auth.customer.goi_thanh_vien === "03" ||
+      auth.customer.goi_thanh_vien === "04" ||
+      auth.permission.group_id === "631c254a7a3a837ce2c22995" ? (
+        <View style={{ marginTop: 10, paddingBottom: "70%" }}>
+          <Animated.FlatList
+            onScroll={Animated.event(
+              [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+              { useNativeDriver: true }
+            )}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+                colors={["#9796F0", "green", "blue"]}
+              />
+            }
+            data={clubArea}
+            onEndReachedThreshold={0.5}
+            // onEndReached={() => setPage(page + 1)}
+            keyExtractor={(item, index) => index}
+            renderItem={({ item, index }) => {
+              const inputRange = [
+                -1,
+                0,
+                (height * 0.1 + 15) * index,
+                (height * 0.1 + 15) * (index + 3),
+              ];
+              const scale = 1;
+              const opacity = scrollY.interpolate({
+                inputRange,
+                outputRange: [1, 1, 1, 0],
+              });
+              const Offset = scrollY.interpolate({
+                inputRange,
+                outputRange: [0, 0, 0, 500],
+              });
+              return (
+                <Animated.View
+                  style={{
+                    transform: [{ scale: scale }, { translateX: Offset }],
+                    opacity: opacity,
+                  }}>
+                  <TouchableOpacity
+                    key={item._id}
+                    onPress={() => handleDetail(item._id)}>
+                    <Surface style={styles.surface}>
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                          flex: 0.9,
+                          top: -10,
+                        }}>
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                          }}>
+                          <View
+                            style={{
+                              borderRadius: 8,
+                              borderWidth: 0.4,
+                              borderColor: "#DADADA",
+                              paddingVertical: 25,
+                              paddingHorizontal: 5,
+                              flexDirection: "column",
+                              justifyContent: "center",
+                              alignItems: "center",
+                            }}>
+                            {item.hinh_anh ? (
+                              <Image
+                                source={{
+                                  uri: `${URL}/`.concat(`${item.hinh_anh}`),
+                                }}
+                                style={{
+                                  width: 80,
+                                  height: 40,
+                                  borderRadius: 7,
+                                }}
+                              />
+                            ) : (
+                              <Image
+                                source={require("../../assets/logo.png")}
+                                style={{
+                                  width: 80,
+                                  height: 40,
+                                  resizeMode: "contain",
+                                }}
+                              />
+                            )}
+                          </View>
+
+                          <View
+                            style={{
+                              flexDirection: "column",
+                              marginLeft: 20,
+                            }}>
+                            <Text
+                              style={{
+                                color: "#474747",
+                                fontSize: 16,
+                                fontWeight: "600",
+                              }}>
+                              {item.ten_club}
+                            </Text>
+                            <View
+                              style={{
+                                flexDirection: "row",
+                                justifyContent: "space-between",
+                                flexWrap: "wrap",
+                                width: "70%",
+                              }}>
+                              <View
+                                style={{
+                                  backgroundColor: "#EDF8FC",
+                                  flexDirection: "row",
+                                  paddingHorizontal: 2,
+                                  borderRadius: 10,
+                                  alignItems: "center",
+                                  marginTop: 5,
+                                }}>
+                                <Ionicons
+                                  name="people"
+                                  color="#139ECA"
+                                  size={20}
+                                />
+                                <Text
+                                  style={{
+                                    fontSize: 10,
+                                    fontWeight: "600",
+                                    color: "#139ECA",
+                                  }}>
+                                  {item.ds_thanh_vien.length} thành viên
+                                </Text>
+                              </View>
+                              <View
+                                style={{
+                                  backgroundColor: "#ECECF9",
+                                  flexDirection: "row",
+                                  paddingHorizontal: 2,
+                                  borderRadius: 10,
+                                  alignItems: "center",
+                                  marginTop: 5,
+                                }}>
+                                <Ionicons
+                                  name="calendar"
+                                  color="#1D19D4"
+                                  size={20}
+                                />
+                                <Text
+                                  style={{
+                                    fontSize: 10,
+                                    fontWeight: "600",
+                                    color: "#1D19D4",
+                                  }}>
+                                  20 sự kiện
+                                </Text>
+                              </View>
+                              <View
+                                style={{
+                                  backgroundColor: "#FAEEF0",
+                                  flexDirection: "row",
+                                  paddingHorizontal: 2,
+                                  borderRadius: 10,
+                                  alignItems: "center",
+                                  marginTop: 5,
+                                }}>
+                                <Ionicons
+                                  name="reader"
+                                  color="#F12247"
+                                  size={20}
+                                />
+                                <Text
+                                  style={{
+                                    fontSize: 10,
+                                    fontWeight: "600",
+                                    color: "#F12247",
+                                  }}>
+                                  20 referrals
+                                </Text>
+                              </View>
+                              <View
+                                style={{
+                                  backgroundColor: "#EEFBEE",
+                                  flexDirection: "row",
+                                  paddingHorizontal: 2,
+                                  borderRadius: 10,
+                                  alignItems: "center",
+                                  marginTop: 5,
+                                }}>
+                                <Ionicons
+                                  name="leaf"
+                                  color="#058602"
+                                  size={20}
+                                />
+                                <Text
+                                  style={{
+                                    fontSize: 10,
+                                    fontWeight: "600",
+                                    color: "#058602",
+                                  }}>
+                                  20 TYFCBs
+                                </Text>
+                              </View>
+                              {/* {dataFrameClub.map((item, index) => (
+                              <View
+                                style={{
+                                  backgroundColor: item.backgroundColor,
+                                  flexDirection: "row",
+                                  paddingHorizontal: 2,
+                                  borderRadius: 10,
+                                  alignItems: "center",
+                                  marginTop: 5,
+                                }}>
+                                <Ionicons
+                                  name={item.icon}
+                                  color={item.color}
+                                  size={20}
+                                />
+                                <Text
+                                  style={{
+                                    fontSize: 10,
+                                    fontWeight: "600",
+                                    color: item.color,
+                                  }}>
+                                  20 {item.name}
+                                </Text>
+                              </View>
+                            ))} */}
+                            </View>
+                          </View>
+                        </View>
+                      </View>
+                      <TouchableOpacity
+                        onPress={() => handleDetail(item._id)}
+                        style={{ top: -10 }}>
+                        <Ionicons
+                          name="chevron-forward-outline"
+                          size={25}
+                          color="#9D85F2"
+                        />
+                      </TouchableOpacity>
+                    </Surface>
+                  </TouchableOpacity>
+                </Animated.View>
+              );
+            }}
+          />
+        </View>
+      ) : (
+        <Text
+          style={{
+            textAlign: "center",
+            marginTop: 20,
+            fontSize: 15,
+            fontWeight: "500",
+          }}>
+          Bạn không có quyền xem tab này.
+        </Text>
+      )}
+    </View>
+  );
+};
+
+const Region = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const { auth, club } = useSelector((state) => state);
@@ -127,8 +732,11 @@ const Nation = () => {
                             borderRadius: 8,
                             borderWidth: 0.4,
                             borderColor: "#DADADA",
-                            paddingVertical: 15,
+                            paddingVertical: 25,
                             paddingHorizontal: 5,
+                            flexDirection: "column",
+                            justifyContent: "center",
+                            alignItems: "center",
                           }}>
                           {item.hinh_anh ? (
                             <Image
@@ -261,31 +869,6 @@ const Nation = () => {
                                 20 TYFCBs
                               </Text>
                             </View>
-                            {/* {dataFrameClub.map((item, index) => (
-                              <View
-                                style={{
-                                  backgroundColor: item.backgroundColor,
-                                  flexDirection: "row",
-                                  paddingHorizontal: 2,
-                                  borderRadius: 10,
-                                  alignItems: "center",
-                                  marginTop: 5,
-                                }}>
-                                <Ionicons
-                                  name={item.icon}
-                                  color={item.color}
-                                  size={20}
-                                />
-                                <Text
-                                  style={{
-                                    fontSize: 10,
-                                    fontWeight: "600",
-                                    color: item.color,
-                                  }}>
-                                  20 {item.name}
-                                </Text>
-                              </View>
-                            ))} */}
                           </View>
                         </View>
                       </View>
@@ -309,25 +892,11 @@ const Nation = () => {
     </View>
   );
 };
-const Region = () => {
-  return (
-    <View style={styles.container}>
-      <Text>2</Text>
-    </View>
-  );
-};
-const Area = () => {
-  return (
-    <View style={styles.container}>
-      <Text>3</Text>
-    </View>
-  );
-};
 
 const renderScene = SceneMap({
   first: Nation,
-  second: Region,
-  third: Area,
+  second: Area,
+  third: Region,
 });
 // create a component
 
@@ -344,24 +913,26 @@ const Club = () => {
 
   const [routes] = useState([
     { key: "first", title: "Quốc gia" },
-    { key: "second", title: "Vùng" },
-    { key: "third", title: "Khu vực" },
+    { key: "second", title: "Khu vực" },
+    { key: "third", title: "Vùng" },
   ]);
 
   const dispatch = useDispatch();
-  // const { auth, club } = useSelector((state) => state);
+  const { auth, club } = useSelector((state) => state);
   const [refreshing, setRefreshing] = React.useState(false);
-  // const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
 
   // const scrollY = useRef(new Animated.Value(0)).current;
 
-  // useEffect(() => {
-  //   setRefreshing(true);
-  //   dispatch(getCLub(auth.token, page));
-  //   setTimeout(() => {
-  //     setRefreshing(false);
-  //   }, 2000);
-  // }, [dispatch, page]);
+  useEffect(() => {
+    setRefreshing(true);
+    // console.log(auth.token, page);
+    dispatch(getCLub(auth, page, auth.permission.group_id));
+    dispatch(getRankAction(auth.token, auth.profile.email));
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, [dispatch, page]);
 
   // const onRefresh = React.useCallback(() => {
   //   setRefreshing(true);

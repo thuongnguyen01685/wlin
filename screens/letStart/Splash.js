@@ -68,20 +68,6 @@ const Splash = () => {
     it();
   }, [dispatch, auth.token]);
 
-  // console.log(auth.rank.ma_goi, "g091");
-  // const handleGo = async () => {
-  //   const token = await AsyncStorage.getItem("@token_key");
-
-  //   if (token) {
-  //     dispatch(getProfileAction(token));
-  //     dispatch(getNotify(token));
-
-  //     navigation.navigate("TabBar");
-  //   } else {
-  //     navigation.navigate("Wellcome");
-  //   }
-  // };
-
   return (
     <View style={styles.container}>
       <LinearGradient
@@ -94,24 +80,21 @@ const Splash = () => {
           alignContent: "center",
           alignItems: "center",
           paddingHorizontal: 20,
-        }}
-      >
+        }}>
         <View
           style={{
             paddingHorizontal: 20,
 
             flexDirection: "column",
             justifyContent: "center",
-          }}
-        >
+          }}>
           <View
             style={{
               flexDirection: "column",
               justifyContent: "center",
               alignItems: "center",
               marginTop: 20,
-            }}
-          >
+            }}>
             <Image
               source={require("../../assets/logo.png")}
               style={{ width: 330, height: 150 }}
@@ -123,8 +106,7 @@ const Splash = () => {
                 fontWeight: "600",
                 textAlign: "center",
                 marginTop: 10,
-              }}
-            >
+              }}>
               Kiến tạo mạng lưới Nữ lãnh đạo thịnh vượng
             </Text>
           </View>
@@ -136,42 +118,17 @@ const Splash = () => {
             justifyContent: "center",
             alignItems: "center",
             paddingHorizontal: 10,
-            top: "10%",
-
-            height: 150,
+            height: 100,
             zIndex: 1,
-          }}
-        >
-          {/* <TouchableOpacity onPress={handleGo}>
-            <View
-              style={{
-                paddingHorizontal: 20,
-                paddingVertical: 19,
-                borderRadius: 30,
-                flexDirection: "row",
-                justifyContent: "space-around",
-                backgroundColor: "#ffffff",
-              }}>
-              <Ionicons name="arrow-forward" size={25} color="#711775" />
-            </View>
-          </TouchableOpacity> */}
+            width: 100,
+            Top: 20,
+          }}>
           {/* <Lottie
             source={require("../../assets/animationloader.json")}
             autoPlay
             loop
           /> */}
-          {/* <ActivityIndicator size="large" color="#00ff00" /> */}
-          {loading && (
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <ActivityIndicator size="large" color="#00ff00" />
-            </View>
-          )}
+          {loading && <ActivityIndicator size="large" color="#00ff00" />}
         </View>
       </LinearGradient>
     </View>

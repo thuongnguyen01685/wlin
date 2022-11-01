@@ -7,7 +7,6 @@ import Home from "../screens/home/Home";
 
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Club from "../screens/clup/Club";
-import DetailClub from "../screens/clup/DetailClub";
 
 import Events from "../screens/events/Events";
 import DetailEvents from "../screens/events/DetailEvents";
@@ -35,6 +34,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons, MaterialCommunityIcons, Octicons } from "@expo/vector-icons";
 import AccuracyImage from "../screens/events/AccuracyImage";
 import DetailBenefit from "../screens/other/DetailBenefit";
+import DetailClub from "../screens/clup/detail/DetailClub";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
