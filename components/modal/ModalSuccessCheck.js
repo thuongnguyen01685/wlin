@@ -10,14 +10,17 @@ import Modal from "react-native-modal";
 // create a component
 const ModalSuccessCheck = (props) => {
   const navigation = useNavigation();
+  console.log(props.dataCheck);
   return (
     <Modal
       animationType="fade"
       transparent={true}
-      isVisible={props.modalSuccess}
+      isVisible={props.modalCheckSuccess}
       backdropColor="#C4C4C4"
       backdropOpacity={0.5}
-      onBackdropPress={() => props.setModalSuccess(!props.modalSuccess)}
+      onBackdropPress={() =>
+        props.setModalCheckSuccess(!props.modalCheckSuccess)
+      }
       style={{ paddingHorizontal: 10 }}>
       <View
         style={{
@@ -36,7 +39,9 @@ const ModalSuccessCheck = (props) => {
             alignItems: "center",
           }}>
           <TouchableOpacity
-            onPress={() => props.setModalSuccess(!props.modalSuccess)}>
+            onPress={() =>
+              props.setModalCheckSuccess(!props.modalCheckSuccess)
+            }>
             <Ionicons name="close-outline" size={20} />
           </TouchableOpacity>
         </View>
@@ -79,7 +84,7 @@ const ModalSuccessCheck = (props) => {
           }}>
           <TouchableOpacity
             onPress={() => {
-              props.setModalSuccess(!props.modalSuccess);
+              props.setModalCheckSuccess(!props.modalCheckSuccess);
               props.setShowModalPayment(true);
               // navigation.goBack();
             }}>

@@ -75,34 +75,49 @@ const ModalNotify = (props) => {
       <View
         style={{
           backgroundColor: "white",
-          borderRadius: 8,
+          borderRadius: 30,
           padding: 20,
           elevation: 5,
           position: "absolute",
           width: "100%",
-          top: 14,
-          height: "auto",
+          top: 50,
+          height: "70%",
           bottom: 20,
         }}>
-        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-          <Text style={{ fontSize: 25, color: "#826CCF", fontWeight: "bold" }}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+          }}>
+          <Image
+            source={require("../../assets/notify.png")}
+            style={{
+              resizeMode: "contain",
+              width: 180,
+              height: 150,
+              marginVertical: 10,
+            }}
+          />
+        </View>
+        <View style={{ flexDirection: "row", justifyContent: "center" }}>
+          <Text
+            style={{
+              fontSize: 25,
+              color: "#826CCF",
+              fontWeight: "bold",
+              textAlign: "center",
+            }}>
             Thông báo
           </Text>
-          <TouchableOpacity onPress={() => props.setModalVisible(false)}>
-            <MaterialCommunityIcons
-              name="close-outline"
-              size={24}
-              color="#FF0000"
-            />
-          </TouchableOpacity>
         </View>
         <View
           style={{
             flexDirection: "row",
             marginTop: 15,
-            borderBottomWidth: 1,
+            borderBottomWidth: 0.5,
             borderColor: "#826CCF",
             paddingBottom: 5,
+            width: "50%",
           }}>
           <TouchableOpacity onPress={() => setIsRead(true)}>
             <View
@@ -190,15 +205,26 @@ const ModalNotify = (props) => {
                         <Ionicons
                           name="md-notifications"
                           size={30}
-                          color="#15294D"
+                          color="#F2AF4A"
                           style={{ marginRight: 10 }}
                         />
+                        <View
+                          style={{
+                            height: 2,
+                            width: 2,
+                            padding: 4,
+                            backgroundColor: "#CB0505",
+                            borderRadius: 50,
+                            position: "absolute",
+                            top: 4,
+                            left: 17,
+                          }}></View>
                       </View>
                       <View style={styles.detailNews}>
                         <View>
                           <Text
                             style={{
-                              fontSize: 17,
+                              fontSize: 15,
                               color: "#000000",
                               fontWeight: "bold",
                               opacity: 0.8,
@@ -224,17 +250,25 @@ const ModalNotify = (props) => {
                       </View>
                       <View
                         style={{
+                          flexDirection: "row",
                           justifyContent: "flex-start",
-                          marginTop: 5,
+                          alignItems: "center",
                         }}>
-                        <TouchableOpacity
+                        <View
+                          style={{
+                            backgroundColor: "#9D85F2",
+                            padding: 5,
+                            height: 5,
+                            borderRadius: 50,
+                          }}></View>
+                        {/* <TouchableOpacity
                           onPress={() => handleDeleteNo(item._id)}>
                           <MaterialCommunityIcons
                             name="close-circle-outline"
                             size={18}
                             color="#FF0000"
                           />
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                       </View>
                     </View>
                   </View>
@@ -254,7 +288,7 @@ const ModalNotify = (props) => {
                         <Ionicons
                           name="md-notifications"
                           size={30}
-                          color="#15294D"
+                          color="#F2AF4A"
                           style={{ marginRight: 10 }}
                         />
                       </View>
@@ -262,7 +296,7 @@ const ModalNotify = (props) => {
                         <View>
                           <Text
                             style={{
-                              fontSize: 17,
+                              fontSize: 15,
                               color: "#000000",
                               fontWeight: "bold",
                               opacity: 0.8,
@@ -288,17 +322,25 @@ const ModalNotify = (props) => {
                       </View>
                       <View
                         style={{
+                          flexDirection: "row",
                           justifyContent: "flex-start",
-                          marginTop: 5,
+                          alignItems: "center",
                         }}>
-                        <TouchableOpacity
+                        <View
+                          style={{
+                            backgroundColor: "#9D85F2",
+                            padding: 5,
+                            height: 5,
+                            borderRadius: 50,
+                          }}></View>
+                        {/* <TouchableOpacity
                           onPress={() => handleDeleteNo(item._id)}>
                           <MaterialCommunityIcons
                             name="close-circle-outline"
                             size={18}
                             color="#FF0000"
                           />
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                       </View>
                     </View>
                   </View>
@@ -308,13 +350,11 @@ const ModalNotify = (props) => {
         <View
           style={{
             flexDirection: "row",
-            justifyContent: "flex-end",
+            justifyContent: "center",
             alignContent: "center",
             alignItems: "center",
-            marginTop: 10,
-            top: 5,
           }}>
-          <TouchableOpacity onPress={handleDeleteAllNo}>
+          {/* <TouchableOpacity onPress={handleDeleteAllNo}>
             <Text
               style={{
                 fontSize: 12,
@@ -324,6 +364,21 @@ const ModalNotify = (props) => {
                 color: "#FF0000",
               }}>
               Xóa tất cả thông báo
+            </Text>
+          </TouchableOpacity> */}
+          <TouchableOpacity
+            style={{
+              backgroundColor: "#9D85F2",
+              width: "70%",
+              height: 40,
+              borderRadius: 20,
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            onPress={() => props.setModalVisible(false)}>
+            <Text style={{ color: "#ffffff", fontWeight: "600", fontSize: 15 }}>
+              Đóng
             </Text>
           </TouchableOpacity>
         </View>

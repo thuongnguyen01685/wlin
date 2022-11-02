@@ -15,11 +15,12 @@ import {
   ToastAndroid,
 } from "react-native";
 import * as Clipboard from "expo-clipboard";
-
+import QRCode from "react-native-qrcode-svg";
 import HeaderPart from "../../components/HeaderPart/HeaderPart";
 
 import { useSelector } from "react-redux";
 import QRAdmin from "./QR/QRAdmin";
+import PushImage from "./PushImage";
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
 const ratio = w / 720;
@@ -28,6 +29,7 @@ const ratio = w / 720;
 const CheckQR = () => {
   const navigation = useNavigation();
   const { auth } = useSelector((state) => state);
+  const [showTakePicture, setShowTakePicture] = useState(false);
 
   return (
     <View style={styles.container}>
@@ -56,7 +58,7 @@ const CheckQR = () => {
           paddingHorizontal: 10,
         }}>
         <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
-          Check-QR
+          {!showTakePicture ? "Check-QR" : "Xác thực biên lai"}
         </Text>
         <TouchableOpacity>
           <Ionicons name="alert-circle-outline" size={20} color="#9D85F2" />
@@ -82,9 +84,14 @@ const CheckQR = () => {
                     Mã QR của bạn
                   </Text>
                 </View>
-                <Image
+                {/* <Image
                   source={require("../../assets/QRFigma.png")}
                   style={{ resizeMode: "contain", width: "60%", height: 300 }}
+                /> */}
+                <QRCode
+                  value={auth.customer.ma_kh}
+                  //logo={require("../../assets/QRFigma.png")}
+                  size={200}
                 />
                 <View>
                   <Text
@@ -158,8 +165,16 @@ const CheckQR = () => {
                 </View>
               </View>
             </View>
+          ) : !showTakePicture ? (
+            <QRAdmin
+              showTakePicture={showTakePicture}
+              setShowTakePicture={setShowTakePicture}
+            />
           ) : (
-            <QRAdmin />
+            <PushImage
+              showTakePicture={showTakePicture}
+              setShowTakePicture={setShowTakePicture}
+            />
           )}
         </ScrollView>
       </View>

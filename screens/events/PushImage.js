@@ -1,4 +1,3 @@
-//import liraries
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
@@ -25,7 +24,6 @@ import { Camera } from "expo-camera";
 import { shareAsync } from "expo-sharing";
 import * as MediaLibrary from "expo-media-library";
 
-import HeaderPart from "../../components/HeaderPart/HeaderPart";
 import * as ImagePicker from "expo-image-picker";
 import ModalPayment from "../../components/modal/ModalPayment";
 
@@ -34,13 +32,13 @@ const h = Dimensions.get("window").height;
 const ratio = w / 720;
 
 // create a component
-const AccuracyImage = () => {
+const PushImage = (props) => {
   const navigation = useNavigation();
   const [modalSuccess, setModalSuccess] = useState(false);
   const [image, setImage] = useState(null);
 
   let cameraRef = useRef();
-  const [hasCameraPermission, setHasCameraPermission] = useState();
+  const [hasCameraPermission, setHasCameraPermission] = useState(null);
   // const [hasMediaLibraryPermission, setHasMediaLibraryPermission] = useState();
   // const [photo, setPhoto] = useState();
 
@@ -129,109 +127,77 @@ const AccuracyImage = () => {
   // }
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="light-content" />
-      <HeaderPart />
-      <View
-        style={{
-          backgroundColor: "#ffffff",
-          shadowColor: "#000",
-          shadowOffset: {
-            width: 0,
-            height: 2,
-          },
-          shadowOpacity: 0.25,
-          shadowRadius: 3.84,
-          elevation: 5,
-          zIndex: 3,
-          marginTop: -50,
-          marginHorizontal: 15,
-          paddingVertical: 20,
-          borderRadius: 10,
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-          paddingHorizontal: 10,
-        }}>
-        <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
-          Xác thực biên lai
-        </Text>
-        <TouchableOpacity>
-          <Ionicons name="alert-circle-outline" size={20} color="#826CCF" />
-        </TouchableOpacity>
-      </View>
-      <View style={{ height: "100%" }}>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={{ marginBottom: "80%" }}>
-            <View style={{ marginVertical: 12 }}>
-              <Text
-                style={{
-                  textAlign: "center",
-                  fontSize: 12,
-                  fontWeight: "600",
-                }}>
-                Dùng máy ảnh của bạn chụp lại
-              </Text>
-            </View>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
-              }}>
-              <View style={styles.barcodebox}>
-                <Camera ref={cameraRef} style={{ height: 400, width: 300 }} />
-              </View>
-            </View>
-
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
-                marginVertical: 10,
-              }}>
-              <TouchableOpacity style={{ width: "15%" }} onPress={takePic}>
-                <LinearGradient
-                  start={{ x: 0, y: 0.3 }}
-                  end={{ x: 1, y: 1 }}
-                  colors={["#9D85F2", "rgba(157, 133, 242, 0.4)"]}
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignContent: "center",
-                    alignItems: "center",
-                    borderRadius: 30,
-                  }}>
-                  <View style={styles.borderBacRounded}>
-                    <Ionicons name="camera-outline" size={20} color="#ffffff" />
-                  </View>
-                </LinearGradient>
-              </TouchableOpacity>
-            </View>
-
-            <TouchableOpacity
-              style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
-                marginTop: 10,
-              }}
-              onPress={pickImage}>
-              <Ionicons name="image-outline" size={20} />
-              <Text style={{ fontSize: 12, fontWeight: "600", marginLeft: 5 }}>
-                Tải mã QR có sẵn
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
+      <View style={{ marginBottom: "80%" }}>
         {modalSuccess && (
           <ModalPayment
             modalSuccess={modalSuccess}
             setModalSuccess={setModalSuccess}
+            showTakePicture={props.showTakePicture}
+            setShowTakePicture={props.setShowTakePicture}
             content={"Xác nhận thanh toán thành công"}
             textButton={"Tiếp tục"}
           />
         )}
+        <View style={{ marginVertical: 12 }}>
+          <Text
+            style={{
+              textAlign: "center",
+              fontSize: 12,
+              fontWeight: "600",
+            }}>
+            Dùng máy ảnh của bạn chụp lại
+          </Text>
+        </View>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+          }}>
+          <View style={styles.barcodebox}>
+            <Camera ref={cameraRef} style={{ height: 400, width: 300 }} />
+          </View>
+        </View>
+
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+            marginVertical: 10,
+          }}>
+          <TouchableOpacity style={{ width: "15%" }} onPress={takePic}>
+            <LinearGradient
+              start={{ x: 0, y: 0.3 }}
+              end={{ x: 1, y: 1 }}
+              colors={["#9D85F2", "rgba(157, 133, 242, 0.4)"]}
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignContent: "center",
+                alignItems: "center",
+                borderRadius: 30,
+              }}>
+              <View style={styles.borderBacRounded}>
+                <Ionicons name="camera-outline" size={20} color="#ffffff" />
+              </View>
+            </LinearGradient>
+          </TouchableOpacity>
+        </View>
+
+        <TouchableOpacity
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: 10,
+          }}
+          onPress={pickImage}>
+          <Ionicons name="image-outline" size={20} />
+          <Text style={{ fontSize: 12, fontWeight: "600", marginLeft: 5 }}>
+            Tải mã QR có sẵn
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -268,4 +234,4 @@ const styles = StyleSheet.create({
 });
 
 //make this component available to the app
-export default AccuracyImage;
+export default PushImage;

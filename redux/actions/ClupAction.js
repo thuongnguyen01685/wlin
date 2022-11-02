@@ -1,3 +1,4 @@
+import callApis from "../../utils/callApis";
 import { getdataApi, getdataApiClub, getDetailApi } from "../../utils/fetchApi";
 
 export const CLUB = {
@@ -47,20 +48,24 @@ export const getDetailBenefit = (_id, token) => async (dispatch) => {
   }
 };
 
-export const getMemberAction = (token) => async (dispatch) => {
+export const getMemberAction = (token, email) => async (dispatch) => {
   try {
-    const res = await getdataApi(`wlin_hoi_vien`, token);
+    const res = await callApis(
+      `fos_dsthanhvien?access_token=${token}&email=${email}`
+    );
     dispatch({ type: CLUB.GETMEMBER, payload: res.data });
   } catch (error) {
     console.log(error);
   }
 };
 
-export const getDetailMember = (id, token) => async (dispatch) => {
+export const getDetailMember = (ma_kh, token) => async (dispatch) => {
   try {
-    const res = await getDetailApi(`wlin_hoi_vien`, id, token);
+    const res = await callApis(
+      `customer_wlin?access_token=${token}&limit=1000&q={"ma_kh":"${ma_kh}"}`
+    );
 
-    dispatch({ type: CLUB.DETAILMEMBER, payload: res.data });
+    dispatch({ type: CLUB.DETAILMEMBER, payload: res.data[0] });
   } catch (error) {
     console.log(error);
   }

@@ -168,6 +168,7 @@ const Slips = () => {
                           justifyContent: "center",
                           alignItems: "center",
                           flexDirection: "row",
+                          paddingHorizontal: 10,
                         }}>
                         {/* <Avatar.Image size={42} source={item.picture} /> */}
                         <Ionicons name="reader" size={30} color={item.color} />
@@ -207,7 +208,7 @@ const Slips = () => {
                         <View
                           style={{
                             backgroundColor: item.bg,
-                            width: "50%",
+                            width: "60%",
                             flexDirection: "row",
                             alignItems: "center",
                             justifyContent: "center",
