@@ -13,24 +13,13 @@ const screenWidth = Dimensions.get("window").width;
 //stackbar chart
 
 const dataX = {
-  data: [
-    [60, 60, 60],
-    [30, 30, 60],
-    [60, 60, 60],
-    [70, 30, 60],
-    [20, 30, 60],
-    [30, 50, 60],
-    [50, 80, 60],
-    [50, 30, 60],
-    [20, 60, 60],
-    [10, 30, 60],
-    [60, 20, 60],
-    [30, 50, 20],
-  ],
+  data: [[10], [6], [16], [4], [3], [3], [22], [33], [11], [23], [19], [27]],
   labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
-  legend: ["Referrals", "TYFCBs", "Event"],
+  // legend: ["Referrals", "TYFCBs", "Event"],
+  legend: ["Event"],
 
-  barColors: ["#9D85F2", "#5144A6", "#78B1E5"],
+  //barColors: ["#9D85F2", "#5144A6", "#78B1E5"],
+  barColors: ["#78B1E5"],
 };
 // create a component
 const Chart = () => {
@@ -77,24 +66,21 @@ const Chart = () => {
           data={dataX}
           width={screenWidth / 1.07}
           height={220}
-          strokeWidth={16}
+          strokeWidth={10}
           radius={1}
           chartConfig={{
             backgroundGradientFrom: "#f0f0f0",
             backgroundGradientFromOpacity: 0,
             backgroundGradientTo: "#ffffff",
             backgroundGradientToOpacity: 0.5,
-            barPercentage: 0.3,
+            barPercentage: 0.45,
             useShadowColorFromDataset: false,
             barRadius: 1,
             decimalPlaces: 2, // optional, defaults to 2dp
             color: (opacity = 1) => `rgba(13, 136, 56, ${opacity})`,
             labelColor: (opacity = 1) => `rgba(0, 0,0, ${opacity})`,
-            style: {
-              borderRadius: 16,
-            },
             propsForDots: {
-              r: "6",
+              r: "1",
               strokeWidth: "2",
               stroke: "#ffff",
             },
@@ -103,7 +89,7 @@ const Chart = () => {
             borderRadius: 1,
             paddingHorizontal: 5,
           }}
-          hideLegend={true}
+          hideLegend={false}
         />
       </View>
     </View>

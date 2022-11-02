@@ -44,22 +44,26 @@ const ListMember = () => {
   const [refreshing, setRefreshing] = React.useState(false);
   const { auth, club } = useSelector((state) => state);
 
+  const getUniqueListBy = (arr, key) => {
+    return [...new Map(arr.map((item) => [item[key], item])).values()];
+  };
+
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    dispatch(getMemberAction(auth.token));
-    wait(4000).then(() => setRefreshing(false));
+    dispatch(getMemberAction(auth.token, auth.profile.email));
+    wait(2000).then(() => setRefreshing(false));
   }, [dispatch]);
 
   useEffect(() => {
     setRefreshing(true);
-    dispatch(getMemberAction(auth.token));
+    dispatch(getMemberAction(auth.token, auth.profile.email));
     setTimeout(() => {
       setRefreshing(false);
     }, 3000);
   }, [dispatch]);
 
-  const handleDetailMember = (_id) => {
-    dispatch(getDetailMember(_id, auth.token));
+  const handleDetailMember = (ma_kh) => {
+    dispatch(getDetailMember(ma_kh, auth.token));
     navigation.navigate("ManagementMember");
   };
 
@@ -131,7 +135,7 @@ const ListMember = () => {
             />
           }>
           <View style={{ marginBottom: "70%" }}>
-            {club.getMember.map((item) => (
+            {getUniqueListBy(club.getMember, "ma_kh").map((item) => (
               <TouchableOpacity
                 key={item._id}
                 style={{
@@ -146,11 +150,10 @@ const ListMember = () => {
                   borderColor: "#dadada",
                   borderWidth: 0.5,
                 }}
-                onPress={() => handleDetailMember(item._id)}>
+                onPress={() => handleDetailMember(item.ma_kh)}>
                 <View
                   style={{
                     flexDirection: "row",
-
                     alignItems: "center",
                     width: "70%",
                   }}>

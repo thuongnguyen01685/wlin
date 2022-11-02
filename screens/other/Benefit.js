@@ -135,7 +135,7 @@ const Benefit = () => {
               marginTop: 10,
             }}>
             <View>
-              {club.getBenefit.map((item) => (
+              {club.getBenefit.map((item, index) => (
                 <TouchableOpacity
                   style={{
                     flexDirection: "row",
@@ -148,7 +148,7 @@ const Benefit = () => {
                     borderBottomWidth: 0.5,
                     borderColor: "#dadada",
                   }}
-                  key={item._id}
+                  key={index}
                   onPress={() => handleDetailBenefit(item._id)}>
                   <View
                     style={{

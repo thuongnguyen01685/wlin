@@ -424,7 +424,10 @@ const Home = () => {
                   }}>
                   Danh sách chỉ số quyền lợi
                 </Text>
-                <TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate("PayBenefit");
+                  }}>
                   <Text
                     style={{
                       fontSize: 12,
@@ -438,9 +441,9 @@ const Home = () => {
               {benefit.loading ? (
                 <Loading />
               ) : (
-                benefit.getPayBenefit.map((item, index) => (
-                  <BenefitHome item={item} key={index} />
-                ))
+                benefit.getPayBenefit
+                  .slice(0, 3)
+                  .map((item, index) => <BenefitHome item={item} key={index} />)
               )}
             </View>
           )}

@@ -12,7 +12,8 @@ const ModalPayment = (props) => {
   const navigation = useNavigation();
   const handleClose = () => {
     props.setModalSuccess(!props.modalSuccess);
-    navigation.navigate("DetailEvents");
+    props.setShowTakePicture(false);
+    navigation.navigate("QRScreen");
   };
   return (
     <Modal

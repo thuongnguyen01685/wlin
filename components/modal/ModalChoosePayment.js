@@ -4,36 +4,24 @@ import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { Component, useState } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
-import RadioGroup from "react-native-radio-buttons-group";
+import { CheckBox } from "@rneui/themed";
 import Modal from "react-native-modal";
 
-const radioButtonsData = [
-  {
-    id: "1", // acts as primary key, should be unique and non-empty string
-    label: "Tiền mặt",
-    value: "tienmat",
-  },
-  {
-    id: "2",
-    label: "Chuyển khoản",
-    value: "chuyenkhoan",
-  },
-];
 // create a component
 const ModalChoosePayment = (props) => {
-  const [radioButtons, setRadioButtons] = useState(radioButtonsData);
+  const [checkValue, setCheckValue] = useState("tienmat");
+
   const navigation = useNavigation();
   const handleClose = () => {
-    props.setShowModalPayment(!props.showModalPayment);
-    // navigation.goBack();
-
-    setTimeout(() => {
-      navigation.navigate("AccuracyImage");
-    }, 1500);
+    if (checkValue === "tienmat") {
+      props.setModalSuccess(true);
+      props.setShowModalPayment(!props.showModalPayment);
+    } else {
+      props.setShowModalPayment(!props.showModalPayment);
+      props.setShowTakePicture(true);
+    }
   };
-  function onPressRadioButton(radioButtonsArray) {
-    setRadioButtons(radioButtonsArray);
-  }
+
   return (
     <Modal
       animationType="fade"
@@ -86,10 +74,45 @@ const ModalChoosePayment = (props) => {
             </Text>
           </View>
           <View>
-            <RadioGroup
-              radioButtons={radioButtons}
-              onPress={onPressRadioButton}
-            />
+            <View
+              style={{
+                backgroundColor: "#F7F8FB",
+                borderRadius: 10,
+                marginBottom: 10,
+                marginHorizontal: 15,
+              }}>
+              <CheckBox
+                title="Tiền mặt"
+                checkedIcon="dot-circle-o"
+                uncheckedIcon="circle-o"
+                checkedColor="#FDA401"
+                checked={checkValue === "tienmat" ? true : false}
+                onPress={() => setCheckValue("tienmat")}
+                containerStyle={{
+                  backgroundColor: "#F7F8FB",
+                  borderRadius: 10,
+                }}
+              />
+            </View>
+            <View
+              style={{
+                backgroundColor: "#F7F8FB",
+                borderRadius: 10,
+                marginHorizontal: 15,
+              }}>
+              <CheckBox
+                title="Chuyển khoản"
+                checkedIcon="dot-circle-o"
+                uncheckedIcon="circle-o"
+                checked={checkValue === "chuyenkhoan" ? true : false}
+                onPress={() => setCheckValue("chuyenkhoan")}
+                checkedColor="#FDA401"
+                containerStyle={{
+                  backgroundColor: "#F7F8FB",
+                  borderRadius: 10,
+                }}
+              />
+            </View>
           </View>
           <View
             style={{

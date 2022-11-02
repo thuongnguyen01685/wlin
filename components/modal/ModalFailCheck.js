@@ -41,13 +41,27 @@ const ModalFailCheck = (props) => {
         <View style={{ flexDirection: "row", justifyContent: "center" }}>
           <Image
             source={require("../../assets/notconfetti.png")}
-            style={{ width: 70, height: 70 }}
+            style={{
+              resizeMode: "contain",
+              width: 150,
+              height: 100,
+              marginVertical: 10,
+            }}
           />
         </View>
         <View>
           <Text
-            style={{ fontSize: 12, fontWeight: "600", textAlign: "center" }}>
-            Chúc mừng bạn đã checkin sự kiện thành công
+            style={{ fontSize: 18, fontWeight: "800", textAlign: "center" }}>
+            Rất tiếc
+          </Text>
+          <Text
+            style={{
+              fontSize: 12,
+              fontWeight: "600",
+              textAlign: "center",
+              marginVertical: 20,
+            }}>
+            Check-in thất bại. Vui lòng thử lại lần nữa
           </Text>
         </View>
         <View
@@ -62,16 +76,18 @@ const ModalFailCheck = (props) => {
             <LinearGradient
               start={{ x: 0, y: 0.3 }}
               end={{ x: 1, y: 1 }}
-              colors={["#751979", "#AE40B2"]}
+              colors={["#9D85F2", "rgba(157, 133, 242, 0.4)"]}
               style={{
                 flexDirection: "row",
                 justifyContent: "space-between",
                 alignContent: "center",
                 alignItems: "center",
-                borderRadius: 7,
+                borderRadius: 10,
+                paddingVertical: 5,
+                paddingHorizontal: 10,
               }}>
               <View style={styles.borderBacRounded}>
-                <Text style={{ color: "#ffffff" }}>Tiếp tục</Text>
+                <Text style={{ color: "#ffffff" }}>Thử lại</Text>
               </View>
             </LinearGradient>
           </TouchableOpacity>
@@ -87,7 +103,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#2c3e50",
   },
   borderBacRounded: {
     paddingHorizontal: 20,

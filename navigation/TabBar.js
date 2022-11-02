@@ -32,7 +32,6 @@ import Map from "../screens/events/Map";
 import { Animated, Dimensions, Text, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons, MaterialCommunityIcons, Octicons } from "@expo/vector-icons";
-import AccuracyImage from "../screens/events/AccuracyImage";
 import DetailBenefit from "../screens/other/DetailBenefit";
 import DetailClub from "../screens/clup/detail/DetailClub";
 
@@ -107,11 +106,6 @@ function EventsScreen() {
       <Stack.Screen
         name="Map"
         component={Map}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="AccuracyImage"
-        component={AccuracyImage}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

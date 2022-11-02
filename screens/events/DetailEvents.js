@@ -44,7 +44,7 @@ const DetailEvents = () => {
   const navigation = useNavigation();
   const [refreshing, setRefreshing] = useState(false);
   const [modalSuccess, setModalSuccess] = useState(false);
-
+  const [showTakePicture, setShowTakePicture] = useState(false);
   const dispatch = useDispatch();
 
   const { auth, event } = useSelector((state) => state);
@@ -477,7 +477,7 @@ const DetailEvents = () => {
               <View
                 style={{
                   flexDirection: "row",
-                  justifyContent: "space-around",
+                  justifyContent: "flex-end",
                   alignItems: "center",
                   paddingHorizontal: 15,
                 }}>
@@ -507,24 +507,6 @@ const DetailEvents = () => {
                 {auth.permission.admin && (
                   <>
                     <TouchableOpacity
-                      onPress={() => navigation.navigate("PayBenefits")}>
-                      <LinearGradient
-                        start={{ x: 0, y: 0.3 }}
-                        end={{ x: 1, y: 1 }}
-                        colors={["#9D85F2", "rgba(157, 133, 242, 0.4)"]}
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          alignContent: "center",
-                          alignItems: "center",
-                          borderRadius: 15,
-                        }}>
-                        <View style={styles.buttonEx}>
-                          <Text style={styles.buttonText}>Trả quyền lợi</Text>
-                        </View>
-                      </LinearGradient>
-                    </TouchableOpacity>
-                    <TouchableOpacity
                       onPress={() => {
                         setModalSuccess(true);
                       }}>
@@ -538,6 +520,7 @@ const DetailEvents = () => {
                           alignContent: "center",
                           alignItems: "center",
                           borderRadius: 15,
+                          marginHorizontal: 10,
                         }}>
                         <View style={styles.buttonEx}>
                           <Text style={styles.buttonText}>Thanh toán</Text>
@@ -571,6 +554,8 @@ const DetailEvents = () => {
               <ModalPayment
                 modalSuccess={modalSuccess}
                 setModalSuccess={setModalSuccess}
+                showTakePicture={showTakePicture}
+                setShowTakePicture={setShowTakePicture}
                 content={"Xác nhận thanh toán thành công"}
                 textButton={"Tiếp tục"}
               />

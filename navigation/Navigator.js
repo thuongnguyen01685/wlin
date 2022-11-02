@@ -37,12 +37,13 @@ import { AUTH, getProfileAction } from "../redux/actions/authAction";
 import Slips from "../screens/slips/Slips";
 import CreateRefer from "../screens/slips/CreateRefer";
 import DetailEvents from "../screens/events/DetailEvents";
-import AccuracyImage from "../screens/events/AccuracyImage";
+
 import Map from "../screens/events/Map";
 import ListPaticipant from "../screens/events/ListParticipant";
 
 import { initSocket } from "../utils/pushNotify";
 import DetailClub from "../screens/clup/detail/DetailClub";
+import PayBenefit from "../screens/other/PayBenefit";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -175,11 +176,7 @@ const Navigator = () => {
           component={DetailEvents}
           options={{ headerShown: false }}
         />
-        <Stack.Screen
-          name="AccuracyImage"
-          component={AccuracyImage}
-          options={{ headerShown: false }}
-        />
+
         <Stack.Screen
           name="Map"
           component={Map}
@@ -193,6 +190,11 @@ const Navigator = () => {
         <Stack.Screen
           name="DetailClub"
           component={DetailClub}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="PayBenefit"
+          component={PayBenefit}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

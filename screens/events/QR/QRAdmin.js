@@ -22,25 +22,28 @@ import {
 
 import { BarCodeScanner } from "expo-barcode-scanner";
 
+import * as RNImagePicker from "expo-image-picker";
+
 import { useEffect } from "react";
 
 import { useSelector } from "react-redux";
 import ModalSuccessCheck from "../../../components/modal/ModalSuccessCheck";
 import ModalFailCheck from "../../../components/modal/ModalFailCheck";
 import ModalChoosePayment from "../../../components/modal/ModalChoosePayment";
+import ModalPayment from "../../../components/modal/ModalPayment";
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
 const ratio = w / 720;
 
 // create a component
-const QRAdmin = () => {
+const QRAdmin = (props) => {
   const navigation = useNavigation();
   const { auth } = useSelector((state) => state);
 
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
+  const [modalCheckSuccess, setModalCheckSuccess] = useState(false);
   const [modalSuccess, setModalSuccess] = useState(false);
-
   const [modalFail, setModalFail] = useState(false);
   const [showModalPayment, setShowModalPayment] = useState(false);
   const [dataCheck, setDataCheck] = useState("");
@@ -52,17 +55,17 @@ const QRAdmin = () => {
     };
 
     getBarCodeScannerPermissions();
-  }, []);
+  }, [hasPermission]);
 
   const handleBarCodeScanned = ({ type, data }, error) => {
-    setScanned(false);
-
+    setScanned(true);
     if (data) {
-      setModalSuccess(true);
+      setModalCheckSuccess(true);
       setDataCheck(data);
     } else {
       setModalFail(true);
     }
+
     //alert(`Code ${type} và Thông tin ${data} đã được quét!`);
   };
 
@@ -72,6 +75,37 @@ const QRAdmin = () => {
   if (hasPermission === false) {
     return <Text>Chưa cho phép quyền camera</Text>;
   }
+
+  //quet ảnh qr
+  const decode = async () => {
+    try {
+      const { status } =
+        await RNImagePicker.requestMediaLibraryPermissionsAsync();
+
+      if (status === "granted") {
+        const result = await RNImagePicker.launchImageLibraryAsync({
+          options: {
+            allowsMultipleSelection: false,
+          },
+        });
+
+        if (result && result.uri) {
+          const results = await BarCodeScanner.scanFromURLAsync(result.uri);
+          //console.log(results); // many information
+          // console.log(results); // May be the one you are looking for
+          if (results) {
+            setDataCheck(results[0].data);
+            setModalCheckSuccess(true);
+          } else {
+            setModalFail(true);
+          }
+        }
+      }
+    } catch (error) {
+      console.debug(error);
+    }
+  };
+
   return (
     <View style={{ marginBottom: "80%" }}>
       <View style={{ marginVertical: 12 }}>
@@ -92,7 +126,7 @@ const QRAdmin = () => {
         }}>
         <View style={styles.barcodebox}>
           <BarCodeScanner
-            onBarCodeScanned={scanned ? handleBarCodeScanned : undefined}
+            onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
             style={{ height: 400, width: 300 }}
           />
         </View>
@@ -105,9 +139,7 @@ const QRAdmin = () => {
           alignItems: "center",
           marginVertical: 10,
         }}>
-        <TouchableOpacity
-          style={{ width: "15%" }}
-          onPress={() => setScanned(true)}>
+        <TouchableOpacity onPress={() => setScanned(false)}>
           <LinearGradient
             start={{ x: 0, y: 0.3 }}
             end={{ x: 1, y: 1 }}
@@ -128,10 +160,10 @@ const QRAdmin = () => {
           </LinearGradient>
         </TouchableOpacity>
       </View>
-      {modalSuccess && (
+      {modalCheckSuccess && (
         <ModalSuccessCheck
-          modalSuccess={modalSuccess}
-          setModalSuccess={setModalSuccess}
+          modalCheckSuccess={modalCheckSuccess}
+          setModalCheckSuccess={setModalCheckSuccess}
           showModalPayment={showModalPayment}
           setShowModalPayment={setShowModalPayment}
           dataCheck={dataCheck}
@@ -143,8 +175,23 @@ const QRAdmin = () => {
 
       {showModalPayment && (
         <ModalChoosePayment
+          modalSuccess={modalSuccess}
+          setModalSuccess={setModalSuccess}
           showModalPayment={showModalPayment}
           setShowModalPayment={setShowModalPayment}
+          showTakePicture={props.showTakePicture}
+          setShowTakePicture={props.setShowTakePicture}
+        />
+      )}
+
+      {modalSuccess && (
+        <ModalPayment
+          modalSuccess={modalSuccess}
+          setModalSuccess={setModalSuccess}
+          showTakePicture={props.showTakePicture}
+          setShowTakePicture={props.setShowTakePicture}
+          content={"Xác nhận thanh toán thành công"}
+          textButton={"Tiếp tục"}
         />
       )}
       <TouchableOpacity
@@ -153,7 +200,8 @@ const QRAdmin = () => {
           justifyContent: "center",
           alignItems: "center",
           marginTop: 10,
-        }}>
+        }}
+        onPress={decode}>
         <Ionicons name="image-outline" size={20} />
         <Text style={{ fontSize: 12, fontWeight: "600", marginLeft: 5 }}>
           Tải mã QR có sẵn
