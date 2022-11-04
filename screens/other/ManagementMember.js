@@ -54,14 +54,14 @@ const ManagementMember = () => {
     setRefreshing(true);
     //dispatch(getCLub(auth.token, page));
     //dispatch(getDetailMember(club.detailMember.ma_kh, auth.token));
-    wait(2000).then(() => setRefreshing(false));
+    wait(500).then(() => setRefreshing(false));
   }, [dispatch]);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     //dispatch(getCLub(auth.token, page));
     //dispatch(getDetailMember(club.detailMember.ma_kh, auth.token));
-    wait(2000).then(() => setRefreshing(false));
+    wait(1000).then(() => setRefreshing(false));
   }, [dispatch]);
 
   return (
@@ -218,7 +218,7 @@ const ManagementMember = () => {
                   />
                 }>
                 <View>
-                  {club?.detailMember?.ds_club.map((item) => (
+                  {club.detailMember?.ds_club?.map((item) => (
                     <TouchableOpacity
                       key={item._id}
                       onPress={() => handleDetail(item._id)}>

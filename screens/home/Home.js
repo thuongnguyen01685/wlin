@@ -48,6 +48,7 @@ import { getBenefitAction } from "../../redux/actions/benefitAction";
 import Loading from "../../components/loading/Loading";
 import BenefitHome from "./Benefit.home";
 import Chart from "./Chart.home";
+import SearchBar from "../../components/HeaderPart/SearchBar";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
@@ -237,7 +238,9 @@ const Home = () => {
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
+
       <HeaderPart backHome={backHome} setBackHome={setBackHome} />
+
       {auth.permission?.group_id === "631c254a7a3a837ce2c22995" ? (
         <View
           style={{

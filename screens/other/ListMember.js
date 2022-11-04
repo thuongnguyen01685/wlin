@@ -57,9 +57,8 @@ const ListMember = () => {
   useEffect(() => {
     setRefreshing(true);
     dispatch(getMemberAction(auth.token, auth.profile.email));
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 3000);
+
+    setRefreshing(false);
   }, [dispatch]);
 
   const handleDetailMember = (ma_kh) => {
