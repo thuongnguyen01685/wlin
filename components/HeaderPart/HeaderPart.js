@@ -16,6 +16,7 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "../Header";
+import SearchBar from "./SearchBar";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
@@ -40,15 +41,6 @@ const HeaderPart = (props) => {
               width: w,
             }}
           />
-          {/* <ImageBackground
-              source={require("../../assets/VctLogin.png")}
-              style={{
-                height: ratio * 1000,
-                width: w,
-                position: "absolute",
-                zIndex: 2,
-              }}
-            /> */}
         </View>
       </View>
       <View style={styles.search}>
@@ -107,158 +99,12 @@ const HeaderPart = (props) => {
       </View>
       {/* <View
         style={{
-          backgroundColor: "#ffffff",
-          shadowColor: "#000",
-          shadowOffset: {
-            width: 0,
-            height: 2,
-          },
-          shadowOpacity: 0.25,
-          shadowRadius: 3.84,
-
-          elevation: 5,
-          zIndex: 3,
-          marginTop: -40,
-          marginHorizontal: 15,
-          paddingVertical: 20,
-          borderRadius: 10,
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-          paddingHorizontal: 10,
+          position: "absolute",
+          zIndex: 5,
+          top: "20%",
+          width: w,
         }}>
-        <Text style={{ fontSize: 18, fontWeight: "600", color: "#711775" }}>
-          Trang Chủ
-        </Text>
-        <TouchableOpacity>
-          <Ionicons name="alert-circle-outline" size={20} color="#711775" />
-        </TouchableOpacity>
-      </View> */}
-      {/* <View
-        style={{
-          backgroundColor: "#ffffff",
-          shadowColor: "#000",
-          shadowOffset: {
-            width: 0,
-            height: 2,
-          },
-          shadowOpacity: 0.25,
-          shadowRadius: 3.84,
-
-          elevation: 5,
-          zIndex: 3,
-          marginTop: -40,
-          marginHorizontal: 15,
-          paddingVertical: 20,
-          borderRadius: 10,
-        }}>
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-            paddingHorizontal: 10,
-          }}>
-          <Text style={{ fontSize: 18, fontWeight: "600", color: "#711775" }}>
-            Thông tin thành viên
-          </Text>
-          <TouchableOpacity>
-            <Text style={{ fontSize: 12, fontWeight: "400", color: "#909090" }}>
-              Xem chi tiết
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <Animated.View
-          style={{
-            paddingHorizontal: 15,
-            paddingVertical: 10,
-            height: headerHeight,
-            opacity: props.animatedValue.interpolate({
-              inputRange: [0, 25],
-              outputRange: [1, 0],
-              extrapolate: "clamp",
-            }),
-            transform: [
-              {
-                translateY: props.animatedValue.interpolate({
-                  inputRange: [0, 50],
-                  outputRange: [0, -100],
-                  extrapolate: "clamp",
-                }),
-              },
-            ],
-          }}>
-          <LinearGradient
-            start={{ x: 0.9, y: 1 }}
-            end={{ x: 0.2, y: 0.6 }}
-            colors={["#912C95", "#E19EF0", "#9634B9"]}
-            style={{ borderRadius: 7 }}>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                marginHorizontal: 10,
-              }}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                }}>
-                <MaterialCommunityIcons
-                  name="crown-outline"
-                  color="rgba(238, 221, 176, 0.93)"
-                  size={30}
-                />
-                <Text
-                  style={{ color: "#ff0", fontWeight: "600", fontSize: 17 }}>
-                  Thành viên vàng
-                </Text>
-              </View>
-              <TouchableOpacity>
-                <MaterialCommunityIcons
-                  name="dots-horizontal"
-                  color="#FFFFFF"
-                  size={20}
-                />
-              </TouchableOpacity>
-            </View>
-            <View style={{ width: "100%", padding: 20 }}>
-              <Text
-                style={{
-                  color: "#680E6C",
-                  fontSize: 25,
-                  fontWeight: "600",
-                  textAlign: "center",
-                }}>
-                Thương Thị
-              </Text>
-              <Text
-                style={{
-                  color: "#680E6C",
-                  fontSize: 15,
-                  fontWeight: "500",
-                  textAlign: "center",
-                }}>
-                UXUI Designer
-              </Text>
-            </View>
-            <View style={{ padding: 10 }}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}>
-                <Text style={styles.textContent}>Start date: 1/2/2021</Text>
-                <Text style={styles.textContent}>Due date: 1/2/2022</Text>
-              </View>
-              <Text style={styles.textContent}>
-                Thời gian hoạt động còn lại: 20 ngày
-              </Text>
-            </View>
-          </LinearGradient>
-        </Animated.View>
+        <SearchBar />
       </View> */}
     </View>
   );
@@ -273,7 +119,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#2c3e50",
   },
   search: {
-    zIndex: 5,
+    zIndex: 1,
     position: "absolute",
     marginTop: "21%",
     width: "100%",

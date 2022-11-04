@@ -78,13 +78,13 @@ const Header = (props) => {
   return (
     <View
       style={{
-        zIndex: 2,
         position: "absolute",
         paddingTop: StatusBar.currentHeight || 35,
         flexDirection: "row",
         justifyContent: "space-between",
         width: "100%",
         paddingHorizontal: 12,
+        zIndex: 1,
       }}>
       <View
         style={{
@@ -110,7 +110,7 @@ const Header = (props) => {
               },
               shadowOpacity: 0.25,
               shadowRadius: 3.84,
-
+              zIndex: 1001,
               elevation: 5,
             }}
             onPress={() => navigation.goBack()}>
@@ -131,12 +131,6 @@ const Header = (props) => {
               borderWidth: 1.5,
             }}
             onPress={handleShowProfile}>
-            {/* <Ionicons
-                  name="chevron-back-outline"
-                  size={25}
-                  color="#711775"
-                  style={{ transform: [{ rotate: "45deg" }] }}
-                /> */}
             <View
               style={{
                 width: 50,
@@ -164,21 +158,6 @@ const Header = (props) => {
                 }}>
                 Chào buổi sáng
               </Text>
-              {/* <View
-              style={{
-                top: -1,
-                height: 20,
-                left: -4,
-                width: 10,
-                //transform: [{ rotate: "45deg" }],
-                flexDirection: "column",
-                justifyContent: "flex-start",
-              }}>
-              <Image
-                source={require("../assets/Vm.png")}
-                style={{ width: 12, height: 12 }}
-              />
-            </View> */}
             </View>
             <Text
               style={{
@@ -241,23 +220,6 @@ const Header = (props) => {
           ) : (
             <TouchableOpacity onPress={() => setModalVisible(true)}>
               <Ionicons name="notifications" size={25} color="#F2AF4A" />
-              {/* <View
-              style={{
-                position: "absolute",
-                left: 14,
-                top: 2,
-              }}>
-              <Text
-                style={{
-                  backgroundColor: "#ff0",
-                  fontSize: 10,
-                  paddingHorizontal: 7.5,
-                  borderRadius: 50,
-                  color: "#711775",
-                  borderColor: "#ffffff",
-                  borderWidth: 0.1,
-                }}></Text>
-            </View> */}
             </TouchableOpacity>
           )}
         </View>
@@ -267,23 +229,6 @@ const Header = (props) => {
             setModalVisible={setModalVisible}
           />
         )}
-        {/* <TouchableOpacity
-          onPress={() => {
-            navigation.navigate("CheckQR");
-          }}>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-              backgroundColor: "#ffffffff",
-              width: 38,
-              height: 38,
-              borderRadius: 20,
-            }}>
-            <Ionicons name="qr-code-outline" color="#711775" size={20} />
-          </View>
-        </TouchableOpacity> */}
       </View>
     </View>
   );
@@ -295,7 +240,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#2c3e50",
   },
 });
 
