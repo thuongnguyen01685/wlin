@@ -20,6 +20,7 @@ import {
 } from "react-native";
 import { useSelector } from "react-redux";
 import HeaderPart from "../../components/HeaderPart/HeaderPart";
+import { Admin, Member, Partner } from "../../utils/AccessPermission";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
@@ -31,21 +32,21 @@ const data = [
     name: "Quản trị hội viên",
     navigation: "ListMember",
     color: "#BF1FE7",
-    permission: ["631c254a7a3a837ce2c229a7", "631c254a7a3a837ce2c22995"],
+    permission: [Partner, Admin],
   },
   {
     icon: "shield-check",
     name: "Quản trị CLUB",
     navigation: "ClubScreen",
     color: "#32DBDB",
-    permission: ["631c254a7a3a837ce2c22995"],
+    permission: [Admin],
   },
   {
     icon: "calendar-month",
     name: "Quản trị sự kiện",
     navigation: "EventsScreen",
     color: "#1D19D4",
-    permission: ["631c254a7a3a837ce2c22995"],
+    permission: [Admin],
   },
   // {
   //   picture: require("../../assets/Chart.png"),
@@ -62,36 +63,28 @@ const data = [
     name: "Referrals",
     navigation: "Slips",
     color: "#F12247",
-    permission: ["631c254a7a3a837ce2c229ac", "631c254a7a3a837ce2c229a7"],
+    permission: [Member, Partner],
   },
   {
     icon: "chart-box",
     name: "TYFCBs",
     navigation: "TYFCB",
     color: "#058602",
-    permission: ["631c254a7a3a837ce2c229ac", "631c254a7a3a837ce2c229a7"],
+    permission: [Member, Partner],
   },
   {
     icon: "note-text",
     name: "Danh sách nhóm quyền lợi",
     navigation: "Benefit",
     color: "#FEC90F",
-    permission: [
-      "631c254a7a3a837ce2c229ac",
-      "631c254a7a3a837ce2c229a7",
-      "631c254a7a3a837ce2c22995",
-    ],
+    permission: [Member, Partner, Admin],
   },
   {
     icon: "account",
     name: "Hồ sơ cá nhân",
     navigation: "Profile",
     color: "#EDA6EA",
-    permission: [
-      "631c254a7a3a837ce2c229ac",
-      "631c254a7a3a837ce2c229a7",
-      "631c254a7a3a837ce2c22995",
-    ],
+    permission: [Member, Partner, Admin],
   },
 ];
 // create a component

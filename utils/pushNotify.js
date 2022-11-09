@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import * as Notifications from "expo-notifications";
 import io from "socket.io-client";
+import { listNameApi } from "./listNameApi";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -19,7 +20,7 @@ Notifications.setNotificationHandler({
   }),
 });
 
-export const initSocket = async (auth) => {
+export const initSocket = async (token, email) => {
   const server_url = "https://api.wlin.com.vn";
   //get func
   let lang,
@@ -122,7 +123,7 @@ export const initSocket = async (auth) => {
   try {
     notificationPermission = await registerForPushNotificationsAsync(
       // JSON.parse(value).token,
-      auth.token
+      token
     );
 
     //receiver notification
@@ -146,8 +147,8 @@ export const initSocket = async (auth) => {
     socket.emit("login", {
       // token: "2b0350de2b7100a6562ecb87b40ae520",
       // email: "thuong.nguyen@fostech.vn",
-      token: auth.token,
-      email: auth.profile && auth.profile.email,
+      token: token,
+      email: email,
     });
   });
 
@@ -166,8 +167,8 @@ export const initSocket = async (auth) => {
   });
 
   socket.emit("login", {
-    token: auth.token,
-    email: auth.profile && auth.profile.email,
+    token: token,
+    email: email,
     // token: "2b0350de2b7100a6562ecb87b40ae520",
     // email: "thuong.nguyen@fostech.vn",
   });
@@ -175,6 +176,21 @@ export const initSocket = async (auth) => {
   socket.on("notify:update", function (data) {
     DeviceEventEmitter.emit("notificationUpdated", data);
   });
+
+  for (let i = 0; i < listNameApi.length; i++) {
+    socket.on(`${listNameApi[i]}:new`, function (data) {
+      DeviceEventEmitter.emit(`${listNameApi[i]}New`, data);
+    });
+
+    socket.on(`${listNameApi[i]}:update`, function (data) {
+      console.log(`${listNameApi[i]}Update`, data, "1");
+      DeviceEventEmitter.emit(`${listNameApi[i]}Update`, data);
+    });
+
+    socket.on(`${listNameApi[i]}:delete`, function (data) {
+      DeviceEventEmitter.emit(`${listNameApi[i]}Delete`, data);
+    });
+  }
 
   function _handleNotification(notification) {
     let data = notification.request.content.data;
@@ -196,37 +212,6 @@ export const initSocket = async (auth) => {
         } catch (e) {
           console.error(e.message);
         }
-      }
-      return;
-    }
-
-    // if (data.__event && data.__event.indexOf("message2:") >= 0) {
-    //   if (data.id_link) {
-    //     try {
-    //       let group = await asyncGetData(
-    //         this.state.userInfo.token,
-    //         "message2",
-    //         { id_link: data.id_link }
-    //       );
-    //       this.navigate("ChatRoom", { group: group });
-    //     } catch (e) {
-    //       console.error(e.message);
-    //     }
-    //     return;
-    //   }
-    // }
-
-    if (data.__event && data.__event.indexOf("notify:new") >= 0 && data._id) {
-      DeviceEventEmitter.emit("notificationAdded", { _id: data._id });
-      try {
-        let url = `${server_url}/api/notification/${data._id}?access_token=${this.state.userInfo.token}`;
-        let n = await asyncGet(url, null);
-        this.navigate("NotificationDetail", {
-          userInfo: this.state.userInfo,
-          notification: n,
-        });
-      } catch (e) {
-        console.error(e.message);
       }
       return;
     }

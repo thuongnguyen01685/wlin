@@ -99,14 +99,13 @@ const Navigator = () => {
           type: AUTH.TOKEN,
           payload: token,
         });
-        await dispatch(getProfileAction(token));
+        const email = await dispatch(getProfileAction(token));
         // await dispatch(getNotify(token));
+        initSocket(token, email);
       }
     }
     it();
   }, [dispatch]);
-
-  initSocket(auth);
 
   return (
     <NavigationContainer>

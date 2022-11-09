@@ -3,7 +3,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
-import React, { Component, useRef, useState } from "react";
+import React, { Component, useEffect, useRef, useState } from "react";
 import {
   View,
   Text,
@@ -13,6 +13,7 @@ import {
   TouchableOpacity,
   ScrollView,
   ToastAndroid,
+  DeviceEventEmitter,
 } from "react-native";
 import * as Clipboard from "expo-clipboard";
 import QRCode from "react-native-qrcode-svg";
@@ -21,6 +22,7 @@ import HeaderPart from "../../components/HeaderPart/HeaderPart";
 import { useSelector } from "react-redux";
 import QRAdmin from "./QR/QRAdmin";
 import PushImage from "./PushImage";
+import { Admin } from "../../utils/AccessPermission";
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
 const ratio = w / 720;
@@ -28,9 +30,17 @@ const ratio = w / 720;
 // create a component
 const CheckQR = () => {
   const navigation = useNavigation();
-  const { auth } = useSelector((state) => state);
+  const { auth, event } = useSelector((state) => state);
   const [showTakePicture, setShowTakePicture] = useState(false);
 
+  useEffect(() => {
+    DeviceEventEmitter.addListener("dmsukienUpdate", async (data) => {
+      // await dispatch(
+      //   getCheckedEvent(value ? JSON.parse(value).token : "flex.public.token")
+      // );
+      console.log(data, "1");
+    });
+  }, []);
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
@@ -66,7 +76,7 @@ const CheckQR = () => {
       </View>
       <View style={{ height: "100%" }}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          {auth.permission?.group_id !== "631c254a7a3a837ce2c22995" ? (
+          {auth.permission?.group_id !== Admin ? (
             <View style={{ marginBottom: "80%" }}>
               <View
                 style={{
@@ -89,7 +99,7 @@ const CheckQR = () => {
                   style={{ resizeMode: "contain", width: "60%", height: 300 }}
                 /> */}
                 <QRCode
-                  value={auth.customer.ma_kh}
+                  value={auth.profile.email}
                   //logo={require("../../assets/QRFigma.png")}
                   size={200}
                 />

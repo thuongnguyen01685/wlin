@@ -23,9 +23,12 @@ import {
 import { Camera } from "expo-camera";
 import { shareAsync } from "expo-sharing";
 import * as MediaLibrary from "expo-media-library";
-
+import { useDispatch, useSelector } from "react-redux";
 import * as ImagePicker from "expo-image-picker";
 import ModalPayment from "../../components/modal/ModalPayment";
+import callApis from "../../utils/callApis";
+import { checkPayImage } from "../../redux/actions/eventsAction";
+import { getImageUserAction } from "../../redux/actions/authAction";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
@@ -36,6 +39,8 @@ const PushImage = (props) => {
   const navigation = useNavigation();
   const [modalSuccess, setModalSuccess] = useState(false);
   const [image, setImage] = useState(null);
+  const { auth, event } = useSelector((state) => state);
+  const dispatch = useDispatch();
 
   let cameraRef = useRef();
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
@@ -67,11 +72,24 @@ const PushImage = (props) => {
       //   navigation.navigate("PayBenefits", {
       //     photo: result.uri,
       //   });
+      const temp = await dispatch(getImageUserAction(result.uri, auth.token));
+
+      const resultPut = await dispatch(
+        checkPayImage(event.detailEvent, auth.token, auth.ma_khQR, temp)
+      );
+
+      if (resultPut) {
+        setModalSuccess(true);
+      }
     }
   };
 
   if (hasCameraPermission === undefined) {
-    return <Text>Requesting permissions...</Text>;
+    return (
+      <View>
+        <Text>Yêu cầu quyền camera</Text>
+      </View>
+    );
   } else if (!hasCameraPermission) {
     return (
       <Text>
@@ -90,11 +108,21 @@ const PushImage = (props) => {
     let newPhoto = await cameraRef.current.takePictureAsync(options);
     // setPhoto(newPhoto);
     if (newPhoto) {
+      setImage(newPhoto.uri);
       MediaLibrary.saveToLibraryAsync(newPhoto.uri);
       //   navigation.navigate("PayBenefits", {
       //     photo: "data:image/jpg;base64," + newPhoto.base64,
       //   });
       setModalSuccess(true);
+      const temp = await dispatch(getImageUserAction(newPhoto.uri, auth.token));
+
+      const resultPut = await dispatch(
+        checkPayImage(event.detailEvent, auth.token, auth.ma_khQR, temp)
+      );
+
+      if (resultPut) {
+        setModalSuccess(true);
+      }
     }
   };
 
@@ -195,7 +223,7 @@ const PushImage = (props) => {
           onPress={pickImage}>
           <Ionicons name="image-outline" size={20} />
           <Text style={{ fontSize: 12, fontWeight: "600", marginLeft: 5 }}>
-            Tải mã QR có sẵn
+            Tải ảnh có sẵn.
           </Text>
         </TouchableOpacity>
       </View>

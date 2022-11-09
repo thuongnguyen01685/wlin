@@ -31,6 +31,7 @@ import {
 } from "../../utils/datetime";
 import { URL } from "../../utils/fetchApi";
 import ModalChoosePayment from "../../components/modal/ModalChoosePayment";
+import { Admin, Partner } from "../../utils/AccessPermission";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
@@ -359,9 +360,7 @@ const DetailEvents = () => {
                   <Text style={styles.headerContent}>
                     {event.detailEvent.dia_diem}
                   </Text>
-                  {/* <Text style={styles.bodyContent}>
-                    15A Hồ Văn Huê, Phường 9, Quận Phú Nhuận, TP.HCM
-                  </Text> */}
+
                   <View>
                     <TouchableOpacity
                       style={{
@@ -504,48 +503,50 @@ const DetailEvents = () => {
                     </View>
                   </LinearGradient>
                 </TouchableOpacity>
-                {auth.permission.admin && (
-                  <>
-                    <TouchableOpacity
-                      onPress={() => {
-                        setModalSuccess(true);
+
+                {auth.permission.group_id === Admin && (
+                  <TouchableOpacity
+                    onPress={() => {
+                      setModalSuccess(true);
+                    }}>
+                    <LinearGradient
+                      start={{ x: 0, y: 0.3 }}
+                      end={{ x: 1, y: 1 }}
+                      colors={["#9D85F2", "rgba(157, 133, 242, 0.4)"]}
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        alignContent: "center",
+                        alignItems: "center",
+                        borderRadius: 15,
+                        marginHorizontal: 10,
                       }}>
-                      <LinearGradient
-                        start={{ x: 0, y: 0.3 }}
-                        end={{ x: 1, y: 1 }}
-                        colors={["#9D85F2", "rgba(157, 133, 242, 0.4)"]}
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          alignContent: "center",
-                          alignItems: "center",
-                          borderRadius: 15,
-                          marginHorizontal: 10,
-                        }}>
-                        <View style={styles.buttonEx}>
-                          <Text style={styles.buttonText}>Thanh toán</Text>
-                        </View>
-                      </LinearGradient>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => navigation.navigate("ReportExcel")}>
-                      <LinearGradient
-                        start={{ x: 0, y: 0.3 }}
-                        end={{ x: 1, y: 1 }}
-                        colors={["#9D85F2", "rgba(157, 133, 242, 0.4)"]}
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          alignContent: "center",
-                          alignItems: "center",
-                          borderRadius: 15,
-                        }}>
-                        <View style={styles.buttonEx}>
-                          <Text style={styles.buttonText}>Báo cáo</Text>
-                        </View>
-                      </LinearGradient>
-                    </TouchableOpacity>
-                  </>
+                      <View style={styles.buttonEx}>
+                        <Text style={styles.buttonText}>Thanh toán</Text>
+                      </View>
+                    </LinearGradient>
+                  </TouchableOpacity>
+                )}
+                {(auth.permission.group_id === Admin ||
+                  auth.permission.group_id === Partner) && (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate("ReportExcel")}>
+                    <LinearGradient
+                      start={{ x: 0, y: 0.3 }}
+                      end={{ x: 1, y: 1 }}
+                      colors={["#9D85F2", "rgba(157, 133, 242, 0.4)"]}
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        alignContent: "center",
+                        alignItems: "center",
+                        borderRadius: 15,
+                      }}>
+                      <View style={styles.buttonEx}>
+                        <Text style={styles.buttonText}>Báo cáo</Text>
+                      </View>
+                    </LinearGradient>
+                  </TouchableOpacity>
                 )}
               </View>
             </View>

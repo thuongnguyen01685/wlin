@@ -42,7 +42,8 @@ const EventingRoute = () => {
   let dateNow = new Date();
   let year = dateNow.getFullYear();
   let month = dateNow.getMonth() + 1;
-  let day = dateNow.getDate();
+  let day =
+    dateNow.getDate() > 10 ? dateNow.getDate() : `0${dateNow.getDate()}`;
   let dayofweek = dateNow.getDay();
 
   const dayNow = year + "-" + month + "-" + day;
@@ -52,7 +53,7 @@ const EventingRoute = () => {
   const eventing = event.getEvents.filter(
     (item) =>
       new Date(formatDateDisplays(item.ngay_su_kien)).getTime() >
-      new Date().getTime()
+      new Date(dayNow).getTime()
   );
 
   useEffect(() => {
@@ -65,8 +66,8 @@ const EventingRoute = () => {
       dispatch(getEventsAction(auth, arrayClub, auth.permission.group_id));
     }
     it();
-    wait(2000).then(() => setRefreshing(false));
-  }, [dispatch, auth.profile.email, auth.permission.group_id]);
+    setRefreshing(false);
+  }, [auth.profile.email, auth.permission.group_id]);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -78,8 +79,8 @@ const EventingRoute = () => {
       dispatch(getEventsAction(auth, arrayClub, auth.permission.group_id));
     }
     it();
-    wait(2000).then(() => setRefreshing(false));
-  }, [dispatch, auth.profile.email, auth.permission.group_id]);
+    wait(1000).then(() => setRefreshing(false));
+  }, [auth.profile.email, auth.permission.group_id]);
   return (
     <View style={styles.container}>
       <ScrollView

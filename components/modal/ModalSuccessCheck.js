@@ -6,11 +6,15 @@ import React, { Component, useState } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 
 import Modal from "react-native-modal";
+import { useSelector } from "react-redux";
+import { formatCash } from "../../utils/datetime";
 
 // create a component
 const ModalSuccessCheck = (props) => {
+  const { auth } = useSelector((state) => state);
+
   const navigation = useNavigation();
-  console.log(props.dataCheck);
+
   return (
     <Modal
       animationType="fade"
@@ -70,9 +74,32 @@ const ModalSuccessCheck = (props) => {
               fontSize: 12,
               fontWeight: "600",
               textAlign: "center",
-              color: "#1E53D9",
+              color: "#000000",
+              marginTop: 5,
             }}>
-            {props.dataCheck}
+            Tên hội viên:{" "}
+            {props.dataCheck === props.detailData[0].ma_kh
+              ? props.detailData[0].ten_kh
+              : ""}
+          </Text>
+          <Text
+            style={{
+              fontSize: 12,
+              fontWeight: "600",
+              textAlign: "center",
+              color: "#000000",
+              marginVertical: 5,
+            }}>
+            Vai trò: {props.detailData[0].vai_tro}
+          </Text>
+          <Text
+            style={{
+              fontSize: 12,
+              fontWeight: "600",
+              textAlign: "center",
+              color: "#000000",
+            }}>
+            Giá vé: {formatCash(props.detailData[0].gia_ve.toString(10))} VND
           </Text>
         </View>
         <View

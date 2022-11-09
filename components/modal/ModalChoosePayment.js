@@ -6,14 +6,31 @@ import React, { Component, useState } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { CheckBox } from "@rneui/themed";
 import Modal from "react-native-modal";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  checkEventAction,
+  checkPayFeeAction,
+} from "../../redux/actions/eventsAction";
 
 // create a component
 const ModalChoosePayment = (props) => {
+  const { auth, event } = useSelector((state) => state);
+  const dispatch = useDispatch();
+
   const [checkValue, setCheckValue] = useState("tienmat");
 
   const navigation = useNavigation();
-  const handleClose = () => {
+
+  const handlePayFee = () => {
     if (checkValue === "tienmat") {
+      dispatch(
+        checkPayFeeAction(
+          event.detailEvent,
+          auth.token,
+          props.dataCheck,
+          checkValue
+        )
+      );
       props.setModalSuccess(true);
       props.setShowModalPayment(!props.showModalPayment);
     } else {
@@ -29,7 +46,7 @@ const ModalChoosePayment = (props) => {
       isVisible={props.showModalPayment}
       backdropColor="#C4C4C4"
       backdropOpacity={0.5}
-      onBackdropPress={handleClose}
+      onBackdropPress={() => props.setShowModalPayment(!props.showModalPayment)}
       style={{ paddingHorizontal: 10 }}>
       <View
         style={{
@@ -47,7 +64,8 @@ const ModalChoosePayment = (props) => {
             justifyContent: "flex-end",
             alignItems: "center",
           }}>
-          <TouchableOpacity onPress={handleClose}>
+          <TouchableOpacity
+            onPress={() => props.setShowModalPayment(!props.showModalPayment)}>
             <Ionicons name="close-outline" size={20} />
           </TouchableOpacity>
         </View>
@@ -121,7 +139,7 @@ const ModalChoosePayment = (props) => {
               alignItems: "center",
               marginVertical: 10,
             }}>
-            <TouchableOpacity onPress={handleClose}>
+            <TouchableOpacity onPress={handlePayFee}>
               <LinearGradient
                 start={{ x: 0, y: 0.3 }}
                 end={{ x: 1, y: 1 }}

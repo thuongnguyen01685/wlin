@@ -33,8 +33,7 @@
         "android": {
             "icon": "./assets/icon.png",
             "adaptiveIcon": {
-                "foregroundImage": "./assets/logoSpals.png",
-                "backgroundColor": "#9D85F2"
+                "foregroundImage": "./assets/icon.png"
             },
             "googleServicesFile": "./google-services.json",
             "permissions": [
