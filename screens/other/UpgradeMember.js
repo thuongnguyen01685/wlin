@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
 import React, { Component, useRef, useState } from "react";
+import { useEffect } from "react";
 import {
   View,
   Text,
@@ -13,15 +14,11 @@ import {
   ImageBackground,
   TouchableOpacity,
   ScrollView,
-  KeyboardAvoidingView,
-  TouchableWithoutFeedback,
-  Keyboard,
   Platform,
   TextInput,
+  RefreshControl,
 } from "react-native";
-import PhoneInput from "react-native-phone-number-input";
-
-import Header from "../../components/Header";
+import HeaderPart from "../../components/HeaderPart/HeaderPart";
 
 import ModalSuccessRefer from "../../components/modal/ModalSuccessRefer";
 
@@ -29,15 +26,279 @@ const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
 const ratio = w / 720;
 
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
 // create a component
 const UpgradeMember = () => {
   const navigation = useNavigation();
   const [search, setSearch] = useState("");
   const [modalSuccess, setModalSuccess] = useState(false);
+  const [refreshing, setRefreshing] = React.useState(false);
 
+  useEffect(() => {}, []);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+
+    wait(1000).then(() => setRefreshing(false));
+  }, []);
   return (
     <View style={styles.container}>
-      <View>
+      <StatusBar barStyle="light-content" />
+      <HeaderPart />
+      <View
+        style={{
+          backgroundColor: "#ffffff",
+          shadowColor: "#000",
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
+          shadowOpacity: 0.25,
+          shadowRadius: 3.84,
+
+          elevation: 5,
+          zIndex: 3,
+          marginTop: -55,
+          marginHorizontal: 15,
+          paddingVertical: 20,
+          borderRadius: 10,
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+          paddingHorizontal: 10,
+        }}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}>
+          <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
+            Nâng cấp gói thành viên
+          </Text>
+
+          {refreshing && (
+            <View
+              style={{
+                left: 10,
+                padding: 30,
+                position: "absolute",
+                left: "100%",
+              }}>
+              {/* <Lottie
+                source={require("../../assets/loading.json")}
+                autoPlay
+                loop
+              /> */}
+            </View>
+          )}
+        </View>
+
+        <TouchableOpacity>
+          <Ionicons name="alert-circle-outline" size={20} color="#826CCF" />
+        </TouchableOpacity>
+      </View>
+      <View style={{ height: "100%" }}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              colors={["#9D85F2", "red", "green"]}
+            />
+          }>
+          <View style={styles.cardContainer}>
+            <Text style={styles.headerName}>Gói muốn nâng cấp</Text>
+            <TouchableOpacity style={styles.card}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-around",
+                }}>
+                <LinearGradient
+                  start={{ x: 1, y: 0.7 }}
+                  end={{ x: 0.3, y: 0.8 }}
+                  colors={["#7289DD", "#D0DAFF", "#ABBCF8", "#7E96E9"]}
+                  style={{ width: 20, height: 20, borderRadius: 5 }}>
+                  <View
+                    style={{
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      height: "100%",
+                    }}>
+                    <Image
+                      source={require("../../assets/logo.png")}
+                      style={{ width: 10, height: 10 }}
+                    />
+                    <Text style={{ fontSize: 3, color: "#969696" }}>
+                      Gói Kim cương
+                    </Text>
+                  </View>
+                </LinearGradient>
+                <Text
+                  style={{
+                    color: "#8DA0E7",
+                    fontSize: 13,
+                    fontWeight: "500",
+                    marginHorizontal: 10,
+                  }}>
+                  Gói Kim cương
+                </Text>
+              </View>
+              <Ionicons name="chevron-down-outline" size={20} color="#474747" />
+            </TouchableOpacity>
+          </View>
+          <View style={{ flexDirection: "row", justifyContent: "center" }}>
+            <TouchableOpacity
+              style={{
+                borderRadius: 7,
+                flexDirection: "row",
+                alignContent: "center",
+                alignItems: "center",
+                width: "35%",
+                justifyContent: "center",
+                marginBottom: 10,
+              }}
+              onPress={() => setModalSuccess(true)}>
+              <LinearGradient
+                start={{ x: 0.3, y: 1 }}
+                end={{ x: 1, y: 1 }}
+                colors={["#9D85F2", "#FBC7D4"]}
+                style={{
+                  paddingHorizontal: 20,
+                  paddingVertical: 8,
+                  borderRadius: 15,
+                }}>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    color: "#ffffff",
+                    textAlign: "center",
+                    width: "100%",
+                    fontWeight: "500",
+                  }}>
+                  Nâng cấp
+                </Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.cardContainer}>
+            <Text style={styles.headerName}>Gói của bạn</Text>
+            <TouchableOpacity style={styles.card}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-around",
+                }}>
+                <LinearGradient
+                  start={{ x: 1, y: 0.7 }}
+                  end={{ x: 0.3, y: 0.8 }}
+                  colors={["#F9C271", "#F4EFB8", "#F4EFB8", "#F9C271"]}
+                  style={{ width: 20, height: 20, borderRadius: 5 }}>
+                  <View
+                    style={{
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      height: "100%",
+                    }}>
+                    <Image
+                      source={require("../../assets/logo.png")}
+                      style={{ width: 10, height: 10 }}
+                    />
+                    <Text style={{ fontSize: 3, color: "#969696" }}>
+                      Gói Kim cương
+                    </Text>
+                  </View>
+                </LinearGradient>
+                <Text
+                  style={{
+                    color: "#F9C271",
+                    fontSize: 13,
+                    fontWeight: "500",
+                    marginHorizontal: 10,
+                  }}>
+                  Gói Vàng
+                </Text>
+              </View>
+              <Ionicons name="chevron-down-outline" size={20} color="#474747" />
+            </TouchableOpacity>
+          </View>
+          <View style={{ flexDirection: "row", justifyContent: "center" }}>
+            <TouchableOpacity
+              style={{
+                borderRadius: 7,
+                flexDirection: "row",
+                alignContent: "center",
+                alignItems: "center",
+                justifyContent: "center",
+                marginBottom: 10,
+                marginHorizontal: 5,
+              }}
+              onPress={() => setModalSuccess(true)}>
+              <LinearGradient
+                start={{ x: 0.3, y: 1 }}
+                end={{ x: 1, y: 1 }}
+                colors={["#9D85F2", "#FBC7D4"]}
+                style={{
+                  paddingHorizontal: 20,
+                  paddingVertical: 8,
+                  borderRadius: 15,
+                }}>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    color: "#ffffff",
+                    textAlign: "center",
+                    width: "100%",
+                    fontWeight: "500",
+                  }}>
+                  Gia hạn
+                </Text>
+              </LinearGradient>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                borderRadius: 7,
+                flexDirection: "row",
+                alignContent: "center",
+                alignItems: "center",
+                justifyContent: "center",
+                marginBottom: 10,
+                marginHorizontal: 5,
+              }}>
+              <LinearGradient
+                start={{ x: 0.3, y: 1 }}
+                end={{ x: 1, y: 1 }}
+                colors={["#9D85F2", "#FBC7D4"]}
+                style={{
+                  paddingHorizontal: 20,
+                  paddingVertical: 8,
+                  borderRadius: 15,
+                }}>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    color: "#ffffff",
+                    textAlign: "center",
+                    width: "100%",
+                    fontWeight: "500",
+                  }}>
+                  Hủy gia hạn
+                </Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </View>
+      {/* <View>
         <View>
           <Header />
           <View>
@@ -230,7 +491,15 @@ const UpgradeMember = () => {
             </ScrollView>
           </View>
         </View>
-      </View>
+      </View> */}
+
+      {modalSuccess && (
+        <ModalSuccessRefer
+          modalSuccess={modalSuccess}
+          setModalSuccess={setModalSuccess}
+          content={"Gửi yêu cầu thành công"}
+        />
+      )}
     </View>
   );
 };
@@ -241,52 +510,16 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#ffffff",
   },
-  search: {
-    zIndex: 5,
-    position: "absolute",
-    marginTop: "26%",
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignContent: "center",
-    alignItems: "center",
-  },
-  input: {
-    height: 40,
-    padding: 10,
-    width: "82%",
-    marginLeft: 10,
-  },
-  body: {
-    backgroundColor: "#ffffff",
-    width: "100%",
-    zIndex: 5,
-    height: "200%",
-    // position: "absolute",
-    marginTop: "40%",
-    borderTopRightRadius: 30,
-    borderTopLeftRadius: 30,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
 
-    elevation: 5,
-  },
-  contentText: {
-    lineHeight: 25,
-  },
   headerName: {
-    color: "#781C7C",
-    fontSize: 12,
+    color: "#474747",
+    fontSize: 14,
     fontWeight: "600",
   },
   cardContainer: {
     marginBottom: 5,
     paddingHorizontal: 20,
+    marginTop: 10,
   },
   card: {
     flexDirection: "row",

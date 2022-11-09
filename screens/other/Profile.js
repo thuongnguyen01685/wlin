@@ -29,6 +29,7 @@ import callApi from "../../utils/callApi";
 import { URL } from "../../utils/fetchApi";
 import CardInfo from "../../components/CardInfo";
 import { formatDateDisplays } from "../../utils/datetime";
+import { Admin, Member, Partner } from "../../utils/AccessPermission";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
@@ -51,86 +52,70 @@ const Profile = () => {
       icon: "call",
       value: auth.customer.dien_thoai,
       color: "rgba(136, 38, 140, 0.75)",
-      permission: [
-        "631c254a7a3a837ce2c229ac",
-        "631c254a7a3a837ce2c229a7",
-        "631c254a7a3a837ce2c22995",
-      ],
+      permission: [Member, Partner, Admin],
     },
     {
       name: "Chức vụ",
       icon: "briefcase",
       value: auth.customer.chuc_vu,
       color: "#DC5696",
-      permission: ["631c254a7a3a837ce2c229ac", "631c254a7a3a837ce2c229a7"],
+      permission: [Member, Partner],
     },
     {
       name: "Công ty",
       icon: "business",
       value: auth.customer.ten_cong_ty,
       color: "#F8AA4F",
-      permission: ["631c254a7a3a837ce2c229ac", "631c254a7a3a837ce2c229a7"],
+      permission: [Member, Partner],
     },
     {
       name: "Địa chỉ công ty",
       icon: "location",
       value: auth.customer.address_cong_ty,
       color: "#FA846F",
-      permission: ["631c254a7a3a837ce2c229ac", "631c254a7a3a837ce2c229a7"],
+      permission: [Member, Partner],
     },
     {
       name: "Địa chỉ cá nhân",
       icon: "location",
       value: auth.customer.address,
       color: "rgba(5, 60, 255, 0.4)",
-      permission: [
-        "631c254a7a3a837ce2c229ac",
-        "631c254a7a3a837ce2c229a7",
-        "631c254a7a3a837ce2c22995",
-      ],
+      permission: [Member, Partner, Admin],
     },
     {
       name: "Email",
       icon: "mail",
       value: auth.customer.email,
       color: "rgba(255, 0, 0, 0.7)",
-      permission: [
-        "631c254a7a3a837ce2c229ac",
-        "631c254a7a3a837ce2c229a7",
-        "631c254a7a3a837ce2c22995",
-      ],
+      permission: [Member, Partner, Admin],
     },
     {
       name: "Ngày sinh",
       icon: "calendar",
       value: formatDateDisplays(auth.customer.ngay_sinh),
       color: "#93DBE4",
-      permission: [
-        "631c254a7a3a837ce2c229ac",
-        "631c254a7a3a837ce2c229a7",
-        "631c254a7a3a837ce2c22995",
-      ],
+      permission: [Member, Partner, Admin],
     },
     {
       name: "Ngành hàng",
       icon: "cube",
       value: auth.customer.ten_nganh_hang,
       color: "rgba(255, 10, 157, 0.4)",
-      permission: ["631c254a7a3a837ce2c229ac", "631c254a7a3a837ce2c229a7"],
+      permission: [Member, Partner],
     },
     {
       name: "Ngành hàng chi tiết",
       icon: "cube",
       value: auth.customer.nganh_hang_con,
       color: "#6CADF6",
-      permission: ["631c254a7a3a837ce2c229ac", "631c254a7a3a837ce2c229a7"],
+      permission: [Member, Partner],
     },
     {
       name: "Người giới thiệu",
       icon: "person",
       value: auth.customer.nguoi_gioi_thieu,
       color: "rgba(17, 141, 59, 0.5)",
-      permission: ["631c254a7a3a837ce2c229ac", "631c254a7a3a837ce2c229a7"],
+      permission: [Member, Partner],
     },
   ];
 
@@ -179,7 +164,7 @@ const Profile = () => {
     });
 
     if (!result.cancelled) {
-      setImage(result.uri);
+      await setImage(result.uri);
     }
 
     const temp = await dispatch(getImageUserAction(result.uri, auth.token));
@@ -299,10 +284,7 @@ const Profile = () => {
             <Ionicons name="alert-circle-outline" size={20} color="#826CCF" />
           </TouchableOpacity>
         </View> */}
-        {(auth.permission &&
-          auth.permission.group_id === "631c254a7a3a837ce2c22995") ||
-        auth.permission.group_id === "631c254a7a3a837ce2c229b3" ||
-        auth.permission.group_id === "631c254a7a3a837ce2c229a1" ? (
+        {auth.permission && auth.permission.group_id === Admin ? (
           <View
             style={{
               backgroundColor: "#ffffff",
@@ -372,12 +354,15 @@ const Profile = () => {
                 style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
                 Thông tin thành viên
               </Text>
-              {/* <TouchableOpacity>
+              <TouchableOpacity
+                style={{ flexDirection: "row" }}
+                onPress={() => navigation.navigate("UpgradeMember")}>
                 <Text
-                  style={{ fontSize: 12, fontWeight: "400", color: "#909090" }}>
-                  Xem chi tiết
+                  style={{ fontSize: 13, fontWeight: "600", color: "#cecece" }}>
+                  Nâng cấp
                 </Text>
-              </TouchableOpacity> */}
+                <Ionicons name="arrow-up" color="#cecece" size={20} />
+              </TouchableOpacity>
             </Animated.View>
             <Animated.View
               style={{
@@ -476,15 +461,6 @@ const Profile = () => {
                 }}>
                 {auth.profile.name}
               </Text>
-              {/* <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  marginLeft: 12,
-                }}>
-                <Text style={styles.contentHeader}>Gói thành viên</Text>
-                <Image source={require("../../assets/Vm.png")} />
-              </View> */}
             </View>
           </View>
         </View>
@@ -503,137 +479,8 @@ const Profile = () => {
                     marginHorizontal: 15,
                     paddingTop: 20,
                   }}>
-                  {/* <View
-                    style={{
-                      paddingHorizontal: 15,
-                      paddingBottom: 10,
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                    }}>
-                    <View>
-                      <Text
-                        style={{
-                          color: "#000000",
-                          fontSize: 15,
-                          fontWeight: "400",
-                          marginBottom: 10,
-                        }}>
-                        WLIN Member
-                      </Text>
-
-                      <Text style={styles.contentHeader}>
-                        Ngày Bắt đầu: 1/2/2021
-                      </Text>
-                      <Text style={styles.contentHeader}>
-                        Ngày hết hạn: 1/2/2022
-                      </Text>
-                      <Text style={styles.contentHeader}>
-                        Thời gian hoạt động còn lại: 20 ngày
-                      </Text>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: "column",
-                        height: "89%",
-                        shadowColor: "#000",
-                        shadowOffset: {
-                          width: 0,
-                          height: 1,
-                        },
-                        shadowOpacity: 0.25,
-                        shadowRadius: 3.84,
-                        borderRadius: 5,
-                        elevation: 5,
-                      }}>
-                      <LinearGradient
-                        start={{ x: 1, y: 0.7 }}
-                        end={{ x: 0.3, y: 0.8 }}
-                        colors={["#F9C271", "#F4EFB8", "#F4EFB8", "#F9C271"]}
-                        style={{ width: 100, height: 130, borderRadius: 5 }}>
-                        <View
-                          style={{
-                            flexDirection: "column",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            height: "100%",
-                          }}>
-                          <Image
-                            source={require("../../assets/logo.png")}
-                            style={{ width: 70, height: 30 }}
-                          />
-                          <Text style={{ fontSize: 10, color: "#969696" }}>
-                            Gói vàng
-                          </Text>
-                        </View>
-                      </LinearGradient>
-                    </View>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      marginHorizontal: 15,
-                    }}>
-                    <View style={{ width: "60%" }}>
-                      <TouchableOpacity style={{ width: "90%" }}>
-                        <LinearGradient
-                          start={{ x: 1, y: 0.3 }}
-                          end={{ x: 1, y: 1 }}
-                          colors={["#751979", "#AE40B2"]}
-                          style={{
-                            paddingHorizontal: 22,
-                            paddingVertical: 5,
-                            borderRadius: 7,
-                            flexDirection: "row",
-                            justifyContent: "center",
-                          }}>
-                          <Text
-                            style={{
-                              fontSize: 12,
-                              color: "#ffffff",
-                              textAlign: "center",
-                              width: "100%",
-                            }}>
-                            Xem thông tin quyền lợi
-                          </Text>
-                        </LinearGradient>
-                      </TouchableOpacity>
-                    </View>
-
-                    <View>
-                      <TouchableOpacity
-                        style={{
-                          borderRadius: 7,
-                          flexDirection: "row",
-                          alignItems: "center",
-                          justifyContent: "center",
-                        }}
-                        onPress={() => navigation.navigate("UpgradeMember")}>
-                        <LinearGradient
-                          start={{ x: 1, y: 0.3 }}
-                          end={{ x: 1, y: 1 }}
-                          colors={["#751979", "#AE40B2"]}
-                          style={{
-                            paddingHorizontal: 22,
-                            paddingVertical: 5,
-                            borderRadius: 7,
-                          }}>
-                          <Text
-                            style={{
-                              fontSize: 12,
-                              color: "#ffffff",
-                              textAlign: "center",
-                              width: "100%",
-                            }}>
-                            Nâng cấp
-                          </Text>
-                        </LinearGradient>
-                      </TouchableOpacity>
-                    </View>
-                  </View> */}
                   <View style={{ paddingHorizontal: 10 }}>
-                    {auth.permission.group_id !==
-                      "631c254a7a3a837ce2c22995" && (
+                    {auth.permission.group_id !== Admin && (
                       <View
                         style={{
                           flexDirection: "row",

@@ -36,6 +36,7 @@ import {
   getCustomerWlinAction,
   getRankAction,
 } from "../../redux/actions/authAction";
+import { Admin } from "../../utils/AccessPermission";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
@@ -46,24 +47,21 @@ const Nation = () => {
   const dispatch = useDispatch();
   const { auth, club } = useSelector((state) => state);
   const [refreshing, setRefreshing] = React.useState(false);
-  const [page, setPage] = useState(1);
 
   const scrollY = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     setRefreshing(true);
-    dispatch(getCLub(auth, page, auth.permission.group_id));
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 2000);
-  }, [page]);
+    dispatch(getCLub(auth, 1, auth.permission.group_id));
+    setRefreshing(false);
+  }, []);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    dispatch(getCLub(auth, page, auth.permission.group_id));
+    dispatch(getCLub(auth, 1, auth.permission.group_id));
     dispatch(getCustomerWlinAction(auth.token, auth.profile.email));
-    wait(2000).then(() => setRefreshing(false));
-  }, [page]);
+    wait(500).then(() => setRefreshing(false));
+  }, []);
 
   const handleDetail = (_id) => {
     dispatch(getDetailClub(_id, auth.token));
@@ -78,7 +76,7 @@ const Nation = () => {
     <View style={styles.container}>
       {auth.customer.goi_thanh_vien === "03" ||
       auth.customer.goi_thanh_vien === "04" ||
-      auth.permission.group_id === "631c254a7a3a837ce2c22995" ? (
+      auth.permission.group_id === Admin ? (
         <View style={{ marginTop: 10, paddingBottom: "70%" }}>
           <Animated.FlatList
             onScroll={Animated.event(
@@ -354,16 +352,15 @@ const Area = () => {
     dispatch(getCLub(auth, 1, auth.permission.group_id));
     dispatch(getRankAction(auth.token, auth.profile.email));
     dispatch(getCustomerWlinAction(auth.token, auth.profile.email));
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 2000);
+
+    setRefreshing(false);
   }, [auth.permission.group_id]);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     dispatch(getCustomerWlinAction(auth.token, auth.profile.email));
     dispatch(getCLub(auth, 1, auth.permission.group_id));
-    wait(2000).then(() => setRefreshing(false));
+    wait(500).then(() => setRefreshing(false));
   }, [auth.permission.group_id]);
 
   const handleDetail = (_id) => {
@@ -379,7 +376,7 @@ const Area = () => {
       {auth.customer.goi_thanh_vien === "02" ||
       auth.customer.goi_thanh_vien === "03" ||
       auth.customer.goi_thanh_vien === "04" ||
-      auth.permission.group_id === "631c254a7a3a837ce2c22995" ? (
+      auth.permission.group_id === Admin ? (
         <View style={{ marginTop: 10, paddingBottom: "70%" }}>
           <Animated.FlatList
             onScroll={Animated.event(
@@ -581,31 +578,6 @@ const Area = () => {
                                   20 TYFCBs
                                 </Text>
                               </View>
-                              {/* {dataFrameClub.map((item, index) => (
-                              <View
-                                style={{
-                                  backgroundColor: item.backgroundColor,
-                                  flexDirection: "row",
-                                  paddingHorizontal: 2,
-                                  borderRadius: 10,
-                                  alignItems: "center",
-                                  marginTop: 5,
-                                }}>
-                                <Ionicons
-                                  name={item.icon}
-                                  color={item.color}
-                                  size={20}
-                                />
-                                <Text
-                                  style={{
-                                    fontSize: 10,
-                                    fontWeight: "600",
-                                    color: item.color,
-                                  }}>
-                                  20 {item.name}
-                                </Text>
-                              </View>
-                            ))} */}
                             </View>
                           </View>
                         </View>
@@ -654,15 +626,14 @@ const Region = () => {
     setRefreshing(true);
     // console.log(auth.token, page);
     dispatch(getCLub(auth, page, auth.permission.group_id));
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 2000);
+
+    setRefreshing(false);
   }, [page]);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     dispatch(getCLub(auth, page, auth.permission.group_id));
-    wait(2000).then(() => setRefreshing(false));
+    wait(500).then(() => setRefreshing(false));
   }, [page]);
 
   const handleDetail = (_id) => {

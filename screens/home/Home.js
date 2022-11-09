@@ -48,7 +48,8 @@ import { getBenefitAction } from "../../redux/actions/benefitAction";
 import Loading from "../../components/loading/Loading";
 import BenefitHome from "./Benefit.home";
 import Chart from "./Chart.home";
-import SearchBar from "../../components/HeaderPart/SearchBar";
+
+import { Admin, Partner } from "../../utils/AccessPermission";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
@@ -72,16 +73,19 @@ const Home = () => {
   let dateNow = new Date();
   let year = dateNow.getFullYear();
   let month = dateNow.getMonth() + 1;
-  let day = dateNow.getDate();
+  let day =
+    dateNow.getDate() > 10 ? dateNow.getDate() : `0${dateNow.getDate()}`;
   let dayofweek = dateNow.getDay();
   const dayNow = year + "-" + month + "-" + day;
+
   //eventing
 
   const eventing = event.getEvents.filter(
     (item) =>
       new Date(formatDateDisplays(item.ngay_su_kien)).getTime() >
-      new Date().getTime()
+      new Date(dayNow).getTime()
   );
+
   const headerHeight = animatedValue.interpolate({
     inputRange: [0, HEADER_HEIGHT + insets.top],
     outputRange: [HEADER_HEIGHT + insets.top, insets.top + 30],
@@ -148,7 +152,7 @@ const Home = () => {
       dispatch(getEventsAction(auth, arrayClub, auth.permission.group_id));
     }
     it();
-    wait(2000).then(() => setRefreshing(false));
+    wait(1000).then(() => setRefreshing(false));
   }, [dispatch, auth.profile.email, auth.permission.group_id]);
 
   const handleDetail = (_id) => {
@@ -241,7 +245,7 @@ const Home = () => {
 
       <HeaderPart backHome={backHome} setBackHome={setBackHome} />
 
-      {auth.permission?.group_id === "631c254a7a3a837ce2c22995" ? (
+      {auth.permission?.group_id === Admin ? (
         <View
           style={{
             backgroundColor: "#ffffff",
@@ -360,57 +364,54 @@ const Home = () => {
             marginBottom: "20%",
             marginTop: 5,
           }}>
-          {auth.permission &&
-            auth.permission.group_id !== "631c254a7a3a837ce2c22995" && (
-              <View>
-                <View
+          {auth.permission && auth.permission.group_id !== Admin && (
+            <View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  paddingHorizontal: 15,
+                }}>
+                <Text
                   style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    paddingHorizontal: 15,
+                    fontSize: 15,
+                    fontWeight: "600",
+                    color: "#826CCF",
+                  }}>
+                  Sự kiện sắp diễn ra
+                </Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate("EventsScreen");
                   }}>
                   <Text
                     style={{
-                      fontSize: 15,
-                      fontWeight: "600",
-                      color: "#826CCF",
+                      fontSize: 12,
+                      fontWeight: "400",
+                      color: "#909090",
                     }}>
-                    Sự kiện sắp diễn ra
+                    Xem chi tiết
                   </Text>
-                  <TouchableOpacity
-                    onPress={() => {
-                      navigation.navigate("EventsScreen");
-                    }}>
-                    <Text
-                      style={{
-                        fontSize: 12,
-                        fontWeight: "400",
-                        color: "#909090",
-                      }}>
-                      Xem chi tiết
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-
-                <Carousel
-                  autoplay
-                  autoplayTimeout={7000}
-                  loop
-                  index={0}
-                  pageSize={w}>
-                  {images.map((image, index) => renderPage(image, index))}
-                </Carousel>
+                </TouchableOpacity>
               </View>
-            )}
 
-          <StatisticsHome />
-          {(auth.permission.group_id === "631c254a7a3a837ce2c22995" ||
-            auth.permission.group_id === "631c254a7a3a837ce2c229a7") && (
-            <Chart />
+              <Carousel
+                autoplay
+                autoplayTimeout={7000}
+                loop
+                index={0}
+                pageSize={w}>
+                {images.map((image, index) => renderPage(image, index))}
+              </Carousel>
+            </View>
           )}
 
-          {auth.permission.group_id === "631c254a7a3a837ce2c22995" && (
+          <StatisticsHome />
+          {(auth.permission.group_id === Admin ||
+            auth.permission.group_id === Partner) && <Chart />}
+
+          {auth.permission.group_id === Admin && (
             <View style={{ marginTop: 10 }}>
               <View
                 style={{

@@ -1,13 +1,7 @@
-import {
-  getData,
-  getdataApi,
-  getPermission,
-  getProfile,
-  getRank,
-  getToken,
-  URL,
-} from "../../utils/fetchApi";
+import { URL } from "../../utils/fetchApi";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import callApis from "../../utils/callApis";
+import callApi from "../../utils/callApi";
 
 export const AUTH = {
   OTP: "OTP",
@@ -18,11 +12,12 @@ export const AUTH = {
   RANK: "RANK",
   ERROR: "ERROR",
   GOI: "GOI",
+  MA_KHQR: "MA_KHQR",
 };
 
 export const getOTP = (number) => async (dispatch) => {
   try {
-    const res = await getData(`send-otp`, number);
+    const res = await callApi(`send-otp/${number}`);
 
     dispatch({ type: AUTH.OTP, payload: res.data });
     return res.data;
@@ -36,7 +31,9 @@ export const getOTP = (number) => async (dispatch) => {
 
 export const getTokenAction = (id_otp, code_opt) => async (dispatch) => {
   try {
-    const res = await getToken(id_otp, code_opt);
+    const res = await callApi(
+      `verify-otp/${id_otp}/${code_opt}?group_id=631c254a7a3a837ce2c229b1&id_app=62e0b3885271e2560e8bb7d3`
+    );
 
     if (res.data) {
       const jsonToken = res.data.token;
@@ -51,7 +48,7 @@ export const getTokenAction = (id_otp, code_opt) => async (dispatch) => {
 
 export const getProfileAction = (token) => async (dispatch) => {
   try {
-    const res = await getProfile(`profile`, token);
+    const res = await callApi(`api/profile?access_token=${token}`);
 
     getRankAction(token, res.data.email);
     dispatch({ type: AUTH.PROFILE, payload: res.data });
@@ -63,7 +60,9 @@ export const getProfileAction = (token) => async (dispatch) => {
 
 export const getPermissionAction = (token, email) => async (dispatch) => {
   try {
-    const res = await getPermission(`participant`, token, email);
+    const res = await callApis(
+      `participant?access_token=99948964514082317ffa726a93be7b89&q={"email": "${email}"}&limit=1000`
+    );
 
     dispatch({ type: AUTH.PERSSION, payload: res.data });
   } catch (error) {
@@ -73,26 +72,18 @@ export const getPermissionAction = (token, email) => async (dispatch) => {
 
 export const getCustomerWlinAction = (token, phone) => async (dispatch) => {
   try {
-    // console.log(phone);
+    const res = await callApis(
+      `customer_wlin?access_token=${token}&limit=1000`
+    );
 
-    const res = await getdataApi(`customer_wlin`, token);
-
-    //console.log(res.data.filter((item) => item.of_user === phone));
-
-    // dispatch({
-    //   type: AUTH.CUSTOMER_WLIN,
-    //   payload: res.data.filter((item) => item.ma_kh === phone),
-    // });
-    //console.log(res.data);
-    //console.log(res.data);
     dispatch({
       type: AUTH.CUSTOMER_WLIN,
       payload: res.data.filter(
-        (item) => item.of_user === phone && item.trang_thai !== 0,
+        (item) => item.of_user === phone && item.trang_thai !== 0
       ),
     });
     return res.data.filter(
-      (item) => item.of_user === phone && item.trang_thai !== 0,
+      (item) => item.of_user === phone && item.trang_thai !== 0
     );
   } catch (error) {
     console.log(error);
@@ -101,13 +92,17 @@ export const getCustomerWlinAction = (token, phone) => async (dispatch) => {
 
 export const getRankAction = (token, email) => async (dispatch) => {
   try {
-    const res = await getRank(token, email);
+    const res = await callApis(
+      `customer?access_token=${token}&q={"ma_kh": "${email}"}`
+    );
 
-    const getRankMember = await getdataApi(`dmgoithanhvien`, token);
+    const getRankMember = await callApis(
+      `dmgoithanhvien?access_token=${token}&limit=1000`
+    );
 
     if (getRankMember.data && res?.data[0]) {
       var dataFilter = getRankMember.data.filter(
-        (item) => item.ma_goi == res.data[0].goi_thanh_vien,
+        (item) => item.ma_goi == res.data[0].goi_thanh_vien
       )[0];
     }
 
@@ -152,14 +147,14 @@ export const getImageUserAction = (image, token) => {
 
         request.open(
           "POST",
-          `${URL}/api/uploadfile?json=1&access_token=${token}&folder=avatars`,
+          `${URL}/api/uploadfile?json=1&folder=files&access_token=${token}`
         );
         request.setRequestHeader("Content-Type", "multipart/form-data");
         request.send(body);
       });
       return p;
     } catch (err) {
-      // console.log(err);
+      console.log(err);
     }
   };
   return add;

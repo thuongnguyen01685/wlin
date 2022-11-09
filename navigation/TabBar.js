@@ -297,7 +297,6 @@ const TabBar = () => {
             paddingHorizontal: 5,
             paddingTop: 5,
             paddingBottom: 15,
-            borderBottomWidth: 1,
             backgroundColor: "#ffffff",
           },
         })}>

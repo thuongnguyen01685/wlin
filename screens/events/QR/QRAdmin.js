@@ -26,11 +26,16 @@ import * as RNImagePicker from "expo-image-picker";
 
 import { useEffect } from "react";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ModalSuccessCheck from "../../../components/modal/ModalSuccessCheck";
 import ModalFailCheck from "../../../components/modal/ModalFailCheck";
 import ModalChoosePayment from "../../../components/modal/ModalChoosePayment";
 import ModalPayment from "../../../components/modal/ModalPayment";
+import {
+  checkEventAction,
+  getDetailEventsAction,
+} from "../../../redux/actions/eventsAction";
+import { AUTH } from "../../../redux/actions/authAction";
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
 const ratio = w / 720;
@@ -38,8 +43,11 @@ const ratio = w / 720;
 // create a component
 const QRAdmin = (props) => {
   const navigation = useNavigation();
-  const { auth } = useSelector((state) => state);
+  const { auth, event } = useSelector((state) => state);
 
+  //console.log(event.detailEvent._id);
+
+  const dispatch = useDispatch();
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [modalCheckSuccess, setModalCheckSuccess] = useState(false);
@@ -47,6 +55,7 @@ const QRAdmin = (props) => {
   const [modalFail, setModalFail] = useState(false);
   const [showModalPayment, setShowModalPayment] = useState(false);
   const [dataCheck, setDataCheck] = useState("");
+  const [detailData, setDetailData] = useState("");
 
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
@@ -57,11 +66,29 @@ const QRAdmin = (props) => {
     getBarCodeScannerPermissions();
   }, [hasPermission]);
 
-  const handleBarCodeScanned = ({ type, data }, error) => {
+  const handleBarCodeScanned = async ({ type, data }, error) => {
     setScanned(true);
     if (data) {
-      setModalCheckSuccess(true);
-      setDataCheck(data);
+      dispatch({ type: AUTH.MA_KHQR, payload: data });
+      const personParticipant = event.detailEvent.ds_tham_gia.filter(
+        (item) => item.ma_kh === data
+      );
+
+      if (personParticipant.length > 0) {
+        const result = await dispatch(
+          checkEventAction(event.detailEvent, auth.token, data)
+        );
+        setDetailData(personParticipant);
+        setDataCheck(data);
+        if (result) {
+          dispatch(getDetailEventsAction(event.detailEvent._id, auth.token));
+          setModalCheckSuccess(true);
+        } else {
+          setModalFail(true);
+        }
+      } else {
+        setModalFail(true);
+      }
     } else {
       setModalFail(true);
     }
@@ -91,13 +118,36 @@ const QRAdmin = (props) => {
 
         if (result && result.uri) {
           const results = await BarCodeScanner.scanFromURLAsync(result.uri);
+
           //console.log(results); // many information
           // console.log(results); // May be the one you are looking for
-          if (results) {
+          if (results && results[0]?.data) {
+            const personParticipant = event.detailEvent.ds_tham_gia.filter(
+              (item) => item.ma_kh === results[0].data
+            );
+            console.log("Check mã thành công");
             setDataCheck(results[0].data);
-            setModalCheckSuccess(true);
+            dispatch({ type: AUTH.MA_KHQR, payload: results[0].data });
+
+            if (personParticipant.length > 0) {
+              console.log("Check có thành viên tham gia");
+              dispatch(
+                checkEventAction(event.detailEvent, auth.token, results[0].data)
+              );
+
+              setDetailData(personParticipant);
+              setDataCheck(results[0].data);
+              dispatch(
+                getDetailEventsAction(event.detailEvent._id, auth.token)
+              );
+              setModalCheckSuccess(true);
+            } else {
+              setModalFail(true);
+              console.log("Không có thành viên tham gia");
+            }
           } else {
             setModalFail(true);
+            console.log("Check mã thất bại");
           }
         }
       }
@@ -167,6 +217,8 @@ const QRAdmin = (props) => {
           showModalPayment={showModalPayment}
           setShowModalPayment={setShowModalPayment}
           dataCheck={dataCheck}
+          detailData={detailData}
+          setDetailData={setDetailData}
         />
       )}
       {modalFail && (
@@ -181,6 +233,7 @@ const QRAdmin = (props) => {
           setShowModalPayment={setShowModalPayment}
           showTakePicture={props.showTakePicture}
           setShowTakePicture={props.setShowTakePicture}
+          dataCheck={dataCheck}
         />
       )}
 
