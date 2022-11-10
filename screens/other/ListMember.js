@@ -28,6 +28,7 @@ import {
   getDetailMember,
   getMemberAction,
 } from "../../redux/actions/ClupAction";
+import Loading from "../../components/loading/Loading";
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -57,8 +58,7 @@ const ListMember = () => {
   useEffect(() => {
     setRefreshing(true);
     dispatch(getMemberAction(auth.token, auth.profile.email));
-
-    setRefreshing(false);
+    wait(1000).then(() => setRefreshing(false));
   }, [dispatch]);
 
   const handleDetailMember = (ma_kh) => {
@@ -124,116 +124,123 @@ const ListMember = () => {
         </TouchableOpacity>
       </View>
       <View style={{ height: "100%" }}>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={onRefresh}
-              colors={["#711775", "green", "blue"]}
-            />
-          }>
-          <View style={{ marginBottom: "70%" }}>
-            {getUniqueListBy(club.getMember, "ma_kh").map((item) => (
-              <TouchableOpacity
-                key={item._id}
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  backgroundColor: "#Ffffff",
-                  marginVertical: 10,
-                  borderRadius: 15,
-                  paddingVertical: 5,
-                  marginHorizontal: 15,
-                  borderColor: "#dadada",
-                  borderWidth: 0.5,
-                }}
-                onPress={() => handleDetailMember(item.ma_kh)}>
-                <View
+        {refreshing ? (
+          <View style={{ marginTop: 20 }}>
+            <Loading size="large" />
+          </View>
+        ) : (
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+                colors={["#711775", "green", "blue"]}
+              />
+            }>
+            <View style={{ marginBottom: "70%" }}>
+              {getUniqueListBy(club.getMember, "ma_kh").map((item) => (
+                <TouchableOpacity
+                  key={item._id}
                   style={{
                     flexDirection: "row",
+                    justifyContent: "space-between",
                     alignItems: "center",
-                    width: "70%",
-                  }}>
-                  <View style={{ flexDirection: "row", marginHorizontal: 10 }}>
-                    {item.hinh_anh ? (
-                      <Image
-                        source={{
-                          uri: `${URL}/`.concat(`${item.hinh_anh}`),
-                        }}
-                        style={{
-                          width: 70,
-                          height: 70,
-                          borderRadius: 50,
-                          resizeMode: "contain",
-                        }}
-                      />
-                    ) : (
-                      <Image
-                        source={require("../../assets/logo.png")}
-                        style={{
-                          width: 70,
-                          height: 70,
-                          borderRadius: 50,
-                          resizeMode: "contain",
-                        }}
-                      />
-                    )}
-                  </View>
-
+                    backgroundColor: "#Ffffff",
+                    marginVertical: 10,
+                    borderRadius: 15,
+                    paddingVertical: 5,
+                    marginHorizontal: 15,
+                    borderColor: "#dadada",
+                    borderWidth: 0.5,
+                  }}
+                  onPress={() => handleDetailMember(item.ma_kh)}>
                   <View
                     style={{
-                      flexDirection: "column",
-                      justifyContent: "space-between",
+                      flexDirection: "row",
                       alignItems: "center",
-                      width: "80%",
+                      width: "70%",
                     }}>
-                    <Text
-                      style={{
-                        color: "#474747",
-                        fontSize: 15,
-                        fontWeight: "600",
-                        textAlign: "center",
-                      }}>
-                      {item.ten_kh}
-                    </Text>
+                    <View
+                      style={{ flexDirection: "row", marginHorizontal: 10 }}>
+                      {item.hinh_anh ? (
+                        <Image
+                          source={{
+                            uri: `${URL}/`.concat(`${item.hinh_anh}`),
+                          }}
+                          style={{
+                            width: 70,
+                            height: 70,
+                            borderRadius: 50,
+                            resizeMode: "contain",
+                          }}
+                        />
+                      ) : (
+                        <Image
+                          source={require("../../assets/logo.png")}
+                          style={{
+                            width: 70,
+                            height: 70,
+                            borderRadius: 50,
+                            resizeMode: "contain",
+                          }}
+                        />
+                      )}
+                    </View>
+
                     <View
                       style={{
-                        backgroundColor: "#f1f1f1",
-                        borderRadius: 15,
-                        width: "60%",
+                        flexDirection: "column",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        width: "80%",
                       }}>
                       <Text
                         style={{
-                          color: "#434343",
-                          fontSize: 12,
-                          fontWeight: "500",
+                          color: "#474747",
+                          fontSize: 15,
+                          fontWeight: "600",
                           textAlign: "center",
                         }}>
-                        {item.ten_trang_thai}
+                        {item.ten_kh}
                       </Text>
+                      <View
+                        style={{
+                          backgroundColor: "#f1f1f1",
+                          borderRadius: 15,
+                          width: "60%",
+                        }}>
+                        <Text
+                          style={{
+                            color: "#434343",
+                            fontSize: 12,
+                            fontWeight: "500",
+                            textAlign: "center",
+                          }}>
+                          {item.ten_trang_thai}
+                        </Text>
+                      </View>
                     </View>
                   </View>
-                </View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-around",
-                    width: "20%",
-                  }}>
-                  <TouchableOpacity>
-                    <Ionicons
-                      name="alert-circle-outline"
-                      size={20}
-                      color="#826CCF"
-                    />
-                  </TouchableOpacity>
-                </View>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </ScrollView>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-around",
+                      width: "20%",
+                    }}>
+                    <TouchableOpacity>
+                      <Ionicons
+                        name="alert-circle-outline"
+                        size={20}
+                        color="#826CCF"
+                      />
+                    </TouchableOpacity>
+                  </View>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </ScrollView>
+        )}
       </View>
     </View>
   );

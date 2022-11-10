@@ -103,7 +103,7 @@ const PayBenefit = () => {
           }>
           <View style={{ marginBottom: "60%" }}>
             {benefit.loading ? (
-              <Loading />
+              <Loading size="large" />
             ) : (
               benefit.getPayBenefit.map((item, index) => (
                 <BenefitHome item={item} key={index} />
