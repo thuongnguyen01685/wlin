@@ -1,9 +1,10 @@
 import axios from "axios";
+import { id_app } from "./AccessPermission";
 
 export default function callApis(endpoint, method = "GET", data, headers) {
   return axios({
     method: method,
-    url: `https://api.wlin.com.vn/api/6332c96668b1025d86e22a54/${endpoint}`,
+    url: `https://api.wlin.com.vn/api/${id_app}/${endpoint}`,
     data: data,
     headers: headers,
   }).catch((error) => {

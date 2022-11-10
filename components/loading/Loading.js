@@ -3,10 +3,10 @@ import React, { Component } from "react";
 import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 
 // create a component
-const Loading = () => {
+const Loading = (props) => {
   return (
     <View style={styles.container}>
-      <ActivityIndicator size="small" />
+      <ActivityIndicator size={props.size} />
     </View>
   );
 };
