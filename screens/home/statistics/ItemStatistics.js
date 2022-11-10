@@ -2,6 +2,7 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { Component } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import Loading from "../../../components/loading/Loading";
 
 // create a component
 const ItemStatistics = (props) => {
@@ -49,7 +50,11 @@ const ItemStatistics = (props) => {
             width: 50,
             height: 50,
           }}>
-          <Text style={styles.quantityStatistics}>{props.count}</Text>
+          {props.count ? (
+            <Text style={styles.quantityStatistics}>{props.count}</Text>
+          ) : (
+            <Loading />
+          )}
         </View>
       </View>
     </TouchableOpacity>

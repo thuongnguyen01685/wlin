@@ -43,7 +43,7 @@ const EventingRoute = () => {
   let year = dateNow.getFullYear();
   let month = dateNow.getMonth() + 1;
   let day =
-    dateNow.getDate() > 10 ? dateNow.getDate() : `0${dateNow.getDate()}`;
+    dateNow.getDate() >= 10 ? dateNow.getDate() : `0${dateNow.getDate()}`;
   let dayofweek = dateNow.getDay();
 
   const dayNow = year + "-" + month + "-" + day;

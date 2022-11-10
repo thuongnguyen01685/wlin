@@ -129,7 +129,7 @@ const DetailEvents = () => {
           <Ionicons name="alert-circle-outline" size={20} color="#826CCF" />
         </TouchableOpacity>
       </View>
-      <View>
+      <View style={{ height: "100%" }}>
         <ScrollView
           showsVerticalScrollIndicator={false}
           refreshControl={
