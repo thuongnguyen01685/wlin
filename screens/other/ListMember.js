@@ -20,6 +20,7 @@ import {
   Platform,
   TextInput,
   RefreshControl,
+  Animated,
 } from "react-native";
 
 import HeaderPart from "../../components/HeaderPart/HeaderPart";
@@ -29,6 +30,7 @@ import {
   getMemberAction,
 } from "../../redux/actions/ClupAction";
 import Loading from "../../components/loading/Loading";
+import Skeleton from "../../components/loading/Skeleton";
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -37,6 +39,12 @@ const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
 const ratio = w / 720;
 
+const instructions = Platform.select({
+  ios: "Press Cmd+R to reload,\n" + "Cmd+D or shake for dev menu",
+  android:
+    "Double tap R on your keyboard to reload,\n" +
+    "Shake or press menu button for dev menu",
+});
 // create a component
 const ListMember = () => {
   const navigation = useNavigation();
@@ -45,20 +53,51 @@ const ListMember = () => {
   const [refreshing, setRefreshing] = React.useState(false);
   const { auth, club } = useSelector((state) => state);
 
+  const circleAnimatedValue = useRef(new Animated.Value(0)).current;
+
   const getUniqueListBy = (arr, key) => {
     return [...new Map(arr.map((item) => [item[key], item])).values()];
   };
 
+  const circleAnimated = () => {
+    circleAnimatedValue.setValue(0);
+    Animated.timing(circleAnimatedValue, {
+      toValue: 1,
+      duration: 350,
+      useNativeDriver: true,
+    }).start(() => {
+      setTimeout(() => {
+        circleAnimated();
+      }, 1000);
+    });
+  };
+
+  const translateX = circleAnimatedValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: [-10, 100],
+  });
+
+  const translateX2 = circleAnimatedValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: [-10, 200],
+  });
+  const translateX3 = circleAnimatedValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: [-10, 90],
+  });
+
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
+    circleAnimated();
     dispatch(getMemberAction(auth.token, auth.profile.email));
     wait(2000).then(() => setRefreshing(false));
   }, [dispatch]);
 
   useEffect(() => {
     setRefreshing(true);
+    circleAnimated();
     dispatch(getMemberAction(auth.token, auth.profile.email));
-    wait(1000).then(() => setRefreshing(false));
+    wait(2000).then(() => setRefreshing(false));
   }, [dispatch]);
 
   const handleDetailMember = (ma_kh) => {
@@ -124,20 +163,79 @@ const ListMember = () => {
         </TouchableOpacity>
       </View>
       <View style={{ height: "100%" }}>
-        {refreshing ? (
-          <View style={{ marginTop: 20 }}>
-            <Loading size="large" />
-          </View>
-        ) : (
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            refreshControl={
-              <RefreshControl
-                refreshing={refreshing}
-                onRefresh={onRefresh}
-                colors={["#711775", "green", "blue"]}
-              />
-            }>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              colors={["#711775", "green", "blue"]}
+            />
+          }>
+          {refreshing ? (
+            Array(10)
+              .fill("")
+              .map((i, index) => (
+                <View
+                  style={[
+                    {
+                      marginBottom: 8,
+                      flexDirection: "row",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    },
+                    styles.card,
+                  ]}
+                  key={index}>
+                  <View
+                    style={{
+                      width: 50,
+                      height: 50,
+                      borderRadius: 60,
+                      backgroundColor: "#ECEFF1",
+                      overflow: "hidden",
+                      marginRight: 16,
+                    }}>
+                    <Animated.View
+                      style={{
+                        width: "30%",
+                        opacity: 0.5,
+                        height: "100%",
+                        backgroundColor: "white",
+                        transform: [{ translateX: translateX }],
+                      }}></Animated.View>
+                  </View>
+                  <View
+                    style={{
+                      flex: 1,
+                      justifyContent: "space-evenly",
+                      overflow: "hidden",
+                    }}>
+                    <Animated.View
+                      style={{ backgroundColor: "#ECEFF1", height: 32 }}>
+                      <Animated.View
+                        style={{
+                          width: "20%",
+                          height: "100%",
+                          backgroundColor: "white",
+                          opacity: 0.5,
+                          transform: [{ translateX: translateX2 }],
+                        }}></Animated.View>
+                    </Animated.View>
+                    <View style={{ backgroundColor: "#ECEFF1", height: 32 }}>
+                      <Animated.View
+                        style={{
+                          width: "20%",
+                          height: "100%",
+                          backgroundColor: "white",
+                          opacity: 0.5,
+                          transform: [{ translateX: translateX2 }],
+                        }}></Animated.View>
+                    </View>
+                  </View>
+                </View>
+              ))
+          ) : (
             <View style={{ marginBottom: "70%" }}>
               {getUniqueListBy(club.getMember, "ma_kh").map((item) => (
                 <TouchableOpacity
@@ -239,8 +337,8 @@ const ListMember = () => {
                 </TouchableOpacity>
               ))}
             </View>
-          </ScrollView>
-        )}
+          )}
+        </ScrollView>
       </View>
     </View>
   );
@@ -288,6 +386,21 @@ const styles = StyleSheet.create({
   },
   contentText: {
     lineHeight: 25,
+  },
+  card: {
+    padding: 14,
+    shadowColor: "black",
+    borderRadius: 15,
+    backgroundColor: "#FAFAFA",
+    shadowColor: "black",
+    shadowOffset: {
+      width: 1,
+      height: 1,
+    },
+    shadowOpacity: 0.1,
+    flexDirection: "row",
+    marginVertical: 10,
+    marginHorizontal: 15,
   },
 });
 
