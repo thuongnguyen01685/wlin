@@ -13,21 +13,19 @@ import {
   ImageBackground,
   TouchableOpacity,
   ScrollView,
-  KeyboardAvoidingView,
-  TouchableWithoutFeedback,
-  Keyboard,
-  Platform,
-  TextInput,
 } from "react-native";
 
 import HeaderPart from "../../components/HeaderPart/HeaderPart";
+import { WebView } from "react-native-webview";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
 const ratio = w / 720;
+import { useSelector } from "react-redux";
 
 // create a component
 const ReportExcel = () => {
+  const { event } = useSelector((state) => state);
   const navigation = useNavigation();
 
   return (
@@ -67,39 +65,50 @@ const ReportExcel = () => {
         <ScrollView showsVerticalScrollIndicator={false}>
           <View
             style={{
-              marginBottom: "20%",
               marginTop: 20,
-              paddingHorizontal: 30,
+              paddingHorizontal: 20,
             }}>
             <View
               style={{
                 flexDirection: "row",
                 justifyContent: "center",
                 alignItems: "center",
+                height: 450,
               }}>
-              <Image
-                source={require("../../assets/excel.png")}
-                style={{ width: "100%", height: 300, resizeMode: "contain" }}
+              <WebView
+                source={{
+                  html: `<html><head><meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <style>body{padding:0px;margin:0px, height: "40%"} p{font-size: 20px;}</style>
+                  </head><body>${
+                    event.detailEvent.exfields.table
+                      ? event.detailEvent.exfields.table
+                      : `<h5>Vui lòng xác nhận tất toán trên hệ thống...</h5>`
+                  }</body></html>`,
+                }}
+                nestedScrollEnabled={true}
               />
             </View>
 
-            <TouchableOpacity
-              style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                marginTop: 20,
-              }}>
-              <Ionicons name="arrow-redo" size={20} color="#826CCF" />
-              <Text
+            {event.detailEvent.exfields.table && (
+              <TouchableOpacity
                 style={{
-                  color: "#826CCF",
-                  fontSize: 12,
-                  fontWeight: "600",
-                  marginLeft: 5,
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginTop: 20,
                 }}>
-                Chia sẻ file Excel (.xlsx)
-              </Text>
-            </TouchableOpacity>
+                <Ionicons name="arrow-redo" size={40} color="#826CCF" />
+                <Text
+                  style={{
+                    color: "#826CCF",
+                    fontSize: 15,
+                    fontWeight: "700",
+                    marginLeft: 5,
+                  }}>
+                  Chia sẻ file Excel (.xlsx)
+                </Text>
+              </TouchableOpacity>
+            )}
           </View>
         </ScrollView>
       </View>

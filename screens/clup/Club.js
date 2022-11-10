@@ -77,7 +77,7 @@ const Nation = () => {
       {auth.customer.goi_thanh_vien === "03" ||
       auth.customer.goi_thanh_vien === "04" ||
       auth.permission.group_id === Admin ? (
-        <View style={{ marginTop: 10, paddingBottom: "70%" }}>
+        <View style={{ marginTop: 10, paddingBottom: "70%", height: "100%" }}>
           <Animated.FlatList
             onScroll={Animated.event(
               [{ nativeEvent: { contentOffset: { y: scrollY } } }],
@@ -377,7 +377,7 @@ const Area = () => {
       auth.customer.goi_thanh_vien === "03" ||
       auth.customer.goi_thanh_vien === "04" ||
       auth.permission.group_id === Admin ? (
-        <View style={{ marginTop: 10, paddingBottom: "70%" }}>
+        <View style={{ marginTop: 10, paddingBottom: "70%", height: "100%" }}>
           <Animated.FlatList
             onScroll={Animated.event(
               [{ nativeEvent: { contentOffset: { y: scrollY } } }],
@@ -643,7 +643,7 @@ const Region = () => {
 
   return (
     <View style={styles.container}>
-      <View style={{ marginTop: 10, paddingBottom: "70%" }}>
+      <View style={{ marginTop: 10, paddingBottom: "70%", height: "100%" }}>
         <Animated.FlatList
           onScroll={Animated.event(
             [{ nativeEvent: { contentOffset: { y: scrollY } } }],
