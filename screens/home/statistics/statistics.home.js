@@ -52,7 +52,7 @@ const StatisticsHome = () => {
           name="Sự kiện"
           navigate="EventsScreen"
           image={require("../../../assets/events.png")}
-          count={event.getEvents.length}
+          count={event?.getEvents?.length}
         />
       </View>
     </View>
