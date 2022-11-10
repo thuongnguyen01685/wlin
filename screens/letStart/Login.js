@@ -11,16 +11,15 @@ import {
   ImageBackground,
   TouchableOpacity,
   ScrollView,
-  ToastAndroid,
   Image,
 } from "react-native";
 import PhoneInput from "react-native-phone-number-input";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Toast from "react-native-root-toast";
-import { RadioButton } from "react-native-paper";
 import ModalSms from "../../components/ModalSms";
 import { useDispatch, useSelector } from "react-redux";
 import { AUTH, getOTP } from "../../redux/actions/authAction";
+import { CheckBox } from "@rneui/themed";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
@@ -187,11 +186,15 @@ const Login = () => {
                 justifyContent: "center",
                 alignItems: "center",
               }}>
-              <RadioButton
-                value={false}
-                status={checked === true ? "checked" : "unchecked"}
+              <CheckBox
+                center
+                heckedColor="#00ff00"
+                checkedIcon="dot-circle-o"
+                uncheckedIcon="circle-o"
+                checked={checked}
                 onPress={() => setChecked(!checked)}
               />
+
               <Text style={{ fontSize: 12 }}>
                 Đồng ý với{" "}
                 <Text style={{ color: "#9D85F2" }}>điều khoản & điều kiện</Text>
