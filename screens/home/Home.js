@@ -80,7 +80,7 @@ const Home = () => {
 
   //eventing
 
-  const eventing = event.getEvents.filter(
+  const eventing = event?.getEvents?.filter(
     (item) =>
       new Date(formatDateDisplays(item.ngay_su_kien)).getTime() >
       new Date(dayNow).getTime()
@@ -89,6 +89,7 @@ const Home = () => {
   const headerHeight = animatedValue.interpolate({
     inputRange: [0, HEADER_HEIGHT + insets.top],
     outputRange: [HEADER_HEIGHT + insets.top, insets.top + 30],
+
     extrapolate: "clamp",
   });
   const backButtonHandler = () => {
@@ -160,7 +161,7 @@ const Home = () => {
     navigation.navigate("DetailEvents");
   };
 
-  const images = eventing.map((item) => item);
+  const images = eventing?.map((item) => item);
 
   const renderPage = (item, index) => {
     return (
@@ -402,7 +403,7 @@ const Home = () => {
                 loop
                 index={0}
                 pageSize={w}>
-                {images.map((image, index) => renderPage(image, index))}
+                {images?.map((image, index) => renderPage(image, index))}
               </Carousel>
             </View>
           )}

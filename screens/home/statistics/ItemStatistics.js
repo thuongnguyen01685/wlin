@@ -53,7 +53,7 @@ const ItemStatistics = (props) => {
           {props.count ? (
             <Text style={styles.quantityStatistics}>{props.count}</Text>
           ) : (
-            <Loading size="small" />
+            <Text style={styles.quantityStatistics}>0</Text>
           )}
         </View>
       </View>

@@ -176,6 +176,10 @@ export const initSocket = async (token, email) => {
   socket.on("notify:update", function (data) {
     DeviceEventEmitter.emit("notificationUpdated", data);
   });
+  socket.on("notify:new", function (data) {
+    console.log(data, "1");
+    DeviceEventEmitter.emit("notificationUpdated", data);
+  });
 
   for (let i = 0; i < listNameApi.length; i++) {
     socket.on(`${listNameApi[i]}:new`, function (data) {
@@ -191,6 +195,11 @@ export const initSocket = async (token, email) => {
       DeviceEventEmitter.emit(`${listNameApi[i]}Delete`, data);
     });
   }
+
+  socket.on(`wlin:socket1`, function (data) {
+    console.log(data);
+    DeviceEventEmitter.emit(`${listNameApi[i]}Delete`, data);
+  });
 
   function _handleNotification(notification) {
     let data = notification.request.content.data;
