@@ -50,7 +50,7 @@ const EventedRoute = () => {
 
   const dayname = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
 
-  const evented = event.getEvents.filter(
+  const evented = event?.getEvents?.filter(
     (item) =>
       new Date(formatDateDisplays(item.ngay_su_kien)).getTime() <
       new Date(dayNow).getTime()
@@ -99,7 +99,7 @@ const EventedRoute = () => {
             height: "100%",
             marginBottom: "75%",
           }}>
-          {evented.length > 0 ? (
+          {evented?.length > 0 ? (
             evented.map((item) => (
               <TouchableOpacity
                 key={item._id}

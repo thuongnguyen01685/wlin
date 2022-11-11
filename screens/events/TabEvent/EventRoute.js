@@ -49,7 +49,7 @@ const EventRoute = () => {
 
   const dayname = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
 
-  const events = event.getEvents.filter(
+  const events = event?.getEvents?.filter(
     (item) =>
       new Date(formatDateDisplays(item.ngay_su_kien)).getTime() ===
       new Date(dayNow).getTime()
@@ -97,7 +97,7 @@ const EventRoute = () => {
             marginTop: 10,
             height: h,
           }}>
-          {events.length > 0 ? (
+          {events?.length > 0 ? (
             events.map((item) => (
               <TouchableOpacity
                 key={item._id}

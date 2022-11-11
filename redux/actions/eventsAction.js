@@ -13,14 +13,14 @@ export const getEventsAction =
       //admin || partner
       if (permission === Admin || permission === Partner) {
         const res = await callApis(
-          `dmsukien?access_token=${auth.token}&q={"club":{"$in":[${array}]}}`
+          `dmsukien?access_token=flex.public.token&q={"club":{"$in":[${array}]}}`
         );
         dispatch({ type: EVENTS.GETEVENTS, payload: res.data });
       }
       //dmsukien?access_token=a32ace19895e836dc9c11ef730a86dac&limit=200&q={"ds_tham_gia":{"$elemMatch":{"ma_kh":"0338634204"}}}
       if (permission === Member) {
         const res = await callApis(
-          `dmsukien?access_token=${auth.token}&limit=200&q={"ds_tham_gia":{"$elemMatch":{"ma_kh":"${auth.profile.email}"}}}`
+          `dmsukien?access_token=flex.public.token&limit=200&q={"ds_tham_gia":{"$elemMatch":{"ma_kh":"${auth.profile.email}"}}}`
         );
         dispatch({ type: EVENTS.GETEVENTS, payload: res.data });
       }

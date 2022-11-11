@@ -36,7 +36,7 @@ const authReducer = (state = initialState, action) => {
     case AUTH.PROFILE:
       return { ...state, profile: action.payload };
     case AUTH.PERSSION:
-      return { ...state, permission: action.payload[0] };
+      return { ...state, permission: action.payload };
     case AUTH.CUSTOMER_WLIN:
       return {
         ...state,
