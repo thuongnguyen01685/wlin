@@ -81,7 +81,7 @@ const ModalNotify = (props) => {
           position: "absolute",
           width: "100%",
           top: 50,
-          height: "70%",
+          height: "90%",
           bottom: 20,
         }}>
         <View

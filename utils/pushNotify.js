@@ -150,6 +150,7 @@ export const initSocket = async (token, email) => {
       token: token,
       email: email,
     });
+    console.log("connect socket success", token);
   });
 
   socket.on("disconnect", function () {
@@ -174,6 +175,7 @@ export const initSocket = async (token, email) => {
   });
 
   socket.on("notify:update", function (data) {
+    console.log(data, "datanews");
     DeviceEventEmitter.emit("notificationUpdated", data);
   });
   socket.on("notify:new", function (data) {
@@ -183,20 +185,22 @@ export const initSocket = async (token, email) => {
 
   for (let i = 0; i < listNameApi.length; i++) {
     socket.on(`${listNameApi[i]}:new`, function (data) {
+      console.log(data, "new");
       DeviceEventEmitter.emit(`${listNameApi[i]}New`, data);
     });
 
     socket.on(`${listNameApi[i]}:update`, function (data) {
-      console.log(`${listNameApi[i]}Update`, data, "1");
+      console.log(`${listNameApi[i]}Update`, data, "update");
       DeviceEventEmitter.emit(`${listNameApi[i]}Update`, data);
     });
 
     socket.on(`${listNameApi[i]}:delete`, function (data) {
+      console.log(data, "delete");
       DeviceEventEmitter.emit(`${listNameApi[i]}Delete`, data);
     });
   }
 
-  socket.on(`wlin:socket1`, function (data) {
+  socket.on(`wlincheckin`, function (data) {
     console.log(data);
     DeviceEventEmitter.emit(`${listNameApi[i]}Delete`, data);
   });
