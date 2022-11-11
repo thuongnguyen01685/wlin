@@ -13,6 +13,7 @@ import {
   Dimensions,
   TouchableHighlight,
   ActivityIndicator,
+  BackHandler,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -24,6 +25,8 @@ import {
 } from "../../redux/actions/authAction";
 import { getNotify } from "../../redux/actions/notifyAction";
 import Lottie from "lottie-react-native";
+import { Admin } from "../../utils/AccessPermission";
+import ModalALertPermission from "../../components/modal/ModalALertPermission";
 // import {
 //   CirclesLoader,
 //   PulseLoader,
@@ -42,6 +45,8 @@ const Splash = () => {
   const dispatch = useDispatch();
   const { auth } = useSelector((state) => state);
 
+  const [showAlertPermission, setShowAlertPermission] = useState(false);
+
   useEffect(() => {
     const it = async () => {
       const token = await AsyncStorage.getItem("@token_key");
@@ -50,15 +55,29 @@ const Splash = () => {
         if (token) {
           await dispatch({ type: AUTH.TOKEN, payload: token });
           const res = await dispatch(getProfileAction(token));
+
           if (res) {
-            dispatch(getPermissionAction(token, res));
-            const goi = await dispatch(getRankAction(token, res));
-            dispatch({ type: AUTH.GOI, payload: goi });
-            dispatch(getCustomerWlinAction(token, res));
+            const access = await dispatch(getPermissionAction(token, res));
+
+            if (access !== Admin) {
+              const goi = await dispatch(getRankAction(token, res));
+
+              dispatch({ type: AUTH.GOI, payload: goi });
+              dispatch(getCustomerWlinAction(token, res));
+              if (goi) {
+                navigation.navigate("TabBar");
+              } else {
+                setShowAlertPermission(true);
+              }
+            } else {
+              const goi = await dispatch(getRankAction(token, res));
+              dispatch({ type: AUTH.GOI, payload: goi });
+              dispatch(getCustomerWlinAction(token, res));
+              navigation.navigate("TabBar");
+            }
           }
           dispatch(getNotify(token));
           setLoading(false);
-          navigation.navigate("TabBar");
         } else {
           setLoading(false);
           navigation.navigate("Wellcome");
@@ -129,6 +148,13 @@ const Splash = () => {
             loop
           /> */}
           {loading && <ActivityIndicator size="large" color="#00ff00" />}
+
+          {showAlertPermission && (
+            <ModalALertPermission
+              showAlertPermission={showAlertPermission}
+              setShowAlertPermission={setShowAlertPermission}
+            />
+          )}
         </View>
       </LinearGradient>
     </View>

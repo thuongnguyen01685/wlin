@@ -36,7 +36,7 @@ const EventingRoute = () => {
 
   const handleDetail = (_id) => {
     dispatch(getDetailEventsAction(_id, auth.token));
-    navigation.navigate("DetailEvents");
+    navigation.navigate("DetailEvents", { _id: _id });
   };
 
   let dateNow = new Date();
@@ -50,7 +50,7 @@ const EventingRoute = () => {
 
   const dayname = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
 
-  const eventing = event.getEvents.filter(
+  const eventing = event?.getEvents?.filter(
     (item) =>
       new Date(formatDateDisplays(item.ngay_su_kien)).getTime() >
       new Date(dayNow).getTime()
@@ -98,7 +98,7 @@ const EventingRoute = () => {
             height: "100%",
             marginBottom: "75%",
           }}>
-          {eventing.length > 0 ? (
+          {eventing?.length > 0 ? (
             eventing.map((item) => (
               <TouchableOpacity
                 key={item._id}

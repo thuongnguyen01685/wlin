@@ -188,14 +188,12 @@ const Login = () => {
               }}>
               <CheckBox
                 center
-                heckedColor="#00ff00"
-                checkedIcon="dot-circle-o"
-                uncheckedIcon="circle-o"
+                checkedColor="#9D85F2"
                 checked={checked}
                 onPress={() => setChecked(!checked)}
               />
 
-              <Text style={{ fontSize: 12 }}>
+              <Text style={{ fontSize: 12, left: -15 }}>
                 Đồng ý với{" "}
                 <Text style={{ color: "#9D85F2" }}>điều khoản & điều kiện</Text>
               </Text>

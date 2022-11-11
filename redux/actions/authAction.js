@@ -64,7 +64,9 @@ export const getPermissionAction = (token, email) => async (dispatch) => {
       `participant?access_token=99948964514082317ffa726a93be7b89&q={"email": "${email}"}&limit=1000`
     );
 
-    dispatch({ type: AUTH.PERSSION, payload: res.data });
+    dispatch({ type: AUTH.PERSSION, payload: res.data[0] });
+
+    return res.data[0].group_id;
   } catch (error) {
     console.log(error);
   }
@@ -93,7 +95,7 @@ export const getCustomerWlinAction = (token, phone) => async (dispatch) => {
 export const getRankAction = (token, email) => async (dispatch) => {
   try {
     const res = await callApis(
-      `customer?access_token=${token}&q={"ma_kh": "${email}"}`
+      `customer?access_token=flex.public.token&q={"of_user":"${email}"}`
     );
 
     const getRankMember = await callApis(

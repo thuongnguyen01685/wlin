@@ -3,7 +3,7 @@ import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
-import React, { Component, useRef, useState } from "react";
+import React, { Component, useEffect, useRef, useState } from "react";
 import {
   View,
   Text,
@@ -32,6 +32,7 @@ import {
 import { URL } from "../../utils/fetchApi";
 import ModalChoosePayment from "../../components/modal/ModalChoosePayment";
 import { Admin, Partner } from "../../utils/AccessPermission";
+import { getDetailEventsAction } from "../../redux/actions/eventsAction";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
@@ -41,7 +42,7 @@ const wait = (timeout) => {
 };
 
 // create a component
-const DetailEvents = () => {
+const DetailEvents = ({ route }) => {
   const navigation = useNavigation();
   const [refreshing, setRefreshing] = useState(false);
   const [modalSuccess, setModalSuccess] = useState(false);
@@ -50,11 +51,17 @@ const DetailEvents = () => {
 
   const { auth, event } = useSelector((state) => state);
 
+  useEffect(() => {
+    setRefreshing(true);
+    dispatch(getDetailEventsAction(route.params._id, auth.token));
+    setRefreshing(false);
+  }, []);
+
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-
+    dispatch(getDetailEventsAction(route.params._id, auth.token));
     wait(2000).then(() => setRefreshing(false));
-  }, [dispatch]);
+  }, []);
 
   let dateEvent = new Date(formatDateDisplays(event.detailEvent.ngay_su_kien));
   let year = dateEvent.getFullYear();

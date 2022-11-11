@@ -17,6 +17,7 @@ import {
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  AUTH,
   getCustomerWlinAction,
   getPermissionAction,
   getProfileAction,
@@ -25,11 +26,15 @@ import {
 } from "../../redux/actions/authAction";
 import { getNotify } from "../../redux/actions/notifyAction";
 import ModalSms from "../../components/ModalSms";
+import { Admin } from "../../utils/AccessPermission";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
 const ratio = w / 720;
 
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
 // create a component
 const Otp = ({ route }) => {
   const [value, setValue] = useState("");
@@ -40,6 +45,7 @@ const Otp = ({ route }) => {
   const navigation = useNavigation();
   const [checked, setChecked] = useState(false);
   const [modalSms, setModalSms] = useState(false);
+  const [showAlertPermission, setShowAlertPermission] = useState(false);
 
   //animated
   const [status, setStatus] = useState(null);
@@ -108,16 +114,36 @@ const Otp = ({ route }) => {
       const res = await dispatch(getTokenAction(auth.otp._id, auth.otp.otp));
 
       if (res) {
-        dispatch(getProfileAction(res.token));
+        // dispatch(getProfileAction(res.token));
         dispatch(getNotify(res.token));
-        dispatch(getCustomerWlinAction(res.token, route.params.value));
-        dispatch(getPermissionAction(res.token, route.params.value));
-        dispatch(getRankAction(res.token, route.params.value));
+        // dispatch(getCustomerWlinAction(res.token, route.params.value));
+        // dispatch(getPermissionAction(res.token, route.params.value));
+        // dispatch(getRankAction(res.token, route.params.value));
         setStatus("success");
         popIn();
-        setTimeout(() => {
-          navigation.navigate("TabBar");
-        }, 1000);
+
+        const resPhone = await dispatch(getProfileAction(res.token));
+        if (resPhone) {
+          const access = await dispatch(
+            getPermissionAction(res.token, resPhone)
+          );
+
+          if (access !== Admin) {
+            const goi = await dispatch(getRankAction(res.token, resPhone));
+            dispatch({ type: AUTH.GOI, payload: goi });
+            dispatch(getCustomerWlinAction(token, resPhone));
+            if (goi) {
+              wait(500).then(() => navigation.navigate("TabBar"));
+            } else {
+              setShowAlertPermission(true);
+            }
+          } else {
+            const goi = await dispatch(getRankAction(res.token, resPhone));
+            dispatch({ type: AUTH.GOI, payload: goi });
+            dispatch(getCustomerWlinAction(res.token, resPhone));
+            wait(500).then(() => navigation.navigate("TabBar"));
+          }
+        }
       }
     } else {
       setStatus("fail");
