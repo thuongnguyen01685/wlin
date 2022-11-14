@@ -160,7 +160,7 @@ const Home = () => {
 
   const handleDetail = (_id) => {
     dispatch(getDetailEventsAction(_id, auth.token));
-    navigation.navigate("DetailEvents");
+    navigation.navigate("DetailEvents", { _id: _id });
   };
 
   const images = eventing?.map((item) => item);
@@ -180,7 +180,7 @@ const Home = () => {
             width: "93%",
             height: 150,
             borderRadius: 10,
-            opacity: 0.5,
+            opacity: 0.8,
             backgroundColor: "#474747",
           }}
           source={{

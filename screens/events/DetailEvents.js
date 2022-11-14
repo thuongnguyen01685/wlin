@@ -163,9 +163,8 @@ const DetailEvents = ({ route }) => {
                     width: "100%",
                     height: 180,
                     borderRadius: 8,
-                    opacity: 0.5,
+                    opacity: 0.8,
                     backgroundColor: "#474747",
-                    resizeMode: "contain",
                   }}
                 />
                 <View
