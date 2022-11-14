@@ -23,7 +23,7 @@ export const getdataApiClub = async (url, auth, page, permission) => {
   //Hoi viens
   if (permission === Member) {
     const res = await axios.get(
-      `${URL}/api/${id_app}/${url}?access_token=${auth.token}&limit=1000&q={"ds_thanh_vien":{"$elemMatch":{"ma_kh":"${auth.profile.email}"}}}`
+      `${URL}/api/${id_app}/${url}?access_token=flex.public.token&limit=1000&q={"ds_thanh_vien":{"$elemMatch":{"ma_kh":"${auth.profile.email}"}}}`
     );
     return res;
   }

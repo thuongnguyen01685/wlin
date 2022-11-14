@@ -3,7 +3,7 @@ import { EVENTS } from "../actions/eventsAction";
 const initialState = {
   getEvents: [],
   detailEvent: [],
-  news: [],
+  socketCheckin: [],
 };
 
 const eventReducer = (state = initialState, action) => {
@@ -18,10 +18,10 @@ const eventReducer = (state = initialState, action) => {
         ...state,
         detailEvent: action.payload,
       };
-    case EVENTS.NEWSEVENTS:
+    case EVENTS.SOCKETCHECKIN:
       return {
         ...state,
-        news: action.payload,
+        socketCheckin: action.payload,
       };
     default:
       return state;

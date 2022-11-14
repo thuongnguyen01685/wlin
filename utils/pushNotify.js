@@ -201,8 +201,7 @@ export const initSocket = async (token, email) => {
   }
 
   socket.on(`wlincheckin`, function (data) {
-    console.log(data);
-    DeviceEventEmitter.emit(`${listNameApi[i]}Delete`, data);
+    DeviceEventEmitter.emit(`onwlinCheck`, data);
   });
 
   function _handleNotification(notification) {
