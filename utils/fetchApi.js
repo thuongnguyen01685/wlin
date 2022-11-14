@@ -12,6 +12,7 @@ export const getdataApiClub = async (url, auth, page, permission) => {
 
     return res;
   }
+
   //partner
   if (permission === Partner) {
     const res = await axios.get(
