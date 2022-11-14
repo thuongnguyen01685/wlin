@@ -5,6 +5,7 @@ export const EVENTS = {
   GETEVENTS: "GETEVENTS",
   DETAILEVENTS: "DETAILEVENTS",
   NEWSEVENTS: "NEWSEVENTS",
+  SOCKETCHECKIN: "SOCKETCHECKIN",
 };
 
 export const getEventsAction =
@@ -42,24 +43,10 @@ export const getDetailEventsAction = (_id, token) => async (dispatch) => {
 export const checkEventAction =
   (eventParticipant, token, ma_kh) => async (dispatch) => {
     try {
-      const item = eventParticipant.ds_tham_gia.filter(
-        (item) => item.ma_kh === ma_kh
-      );
-
-      const eventPut = eventParticipant.ds_tham_gia.filter(
-        (item) => item.ma_kh !== ma_kh
-      );
-
-      const ds_tham_gia = [{ ...item[0], trang_thai_checkin: 1 }, ...eventPut];
-
-      delete eventParticipant.attends;
-
       const res = await callApis(
-        `dmsukien/${eventParticipant._id}?access_token=${token}`,
-        "PUT",
-        { ...eventParticipant, ds_tham_gia }
+        `sukienappwlin?access_token=flex.public.token&ma_kh=${ma_kh}&ma_su_kien=${eventParticipant.ma_su_kien}&loai_su_kien=1`
       );
-
+      // dispatch({ type: EVENTS.SOCKETCHECKIN, payload: res.data });
       return res.data;
     } catch (error) {
       console.log(error);
@@ -69,31 +56,11 @@ export const checkEventAction =
 export const checkPayFeeAction =
   (eventParticipant, token, ma_kh, PTPAY) => async (dispatch) => {
     try {
-      const item = eventParticipant.ds_tham_gia.filter(
-        (item) => item.ma_kh === ma_kh
-      );
-
-      const eventPut = eventParticipant.ds_tham_gia.filter(
-        (item) => item.ma_kh !== ma_kh
-      );
-
-      delete eventParticipant.attends;
-
       if (PTPAY === "tienmat") {
-        const ds_tham_gia = [{ ...item[0], trang_thai_tt: 1 }, ...eventPut];
         const res = await callApis(
-          `dmsukien/${eventParticipant._id}?access_token=${token}`,
-          "PUT",
-          { ...eventParticipant, ds_tham_gia }
+          `sukienappwlin?access_token=flex.public.token&ma_kh=${ma_kh}&ma_su_kien=${eventParticipant.ma_su_kien}&loai_su_kien=2&pt_thanh_toan=TM`
         );
         return res.data;
-      } else {
-        // const ds_tham_gia = [{ ...item[0], trang_thai_tt: 1 }, ...eventPut];
-        // const res = await callApis(
-        //   `dmsukien/${eventParticipant._id}?access_token=${token}`,
-        //   "PUT",
-        //   { ...eventParticipant, ds_tham_gia }
-        // );
       }
     } catch (error) {
       console.log(error);
@@ -103,24 +70,16 @@ export const checkPayFeeAction =
 export const checkPayImage =
   (eventParticipant, token, ma_kh, temp) => async (dispatch) => {
     try {
-      const item = eventParticipant.ds_tham_gia.filter(
-        (item) => item.ma_kh === ma_kh
-      );
-
-      const eventPut = eventParticipant.ds_tham_gia.filter(
-        (item) => item.ma_kh !== ma_kh
-      );
-
-      delete eventParticipant.attends;
-
-      const ds_tham_gia = [
-        { ...item[0], trang_thai_tt: 1, picture_tt: JSON.parse(temp).image },
-        ...eventPut,
-      ];
       const res = await callApis(
-        `dmsukien/${eventParticipant._id}?access_token=${token}`,
-        "PUT",
-        { ...eventParticipant, ds_tham_gia }
+        `sukienappwlin?access_token=${token}`,
+        "POST",
+        {
+          ma_kh,
+          ma_su_kien: eventParticipant.ma_su_kien,
+          loai_su_kien: 2,
+          hinh_anh: JSON.parse(temp).image,
+          pt_thanh_toan: "CK",
+        }
       );
       return res.data;
     } catch (error) {

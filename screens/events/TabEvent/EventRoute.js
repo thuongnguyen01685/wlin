@@ -35,7 +35,7 @@ const EventRoute = () => {
 
   const handleDetail = (_id) => {
     dispatch(getDetailEventsAction(_id, auth.token));
-    navigation.navigate("DetailEvents");
+    navigation.navigate("DetailEvents", { _id: _id });
   };
 
   let dateNow = new Date();

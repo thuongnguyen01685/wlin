@@ -123,15 +123,12 @@ const Otp = ({ route }) => {
         popIn();
 
         const resPhone = await dispatch(getProfileAction(res.token));
+        const access = await dispatch(getPermissionAction(res.token, resPhone));
         if (resPhone) {
-          const access = await dispatch(
-            getPermissionAction(res.token, resPhone)
-          );
-
           if (access !== Admin) {
             const goi = await dispatch(getRankAction(res.token, resPhone));
             dispatch({ type: AUTH.GOI, payload: goi });
-            dispatch(getCustomerWlinAction(token, resPhone));
+            dispatch(getCustomerWlinAction(res.token, resPhone));
             if (goi) {
               wait(500).then(() => navigation.navigate("TabBar"));
             } else {

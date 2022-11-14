@@ -114,6 +114,7 @@ const Home = () => {
     return true;
   };
   useEffect(() => {
+    setRefreshing(true);
     if (auth.token) {
       dispatch(getProfileAction(auth.token));
       dispatch(getNotify(auth.token));
@@ -128,6 +129,7 @@ const Home = () => {
       dispatch(getEventsAction(auth, arrayClub, auth.permission.group_id));
     }
     it();
+    setRefreshing(false);
   }, [dispatch, auth.profile.email, auth.permission.group_id]);
 
   useEffect(() => {
@@ -382,6 +384,7 @@ const Home = () => {
                   }}>
                   Sự kiện sắp diễn ra
                 </Text>
+
                 <TouchableOpacity
                   onPress={() => {
                     navigation.navigate("EventsScreen");

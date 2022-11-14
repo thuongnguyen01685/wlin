@@ -63,7 +63,9 @@ const DetailEvents = ({ route }) => {
     wait(2000).then(() => setRefreshing(false));
   }, []);
 
-  let dateEvent = new Date(formatDateDisplays(event.detailEvent.ngay_su_kien));
+  let dateEvent = new Date(
+    formatDateDisplays(event?.detailEvent?.ngay_su_kien)
+  );
   let year = dateEvent.getFullYear();
   let month = dateEvent.getMonth() + 1;
   let day = dateEvent.getDate();
@@ -156,7 +158,7 @@ const DetailEvents = ({ route }) => {
               }}>
               <View style={{ marginHorizontal: 15 }}>
                 <Image
-                  source={{ uri: `${URL}${event.detailEvent.hinh_anh}` }}
+                  source={{ uri: `${URL}${event.detailEvent?.hinh_anh}` }}
                   style={{
                     width: "100%",
                     height: 180,
@@ -185,7 +187,7 @@ const DetailEvents = ({ route }) => {
                       fontWeight: "600",
                       color: "#ffffff",
                     }}>
-                    {event.detailEvent.ten_su_kien}
+                    {event.detailEvent?.ten_su_kien}
                   </Text>
                 </View>
               </View>
@@ -273,7 +275,7 @@ const DetailEvents = ({ route }) => {
                   </View>
 
                   <Text style={{ fontSize: 10, marginLeft: 2 }}>
-                    {event.detailEvent.ds_tham_gia
+                    {event.detailEvent?.ds_tham_gia
                       ? event.detailEvent.ds_tham_gia.length
                       : 0}{" "}
                     người tham gia
@@ -347,7 +349,7 @@ const DetailEvents = ({ route }) => {
                       color: "#ffffff",
                       left: 5,
                     }}>
-                    {formatTimeDisplay(event.detailEvent.ngay_su_kien)}
+                    {formatTimeDisplay(event.detailEvent?.ngay_su_kien)}
                   </Text>
                 </View>
               </LinearGradient>
@@ -365,7 +367,7 @@ const DetailEvents = ({ route }) => {
                     paddingHorizontal: 10,
                   }}>
                   <Text style={styles.headerContent}>
-                    {event.detailEvent.dia_diem}
+                    {event.detailEvent?.dia_diem}
                   </Text>
 
                   <View>
@@ -408,7 +410,7 @@ const DetailEvents = ({ route }) => {
                   <Text style={styles.headerText}>Thời gian</Text>
                   <Text style={styles.headerText}>Nội dung chương trình</Text>
                 </View>
-                {event.detailEvent.noi_dung &&
+                {event.detailEvent?.noi_dung &&
                   event.detailEvent.noi_dung.map((item, index) => (
                     <View
                       style={{
@@ -469,7 +471,7 @@ const DetailEvents = ({ route }) => {
               </View>
 
               <View style={styles.conText}>
-                {event.detailEvent.cs_ve &&
+                {event.detailEvent?.cs_ve &&
                   event.detailEvent.cs_ve.map((item) => (
                     <Text style={styles.bodyContent} key={item.line}>
                       {item.loai_ve}:{" "}

@@ -19,10 +19,13 @@ import * as Clipboard from "expo-clipboard";
 import QRCode from "react-native-qrcode-svg";
 import HeaderPart from "../../components/HeaderPart/HeaderPart";
 
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import QRAdmin from "./QR/QRAdmin";
 import PushImage from "./PushImage";
 import { Admin } from "../../utils/AccessPermission";
+import { EVENTS } from "../../redux/actions/eventsAction";
+import ModalFailCheck from "../../components/modal/ModalFailCheck";
+import ModalSuccessCheckGuest from "../../components/modal/ModalSuccessCheckGuest";
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
 const ratio = w / 720;
@@ -31,14 +34,19 @@ const ratio = w / 720;
 const CheckQR = () => {
   const navigation = useNavigation();
   const { auth, event } = useSelector((state) => state);
+  const dispatch = useDispatch();
   const [showTakePicture, setShowTakePicture] = useState(false);
+  const [modalCheckGuestSuccess, setModalCheckGuestSuccess] = useState(false);
+  const [modalFail, setModalFail] = useState(false);
 
   useEffect(() => {
-    DeviceEventEmitter.addListener("dmsukienUpdate", async (data) => {
-      // await dispatch(
-      //   getCheckedEvent(value ? JSON.parse(value).token : "flex.public.token")
-      // );
-      console.log(data, "1");
+    DeviceEventEmitter.addListener("onwlinCheck", async (data) => {
+      if (data) {
+        dispatch({ type: EVENTS.SOCKETCHECKIN, payload: data });
+        setModalCheckGuestSuccess(true);
+      } else {
+        setModalFail(true);
+      }
     });
   }, []);
   return (
@@ -55,7 +63,6 @@ const CheckQR = () => {
           },
           shadowOpacity: 0.25,
           shadowRadius: 3.84,
-
           elevation: 5,
           zIndex: 3,
           marginTop: -50,
@@ -185,6 +192,16 @@ const CheckQR = () => {
               showTakePicture={showTakePicture}
               setShowTakePicture={setShowTakePicture}
             />
+          )}
+
+          {modalCheckGuestSuccess && (
+            <ModalSuccessCheckGuest
+              modalCheckGuestSuccess={modalCheckGuestSuccess}
+              setModalCheckGuestSuccess={setModalCheckGuestSuccess}
+            />
+          )}
+          {modalFail && (
+            <ModalFailCheck modalFail={modalFail} setModalFail={setModalFail} />
           )}
         </ScrollView>
       </View>
