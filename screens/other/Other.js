@@ -205,7 +205,7 @@ const Other = () => {
                           style={{
                             color: "#474747",
                             fontSize: 15,
-                            fontWeight: "600",
+                            fontWeight: "800",
                           }}>
                           {item.name}
                         </Text>

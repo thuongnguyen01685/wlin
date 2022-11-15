@@ -175,9 +175,11 @@ const Profile = () => {
     await dispatch(getProfileAction(auth.token));
   };
 
+  const initStyle = Platform.OS === "ios" ? 20 : insets.top;
+
   const headerHeight = animatedValue.interpolate({
     inputRange: [0, HEADER_HEIGHT + insets.top],
-    outputRange: [HEADER_HEIGHT + insets.top, insets.top + 30],
+    outputRange: [HEADER_HEIGHT + initStyle, insets.top + 30],
     extrapolate: "clamp",
   });
 

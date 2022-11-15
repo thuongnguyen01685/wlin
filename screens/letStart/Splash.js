@@ -58,22 +58,29 @@ const Splash = () => {
 
           if (res) {
             const access = await dispatch(getPermissionAction(token, res));
+            if (access) {
+              if (access !== Admin) {
+                const goi = await dispatch(getRankAction(token, res));
 
-            if (access !== Admin) {
-              const goi = await dispatch(getRankAction(token, res));
-
-              dispatch({ type: AUTH.GOI, payload: goi });
-              dispatch(getCustomerWlinAction(token, res));
-              if (goi) {
-                navigation.navigate("TabBar");
+                dispatch({ type: AUTH.GOI, payload: goi });
+                dispatch(getCustomerWlinAction(token, res));
+                if (goi) {
+                  navigation.navigate("TabBar");
+                } else {
+                  setShowAlertPermission(true);
+                }
               } else {
-                setShowAlertPermission(true);
+                const goi = await dispatch(getRankAction(token, res));
+                dispatch({ type: AUTH.GOI, payload: goi });
+                dispatch(getCustomerWlinAction(token, res));
+                navigation.navigate("TabBar");
               }
             } else {
-              const goi = await dispatch(getRankAction(token, res));
-              dispatch({ type: AUTH.GOI, payload: goi });
-              dispatch(getCustomerWlinAction(token, res));
-              navigation.navigate("TabBar");
+              await AsyncStorage.removeItem("@token_key");
+
+              // console.log("Token removed");
+              await dispatch({ type: AUTH.TOKEN, payload: null });
+              await dispatch({ type: AUTH.PROFILE, payload: [] });
             }
           }
           dispatch(getNotify(token));

@@ -291,6 +291,17 @@ const ModalNotify = (props) => {
                           color="#F2AF4A"
                           style={{ marginRight: 10 }}
                         />
+                        <View
+                          style={{
+                            height: 2,
+                            width: 2,
+                            padding: 4,
+                            backgroundColor: "#CB0505",
+                            borderRadius: 50,
+                            position: "absolute",
+                            top: 4,
+                            left: 17,
+                          }}></View>
                       </View>
                       <View style={styles.detailNews}>
                         <View>
@@ -353,6 +364,7 @@ const ModalNotify = (props) => {
             justifyContent: "center",
             alignContent: "center",
             alignItems: "center",
+            top: 10,
           }}>
           {/* <TouchableOpacity onPress={handleDeleteAllNo}>
             <Text
