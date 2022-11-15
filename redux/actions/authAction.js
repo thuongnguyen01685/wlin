@@ -61,7 +61,7 @@ export const getProfileAction = (token) => async (dispatch) => {
 export const getPermissionAction = (token, email) => async (dispatch) => {
   try {
     const res = await callApis(
-      `participant?access_token=99948964514082317ffa726a93be7b89&q={"email": "${email}"}&limit=1000`
+      `participant?access_token=flex.public.token&q={"email": "${email}"}&limit=1000`
     );
 
     dispatch({ type: AUTH.PERSSION, payload: res.data[0] });

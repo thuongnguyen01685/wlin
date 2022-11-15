@@ -16,6 +16,7 @@ import {
   Animated,
   BackHandler,
   RefreshControl,
+  Platform,
 } from "react-native";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -86,12 +87,15 @@ const Home = () => {
       new Date(dayNow).getTime()
   );
 
+  const initStyle = Platform.OS === "ios" ? 20 : insets.top;
+
   const headerHeight = animatedValue.interpolate({
     inputRange: [0, HEADER_HEIGHT + insets.top],
-    outputRange: [HEADER_HEIGHT + insets.top, insets.top + 30],
+    outputRange: [HEADER_HEIGHT + initStyle, insets.top + 30],
 
     extrapolate: "clamp",
   });
+
   const backButtonHandler = () => {
     const shortToast = (message) => {
       Toast.show(message, {

@@ -71,6 +71,11 @@ const DetailEvents = ({ route }) => {
   let day = dateEvent.getDate();
   let dayofweek = dateEvent.getDay();
 
+  const countParticipant = event.detailEvent?.ds_tham_gia?.filter(
+    (item) =>
+      item.trang_thai_checkin === "1" && item.ma_kh === `${auth.profile.email}`
+  );
+
   const dayname = [
     "Chủ nhật",
     "Thứ 2",
@@ -194,8 +199,12 @@ const DetailEvents = ({ route }) => {
               <View
                 style={{
                   flexDirection: "row",
-                  justifyContent: "space-around",
+                  justifyContent:
+                    auth.permission.group_id == Admin
+                      ? "space-between"
+                      : "space-around",
                   marginTop: 10,
+                  marginHorizontal: auth.permission.group_id == Admin ? 15 : 0,
                 }}>
                 <TouchableOpacity
                   style={{
@@ -215,25 +224,45 @@ const DetailEvents = ({ route }) => {
                     Hội thảo
                   </Text>
                 </TouchableOpacity>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}>
-                  <Image source={require("../../assets/a4.png")} />
-                  <Text
-                    style={{ fontSize: 10, color: "#b0b0b0", marginLeft: 2 }}>
-                    Bạn chưa tham gia
-                  </Text>
-                </View>
+                {auth.permission.group_id !== Admin && (
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      borderRadius: 50,
+                    }}>
+                    <Image
+                      source={{ uri: `${URL}${auth.profile.picture}` }}
+                      style={{ width: 20, height: 20, borderRadius: 50 }}
+                    />
+                    <Text
+                      style={{
+                        fontSize: 12,
+                        color: "#b0b0b0",
+                        marginLeft: 5,
+                        fontWeight: "600",
+                      }}>
+                      {countParticipant?.length === 1
+                        ? "Bạn đã tham gia"
+                        : " Bạn chưa tham gia"}
+                    </Text>
+                  </View>
+                )}
+
                 <TouchableOpacity
                   style={{
                     flexDirection: "row",
                     justifyContent: "space-between",
                     alignItems: "center",
                   }}
-                  onPress={() => navigation.navigate("ListParticipant")}>
+                  onPress={
+                    auth.permission.group_id === Admin
+                      ? () => navigation.navigate("ListParticipant")
+                      : () => {
+                          return;
+                        }
+                  }>
                   <View
                     style={{
                       flexDirection: "row",
@@ -280,11 +309,13 @@ const DetailEvents = ({ route }) => {
                     người tham gia
                   </Text>
 
-                  <Ionicons
-                    name="arrow-forward-outline"
-                    color="#9D85F2"
-                    size={20}
-                  />
+                  {auth.permission.group_id === Admin && (
+                    <Ionicons
+                      name="arrow-forward-outline"
+                      color="#9D85F2"
+                      size={20}
+                    />
+                  )}
                 </TouchableOpacity>
               </View>
             </View>
@@ -356,6 +387,7 @@ const DetailEvents = ({ route }) => {
                 style={{
                   flexDirection: "row",
                   alignItems: "center",
+                  marginVertical: 5,
                 }}>
                 <View>
                   <Ionicons name="location" size={30} color="#E51104" />
@@ -434,7 +466,6 @@ const DetailEvents = ({ route }) => {
                       <View
                         style={{
                           paddingLeft: 10,
-
                           width: "75%",
                         }}>
                         <View
@@ -473,8 +504,13 @@ const DetailEvents = ({ route }) => {
                 {event.detailEvent?.cs_ve &&
                   event.detailEvent.cs_ve.map((item) => (
                     <Text style={styles.bodyContent} key={item.line}>
-                      {item.loai_ve}:{" "}
-                      {item.gia_ve && formatCash(item.gia_ve.toString(10))} VND
+                      {item.loai_ve === "free"
+                        ? "Miễn phí"
+                        : item.loai_ve === "member"
+                        ? "Hội viên"
+                        : item.loai_ve === "guest" && "Khách mời"}
+                      : {item.gia_ve && formatCash(item.gia_ve.toString(10))}{" "}
+                      VND
                     </Text>
                   ))}
               </View>

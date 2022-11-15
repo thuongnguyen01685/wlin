@@ -95,21 +95,20 @@ const CheckQR = () => {
                   <Text
                     style={{
                       textAlign: "center",
-                      fontSize: 15,
-                      fontWeight: "600",
+                      fontSize: 20,
+                      fontWeight: "800",
                     }}>
                     Mã QR của bạn
                   </Text>
                 </View>
-                {/* <Image
-                  source={require("../../assets/QRFigma.png")}
-                  style={{ resizeMode: "contain", width: "60%", height: 300 }}
-                /> */}
-                <QRCode
-                  value={auth.profile.email}
-                  //logo={require("../../assets/QRFigma.png")}
-                  size={200}
-                />
+                <View style={{ marginVertical: 10 }}>
+                  <QRCode
+                    value={auth.profile.email}
+                    //logo={require("../../assets/QRFigma.png")}
+                    size={250}
+                  />
+                </View>
+
                 <View>
                   <Text
                     style={{
@@ -125,7 +124,7 @@ const CheckQR = () => {
                     style={{
                       textAlign: "center",
                       fontSize: 15,
-                      fontWeight: "600",
+                      fontWeight: "800",
                     }}>
                     Mã hội viên
                   </Text>
@@ -146,7 +145,7 @@ const CheckQR = () => {
                           fontWeight: "300",
                           color: "#474747",
                         }}>
-                        3RWXO1
+                        {auth.profile.email}
                       </Text>
                       <TouchableOpacity
                         style={{
@@ -159,7 +158,7 @@ const CheckQR = () => {
                           paddingHorizontal: 20,
                         }}
                         onPress={() => {
-                          Clipboard.setString("3RWXO1");
+                          Clipboard.setString(`${auth.profile.email}`);
                           ToastAndroid.showWithGravityAndOffset(
                             "Sao chép thành công !",
                             ToastAndroid.SHORT,

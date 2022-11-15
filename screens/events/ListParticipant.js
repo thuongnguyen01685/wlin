@@ -385,77 +385,94 @@ const Paid = () => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
         <View style={{ marginBottom: "80%" }}>
-          {dataEvents.map((item, index) => (
-            <TouchableOpacity
-              key={index}
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                backgroundColor: "#ffffff",
-                marginVertical: 10,
-                borderRadius: 15,
-                paddingVertical: 5,
-                marginHorizontal: 10,
-                paddingHorizontal: 10,
-                borderWidth: 0.5,
-                borderColor: "#dadada",
-              }}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}>
-                {/* <View>
+          {event.detailEvent?.ds_tham_gia.length > 0 ? (
+            event.detailEvent?.ds_tham_gia
+              .filter((items) => items.trang_thai_tt === "1")
+              .map((item, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    backgroundColor: "#ffffff",
+                    marginVertical: 10,
+                    borderRadius: 15,
+                    paddingVertical: 5,
+                    marginHorizontal: 10,
+                    paddingHorizontal: 10,
+                    borderWidth: 0.5,
+                    borderColor: "#dadada",
+                  }}>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}>
+                    {/* <View>
                   <CheckBox value={item.check} onValueChange={setSelection} />
                 </View> */}
-                <View style={{ flexDirection: "row", marginHorizontal: 10 }}>
-                  <Image
-                    source={item.picture}
-                    style={{ width: 70, height: 70 }}
-                  />
-                </View>
+                    <View
+                      style={{ flexDirection: "row", marginHorizontal: 10 }}>
+                      <Image
+                        source={item.picture}
+                        style={{ width: 70, height: 70 }}
+                      />
+                    </View>
 
-                <View
-                  style={{
-                    flexDirection: "column",
-                    justifyContent: "space-between",
-                  }}>
-                  <Text
+                    <View
+                      style={{
+                        flexDirection: "column",
+                        justifyContent: "space-between",
+                      }}>
+                      <Text
+                        style={{
+                          color: "#474747",
+                          fontSize: 18,
+                          fontWeight: "600",
+                        }}>
+                        {item.namePaticipant}
+                      </Text>
+                      <Text
+                        style={{
+                          color: "#000000",
+                          fontSize: 10,
+                          fontWeight: "600",
+                        }}>
+                        {item.position}
+                      </Text>
+                    </View>
+                  </View>
+                  <View
                     style={{
-                      color: "#474747",
-                      fontSize: 18,
-                      fontWeight: "600",
+                      flexDirection: "row",
+                      justifyContent: "space-around",
+                      width: "20%",
                     }}>
-                    {item.namePaticipant}
-                  </Text>
-                  <Text
-                    style={{
-                      color: "#000000",
-                      fontSize: 10,
-                      fontWeight: "600",
-                    }}>
-                    {item.position}
-                  </Text>
-                </View>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-around",
-                  width: "20%",
-                }}>
-                <TouchableOpacity>
-                  <Ionicons
-                    name="alert-circle-outline"
-                    size={20}
-                    color="#9D85F2"
-                  />
+                    <TouchableOpacity>
+                      <Ionicons
+                        name="alert-circle-outline"
+                        size={20}
+                        color="#9D85F2"
+                      />
+                    </TouchableOpacity>
+                  </View>
                 </TouchableOpacity>
-              </View>
-            </TouchableOpacity>
-          ))}
+              ))
+          ) : (
+            <View>
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontSize: 15,
+                  fontWeight: "600",
+                  marginVertical: 20,
+                }}>
+                Hiện chưa lượt thanh toán nào.
+              </Text>
+            </View>
+          )}
         </View>
       </ScrollView>
     </View>
