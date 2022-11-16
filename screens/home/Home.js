@@ -148,7 +148,6 @@ const Home = () => {
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     dispatch(getPermissionAction(auth.token, auth.profile.email));
-    dispatch(getEventsAction(auth.token));
     dispatch(getCustomerWlinAction(auth.token, auth.profile.email));
     dispatch(getBenefitAction(auth.token, auth.profile.email));
     async function it() {
@@ -159,8 +158,8 @@ const Home = () => {
       dispatch(getEventsAction(auth, arrayClub, auth.permission.group_id));
     }
     it();
-    wait(1000).then(() => setRefreshing(false));
-  }, [dispatch, auth.profile.email, auth.permission.group_id]);
+    setRefreshing(false);
+  }, [dispatch, auth.profile.email]);
 
   const handleDetail = (_id) => {
     dispatch(getDetailEventsAction(_id, auth.token));
