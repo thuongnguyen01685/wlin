@@ -70,9 +70,7 @@ const CardInfo = () => {
                   ? "#8D6B48"
                   : auth.ma_goi === "03"
                   ? "#5A54A5"
-                  : auth.ma_goi === "04"
-                  ? "#6A6A6A"
-                  : "#ffffff",
+                  : auth.ma_goi === "04" && "#6A6A6A",
               fontSize: 25,
               fontWeight: "800",
               textAlign: "center",

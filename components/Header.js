@@ -118,72 +118,57 @@ const Header = (props) => {
           </TouchableOpacity>
         )}
 
-        {auth.token ? (
-          <View style={{ left: 3, flexDirection: "row", alignItems: "center" }}>
-            <TouchableOpacity
+        <View style={{ left: 3, flexDirection: "row", alignItems: "center" }}>
+          <TouchableOpacity
+            style={{
+              width: 52,
+              height: 52,
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+              borderRadius: 50,
+              borderColor: "#ffffff",
+              borderWidth: 1.5,
+            }}
+            onPress={handleShowProfile}>
+            <View
               style={{
-                width: 52,
-                height: 52,
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
+                width: 50,
+                height: 50,
+                resizeMode: "contain",
                 borderRadius: 50,
-                borderColor: "#ffffff",
-                borderWidth: 1.5,
-              }}
-              onPress={handleShowProfile}>
-              <View
+              }}>
+              <Image
+                source={{ uri: `${URL}${auth.profile.picture}` }}
                 style={{
                   width: 50,
                   height: 50,
-                  resizeMode: "contain",
-                  borderRadius: 50,
-                }}>
-                <Image
-                  source={{ uri: `${URL}${auth.profile.picture}` }}
-                  style={{
-                    width: 50,
-                    height: 50,
-                    borderRadius: 30,
-                  }}
-                />
-              </View>
-            </TouchableOpacity>
-            <View style={{ marginLeft: 5 }}>
-              <View style={{ flexDirection: "row" }}>
-                <Text
-                  style={{
-                    color: "#FFFFFF",
-                    fontSize: 15,
-                    fontWeight: "400",
-                  }}>
-                  Chào buổi sáng
-                </Text>
-              </View>
+                  borderRadius: 30,
+                }}
+              />
+            </View>
+          </TouchableOpacity>
+          <View style={{ marginLeft: 5 }}>
+            <View style={{ flexDirection: "row" }}>
               <Text
                 style={{
                   color: "#FFFFFF",
-                  fontSize: 22,
-                  fontWeight: "600",
+                  fontSize: 15,
+                  fontWeight: "400",
                 }}>
-                {auth.profile.name}
+                Chào buổi sáng
               </Text>
             </View>
-          </View>
-        ) : (
-          <View style={{ left: 3, flexDirection: "row", alignItems: "center" }}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("Login")}
+            <Text
               style={{
-                borderRadius: 15,
-                backgroundColor: "#9D85F2",
-                paddingVertical: 8,
-                paddingHorizontal: 15,
+                color: "#FFFFFF",
+                fontSize: 22,
+                fontWeight: "600",
               }}>
-              <Text style={{ color: "#ffffff" }}>Đăng nhập</Text>
-            </TouchableOpacity>
+              {auth.profile.name}
+            </Text>
           </View>
-        )}
+        </View>
       </View>
 
       <View
