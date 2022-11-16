@@ -71,7 +71,7 @@ const ModalALertPermission = (props) => {
               textAlign: "center",
               marginVertical: 20,
             }}>
-            Vui lòng nâng cấp lên hội viên.
+            {props.content}
           </Text>
         </View>
         <View

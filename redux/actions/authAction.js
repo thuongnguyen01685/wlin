@@ -64,9 +64,9 @@ export const getPermissionAction = (token, email) => async (dispatch) => {
       `participant?access_token=flex.public.token&q={"email": "${email}"}&limit=1000`
     );
 
-    dispatch({ type: AUTH.PERSSION, payload: res.data[0] });
+    dispatch({ type: AUTH.PERSSION, payload: res?.data[0] });
 
-    return res.data[0].group_id;
+    return res?.data[0]?.group_id;
   } catch (error) {
     console.log(error);
   }

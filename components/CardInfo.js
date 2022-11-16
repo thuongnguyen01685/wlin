@@ -70,12 +70,14 @@ const CardInfo = () => {
                   ? "#8D6B48"
                   : auth.ma_goi === "03"
                   ? "#5A54A5"
-                  : auth.ma_goi === "04" && "#6A6A6A",
+                  : auth.ma_goi === "04"
+                  ? "#6A6A6A"
+                  : "#ffffff",
               fontSize: 25,
               fontWeight: "800",
               textAlign: "center",
             }}>
-            {auth.permission.name}
+            {auth.permission?.name}
           </Text>
         </View>
         <View style={{ paddingHorizontal: 10, bottom: 5 }}>

@@ -20,6 +20,7 @@ import ModalSms from "../../components/ModalSms";
 import { useDispatch, useSelector } from "react-redux";
 import { AUTH, getOTP } from "../../redux/actions/authAction";
 import { CheckBox } from "@rneui/themed";
+import { getBenefitAction } from "../../redux/actions/benefitAction";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
@@ -36,6 +37,7 @@ const Login = () => {
   const [checked, setChecked] = useState(false);
   const [modalSms, setModalSms] = useState(false);
   const dispatch = useDispatch();
+  const { auth } = useSelector((state) => state);
 
   const handleGetOtp = async () => {
     const checkValid = phoneInput.current?.isValidNumber(value);
@@ -229,6 +231,21 @@ const Login = () => {
               </Text>
             </LinearGradient>
           </TouchableOpacity>
+          <View
+            style={{
+              width: "100%",
+              flexDirection: "row",
+              justifyContent: "flex-end",
+              marginRight: 15,
+            }}>
+            <TouchableOpacity
+              onPress={() => {
+                dispatch(getBenefitAction(auth.token, auth.profile.email));
+                navigation.navigate("TabBar");
+              }}>
+              <Text style={{ borderBottomWidth: 1 }}>Bỏ qua</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </ScrollView>
     </KeyboardAwareScrollView>

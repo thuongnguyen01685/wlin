@@ -58,7 +58,7 @@ const ratio = w / 720;
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
-const HEADER_HEIGHT = 140;
+
 let backHandlerClickCount = 0;
 // create a component
 const Home = () => {
@@ -68,7 +68,7 @@ const Home = () => {
   const [refreshing, setRefreshing] = useState(false);
   const animatedValue = useRef(new Animated.Value(0)).current;
   const { auth, notify, event, club, benefit } = useSelector((state) => state);
-
+  const HEADER_HEIGHT = auth.token ? 140 : 15;
   const insets = useSafeAreaInsets();
 
   let dateNow = new Date();
@@ -148,7 +148,6 @@ const Home = () => {
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     dispatch(getPermissionAction(auth.token, auth.profile.email));
-    dispatch(getEventsAction(auth.token));
     dispatch(getCustomerWlinAction(auth.token, auth.profile.email));
     dispatch(getBenefitAction(auth.token, auth.profile.email));
     async function it() {
@@ -159,15 +158,32 @@ const Home = () => {
       dispatch(getEventsAction(auth, arrayClub, auth.permission.group_id));
     }
     it();
-    wait(1000).then(() => setRefreshing(false));
-  }, [dispatch, auth.profile.email, auth.permission.group_id]);
+    setRefreshing(false);
+  }, [dispatch, auth.profile.email]);
 
   const handleDetail = (_id) => {
     dispatch(getDetailEventsAction(_id, auth.token));
     navigation.navigate("DetailEvents", { _id: _id });
   };
 
-  const images = eventing?.map((item) => item);
+  const mapImage = [
+    {
+      _id: 1,
+      hinh_anh: require("../../assets/bannerevent.png"),
+      ngay_su_kien: "2022-12-14T17:00:00.000Z",
+      ten_su_kien: "Sự kiện hợp tác WLIN",
+    },
+    {
+      _id: 2,
+      hinh_anh: require("../../assets/news.png"),
+      ngay_su_kien: "2022-12-12T17:00:00.000Z",
+      ten_su_kien: "Sự kiện tổ chức lễ 20.11",
+    },
+  ];
+
+  const images = auth.token
+    ? eventing?.map((item) => item)
+    : mapImage?.map((item) => item);
 
   const renderPage = (item, index) => {
     return (
@@ -178,7 +194,7 @@ const Home = () => {
           justifyContent: "center",
           marginVertical: 5,
         }}
-        onPress={() => handleDetail(item._id)}>
+        onPress={() => auth.token && handleDetail(item._id)}>
         <Image
           style={{
             width: "93%",
@@ -187,10 +203,15 @@ const Home = () => {
             opacity: 0.8,
             backgroundColor: "#474747",
           }}
-          source={{
-            uri: `${URL}`.concat(`${item.hinh_anh}`),
-          }}
+          source={
+            auth.token
+              ? {
+                  uri: `${URL}`.concat(`${item.hinh_anh}`),
+                }
+              : item.hinh_anh
+          }
         />
+
         <View
           style={{
             position: "absolute",
@@ -347,7 +368,7 @@ const Home = () => {
                 },
               ],
             }}>
-            <CardInfo />
+            {auth.token && <CardInfo />}
           </Animated.View>
         </Animated.View>
       )}
@@ -419,7 +440,7 @@ const Home = () => {
           {(auth.permission.group_id === Admin ||
             auth.permission.group_id === Partner) && <Chart />}
 
-          {auth.permission.group_id === Admin && (
+          {!auth.token && (
             <View style={{ marginTop: 10 }}>
               <View
                 style={{

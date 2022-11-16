@@ -27,6 +27,7 @@ import {
 import { getNotify } from "../../redux/actions/notifyAction";
 import ModalSms from "../../components/ModalSms";
 import { Admin } from "../../utils/AccessPermission";
+import ModalALertPermission from "../../components/modal/ModalALertPermission";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
@@ -151,6 +152,13 @@ const Otp = ({ route }) => {
   return (
     <KeyboardAwareScrollView style={styles.container}>
       {modalSms && <ModalSms modalSms={modalSms} setModalSms={setModalSms} />}
+      {showAlertPermission && (
+        <ModalALertPermission
+          showAlertPermission={showAlertPermission}
+          setShowAlertPermission={setShowAlertPermission}
+          content={"Vui lòng nâng cấp lên hội viên."}
+        />
+      )}
       <View
         style={{
           marginHorizontal: 20,
