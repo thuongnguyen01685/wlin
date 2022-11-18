@@ -14,6 +14,7 @@ import {
   TouchableHighlight,
   ActivityIndicator,
   BackHandler,
+  Platform,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -149,12 +150,15 @@ const Splash = () => {
             width: 100,
             Top: 20,
           }}>
-          {/* <Lottie
-            source={require("../../assets/animationloader.json")}
-            autoPlay
-            loop
-          /> */}
-          {loading && <ActivityIndicator size="large" color="#00ff00" />}
+          {Platform.OS === "ios" ? (
+            loading && <ActivityIndicator size="large" color="#00ff00" />
+          ) : (
+            <Lottie
+              source={require("../../assets/animationloader.json")}
+              autoPlay
+              loop
+            />
+          )}
 
           {showAlertPermission && (
             <ModalALertPermission

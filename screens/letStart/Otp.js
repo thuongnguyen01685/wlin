@@ -164,7 +164,7 @@ const Otp = ({ route }) => {
           marginHorizontal: 20,
           zIndex: 4,
           position: "absolute",
-          top: "10%",
+          top: "8%",
         }}>
         <TouchableOpacity
           style={{
@@ -192,9 +192,10 @@ const Otp = ({ route }) => {
         </TouchableOpacity>
         <Text
           style={{
-            color: "#826CCF",
+            color: "#ffffff",
             fontSize: 25,
             fontWeight: "600",
+            marginLeft: 15,
           }}>
           WLIN xin chào
         </Text>
@@ -244,11 +245,12 @@ const Otp = ({ route }) => {
         <ImageBackground
           source={require("../../assets/start2.png")}
           style={{
-            height: ratio * 500,
+            height: ratio * 530,
             width: w,
             position: "absolute",
-            top: "45%",
+            top: "40%",
             zIndex: 3,
+            resizeMode: "contain",
           }}
         />
       </View>
@@ -386,25 +388,19 @@ const Otp = ({ route }) => {
               justifyContent: "center",
               alignItems: "center",
               marginBottom: 30,
+              marginHorizontal: 15,
+              paddingVertical: 17,
+              borderRadius: 30,
+              backgroundColor: "#9796f0",
             }}>
-            <LinearGradient
-              start={{ x: 0, y: 0.3 }}
-              end={{ x: 1, y: 1 }}
-              colors={["#9796F0", "#FBC7D4"]}
+            <Text
               style={{
-                paddingHorizontal: 50,
-                paddingVertical: 15,
-                borderRadius: 30,
+                fontSize: 18,
+                fontWeight: "600",
+                color: "#ffffff",
               }}>
-              <Text
-                style={{
-                  fontSize: 18,
-                  fontWeight: "600",
-                  color: "#ffffff",
-                }}>
-                Tiếp tục
-              </Text>
-            </LinearGradient>
+              Tiếp tục
+            </Text>
           </TouchableOpacity>
         </ScrollView>
       </View>
@@ -422,9 +418,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
     height: "100%",
     zIndex: 4,
-    marginTop: 10,
-    borderTopRightRadius: 30,
-    borderTopLeftRadius: 30,
+    borderTopRightRadius: 50,
+    borderTopLeftRadius: 50,
+    paddingHorizontal: 15,
+    top: 18,
   },
   contentText: {
     lineHeight: 23,

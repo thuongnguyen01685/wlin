@@ -38,16 +38,15 @@ const ModalSuccessCheckGuest = (props) => {
       isVisible={props.modalCheckGuestSuccess}
       backdropColor="#C4C4C4"
       backdropOpacity={0.5}
-      onBackdropPress={handleDetailEvent}
-      style={{ paddingHorizontal: 10 }}>
+      onBackdropPress={handleDetailEvent}>
       <View
         style={{
           backgroundColor: "white",
-          borderRadius: 20,
+          borderRadius: 30,
           padding: 10,
           elevation: 5,
-          marginHorizontal: 20,
-          height: "auto",
+          marginHorizontal: 15,
+          height: "50%",
           bottom: 20,
         }}>
         <View style={{ flexDirection: "row", justifyContent: "center" }}>
@@ -55,46 +54,55 @@ const ModalSuccessCheckGuest = (props) => {
             source={require("../../assets/Chat.png")}
             style={{
               resizeMode: "contain",
-              width: 150,
-              height: 100,
-              marginVertical: 10,
+              width: 200,
+              height: 150,
+              marginVertical: 15,
             }}
           />
         </View>
-        <View>
-          <Text
-            style={{ fontSize: 18, fontWeight: "800", textAlign: "center" }}>
-            Chúc mừng
-          </Text>
-          <Text
-            style={{ fontSize: 14, fontWeight: "600", textAlign: "center" }}>
-            Bạn đã checkin sự kiện thành công
-          </Text>
-        </View>
         <View
           style={{
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
-            marginVertical: 10,
+            flexDirection: "column",
+            justifyContent: "space-around",
+            height: "50%",
+            paddingHorizontal: 20,
+            marginTop: 5,
           }}>
-          <TouchableOpacity onPress={handleDetailEvent}>
-            <LinearGradient
-              start={{ x: 0, y: 0.3 }}
-              end={{ x: 1, y: 1 }}
-              colors={["#9D85F2", "rgba(157, 133, 242, 0.4)"]}
+          <View>
+            <Text
+              style={{ fontSize: 20, fontWeight: "800", textAlign: "center" }}>
+              Chúc mừng
+            </Text>
+            <Text
               style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignContent: "center",
-                alignItems: "center",
-                borderRadius: 10,
+                fontSize: 14,
+                fontWeight: "600",
+                textAlign: "center",
+                top: 15,
               }}>
-              <View style={styles.borderBacRounded}>
-                <Text style={{ color: "#ffffff" }}>Tiếp tục</Text>
-              </View>
-            </LinearGradient>
-          </TouchableOpacity>
+              Bạn đã checkin sự kiện thành công
+            </Text>
+          </View>
+
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+            }}>
+            <TouchableOpacity
+              onPress={handleDetailEvent}
+              style={{
+                backgroundColor: "#9D85F2",
+                paddingVertical: 10,
+                borderRadius: 25,
+                width: "100%",
+              }}>
+              <Text
+                style={{ fontSize: 15, color: "#ffffff", textAlign: "center" }}>
+                Tiếp tục
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </Modal>

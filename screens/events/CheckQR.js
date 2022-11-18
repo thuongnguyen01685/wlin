@@ -38,6 +38,7 @@ const CheckQR = () => {
   const [showTakePicture, setShowTakePicture] = useState(false);
   const [modalCheckGuestSuccess, setModalCheckGuestSuccess] = useState(false);
   const [modalFail, setModalFail] = useState(false);
+  const [searchPart, setSearchPart] = useState(false);
 
   useEffect(() => {
     DeviceEventEmitter.addListener("onwlinCheck", async (data) => {
@@ -52,7 +53,7 @@ const CheckQR = () => {
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
-      <HeaderPart />
+      <HeaderPart searchPart={searchPart} />
       <View
         style={{
           backgroundColor: "#ffffff",
@@ -95,13 +96,13 @@ const CheckQR = () => {
                   <Text
                     style={{
                       textAlign: "center",
-                      fontSize: 20,
-                      fontWeight: "800",
+                      fontSize: 18,
+                      fontWeight: "600",
                     }}>
                     Mã QR của bạn
                   </Text>
                 </View>
-                <View style={{ marginVertical: 10 }}>
+                <View style={{ marginVertical: 15 }}>
                   <QRCode
                     value={auth.profile.email}
                     //logo={require("../../assets/QRFigma.png")}
@@ -113,18 +114,18 @@ const CheckQR = () => {
                   <Text
                     style={{
                       textAlign: "center",
-                      fontSize: 12,
-                      fontWeight: "600",
+                      fontSize: 15,
+                      fontWeight: "500",
                     }}>
                     Đưa mã QR cho QTV để checkin sự kiện
                   </Text>
                 </View>
-                <View style={{ marginTop: "5%" }}>
+                <View style={{ marginTop: 30 }}>
                   <Text
                     style={{
                       textAlign: "center",
                       fontSize: 15,
-                      fontWeight: "800",
+                      fontWeight: "400",
                     }}>
                     Mã hội viên
                   </Text>

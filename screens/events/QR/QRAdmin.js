@@ -189,25 +189,22 @@ const QRAdmin = (props) => {
           alignItems: "center",
           marginVertical: 10,
         }}>
-        <TouchableOpacity onPress={() => setScanned(false)}>
-          <LinearGradient
-            start={{ x: 0, y: 0.3 }}
-            end={{ x: 1, y: 1 }}
-            colors={["#9796F0", "#FBC7D4"]}
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignContent: "center",
-              alignItems: "center",
-              borderRadius: 30,
-            }}>
-            <View style={styles.borderBacRounded}>
-              <Image
-                source={require("../../../assets/btncheckqr.png")}
-                style={styles.imageCheckin}
-              />
-            </View>
-          </LinearGradient>
+        <TouchableOpacity
+          onPress={() => setScanned(false)}
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignContent: "center",
+            alignItems: "center",
+            borderRadius: 30,
+            backgroundColor: "#9D85F2",
+          }}>
+          <View style={styles.borderBacRounded}>
+            <Image
+              source={require("../../../assets/btncheckqr.png")}
+              style={styles.imageCheckin}
+            />
+          </View>
         </TouchableOpacity>
       </View>
       {modalCheckSuccess && (

@@ -43,60 +43,63 @@ const HeaderPart = (props) => {
           />
         </View>
       </View>
-      <View style={styles.search}>
-        <View
-          style={{
-            flexDirection: "row",
-            //backgroundColor: "#ffffff",
-            alignItems: "center",
-            width: "80%",
-            borderRadius: 7,
-          }}>
-          <TouchableOpacity
-          // style={{
-          //   marginHorizontal: 10,
-          //   paddingHorizontal: 4,
-          //   paddingVertical: 3,
-          // }}
-          >
-            <Ionicons name="search-outline" size={30} color="#ffffff" />
-          </TouchableOpacity>
-          <TextInput
-            placeholderTextColor={"#ffffff"}
-            theme={{
-              roundness: 50,
-              colors: {
-                primary: "green",
-                underlineColor: "transparent",
-              },
-            }}
-            underlineColorAndroid="transparent"
-            style={styles.input}
-            onChangeText={(keySearch) => setSearch(keySearch)}
-            value={search}
-            placeholder="Tìm kiếm"
-          />
-        </View>
-        <TouchableOpacity>
+      {props.searchPart !== false && (
+        <View style={styles.search}>
           <View
             style={{
-              // backgroundColor: "#ffffff",
-              width: 35,
-              height: 35,
-              borderRadius: 50,
               flexDirection: "row",
-              justifyContent: "center",
+              //backgroundColor: "#ffffff",
               alignItems: "center",
+              width: "80%",
+              borderRadius: 7,
             }}>
-            <Ionicons
-              name="options-outline"
-              size={25}
-              color="#ffffff"
-              style={{ transform: [{ rotate: "-90deg" }] }}
+            <TouchableOpacity
+            // style={{
+            //   marginHorizontal: 10,
+            //   paddingHorizontal: 4,
+            //   paddingVertical: 3,
+            // }}
+            >
+              <Ionicons name="search-outline" size={30} color="#ffffff" />
+            </TouchableOpacity>
+            <TextInput
+              placeholderTextColor={"#ffffff"}
+              theme={{
+                roundness: 50,
+                colors: {
+                  primary: "green",
+                  underlineColor: "transparent",
+                },
+              }}
+              underlineColorAndroid="transparent"
+              style={styles.input}
+              onChangeText={(keySearch) => setSearch(keySearch)}
+              value={search}
+              placeholder="Tìm kiếm"
             />
           </View>
-        </TouchableOpacity>
-      </View>
+          <TouchableOpacity>
+            <View
+              style={{
+                // backgroundColor: "#ffffff",
+                width: 35,
+                height: 35,
+                borderRadius: 50,
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+              }}>
+              <Ionicons
+                name="options-outline"
+                size={25}
+                color="#ffffff"
+                style={{ transform: [{ rotate: "-90deg" }] }}
+              />
+            </View>
+          </TouchableOpacity>
+        </View>
+      )}
+
       {/* <View
         style={{
           position: "absolute",

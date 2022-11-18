@@ -22,28 +22,17 @@ const ModalPayment = (props) => {
       isVisible={props.modalSuccess}
       backdropColor="#C4C4C4"
       backdropOpacity={0.5}
-      onBackdropPress={handleClose}
-      style={{ paddingHorizontal: 10 }}>
+      onBackdropPress={handleClose}>
       <View
         style={{
           backgroundColor: "white",
-          borderRadius: 20,
+          borderRadius: 30,
           padding: 10,
           elevation: 5,
-          width: "100%",
-          height: "auto",
+          marginHorizontal: 15,
+          height: "50%",
           bottom: 20,
         }}>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "flex-end",
-            alignItems: "center",
-          }}>
-          <TouchableOpacity onPress={handleClose}>
-            <Ionicons name="close-outline" size={20} />
-          </TouchableOpacity>
-        </View>
         <View
           style={{
             flexDirection: "column",
@@ -53,53 +42,64 @@ const ModalPayment = (props) => {
             <Image
               source={require("../../assets/Chat.png")}
               style={{
-                width: 150,
-                height: 100,
-                marginVertical: 10,
                 resizeMode: "contain",
+                width: 200,
+                height: 150,
+                marginVertical: 15,
               }}
             />
           </View>
-          <View style={{ marginVertical: 10 }}>
-            <Text
-              style={{ fontSize: 18, fontWeight: "800", textAlign: "center" }}>
-              Chúc mừng
-            </Text>
-            <Text
-              style={{
-                fontSize: 14,
-                fontWeight: "600",
-                textAlign: "center",
-                color: "#9D85F2",
-                marginVertical: 10,
-              }}>
-              {props.content}
-            </Text>
-          </View>
           <View
             style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-              marginVertical: 10,
+              flexDirection: "column",
+              justifyContent: "space-around",
+              height: "50%",
+              paddingHorizontal: 20,
+              marginTop: 5,
             }}>
-            <TouchableOpacity onPress={handleClose}>
-              <LinearGradient
-                start={{ x: 0, y: 0.3 }}
-                end={{ x: 1, y: 1 }}
-                colors={["#9D85F2", "rgba(157, 133, 242, 0.4)"]}
+            <View>
+              <Text
                 style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignContent: "center",
-                  alignItems: "center",
-                  borderRadius: 10,
+                  fontSize: 20,
+                  fontWeight: "800",
+                  textAlign: "center",
+                }}>
+                Chúc mừng
+              </Text>
+              <Text
+                style={{
+                  fontSize: 14,
+                  fontWeight: "600",
+                  textAlign: "center",
+                  color: "#474747",
+                  marginTop: 15,
+                }}>
+                {props.content}
+              </Text>
+            </View>
+
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+                marginVertical: 10,
+              }}>
+              <TouchableOpacity
+                onPress={handleClose}
+                style={{
+                  backgroundColor: "#9D85F2",
+                  paddingVertical: 10,
+                  borderRadius: 25,
+                  width: "100%",
                 }}>
                 <View style={styles.borderBacRounded}>
-                  <Text style={{ color: "#ffffff" }}>{props.textButton}</Text>
+                  <Text style={{ color: "#ffffff", textAlign: "center" }}>
+                    {props.textButton}
+                  </Text>
                 </View>
-              </LinearGradient>
-            </TouchableOpacity>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </View>

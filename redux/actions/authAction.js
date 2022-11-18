@@ -17,6 +17,7 @@ export const AUTH = {
 
 export const getOTP = (number) => async (dispatch) => {
   try {
+    if (!number.startsWith("0")) number = "0" + number;
     const res = await callApi(`send-otp/${number}`);
 
     dispatch({ type: AUTH.OTP, payload: res.data });

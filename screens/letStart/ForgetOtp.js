@@ -35,8 +35,7 @@ const ForgetOtp = ({ route }) => {
               zIndex: 4,
               position: "absolute",
               top: "10%",
-            }}
-          >
+            }}>
             <TouchableOpacity
               style={{
                 backgroundColor: "#ffffff",
@@ -58,11 +57,16 @@ const ForgetOtp = ({ route }) => {
 
                 elevation: 5,
               }}
-              onPress={() => navigation.goBack()}
-            >
+              onPress={() => navigation.goBack()}>
               <Ionicons name="chevron-back-outline" size={25} color="#9D85F2" />
             </TouchableOpacity>
-            <Text style={{ color: "#826CCF", fontSize: 25, fontWeight: "600" }}>
+            <Text
+              style={{
+                color: "#ffffff",
+                fontSize: 25,
+                fontWeight: "600",
+                left: 10,
+              }}>
               WLIN xin chào
             </Text>
           </View>
@@ -83,11 +87,12 @@ const ForgetOtp = ({ route }) => {
             <ImageBackground
               source={require("../../assets/start2.png")}
               style={{
-                height: ratio * 500,
+                height: ratio * 530,
                 width: w,
                 position: "absolute",
-                top: "45%",
+                top: "40%",
                 zIndex: 3,
+                resizeMode: "contain",
               }}
             />
           </View>
@@ -102,8 +107,7 @@ const ForgetOtp = ({ route }) => {
                 paddingLeft: 25,
                 paddingTop: 18,
                 textAlign: "center",
-              }}
-            >
+              }}>
               Quên mã OTP
             </Text>
             <View style={{ paddingHorizontal: 36 }}>
@@ -113,8 +117,7 @@ const ForgetOtp = ({ route }) => {
                     fontSize: 14,
                     fontWeight: "600",
                     textAlign: "center",
-                  }}
-                >
+                  }}>
                   Xin chào,
                   <Text style={{ fontSize: 14, fontWeight: "400" }}>
                     {route.params.numberPhone} !
@@ -150,47 +153,32 @@ const ForgetOtp = ({ route }) => {
             </View>
             <View
               style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
-                paddingHorizontal: 30,
-                marginTop: 30,
-              }}
-            >
+                marginTop: 10,
+              }}>
               <TouchableOpacity
                 onPress={() =>
                   navigation.navigate("Otp", {
                     numberPhone: route.params.numberPhone,
                   })
                 }
-              >
-                <LinearGradient
-                  start={{ x: 0, y: 0.3 }}
-                  end={{ x: 1, y: 1 }}
-                  colors={
-                    ["#9796F0", "#FBC7D4"]
-                    //   : ["#b2b2b2", "#d8d8d8"]
-                  }
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginBottom: 30,
+                  marginHorizontal: 15,
+                  paddingVertical: 17,
+                  borderRadius: 30,
+                  backgroundColor: "#9796f0",
+                }}>
+                <Text
                   style={{
-                    width: "100%",
-                    paddingHorizontal: 20,
-                    paddingVertical: 15,
-                    borderRadius: 30,
-                    flexDirection: "row",
-                    justifyContent: "center",
-                  }}
-                >
-                  {/* <Ionicons name="arrow-forward" size={25} color="#ffffff" /> */}
-                  <Text
-                    style={{
-                      fontSize: 18,
-                      fontWeight: "600",
-                      color: "#ffffff",
-                    }}
-                  >
-                    Tiếp tục
-                  </Text>
-                </LinearGradient>
+                    fontSize: 18,
+                    fontWeight: "600",
+                    color: "#ffffff",
+                  }}>
+                  Tiếp tục
+                </Text>
               </TouchableOpacity>
             </View>
           </ScrollView>
@@ -210,9 +198,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
     height: "100%",
     zIndex: 4,
-    marginTop: 10,
-    borderTopRightRadius: 30,
-    borderTopLeftRadius: 30,
+    borderTopRightRadius: 50,
+    borderTopLeftRadius: 50,
+    paddingHorizontal: 15,
+    top: 18,
   },
   contentText: {
     fontSize: 13,

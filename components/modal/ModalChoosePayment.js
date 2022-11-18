@@ -46,29 +46,19 @@ const ModalChoosePayment = (props) => {
       isVisible={props.showModalPayment}
       backdropColor="#C4C4C4"
       backdropOpacity={0.5}
-      onBackdropPress={() => props.setShowModalPayment(!props.showModalPayment)}
-      style={{ paddingHorizontal: 10 }}>
+      onBackdropPress={() =>
+        props.setShowModalPayment(!props.showModalPayment)
+      }>
       <View
         style={{
           backgroundColor: "white",
-          borderRadius: 20,
+          borderRadius: 30,
           padding: 10,
           elevation: 5,
-          width: "100%",
+          marginHorizontal: 15,
           height: "auto",
           bottom: 20,
         }}>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "flex-end",
-            alignItems: "center",
-          }}>
-          <TouchableOpacity
-            onPress={() => props.setShowModalPayment(!props.showModalPayment)}>
-            <Ionicons name="close-outline" size={20} />
-          </TouchableOpacity>
-        </View>
         <View
           style={{
             flexDirection: "column",
@@ -79,83 +69,85 @@ const ModalChoosePayment = (props) => {
               source={require("../../assets/coin3.png")}
               style={{
                 resizeMode: "contain",
-                width: 150,
-                height: 100,
+                width: 200,
+                height: 150,
                 marginVertical: 10,
               }}
             />
           </View>
-          <View style={{ marginVertical: 10 }}>
-            <Text
-              style={{ fontSize: 18, fontWeight: "800", textAlign: "center" }}>
-              Phương thức thanh toán
-            </Text>
-          </View>
-          <View>
-            <View
-              style={{
-                backgroundColor: "#F7F8FB",
-                borderRadius: 10,
-                marginBottom: 10,
-                marginHorizontal: 15,
-              }}>
-              <CheckBox
-                title="Tiền mặt"
-                checkedIcon="dot-circle-o"
-                uncheckedIcon="circle-o"
-                checkedColor="#FDA401"
-                checked={checkValue === "tienmat" ? true : false}
-                onPress={() => setCheckValue("tienmat")}
-                containerStyle={{
-                  backgroundColor: "#F7F8FB",
-                  borderRadius: 10,
-                }}
-              />
-            </View>
-            <View
-              style={{
-                backgroundColor: "#F7F8FB",
-                borderRadius: 10,
-                marginHorizontal: 15,
-              }}>
-              <CheckBox
-                title="Chuyển khoản"
-                checkedIcon="dot-circle-o"
-                uncheckedIcon="circle-o"
-                checked={checkValue === "chuyenkhoan" ? true : false}
-                onPress={() => setCheckValue("chuyenkhoan")}
-                checkedColor="#FDA401"
-                containerStyle={{
-                  backgroundColor: "#F7F8FB",
-                  borderRadius: 10,
-                }}
-              />
-            </View>
-          </View>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-              marginVertical: 10,
-            }}>
-            <TouchableOpacity onPress={handlePayFee}>
-              <LinearGradient
-                start={{ x: 0, y: 0.3 }}
-                end={{ x: 1, y: 1 }}
-                colors={["#9D85F2", "rgba(157, 133, 242, 0.4)"]}
+          <View style={{ paddingHorizontal: 20, marginTop: 10 }}>
+            <View>
+              <Text
                 style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignContent: "center",
-                  alignItems: "center",
-                  borderRadius: 7,
+                  fontSize: 18,
+                  fontWeight: "800",
+                  textAlign: "center",
+                }}>
+                Phương thức thanh toán
+              </Text>
+              <View style={{ marginTop: 20 }}>
+                <View
+                  style={{
+                    backgroundColor: "#F7F8FB",
+                    borderRadius: 10,
+                    marginBottom: 10,
+                  }}>
+                  <CheckBox
+                    title="Tiền mặt"
+                    checkedIcon="dot-circle-o"
+                    uncheckedIcon="circle-o"
+                    checkedColor="#FDA401"
+                    checked={checkValue === "tienmat" ? true : false}
+                    onPress={() => setCheckValue("tienmat")}
+                    containerStyle={{
+                      backgroundColor: "#F7F8FB",
+                      borderRadius: 10,
+                    }}
+                  />
+                </View>
+                <View
+                  style={{
+                    backgroundColor: "#F7F8FB",
+                    borderRadius: 10,
+                  }}>
+                  <CheckBox
+                    title="Chuyển khoản"
+                    checkedIcon="dot-circle-o"
+                    uncheckedIcon="circle-o"
+                    checked={checkValue === "chuyenkhoan" ? true : false}
+                    onPress={() => setCheckValue("chuyenkhoan")}
+                    checkedColor="#FDA401"
+                    containerStyle={{
+                      backgroundColor: "#F7F8FB",
+                      borderRadius: 10,
+                    }}
+                  />
+                </View>
+              </View>
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+                marginVertical: 10,
+                marginTop: 20,
+              }}>
+              <TouchableOpacity
+                onPress={handlePayFee}
+                style={{
+                  backgroundColor: "#9D85F2",
+                  paddingVertical: 10,
+                  borderRadius: 25,
+                  width: "100%",
                 }}>
                 <View style={styles.borderBacRounded}>
-                  <Text style={{ color: "#ffffff" }}>Thanh toán</Text>
+                  <Text style={{ color: "#ffffff", textAlign: "center" }}>
+                    Thanh toán
+                  </Text>
                 </View>
-              </LinearGradient>
-            </TouchableOpacity>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </View>

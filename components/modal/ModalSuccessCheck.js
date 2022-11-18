@@ -24,113 +24,104 @@ const ModalSuccessCheck = (props) => {
       backdropOpacity={0.5}
       onBackdropPress={() =>
         props.setModalCheckSuccess(!props.modalCheckSuccess)
-      }
-      style={{ paddingHorizontal: 10 }}>
+      }>
       <View
         style={{
           backgroundColor: "white",
-          borderRadius: 20,
+          borderRadius: 30,
           padding: 10,
           elevation: 5,
-          marginHorizontal: 20,
-          height: "auto",
+          marginHorizontal: 15,
+          height: "58%",
           bottom: 20,
         }}>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "flex-end",
-            alignItems: "center",
-          }}>
-          <TouchableOpacity
-            onPress={() =>
-              props.setModalCheckSuccess(!props.modalCheckSuccess)
-            }>
-            <Ionicons name="close-outline" size={20} />
-          </TouchableOpacity>
-        </View>
         <View style={{ flexDirection: "row", justifyContent: "center" }}>
           <Image
             source={require("../../assets/Chat.png")}
             style={{
               resizeMode: "contain",
-              width: 150,
-              height: 100,
-              marginVertical: 10,
+              width: 200,
+              height: 150,
+              marginVertical: 15,
             }}
           />
         </View>
-        <View>
+        <View
+          style={{
+            flexDirection: "column",
+            justifyContent: "space-around",
+            height: "50%",
+            paddingHorizontal: 20,
+            marginTop: 5,
+          }}>
           <Text
             style={{ fontSize: 18, fontWeight: "800", textAlign: "center" }}>
             Chúc mừng
           </Text>
-          <Text
-            style={{ fontSize: 14, fontWeight: "600", textAlign: "center" }}>
-            Bạn đã checkin sự kiện thành công
-          </Text>
-          <Text
-            style={{
-              fontSize: 12,
-              fontWeight: "600",
-              textAlign: "center",
-              color: "#000000",
-              marginTop: 5,
-            }}>
-            Tên hội viên:{" "}
-            {props.dataCheck === props.detailData[0].ma_kh
-              ? props.detailData[0].ten_kh
-              : ""}
-          </Text>
-          <Text
-            style={{
-              fontSize: 12,
-              fontWeight: "600",
-              textAlign: "center",
-              color: "#000000",
-              marginVertical: 5,
-            }}>
-            Vai trò: {props.detailData[0].vai_tro}
-          </Text>
-          <Text
-            style={{
-              fontSize: 12,
-              fontWeight: "600",
-              textAlign: "center",
-              color: "#000000",
-            }}>
-            Giá vé: {formatCash(props.detailData[0].gia_ve.toString(10))} VND
-          </Text>
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
-            marginVertical: 10,
-          }}>
-          <TouchableOpacity
-            onPress={() => {
-              props.setModalCheckSuccess(!props.modalCheckSuccess);
-              props.setShowModalPayment(true);
-              // navigation.goBack();
-            }}>
-            <LinearGradient
-              start={{ x: 0, y: 0.3 }}
-              end={{ x: 1, y: 1 }}
-              colors={["#9D85F2", "rgba(157, 133, 242, 0.4)"]}
+          <View style={{ marginTop: 10 }}>
+            <Text
+              style={{ fontSize: 14, fontWeight: "600", textAlign: "center" }}>
+              Bạn đã check-in thành công sự kiện
+            </Text>
+            <Text
               style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignContent: "center",
-                alignItems: "center",
-                borderRadius: 10,
+                fontSize: 12,
+                fontWeight: "600",
+                textAlign: "center",
+                color: "#000000",
+                marginTop: 5,
+              }}>
+              Tên hội viên:{" "}
+              {props.dataCheck === props.detailData[0].ma_kh
+                ? props.detailData[0].ten_kh
+                : ""}
+            </Text>
+            <Text
+              style={{
+                fontSize: 12,
+                fontWeight: "600",
+                textAlign: "center",
+                color: "#000000",
+                marginVertical: 5,
+              }}>
+              Vai trò: {props.detailData[0].vai_tro}
+            </Text>
+            <Text
+              style={{
+                fontSize: 12,
+                fontWeight: "600",
+                textAlign: "center",
+                color: "#000000",
+              }}>
+              Giá vé: {formatCash(props.detailData[0].gia_ve.toString(10))} VND
+            </Text>
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+              top: 10,
+            }}>
+            <TouchableOpacity
+              onPress={() => {
+                props.setModalCheckSuccess(!props.modalCheckSuccess);
+                props.setShowModalPayment(true);
+                // navigation.goBack();
+              }}
+              style={{
+                backgroundColor: "#9D85F2",
+                paddingVertical: 10,
+                borderRadius: 25,
+                width: "100%",
               }}>
               <View style={styles.borderBacRounded}>
-                <Text style={{ color: "#ffffff" }}>Thanh toán</Text>
+                <Text style={{ color: "#ffffff", textAlign: "center" }}>
+                  Thanh toán
+                </Text>
               </View>
-            </LinearGradient>
-          </TouchableOpacity>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </Modal>

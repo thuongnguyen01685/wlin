@@ -74,7 +74,7 @@ const Login = () => {
             marginHorizontal: 20,
             zIndex: 4,
             position: "absolute",
-            top: "10%",
+            top: "8%",
           }}>
           <TouchableOpacity
             style={{
@@ -106,7 +106,13 @@ const Login = () => {
               // style={{ transform: [{ rotate: "45deg" }] }}
             />
           </TouchableOpacity>
-          <Text style={{ color: "#826CCF", fontSize: 25, fontWeight: "600" }}>
+          <Text
+            style={{
+              color: "#ffffff",
+              fontSize: 25,
+              fontWeight: "600",
+              marginLeft: 15,
+            }}>
             WLIN xin chào
           </Text>
         </View>
@@ -127,12 +133,12 @@ const Login = () => {
           <Image
             source={require("../../assets/start2.png")}
             style={{
-              // resizeMode: "contain",
-              height: ratio * 400,
+              height: ratio * 530,
               width: w,
               position: "absolute",
-              top: "53%",
+              top: "40%",
               zIndex: 3,
+              resizeMode: "contain",
             }}
           />
         </View>
@@ -146,7 +152,7 @@ const Login = () => {
             }}>
             Đăng nhập
           </Text>
-          <View style={{ marginTop: "13%" }}>
+          <View style={{ marginTop: 10 }}>
             <View style={{ flexDirection: "row", justifyContent: "center" }}>
               <PhoneInput
                 ref={phoneInput}
@@ -169,7 +175,8 @@ const Login = () => {
               valid ? (
                 <></>
               ) : value === "" ? (
-                <Text style={{ fontSize: 10, color: "#FF0000" }}>
+                <Text
+                  style={{ fontSize: 10, color: "#FF0000", left: 15, top: 5 }}>
                   Vui lòng nhập đầy đủ số điện thoại
                 </Text>
               ) : (
@@ -188,6 +195,8 @@ const Login = () => {
               }}>
               <CheckBox
                 center
+                checkedIcon="dot-circle-o"
+                uncheckedIcon="circle-o"
                 checkedColor="#9D85F2"
                 checked={checked}
                 onPress={() => setChecked(!checked)}
@@ -207,27 +216,18 @@ const Login = () => {
               flexDirection: "row",
               justifyContent: "center",
               marginTop: 20,
+              backgroundColor: checked ? "#9796f0" : "#b2b2b2",
+              paddingVertical: 17,
+              borderRadius: 30,
             }}>
-            <LinearGradient
-              start={{ x: 0, y: 0.3 }}
-              end={{ x: 1, y: 1 }}
-              colors={checked ? ["#9796F0", "#FBC7D4"] : ["#b2b2b2", "#d8d8d8"]}
+            <Text
               style={{
-                paddingHorizontal: 40,
-                paddingVertical: 15,
-                borderRadius: 30,
-                flexDirection: "row",
-                justifyContent: "center",
+                fontSize: 18,
+                fontWeight: "600",
+                color: "#ffffff",
               }}>
-              <Text
-                style={{
-                  fontSize: 18,
-                  fontWeight: "600",
-                  color: "#ffffff",
-                }}>
-                Tiếp tục
-              </Text>
-            </LinearGradient>
+              Tiếp tục
+            </Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -245,10 +245,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
     height: "100%",
     zIndex: 4,
-    borderTopRightRadius: 30,
-    borderTopLeftRadius: 30,
+    borderTopRightRadius: 50,
+    borderTopLeftRadius: 50,
     paddingHorizontal: 30,
     paddingVertical: 30,
+    top: 18,
   },
 });
 

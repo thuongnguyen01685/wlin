@@ -31,7 +31,7 @@ import {
 } from "../../utils/datetime";
 import { URL } from "../../utils/fetchApi";
 import ModalChoosePayment from "../../components/modal/ModalChoosePayment";
-import { Admin, Partner } from "../../utils/AccessPermission";
+import { Admin, Member, Partner } from "../../utils/AccessPermission";
 import { getDetailEventsAction } from "../../redux/actions/eventsAction";
 
 const w = Dimensions.get("window").width;
@@ -47,6 +47,7 @@ const DetailEvents = ({ route }) => {
   const [refreshing, setRefreshing] = useState(false);
   const [modalSuccess, setModalSuccess] = useState(false);
   const [showTakePicture, setShowTakePicture] = useState(false);
+  const [searchPart, setSearchPart] = useState(false);
   const dispatch = useDispatch();
 
   const { auth, event } = useSelector((state) => state);
@@ -89,7 +90,7 @@ const DetailEvents = ({ route }) => {
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
-      <HeaderPart />
+      <HeaderPart searchPart={searchPart} />
       <View
         style={{
           backgroundColor: "#ffffff",
@@ -394,14 +395,14 @@ const DetailEvents = ({ route }) => {
                 </View>
                 <View
                   style={{
-                    marginLeft: 10,
+                    marginLeft: 5,
                     paddingHorizontal: 10,
                   }}>
                   <Text style={styles.headerContent}>
                     {event.detailEvent?.dia_diem}
                   </Text>
 
-                  <View>
+                  <View style={{ marginTop: 5 }}>
                     <TouchableOpacity
                       style={{
                         borderRadius: 7,
@@ -436,93 +437,130 @@ const DetailEvents = ({ route }) => {
                   </View>
                 </View>
               </View>
-              <View>
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <Text style={styles.headerText}>Thời gian</Text>
-                  <Text style={styles.headerText}>Nội dung chương trình</Text>
+              <View style={styles.containerBox}>
+                <View>
+                  <MaterialCommunityIcons
+                    name="ticket-confirmation"
+                    size={30}
+                    color="#2BA600"
+                  />
                 </View>
-                {event.detailEvent?.noi_dung &&
-                  event.detailEvent.noi_dung.map((item, index) => (
+                <View style={{ marginHorizontal: 15 }}>
+                  <Text style={styles.headerContent}>Giá vé</Text>
+                </View>
+
+                <View style={styles.conText}>
+                  {event.detailEvent?.cs_ve &&
+                    event.detailEvent.cs_ve.map((item) => (
+                      <Text style={styles.bodyContent} key={item.line}>
+                        {item.loai_ve === "free"
+                          ? "Miễn phí"
+                          : item.loai_ve === "member"
+                          ? "Hội viên"
+                          : item.loai_ve === "guest" && "Khách mời"}
+                        : {item.gia_ve && formatCash(item.gia_ve.toString(10))}{" "}
+                        VND
+                      </Text>
+                    ))}
+                </View>
+              </View>
+            </View>
+            <View>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Text style={styles.headerText}>Thời gian</Text>
+                <Text style={styles.headerText}>Nội dung chương trình</Text>
+              </View>
+              {event.detailEvent?.noi_dung &&
+                event.detailEvent.noi_dung.map((item, index) => (
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      width: "100%",
+                      justifyContent: "flex-start",
+                      paddingHorizontal: 5,
+                      marginBottom: 5,
+                    }}
+                    key={index}>
                     <View
                       style={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                        width: "100%",
-                        justifyContent: "flex-start",
-                        paddingHorizontal: 5,
-                        marginBottom: 5,
-                      }}
-                      key={index}>
+                        borderRightWidth: 1,
+                        borderColor: "#B0B0B0",
+                      }}>
+                      <Text style={styles.timeEvent}>
+                        {formatTimeDisplay(item.thoi_gian)}
+                      </Text>
+                    </View>
+
+                    <View
+                      style={{
+                        paddingLeft: 10,
+                        width: "75%",
+                      }}>
                       <View
                         style={{
-                          borderRightWidth: 1,
-                          borderColor: "#B0B0B0",
+                          backgroundColor: "#F6F6F5",
+                          borderRadius: 10,
                         }}>
-                        <Text style={styles.timeEvent}>
-                          {formatTimeDisplay(item.thoi_gian)}
+                        <Text
+                          style={{
+                            fontSize: 13,
+                            fontWeight: "400",
+                            marginVertical: 5,
+                            marginHorizontal: 10,
+                            color: "#474747",
+                          }}>
+                          {item.noi_dung}
                         </Text>
                       </View>
-
-                      <View
-                        style={{
-                          paddingLeft: 10,
-                          width: "75%",
-                        }}>
-                        <View
-                          style={{
-                            backgroundColor: "#F6F6F5",
-                            borderRadius: 10,
-                          }}>
-                          <Text
-                            style={{
-                              fontSize: 13,
-                              fontWeight: "400",
-                              marginVertical: 5,
-                              marginHorizontal: 10,
-                            }}>
-                            {item.noi_dung}
-                          </Text>
-                        </View>
-                      </View>
                     </View>
-                  ))}
-              </View>
+                  </View>
+                ))}
             </View>
-            <View style={styles.containerBox}>
-              <View>
-                <MaterialCommunityIcons
-                  name="ticket-confirmation"
-                  size={30}
-                  color="#2BA600"
-                />
-              </View>
-              <View style={{ marginHorizontal: 10 }}>
-                <Text style={styles.headerContent}>Giá vé</Text>
-              </View>
 
-              <View style={styles.conText}>
-                {event.detailEvent?.cs_ve &&
-                  event.detailEvent.cs_ve.map((item) => (
-                    <Text style={styles.bodyContent} key={item.line}>
-                      {item.loai_ve === "free"
-                        ? "Miễn phí"
-                        : item.loai_ve === "member"
-                        ? "Hội viên"
-                        : item.loai_ve === "guest" && "Khách mời"}
-                      : {item.gia_ve && formatCash(item.gia_ve.toString(10))}{" "}
-                      VND
+            {auth.permission.group_id === Member ? (
+              <View
+                style={{
+                  flexDirection: "row",
+                  width: w,
+                  paddingHorizontal: 15,
+                  marginTop: 10,
+                }}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("CheckQR")}>
+                  <LinearGradient
+                    start={{ x: 0, y: 0.3 }}
+                    end={{ x: 1, y: 1 }}
+                    colors={["#9D85F2", "rgba(157, 133, 242, 0.4)"]}
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "center",
+                      alignContent: "center",
+                      alignItems: "center",
+                      borderRadius: 30,
+                      width: w * 0.9,
+                      paddingVertical: 15,
+                    }}>
+                    <Text
+                      style={{
+                        fontSize: 25,
+                        color: "#ffffff",
+                        fontWeight: "600",
+                        textAlign: "center",
+                      }}>
+                      Check-in
                     </Text>
-                  ))}
+                  </LinearGradient>
+                </TouchableOpacity>
               </View>
-            </View>
-
-            <View>
+            ) : (
               <View
                 style={{
                   flexDirection: "row",
                   justifyContent: "flex-end",
                   alignItems: "center",
                   paddingHorizontal: 15,
+                  marginTop: 10,
                 }}>
                 <TouchableOpacity
                   onPress={() => navigation.navigate("CheckQR")}>
@@ -535,14 +573,10 @@ const DetailEvents = ({ route }) => {
                       justifyContent: "space-between",
                       alignContent: "center",
                       alignItems: "center",
-                      borderRadius: 15,
+                      borderRadius: 20,
+                      marginRight: 10,
                     }}>
-                    <View
-                      style={
-                        auth.permission.admin
-                          ? styles.buttonEx
-                          : styles.buttonCheckin
-                      }>
+                    <View style={styles.buttonEx}>
                       <Text style={styles.buttonText}>Check-in</Text>
                     </View>
                   </LinearGradient>
@@ -562,8 +596,8 @@ const DetailEvents = ({ route }) => {
                         justifyContent: "space-between",
                         alignContent: "center",
                         alignItems: "center",
-                        borderRadius: 15,
-                        marginHorizontal: 10,
+                        borderRadius: 20,
+                        marginRight: 10,
                       }}>
                       <View style={styles.buttonEx}>
                         <Text style={styles.buttonText}>Thanh toán</Text>
@@ -584,7 +618,7 @@ const DetailEvents = ({ route }) => {
                         justifyContent: "space-between",
                         alignContent: "center",
                         alignItems: "center",
-                        borderRadius: 15,
+                        borderRadius: 20,
                       }}>
                       <View style={styles.buttonEx}>
                         <Text style={styles.buttonText}>Báo cáo</Text>
@@ -593,7 +627,7 @@ const DetailEvents = ({ route }) => {
                   </TouchableOpacity>
                 )}
               </View>
-            </View>
+            )}
 
             {modalSuccess && (
               <ModalPayment
@@ -621,9 +655,8 @@ const styles = StyleSheet.create({
 
   containerBox: {
     flexDirection: "row",
-    marginVertical: 10,
+    marginVertical: 5,
     alignItems: "center",
-    paddingHorizontal: 20,
   },
   backBorder: {
     padding: 15,
@@ -664,23 +697,25 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "400",
     color: "#B0B0B0",
-    paddingHorizontal: 20,
+    paddingHorizontal: 15,
     paddingVertical: 5,
   },
   timeEvent: {
     fontSize: 13,
     fontWeight: "400",
-    color: "#000",
-    paddingHorizontal: 13,
+    color: "#474747",
+    paddingHorizontal: 10,
     paddingVertical: 5,
+    textAlign: "center",
+    width: 80,
   },
   buttonCheckin: {
     paddingHorizontal: 30,
     paddingVertical: 10,
   },
   buttonEx: {
-    paddingHorizontal: 10,
-    paddingVertical: 5,
+    paddingHorizontal: 15,
+    paddingVertical: 8,
   },
 
   buttonText: {
