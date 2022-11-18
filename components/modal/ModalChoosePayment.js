@@ -79,7 +79,7 @@ const ModalChoosePayment = (props) => {
             <View>
               <Text
                 style={{
-                  fontSize: 18,
+                  fontSize: 20,
                   fontWeight: "800",
                   textAlign: "center",
                 }}>
@@ -130,8 +130,7 @@ const ModalChoosePayment = (props) => {
                 flexDirection: "row",
                 justifyContent: "center",
                 alignItems: "center",
-                marginVertical: 10,
-                marginTop: 20,
+                marginVertical: 15,
               }}>
               <TouchableOpacity
                 onPress={handlePayFee}

@@ -30,7 +30,7 @@ const ModalPayment = (props) => {
           padding: 10,
           elevation: 5,
           marginHorizontal: 15,
-          height: "50%",
+          height: "auto",
           bottom: 20,
         }}>
         <View
@@ -53,7 +53,6 @@ const ModalPayment = (props) => {
             style={{
               flexDirection: "column",
               justifyContent: "space-around",
-              height: "50%",
               paddingHorizontal: 20,
               marginTop: 5,
             }}>
@@ -83,7 +82,7 @@ const ModalPayment = (props) => {
                 flexDirection: "row",
                 justifyContent: "center",
                 alignItems: "center",
-                marginVertical: 10,
+                marginVertical: 15,
               }}>
               <TouchableOpacity
                 onPress={handleClose}

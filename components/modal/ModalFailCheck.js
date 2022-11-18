@@ -23,7 +23,7 @@ const ModalFailCheck = (props) => {
           padding: 10,
           elevation: 5,
           marginHorizontal: 15,
-          height: "50%",
+          height: "auto",
           bottom: 20,
         }}>
         <View style={{ flexDirection: "row", justifyContent: "center" }}>
@@ -64,7 +64,7 @@ const ModalFailCheck = (props) => {
               flexDirection: "row",
               justifyContent: "center",
               alignItems: "center",
-              marginVertical: 10,
+              marginVertical: 15,
             }}>
             <TouchableOpacity
               onPress={() => props.setModalFail(!props.modalFail)}
