@@ -46,7 +46,7 @@ const ModalSuccessCheckGuest = (props) => {
           padding: 10,
           elevation: 5,
           marginHorizontal: 15,
-          height: "50%",
+          height: "auto",
           bottom: 20,
         }}>
         <View style={{ flexDirection: "row", justifyContent: "center" }}>
@@ -64,9 +64,8 @@ const ModalSuccessCheckGuest = (props) => {
           style={{
             flexDirection: "column",
             justifyContent: "space-around",
-            height: "50%",
             paddingHorizontal: 20,
-            marginTop: 5,
+            marginTop: 10,
           }}>
           <View>
             <Text
@@ -78,7 +77,7 @@ const ModalSuccessCheckGuest = (props) => {
                 fontSize: 14,
                 fontWeight: "600",
                 textAlign: "center",
-                top: 15,
+                marginTop: 15,
               }}>
               Bạn đã checkin sự kiện thành công
             </Text>
@@ -88,6 +87,7 @@ const ModalSuccessCheckGuest = (props) => {
             style={{
               flexDirection: "row",
               justifyContent: "center",
+              marginVertical: 15,
             }}>
             <TouchableOpacity
               onPress={handleDetailEvent}

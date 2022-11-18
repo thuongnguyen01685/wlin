@@ -22,9 +22,9 @@ const ModalSms = (props) => {
           borderRadius: 30,
           padding: 10,
           elevation: 5,
-          marginHorizontal: 20,
-          height: "55%",
+          marginHorizontal: 15,
           bottom: 20,
+          height: "auto",
         }}>
         <View style={{ flexDirection: "row", justifyContent: "center" }}>
           <Image
@@ -41,7 +41,6 @@ const ModalSms = (props) => {
           style={{
             flexDirection: "column",
             justifyContent: "space-around",
-            height: "50%",
             paddingHorizontal: 20,
             marginTop: 5,
           }}>
@@ -73,6 +72,7 @@ const ModalSms = (props) => {
             style={{
               flexDirection: "row",
               justifyContent: "center",
+              marginVertical: 15,
             }}>
             <TouchableOpacity
               onPress={() => {

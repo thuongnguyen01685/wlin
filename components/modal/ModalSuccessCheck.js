@@ -32,7 +32,7 @@ const ModalSuccessCheck = (props) => {
           padding: 10,
           elevation: 5,
           marginHorizontal: 15,
-          height: "58%",
+          height: "auto",
           bottom: 20,
         }}>
         <View style={{ flexDirection: "row", justifyContent: "center" }}>
@@ -50,7 +50,6 @@ const ModalSuccessCheck = (props) => {
           style={{
             flexDirection: "column",
             justifyContent: "space-around",
-            height: "50%",
             paddingHorizontal: 20,
             marginTop: 5,
           }}>
@@ -101,7 +100,7 @@ const ModalSuccessCheck = (props) => {
               flexDirection: "row",
               justifyContent: "center",
               alignItems: "center",
-              top: 10,
+              marginVertical: 15,
             }}>
             <TouchableOpacity
               onPress={() => {

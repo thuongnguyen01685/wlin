@@ -81,7 +81,7 @@ const ModalNotify = (props) => {
           position: "absolute",
           width: "100%",
           top: 50,
-          height: "90%",
+          height: "auto",
           bottom: 20,
         }}>
         <View
@@ -364,7 +364,6 @@ const ModalNotify = (props) => {
             justifyContent: "center",
             alignContent: "center",
             alignItems: "center",
-            top: 10,
           }}>
           {/* <TouchableOpacity onPress={handleDeleteAllNo}>
             <Text
@@ -381,12 +380,13 @@ const ModalNotify = (props) => {
           <TouchableOpacity
             style={{
               backgroundColor: "#9D85F2",
-              width: "70%",
-              height: 40,
-              borderRadius: 20,
+              width: "90%",
+              paddingVertical: 15,
+              borderRadius: 30,
               flexDirection: "row",
               alignItems: "center",
               justifyContent: "center",
+              marginVertical: 5,
             }}
             onPress={() => props.setModalVisible(false)}>
             <Text style={{ color: "#ffffff", fontWeight: "600", fontSize: 15 }}>
