@@ -153,7 +153,12 @@ const ModalNotify = (props) => {
             </View>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => setIsRead(false)}>
-            <View style={{ borderRadius: 50, overflow: "hidden" }}>
+            <View
+              style={{
+                borderRadius: 50,
+                overflow: "hidden",
+                marginHorizontal: 5,
+              }}>
               {isRead ? (
                 <Text
                   style={{
@@ -261,14 +266,6 @@ const ModalNotify = (props) => {
                             height: 5,
                             borderRadius: 50,
                           }}></View>
-                        {/* <TouchableOpacity
-                          onPress={() => handleDeleteNo(item._id)}>
-                          <MaterialCommunityIcons
-                            name="close-circle-outline"
-                            size={18}
-                            color="#FF0000"
-                          />
-                        </TouchableOpacity> */}
                       </View>
                     </View>
                   </View>
@@ -344,14 +341,6 @@ const ModalNotify = (props) => {
                             height: 5,
                             borderRadius: 50,
                           }}></View>
-                        {/* <TouchableOpacity
-                          onPress={() => handleDeleteNo(item._id)}>
-                          <MaterialCommunityIcons
-                            name="close-circle-outline"
-                            size={18}
-                            color="#FF0000"
-                          />
-                        </TouchableOpacity> */}
                       </View>
                     </View>
                   </View>
@@ -364,19 +353,9 @@ const ModalNotify = (props) => {
             justifyContent: "center",
             alignContent: "center",
             alignItems: "center",
+
+            top: 10,
           }}>
-          {/* <TouchableOpacity onPress={handleDeleteAllNo}>
-            <Text
-              style={{
-                fontSize: 12,
-                fontWeight: "600",
-                borderBottomWidth: 0.7,
-                borderColor: "#711775",
-                color: "#FF0000",
-              }}>
-              Xóa tất cả thông báo
-            </Text>
-          </TouchableOpacity> */}
           <TouchableOpacity
             style={{
               backgroundColor: "#9D85F2",

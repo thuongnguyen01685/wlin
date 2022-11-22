@@ -28,13 +28,13 @@ const slides = [
     id: "2",
     image: require("../../assets/start5.png"),
     title: "Chào mừng",
-    subtitle: `WLIN Global Holdings xây dựng một hệ sinh thái phục vụ cho các Nữ lãnh đạo trên toàn cầu, kết nối giao thương, học hỏi và hỗ trợ nhau cùng phát triển để "Khỏe Đẹp Hơn - Hạnh Phúc Hơn - Thành Công Hơn"`,
+    subtitle: `WLIN Global Holdings xây dựng một hệ sinh thái phục\nvụ cho các Nữ lãnh đạo trên toàn cầu, kết nối giao\n thương, học hỏi và hỗ trợ nhau cùng phát triển để\n"Khỏe Đẹp Hơn - Hạnh Phúc Hơn - Thành Công Hơn"`,
   },
   {
     id: "3",
     image: require("../../assets/start6.png"),
     title: "Chào mừng",
-    subtitle: `WLIN Global Holdings xây dựng một hệ sinh thái phục vụ cho các Nữ lãnh đạo trên toàn cầu, kết nối giao thương, học hỏi và hỗ trợ nhau cùng phát triển để "Khỏe Đẹp Hơn - Hạnh Phúc Hơn - Thành Công Hơn"`,
+    subtitle: `WLIN Global Holdings xây dựng một hệ sinh thái phục\nvụ cho các Nữ lãnh đạo trên toàn cầu, kết nối giao\n thương, học hỏi và hỗ trợ nhau cùng phát triển để\n"Khỏe Đẹp Hơn - Hạnh Phúc Hơn - Thành Công Hơn"`,
   },
 ];
 

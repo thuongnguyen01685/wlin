@@ -26,7 +26,12 @@ const CardInfo = () => {
             ? ["#1F1F1f", "#646464", "#484848", "#373737"]
             : ["#000", "#000"]
         }
-        style={{ borderRadius: 7, marginTop: 8 }}>
+        style={{
+          borderRadius: 7,
+          marginTop: 8,
+          paddingBottom: 10,
+          borderRadius: 15,
+        }}>
         <Image
           source={
             auth.ma_goi === "01"
@@ -38,8 +43,8 @@ const CardInfo = () => {
               : auth.ma_goi === "04" && require("../assets/partner.png")
           }
           style={{
-            width: 60,
-            height: 60,
+            width: 75,
+            height: 75,
             resizeMode: "contain",
             position: "absolute",
             left: 30,
@@ -51,12 +56,13 @@ const CardInfo = () => {
             justifyContent: "flex-end",
             alignItems: "center",
             marginHorizontal: 10,
+            marginTop: 5,
           }}>
           <TouchableOpacity>
             <MaterialCommunityIcons
               name="dots-horizontal"
               color="#FFFFFF"
-              size={20}
+              size={25}
             />
           </TouchableOpacity>
         </View>
@@ -74,15 +80,16 @@ const CardInfo = () => {
               fontSize: 25,
               fontWeight: "800",
               textAlign: "center",
+              top: 10,
             }}>
             {auth.permission?.name}
           </Text>
         </View>
-        <View style={{ paddingHorizontal: 10, bottom: 5 }}>
+        <View style={{ paddingHorizontal: 10, bottom: 5, marginVertical: 15 }}>
           <View
             style={{
               flexDirection: "row",
-              justifyContent: "space-between",
+              justifyContent: "center",
               alignItems: "center",
             }}>
             <Text
@@ -99,7 +106,7 @@ const CardInfo = () => {
                       : auth.ma_goi === "04" && "rgba(255, 255, 255, 0.6)",
                 },
               ]}>
-              Start date: 1/2/2021
+              1/2/2021
             </Text>
             <Text
               style={[
@@ -115,7 +122,8 @@ const CardInfo = () => {
                       : auth.ma_goi === "04" && "rgba(255, 255, 255, 0.6)",
                 },
               ]}>
-              Due date: 1/2/2022
+              {" "}
+              - 1/2/2022
             </Text>
           </View>
           <Text
@@ -151,6 +159,8 @@ const styles = StyleSheet.create({
   textContent: {
     fontSize: 11,
     fontWeight: "400",
+    textAlign: "center",
+    marginTop: 5,
   },
 });
 

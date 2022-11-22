@@ -35,16 +35,17 @@ const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
 const ratio = w / 720;
 
-const HEADER_HEIGHT = 145;
+const HEADER_HEIGHT = 200;
 // create a component
 const Profile = () => {
   const navigation = useNavigation();
   const [search, setSearch] = useState("");
   const dispatch = useDispatch();
 
-  const { auth } = useSelector((state) => state);
+  const { auth, notify } = useSelector((state) => state);
   const [image, setImage] = useState(null);
   const animatedValue = useRef(new Animated.Value(0)).current;
+  const amin = useRef(new Animated.Value(0)).current;
   const insets = useSafeAreaInsets();
   const data = [
     {
@@ -134,7 +135,42 @@ const Profile = () => {
     if (auth.token === null || auth.token === "") {
       navigation.navigate("Splash");
     }
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(amin, {
+          toValue: -1, // so i add the delay here
+          duration: 100,
+          delay: 2 * 1000,
+          useNativeDriver: true,
+        }),
+        Animated.timing(amin, {
+          toValue: 1,
+          duration: 100,
+          useNativeDriver: true,
+        }),
+        Animated.timing(amin, {
+          toValue: -1,
+          duration: 100,
+          useNativeDriver: true,
+        }),
+        Animated.timing(amin, {
+          toValue: 1,
+          duration: 100,
+          useNativeDriver: true,
+        }),
+        Animated.timing(amin, {
+          toValue: 0,
+          duration: 100,
+          useNativeDriver: true,
+        }),
+      ])
+    ).start();
   }, [auth.token, dispatch]);
+
+  const rotation = amin.interpolate({
+    inputRange: [-1, 1], // left side to right side
+    outputRange: ["-10deg", "10deg"], // before that we have to check now it's perfect
+  });
 
   const handleLogout = async () => {
     try {
@@ -175,7 +211,7 @@ const Profile = () => {
     await dispatch(getProfileAction(auth.token));
   };
 
-  const initStyle = Platform.OS === "ios" ? 20 : insets.top;
+  const initStyle = Platform.OS === "ios" ? 20 : insets.top + 50;
 
   const headerHeight = animatedValue.interpolate({
     inputRange: [0, HEADER_HEIGHT + insets.top],
@@ -194,14 +230,14 @@ const Profile = () => {
               position: "absolute",
               flexDirection: "row",
               justifyContent: "space-between",
-              width: "100%",
+              width: "93%",
+              marginHorizontal: 15,
             }}>
             <View
               style={{
                 flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "center",
-                marginLeft: "4%",
               }}>
               <TouchableOpacity
                 style={{
@@ -245,6 +281,53 @@ const Profile = () => {
                   Hồ sơ cá nhân
                 </Text>
               </View>
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "#ffffff",
+                width: 38,
+                height: 38,
+                borderRadius: 20,
+              }}>
+              {notify.getNotify.length > 0 ? (
+                <Animated.View
+                  style={{
+                    alignSelf: "center",
+                    transform: [{ rotate: rotation }],
+                  }}>
+                  <TouchableOpacity onPress={() => setModalVisible(true)}>
+                    <Ionicons name="notifications" size={25} color="#F2AF4A" />
+                    <View
+                      style={{
+                        position: "absolute",
+                        left: 14,
+                        top: 2,
+                        backgroundColor: "#f00",
+                        borderRadius: 50,
+                      }}>
+                      <Text
+                        style={{
+                          fontSize: 8,
+                          paddingHorizontal:
+                            notify.getNotify.length > 9 ? 2 : 4,
+                          color: "#ffffff",
+                          fontWeight: "600",
+                        }}>
+                        {notify.getNotify.length > 9
+                          ? "9+"
+                          : notify.getNotify.length}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                </Animated.View>
+              ) : (
+                <TouchableOpacity onPress={() => setModalVisible(true)}>
+                  <Ionicons name="notifications" size={25} color="#F2AF4A" />
+                </TouchableOpacity>
+              )}
             </View>
           </View>
           <View>
@@ -328,10 +411,10 @@ const Profile = () => {
               shadowOpacity: 0.25,
               shadowRadius: 3.84,
               elevation: 5,
-              zIndex: 3,
+              zIndex: 15,
               marginTop: -40,
               marginHorizontal: 15,
-              borderRadius: 10,
+              borderRadius: 15,
               height: headerHeight,
             }}>
             <Animated.View
@@ -356,15 +439,28 @@ const Profile = () => {
                 style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
                 Thông tin thành viên
               </Text>
-              <TouchableOpacity
-                style={{ flexDirection: "row" }}
-                onPress={() => navigation.navigate("UpgradeMember")}>
-                <Text
-                  style={{ fontSize: 13, fontWeight: "600", color: "#cecece" }}>
-                  Nâng cấp
-                </Text>
-                <Ionicons name="arrow-up" color="#cecece" size={20} />
-              </TouchableOpacity>
+              <Animated.View
+                style={{
+                  opacity: animatedValue.interpolate({
+                    inputRange: [0, 4, 8, 25],
+                    outputRange: [0, 0.5, 0.9, 1],
+                    extrapolate: "clamp",
+                  }),
+                }}>
+                <TouchableOpacity
+                  style={{ flexDirection: "row" }}
+                  onPress={() => navigation.navigate("UpgradeMember")}>
+                  <Text
+                    style={{
+                      fontSize: 13,
+                      fontWeight: "600",
+                      color: "#cecece",
+                    }}>
+                    Nâng cấp
+                  </Text>
+                  <Ionicons name="arrow-up" color="#cecece" size={20} />
+                </TouchableOpacity>
+              </Animated.View>
             </Animated.View>
             <Animated.View
               style={{
@@ -386,6 +482,32 @@ const Profile = () => {
                 ],
               }}>
               <CardInfo />
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  top: 10,
+                }}>
+                <TouchableOpacity
+                  style={{
+                    flexDirection: "row",
+                    backgroundColor: "#9D85F2",
+                    borderRadius: 20,
+                    paddingHorizontal: 20,
+                    paddingVertical: 8,
+                  }}
+                  onPress={() => navigation.navigate("UpgradeMember")}>
+                  <Text
+                    style={{
+                      fontSize: 13,
+                      fontWeight: "600",
+                      color: "#fff",
+                    }}>
+                    Nâng cấp
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </Animated.View>
           </Animated.View>
         )}

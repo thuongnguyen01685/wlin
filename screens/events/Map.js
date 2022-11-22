@@ -21,6 +21,7 @@ import {
 } from "react-native";
 
 import MapView from "react-native-maps";
+import Header from "../../components/Header";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
@@ -30,6 +31,7 @@ const ratio = w / 720;
 const Map = () => {
   const navigation = useNavigation();
   const [search, setSearch] = useState("");
+  const color = "#826CCF";
 
   return (
     <View style={styles.container}>
@@ -45,36 +47,12 @@ const Map = () => {
 
       <View
         style={{
-          marginHorizontal: 15,
           zIndex: 4,
           position: "absolute",
-          top: "6%",
+          backgroundColor: "#ff0",
+          width: "100%",
         }}>
-        <TouchableOpacity
-          style={{
-            backgroundColor: "#ffffff",
-            width: 40,
-            height: 40,
-            paddingVertical: 5,
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
-            borderRadius: 50,
-            marginBottom: 7,
-            //transform: [{ rotate: "-45deg" }],
-            shadowColor: "#000",
-            shadowOffset: {
-              width: 0,
-              height: 2,
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 3.84,
-
-            elevation: 5,
-          }}
-          onPress={() => navigation.goBack()}>
-          <Ionicons name="chevron-back-outline" size={25} color="#9D85F2" />
-        </TouchableOpacity>
+        <Header color={color} />
       </View>
     </View>
   );

@@ -1,6 +1,6 @@
 //import liraries
-import { Ionicons } from "@expo/vector-icons";
-import { Picker } from "@react-native-picker/picker";
+import { FontAwesome, Ionicons } from "@expo/vector-icons";
+import SelectDropdown from "react-native-select-dropdown";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
@@ -29,79 +29,14 @@ import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import { getEventsAction } from "../../redux/actions/eventsAction";
 import ModalRequest from "../../components/modal/ModalRequest";
 
-const dataEvents = [
-  {
-    namePaticipant: "Jenny Wilson",
-    picture: require("../../assets/truong.png"),
-    check: true,
-    position: "Hội viên",
-    code: "dathanhtoan",
-  },
-  {
-    namePaticipant: "Jenny Wilson",
-    picture: require("../../assets/truong.png"),
-    check: true,
-    position: "Hội viên",
-    code: "chuathanhtoan",
-  },
-  {
-    namePaticipant: "Courtney Henry",
-    picture: require("../../assets/truong.png"),
-    check: true,
-    position: "Hội viên",
-    code: "dathanhtoan",
-  },
-  {
-    namePaticipant: "Wade Warren",
-    picture: require("../../assets/truong.png"),
-    check: true,
-    position: "Hội viên",
-    code: "dathanhtoan",
-  },
-  {
-    namePaticipant: "Marvin McKinney",
-    picture: require("../../assets/truong.png"),
-    check: true,
-    position: "Hội viên",
-    code: "dathanhtoan",
-  },
-  {
-    namePaticipant: "Esther Howard",
-    picture: require("../../assets/truong.png"),
-    check: false,
-    position: "Hội viên",
-    code: "chuathanhtoan",
-  },
-  {
-    namePaticipant: "Jerome Bell",
-    picture: require("../../assets/truong.png"),
-    check: true,
-    position: "Hội viên",
-    code: "chuathanhtoan",
-  },
-  {
-    namePaticipant: "Jane Cooper",
-    picture: require("../../assets/truong.png"),
-    check: false,
-    position: "Hội viên",
-    code: "chuathanhtoan",
-  },
-  {
-    namePaticipant: "Lexend Deca",
-    picture: require("../../assets/truong.png"),
-    check: false,
-    position: "Hội viên",
-    code: "chuathanhtoan",
-  },
-];
-
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
+const { width } = Dimensions.get("window");
 const ratio = w / 720;
-
+const selectData = ["Nhiệm kì 1", "Nhiệm kì 2"];
 const Unpaid = () => {
   const navigation = useNavigation();
   const [select, setSelect] = useState("nk1");
@@ -111,6 +46,8 @@ const Unpaid = () => {
   const [isSelected, setSelection] = useState(false);
   const [modalSuccess, setModalSuccess] = useState(false);
   const [checkPayment, setCheckPayment] = useState(false);
+
+  ///
 
   useEffect(() => {
     dispatch(getEventsAction(auth.token));
@@ -123,37 +60,39 @@ const Unpaid = () => {
   }, [dispatch]);
   return (
     <View style={styles.container}>
-      <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
-        <View
-          style={{
-            borderRadius: 7,
-            width: 120,
-            height: 40,
-            backgroundColor: "#ffffff",
-            shadowOffset: {
-              width: 0,
-              height: 2,
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 3.84,
-
-            elevation: 5,
-          }}>
-          <Picker
-            selectedValue={select}
-            onValueChange={(itemValue, itemIndex) => setSelect(itemValue)}>
-            <Picker.Item
-              label="Nhiệm kì 1"
-              value="nk1"
-              style={styles.itemSelect}
-            />
-            <Picker.Item
-              label="Nhiệm kì 2"
-              value="nk2"
-              style={styles.itemSelect}
-            />
-          </Picker>
-        </View>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "flex-end",
+        }}>
+        <SelectDropdown
+          data={selectData}
+          onSelect={(selectedItem, index) => {
+            console.log(selectedItem, index);
+          }}
+          defaultButtonText={"Chọn nhiệm kì"}
+          buttonTextAfterSelection={(selectedItem, index) => {
+            return selectedItem;
+          }}
+          rowTextForSelection={(item, index) => {
+            return item;
+          }}
+          buttonStyle={styles.dropdown1BtnStyle}
+          buttonTextStyle={styles.dropdown1BtnTxtStyle}
+          dropdownIconPosition={"right"}
+          dropdownStyle={styles.dropdown1DropdownStyle}
+          rowStyle={styles.dropdown1RowStyle}
+          rowTextStyle={styles.dropdown1RowTxtStyle}
+          renderDropdownIcon={(isOpened) => {
+            return (
+              <Ionicons
+                name={isOpened ? "caret-up-outline" : "caret-down-outline"}
+                color={"#444"}
+                size={18}
+              />
+            );
+          }}
+        />
       </View>
       {modalSuccess && (
         <ModalRequest
@@ -171,77 +110,97 @@ const Unpaid = () => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
         <View style={{ marginBottom: "80%" }}>
-          {dataEvents.map((item, index) => (
-            <TouchableOpacity
-              key={index}
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                backgroundColor: "#Ffffff",
-                marginVertical: 10,
-                borderRadius: 15,
-                paddingVertical: 5,
-                marginHorizontal: 10,
-                paddingHorizontal: 10,
-                borderWidth: 0.5,
-                borderColor: "#dadada",
-              }}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}>
-                <View>
-                  <CheckBox value={item.check} onValueChange={setSelection} />
-                </View>
-                <View style={{ flexDirection: "row", marginHorizontal: 10 }}>
-                  <Image
-                    source={item.picture}
-                    style={{ width: 70, height: 70 }}
-                  />
-                </View>
-
-                <View
+          {event.detailEvent?.ds_tham_gia.length > 0 ? (
+            event.detailEvent?.ds_tham_gia
+              .filter((items) => items.trang_thai_tt === "0")
+              .map((item, index) => (
+                <TouchableOpacity
+                  key={index}
                   style={{
-                    flexDirection: "column",
+                    flexDirection: "row",
                     justifyContent: "space-between",
+                    alignItems: "center",
+                    backgroundColor: "#Ffffff",
+                    marginVertical: 10,
+                    borderRadius: 15,
+                    paddingVertical: 5,
+                    marginHorizontal: 10,
+                    paddingHorizontal: 10,
+                    borderWidth: 0.5,
+                    borderColor: "#dadada",
                   }}>
-                  <Text
+                  <View
                     style={{
-                      color: "#474747",
-                      fontSize: 18,
-                      fontWeight: "600",
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      alignItems: "center",
                     }}>
-                    {item.namePaticipant}
-                  </Text>
-                  <Text
+                    <View>
+                      <CheckBox
+                        value={item.check}
+                        onValueChange={setSelection}
+                      />
+                    </View>
+                    <View
+                      style={{ flexDirection: "row", marginHorizontal: 10 }}>
+                      <Image
+                        source={require("../../assets/truong.png")}
+                        style={{ width: 70, height: 70 }}
+                      />
+                    </View>
+
+                    <View
+                      style={{
+                        flexDirection: "column",
+                        justifyContent: "space-between",
+                      }}>
+                      <Text
+                        style={{
+                          color: "#474747",
+                          fontSize: 18,
+                          fontWeight: "600",
+                        }}>
+                        {item.ten_kh}
+                      </Text>
+                      <Text
+                        style={{
+                          color: "#000000",
+                          fontSize: 10,
+                          fontWeight: "600",
+                        }}>
+                        Hội viên
+                      </Text>
+                    </View>
+                  </View>
+                  <View
                     style={{
-                      color: "#000000",
-                      fontSize: 10,
-                      fontWeight: "600",
+                      flexDirection: "row",
+                      justifyContent: "space-around",
+                      width: "20%",
                     }}>
-                    {item.position}
-                  </Text>
-                </View>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-around",
-                  width: "20%",
-                }}>
-                <TouchableOpacity>
-                  <Ionicons
-                    name="alert-circle-outline"
-                    size={20}
-                    color="#9D85F2"
-                  />
+                    <TouchableOpacity>
+                      <Ionicons
+                        name="alert-circle-outline"
+                        size={20}
+                        color="#9D85F2"
+                      />
+                    </TouchableOpacity>
+                  </View>
                 </TouchableOpacity>
-              </View>
-            </TouchableOpacity>
-          ))}
+              ))
+          ) : (
+            <View>
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontSize: 15,
+                  fontWeight: "600",
+                  marginVertical: 20,
+                }}>
+                Hiện chưa lượt thanh toán nào.
+              </Text>
+            </View>
+          )}
           {checkPayment === false ? (
             <View
               style={{
@@ -345,39 +304,38 @@ const Paid = () => {
     dispatch(getEventsAction(auth.token));
     wait(2000).then(() => setRefreshing(false));
   }, [dispatch]);
+
   return (
     <View style={styles.container}>
       <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
-        <View
-          style={{
-            borderRadius: 7,
-            width: 120,
-            height: 40,
-            backgroundColor: "#ffffff",
-            shadowOffset: {
-              width: 0,
-              height: 2,
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 3.84,
-
-            elevation: 5,
-          }}>
-          <Picker
-            selectedValue={select}
-            onValueChange={(itemValue, itemIndex) => setSelect(itemValue)}>
-            <Picker.Item
-              label="Nhiệm kì 1"
-              value="nk1"
-              style={styles.itemSelect}
-            />
-            <Picker.Item
-              label="Nhiệm kì 2"
-              value="nk2"
-              style={styles.itemSelect}
-            />
-          </Picker>
-        </View>
+        <SelectDropdown
+          data={selectData}
+          onSelect={(selectedItem, index) => {
+            console.log(selectedItem, index);
+          }}
+          defaultButtonText={"Chọn nhiệm kì"}
+          buttonTextAfterSelection={(selectedItem, index) => {
+            return selectedItem;
+          }}
+          rowTextForSelection={(item, index) => {
+            return item;
+          }}
+          buttonStyle={styles.dropdown1BtnStyle}
+          buttonTextStyle={styles.dropdown1BtnTxtStyle}
+          dropdownIconPosition={"right"}
+          dropdownStyle={styles.dropdown1DropdownStyle}
+          rowStyle={styles.dropdown1RowStyle}
+          rowTextStyle={styles.dropdown1RowTxtStyle}
+          renderDropdownIcon={(isOpened) => {
+            return (
+              <Ionicons
+                name={isOpened ? "caret-up-outline" : "caret-down-outline"}
+                color={"#444"}
+                size={18}
+              />
+            );
+          }}
+        />
       </View>
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -416,7 +374,7 @@ const Paid = () => {
                     <View
                       style={{ flexDirection: "row", marginHorizontal: 10 }}>
                       <Image
-                        source={item.picture}
+                        source={require("../../assets/truong.png")}
                         style={{ width: 70, height: 70 }}
                       />
                     </View>
@@ -432,7 +390,7 @@ const Paid = () => {
                           fontSize: 18,
                           fontWeight: "600",
                         }}>
-                        {item.namePaticipant}
+                        {item.ten_kh}
                       </Text>
                       <Text
                         style={{
@@ -440,7 +398,8 @@ const Paid = () => {
                           fontSize: 10,
                           fontWeight: "600",
                         }}>
-                        {item.position}
+                        {/* {item.vai_tro} */}
+                        Hội viên
                       </Text>
                     </View>
                   </View>
@@ -619,6 +578,23 @@ const styles = StyleSheet.create({
     padding: 1.5,
     marginBottom: -2,
   },
+  ///
+
+  dropdown1BtnStyle: {
+    height: 40,
+    backgroundColor: "#F8F8F8",
+    borderRadius: 8,
+    borderColor: "#444",
+    width: 160,
+    marginTop: 10,
+  },
+  dropdown1BtnTxtStyle: { color: "#474747", fontSize: 15 },
+  dropdown1DropdownStyle: { backgroundColor: "#EFEFEF" },
+  dropdown1RowStyle: {
+    backgroundColor: "#EFEFEF",
+    borderBottomColor: "#C5C5C5",
+  },
+  dropdown1RowTxtStyle: { color: "#444", textAlign: "left" },
 });
 
 //make this component available to the app

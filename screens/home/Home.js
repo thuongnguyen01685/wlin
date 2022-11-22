@@ -17,6 +17,7 @@ import {
   BackHandler,
   RefreshControl,
   Platform,
+  TextInput,
 } from "react-native";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -58,7 +59,7 @@ const ratio = w / 720;
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
-const HEADER_HEIGHT = 140;
+const HEADER_HEIGHT = 190;
 let backHandlerClickCount = 0;
 // create a component
 const Home = () => {
@@ -66,6 +67,9 @@ const Home = () => {
   const [backHome, setBackHome] = useState(false);
   const dispatch = useDispatch();
   const [refreshing, setRefreshing] = useState(false);
+  const [search, setSearch] = useState("");
+  const [searchPart, setSearchPart] = useState(false);
+
   const animatedValue = useRef(new Animated.Value(0)).current;
   const { auth, notify, event, club, benefit } = useSelector((state) => state);
 
@@ -84,10 +88,12 @@ const Home = () => {
   const eventing = event?.getEvents?.filter(
     (item) =>
       new Date(formatDateDisplays(item.ngay_su_kien)).getTime() >
-      new Date(dayNow).getTime()
+        new Date(dayNow).getTime() ||
+      new Date(formatDateDisplays(item.ngay_su_kien)).getTime() ===
+        new Date(dayNow).getTime()
   );
 
-  const initStyle = Platform.OS === "ios" ? 20 : insets.top;
+  const initStyle = Platform.OS === "ios" ? 20 : insets.top + 5;
 
   const headerHeight = animatedValue.interpolate({
     inputRange: [0, HEADER_HEIGHT + insets.top],
@@ -249,7 +255,67 @@ const Home = () => {
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
 
-      <HeaderPart backHome={backHome} setBackHome={setBackHome} />
+      <HeaderPart
+        backHome={backHome}
+        setBackHome={setBackHome}
+        searchPart={searchPart}
+      />
+      {auth.permission?.group_id === Admin && (
+        <View style={styles.search}>
+          <View
+            style={{
+              flexDirection: "row",
+              //backgroundColor: "#ffffff",
+              alignItems: "center",
+              width: "80%",
+              borderRadius: 7,
+            }}>
+            <TouchableOpacity
+            // style={{
+            //   marginHorizontal: 10,
+            //   paddingHorizontal: 4,
+            //   paddingVertical: 3,
+            // }}
+            >
+              <Ionicons name="search-outline" size={30} color="#ffffff" />
+            </TouchableOpacity>
+            <TextInput
+              placeholderTextColor={"#ffffff"}
+              theme={{
+                roundness: 50,
+                colors: {
+                  primary: "green",
+                  underlineColor: "transparent",
+                },
+              }}
+              underlineColorAndroid="transparent"
+              style={styles.input}
+              onChangeText={(keySearch) => setSearch(keySearch)}
+              value={search}
+              placeholder="Tìm kiếm"
+            />
+          </View>
+          <TouchableOpacity>
+            <View
+              style={{
+                // backgroundColor: "#ffffff",
+                width: 35,
+                height: 35,
+                borderRadius: 50,
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+              }}>
+              <Ionicons
+                name="options-outline"
+                size={25}
+                color="#ffffff"
+                style={{ transform: [{ rotate: "-90deg" }] }}
+              />
+            </View>
+          </TouchableOpacity>
+        </View>
+      )}
 
       {auth.permission?.group_id === Admin ? (
         <View
@@ -294,9 +360,9 @@ const Home = () => {
             shadowRadius: 3.84,
             elevation: 5,
             zIndex: 3,
-            marginTop: -50,
+            marginTop: -60,
             marginHorizontal: 15,
-            borderRadius: 10,
+            borderRadius: 20,
             height: headerHeight,
           }}>
           <Animated.View
@@ -320,7 +386,7 @@ const Home = () => {
             <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
               Thông tin thành viên
             </Text>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
               <Text
                 style={{ fontSize: 12, fontWeight: "400", color: "#909090" }}>
                 Xem chi tiết
@@ -451,10 +517,21 @@ const Home = () => {
               </View>
               {benefit.loading ? (
                 <Loading />
-              ) : (
+              ) : benefit.getPayBenefit.length > 0 ? (
                 benefit.getPayBenefit
                   .slice(0, 3)
                   .map((item, index) => <BenefitHome item={item} key={index} />)
+              ) : (
+                <View>
+                  <Text
+                    style={{
+                      fontSize: 13,
+                      fontWeight: "600",
+                      textAlign: "center",
+                    }}>
+                    Hiện không có chỉ số quyền lợi nào
+                  </Text>
+                </View>
               )}
             </View>
           )}
@@ -488,6 +565,27 @@ const styles = StyleSheet.create({
     textAlign: "center",
     paddingHorizontal: 15,
     flexWrap: "wrap",
+  },
+  //
+  search: {
+    zIndex: 1,
+    position: "absolute",
+    marginTop: "21%",
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignContent: "center",
+    alignItems: "center",
+    paddingLeft: 20,
+    paddingRight: 15,
+  },
+  input: {
+    height: 40,
+    // padding: 10,
+    width: "79%",
+    marginLeft: 10,
+    color: "#ffffff",
+    left: -5,
   },
 });
 
