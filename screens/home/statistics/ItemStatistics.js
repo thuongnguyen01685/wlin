@@ -7,6 +7,13 @@ import Loading from "../../../components/loading/Loading";
 // create a component
 const ItemStatistics = (props) => {
   const navigation = useNavigation();
+  let dateNow = new Date();
+  let year = dateNow.getFullYear();
+  let month = dateNow.getMonth() + 1;
+  let day =
+    dateNow.getDate() >= 10 ? dateNow.getDate() : `0${dateNow.getDate()}`;
+
+  const dayNow = day + "/" + month + "/" + year;
   return (
     <TouchableOpacity
       style={[styles.itemStatistics, { backgroundColor: props.bg }]}
@@ -35,7 +42,7 @@ const ItemStatistics = (props) => {
             fontSize: 10,
             textAlign: "center",
           }}>
-          1/2/2022
+          {dayNow}
         </Text>
       </View>
 

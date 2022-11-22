@@ -152,7 +152,7 @@ const Header = (props) => {
             <View style={{ flexDirection: "row" }}>
               <Text
                 style={{
-                  color: "#FFFFFF",
+                  color: props.color ? props.color : "#FFFFFF",
                   fontSize: 15,
                   fontWeight: "400",
                 }}>
@@ -161,7 +161,7 @@ const Header = (props) => {
             </View>
             <Text
               style={{
-                color: "#FFFFFF",
+                color: props.color ? props.color : "#FFFFFF",
                 fontSize: 22,
                 fontWeight: "600",
               }}>

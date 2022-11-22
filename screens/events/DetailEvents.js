@@ -33,6 +33,7 @@ import { URL } from "../../utils/fetchApi";
 import ModalChoosePayment from "../../components/modal/ModalChoosePayment";
 import { Admin, Member, Partner } from "../../utils/AccessPermission";
 import { getDetailEventsAction } from "../../redux/actions/eventsAction";
+import Svg, { Path } from "react-native-svg";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
@@ -42,7 +43,7 @@ const wait = (timeout) => {
 };
 
 // create a component
-const DetailEvents = ({ route }) => {
+const DetailEvents = ({ route }, props) => {
   const navigation = useNavigation();
   const [refreshing, setRefreshing] = useState(false);
   const [modalSuccess, setModalSuccess] = useState(false);
@@ -140,9 +141,9 @@ const DetailEvents = ({ route }) => {
           )}
         </View>
 
-        <TouchableOpacity>
+        {/* <TouchableOpacity>
           <Ionicons name="alert-circle-outline" size={20} color="#826CCF" />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
       <View style={{ height: "100%" }}>
         <ScrollView
@@ -168,11 +169,21 @@ const DetailEvents = ({ route }) => {
                   style={{
                     width: "100%",
                     height: 180,
-                    borderRadius: 8,
+                    borderRadius: 10,
                     opacity: 0.8,
                     backgroundColor: "#474747",
                   }}
                 />
+
+                <View
+                  style={{
+                    position: "absolute",
+                    width: "100%",
+                    height: 180,
+                    backgroundColor: "#0008",
+                    borderRadius: 10,
+                  }}></View>
+
                 <View
                   style={{
                     fontSize: 15,
@@ -245,7 +256,7 @@ const DetailEvents = ({ route }) => {
                         fontWeight: "600",
                       }}>
                       {countParticipant?.length === 1
-                        ? "Bạn đã tham gia"
+                        ? "Bạn đang tham gia"
                         : " Bạn chưa tham gia"}
                     </Text>
                   </View>
@@ -391,7 +402,23 @@ const DetailEvents = ({ route }) => {
                   marginVertical: 5,
                 }}>
                 <View>
-                  <Ionicons name="location" size={30} color="#E51104" />
+                  <Svg
+                    width={24}
+                    height={25}
+                    viewBox="0 0 21 22"
+                    fill={"#E51104"}
+                    xmlns="http://www.w3.org/2000/svg"
+                    {...props}>
+                    <Path
+                      d={
+                        "M0.9375 9.60748C0.9375 4.43263 5.26187 0.25 10.4926 0.25C15.7381 0.25 20.0625 4.43263 20.0625 9.60748C20.0625 12.2152 19.1141 14.6361 17.5532 16.688C15.8312 18.9515 13.7087 20.9235 11.3196 22.4715C10.7728 22.8292 10.2794 22.8562 9.67926 22.4715C7.27658 20.9235 5.1541 18.9515 3.44681 16.688C1.88473 14.6361 0.9375 12.2152 0.9375 9.60748ZM7.34351 9.89884C7.34351 11.6324 8.75811 12.9959 10.4926 12.9959C12.2283 12.9959 13.6565 11.6324 13.6565 9.89884C13.6565 8.17877 12.2283 6.74894 10.4926 6.74894C8.75811 6.74894 7.34351 8.17877 7.34351 9.89884Z"
+                      }
+                      stroke={"#ffffff"}
+                      strokeWidth={1.7}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </Svg>
                 </View>
                 <View
                   style={{
@@ -417,7 +444,7 @@ const DetailEvents = ({ route }) => {
                         colors={["#9D85F2", "#9D85F2"]}
                         style={{
                           borderRadius: 20,
-                          paddingVertical: 3,
+                          paddingVertical: 5,
                           paddingHorizontal: 8,
                           flexDirection: "row",
                           justifyContent: "center",
@@ -439,11 +466,23 @@ const DetailEvents = ({ route }) => {
               </View>
               <View style={styles.containerBox}>
                 <View>
-                  <MaterialCommunityIcons
-                    name="ticket-confirmation"
-                    size={30}
-                    color="#2BA600"
-                  />
+                  <Svg
+                    width={23}
+                    height={22}
+                    viewBox="0 0 23 21"
+                    fill={"#2BA600"}
+                    xmlns="http://www.w3.org/2000/svg"
+                    {...props}>
+                    <Path
+                      d={
+                        "M22.5106 8.30617C22.3583 8.45866 22.1516 8.5458 21.934 8.5458C21.1289 8.5458 20.4761 9.19936 20.4761 9.99451C20.4761 10.7951 21.1213 11.4454 21.9188 11.4541C22.3681 11.4585 22.75 11.7722 22.75 12.222V15.016C22.75 17.3677 20.846 19.2749 18.4959 19.2749H14.949C14.5823 19.2749 14.2853 18.9776 14.2853 18.6105V16.2577C14.2853 15.8002 13.9263 15.4408 13.4693 15.4408C13.0232 15.4408 12.6533 15.8002 12.6533 16.2577V18.6105C12.6533 18.9776 12.3563 19.2749 11.9907 19.2749H4.50411C2.16489 19.2749 0.25 17.3687 0.25 15.016V12.222C0.25 11.7722 0.631891 11.4585 1.08124 11.4541C1.87984 11.4454 2.52394 10.7951 2.52394 9.99451C2.52394 9.22114 1.89289 8.63294 1.06601 8.63294C0.848404 8.63294 0.641683 8.5458 0.489362 8.39331C0.337041 8.24081 0.25 8.03386 0.25 7.81601V4.99484C0.25 2.64642 2.16925 0.724976 4.51499 0.724976H11.9907C12.3563 0.724976 12.6533 1.02234 12.6533 1.38942V4.1779C12.6533 4.6245 13.0232 4.99484 13.4693 4.99484C13.9263 4.99484 14.2853 4.6245 14.2853 4.1779V1.38942C14.2853 1.02234 14.5823 0.724976 14.949 0.724976H18.4959C20.846 0.724976 22.75 2.63117 22.75 4.98395V7.72887C22.75 7.94672 22.663 8.15367 22.5106 8.30617ZM13.4693 13.3276C13.9263 13.3276 14.2853 12.9573 14.2853 12.5107V8.15367C14.2853 7.70708 13.9263 7.33673 13.4693 7.33673C13.0232 7.33673 12.6533 7.70708 12.6533 8.15367V12.5107C12.6533 12.9573 13.0232 13.3276 13.4693 13.3276Z"
+                      }
+                      stroke={"#ffffff"}
+                      strokeWidth={1.7}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </Svg>
                 </View>
                 <View style={{ marginHorizontal: 15 }}>
                   <Text style={styles.headerContent}>Giá vé</Text>

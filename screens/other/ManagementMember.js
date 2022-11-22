@@ -453,16 +453,18 @@ const styles = StyleSheet.create({
     marginBottom: 7,
   },
   surface: {
-    height: height * 0.1,
-    marginTop: 20,
-    padding: 8,
+    height: height * 0.12,
+    marginTop: 10,
+    paddingHorizontal: 8,
     marginHorizontal: 10,
     borderRadius: 8,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    backgroundColor: "#F8f8f8",
     borderBottomWidth: 0.5,
     borderColor: "#DADADA",
+    paddingTop: 22,
   },
 
   containerView: {

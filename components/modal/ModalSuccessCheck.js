@@ -54,7 +54,7 @@ const ModalSuccessCheck = (props) => {
             marginTop: 5,
           }}>
           <Text
-            style={{ fontSize: 18, fontWeight: "800", textAlign: "center" }}>
+            style={{ fontSize: 20, fontWeight: "800", textAlign: "center" }}>
             Chúc mừng
           </Text>
           <View style={{ marginTop: 10 }}>

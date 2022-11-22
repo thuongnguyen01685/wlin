@@ -21,28 +21,17 @@ const ModalRequest = (props) => {
       isVisible={props.modalSuccess}
       backdropColor="#C4C4C4"
       backdropOpacity={0.5}
-      onBackdropPress={handleClose}
-      style={{ paddingHorizontal: 10 }}>
+      onBackdropPress={handleClose}>
       <View
         style={{
           backgroundColor: "white",
-          borderRadius: 20,
+          borderRadius: 30,
           padding: 10,
           elevation: 5,
-          width: "100%",
+          marginHorizontal: 15,
           height: "auto",
           bottom: 20,
         }}>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "flex-end",
-            alignItems: "center",
-          }}>
-          <TouchableOpacity onPress={handleClose}>
-            <Ionicons name="close-outline" size={20} />
-          </TouchableOpacity>
-        </View>
         <View
           style={{
             flexDirection: "column",
@@ -51,9 +40,15 @@ const ModalRequest = (props) => {
           <View style={{ flexDirection: "row", justifyContent: "center" }}>
             <Image
               source={require("../../assets/emojione_white-heavy-check-mark.png")}
-              style={{ width: 70, height: 70 }}
+              style={{
+                resizeMode: "contain",
+                width: 200,
+                height: 150,
+                marginVertical: 15,
+              }}
             />
           </View>
+
           <View style={{ marginVertical: 10 }}>
             <Text
               style={{ fontSize: 12, fontWeight: "600", textAlign: "center" }}>

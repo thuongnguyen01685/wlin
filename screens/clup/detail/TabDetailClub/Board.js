@@ -1,6 +1,6 @@
 //import liraries
 import { Ionicons } from "@expo/vector-icons";
-import { Picker } from "@react-native-picker/picker";
+import SelectDropdown from "react-native-select-dropdown";
 import React, { Component, useState } from "react";
 import {
   View,
@@ -29,40 +29,39 @@ const Board = () => {
     //   dispatch(getCLub(auth, page, auth.permission.group_id));
     wait(2000).then(() => setRefreshing(false));
   }, []);
+  const selectData = ["Nhiệm kì 1", "Nhiệm kì 2"];
 
   return (
     <View style={styles.container}>
       <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
-        <View
-          style={{
-            borderRadius: 7,
-            width: 120,
-            height: 40,
-            backgroundColor: "#ffffff",
-            shadowOffset: {
-              width: 0,
-              height: 2,
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 3.84,
-
-            elevation: 5,
-          }}>
-          <Picker
-            selectedValue={select}
-            onValueChange={(itemValue, itemIndex) => setSelect(itemValue)}>
-            <Picker.Item
-              label="Nhiệm kì 1"
-              value="nk1"
-              style={styles.itemSelect}
-            />
-            <Picker.Item
-              label="Nhiệm kì 2"
-              value="nk2"
-              style={styles.itemSelect}
-            />
-          </Picker>
-        </View>
+        <SelectDropdown
+          data={selectData}
+          onSelect={(selectedItem, index) => {
+            console.log(selectedItem, index);
+          }}
+          defaultButtonText={"Chọn nhiệm kì"}
+          buttonTextAfterSelection={(selectedItem, index) => {
+            return selectedItem;
+          }}
+          rowTextForSelection={(item, index) => {
+            return item;
+          }}
+          buttonStyle={styles.dropdown1BtnStyle}
+          buttonTextStyle={styles.dropdown1BtnTxtStyle}
+          dropdownIconPosition={"right"}
+          dropdownStyle={styles.dropdown1DropdownStyle}
+          rowStyle={styles.dropdown1RowStyle}
+          rowTextStyle={styles.dropdown1RowTxtStyle}
+          renderDropdownIcon={(isOpened) => {
+            return (
+              <Ionicons
+                name={isOpened ? "caret-up-outline" : "caret-down-outline"}
+                color={"#444"}
+                size={18}
+              />
+            );
+          }}
+        />
       </View>
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -194,12 +193,23 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#ffffff",
   },
-  itemSelect: {
-    fontSize: 10,
-    fontWeight: "800",
-    color: "#474747",
-    textAlign: "center",
+
+  //
+  dropdown1BtnStyle: {
+    height: 40,
+    backgroundColor: "#F8F8F8",
+    borderRadius: 8,
+    borderColor: "#444",
+    width: 160,
+    marginTop: 10,
   },
+  dropdown1BtnTxtStyle: { color: "#474747", fontSize: 15 },
+  dropdown1DropdownStyle: { backgroundColor: "#EFEFEF" },
+  dropdown1RowStyle: {
+    backgroundColor: "#EFEFEF",
+    borderBottomColor: "#C5C5C5",
+  },
+  dropdown1RowTxtStyle: { color: "#444", textAlign: "left" },
 });
 
 //make this component available to the app
