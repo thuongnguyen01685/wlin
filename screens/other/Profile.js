@@ -211,11 +211,14 @@ const Profile = () => {
     await dispatch(getProfileAction(auth.token));
   };
 
-  const initStyle = Platform.OS === "ios" ? 20 : insets.top + 50;
+  const initStyle = Platform.OS === "ios" ? insets.top + 40 : insets.top + 50;
 
   const headerHeight = animatedValue.interpolate({
     inputRange: [0, HEADER_HEIGHT + insets.top],
-    outputRange: [HEADER_HEIGHT + initStyle, insets.top + 30],
+    outputRange: [
+      HEADER_HEIGHT + initStyle,
+      Platform.OS === "ios" ? insets.top + 40 : insets.top + 30,
+    ],
     extrapolate: "clamp",
   });
 
@@ -414,7 +417,7 @@ const Profile = () => {
               zIndex: 15,
               marginTop: -40,
               marginHorizontal: 15,
-              borderRadius: 15,
+              borderRadius: 20,
               height: headerHeight,
             }}>
             <Animated.View

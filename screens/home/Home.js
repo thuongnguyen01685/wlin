@@ -97,7 +97,7 @@ const Home = () => {
 
   const headerHeight = animatedValue.interpolate({
     inputRange: [0, HEADER_HEIGHT + insets.top],
-    outputRange: [HEADER_HEIGHT + initStyle, insets.top + 30],
+    outputRange: [HEADER_HEIGHT + initStyle + 15, insets.top + 30],
 
     extrapolate: "clamp",
   });
