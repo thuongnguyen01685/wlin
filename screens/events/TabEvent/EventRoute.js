@@ -20,6 +20,7 @@ import {
 } from "../../../redux/actions/eventsAction";
 import { formatDateDisplay, formatDateDisplays } from "../../../utils/datetime";
 import { URL } from "../../../utils/fetchApi";
+import Svg, { Path } from "react-native-svg";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
@@ -189,11 +190,22 @@ const EventRoute = () => {
                     marginLeft: 10,
                   }}>
                   <TouchableOpacity>
-                    <Ionicons
-                      name={item.save ? "bookmark" : "bookmark-outline"}
-                      size={20}
-                      color={item.save ? "#FFBE17" : "#FEC90F"}
-                    />
+                    <Svg
+                      width={16}
+                      height={22}
+                      viewBox="0 0 14 18"
+                      fill={"#FEC90F"}
+                      xmlns="http://www.w3.org/2000/svg">
+                      <Path
+                        d={
+                          "M4.41665 0.666626H9.55831C11.8166 0.666626 13.6416 1.55829 13.6666 3.82496V16.475C13.6666 16.6166 13.6333 16.7583 13.5666 16.8833C13.4583 17.0833 13.275 17.2333 13.05 17.3C12.8333 17.3666 12.5916 17.3333 12.3916 17.2166L6.99165 14.5166L1.58331 17.2166C1.45915 17.2825 1.31665 17.325 1.17498 17.325C0.708313 17.325 0.333313 16.9416 0.333313 16.475V3.82496C0.333313 1.55829 2.16665 0.666626 4.41665 0.666626ZM3.84998 7.01663H10.125C10.4833 7.01663 10.775 6.72413 10.775 6.35829C10.775 5.99163 10.4833 5.69996 10.125 5.69996H3.84998C3.49165 5.69996 3.19998 5.99163 3.19998 6.35829C3.19998 6.72413 3.49165 7.01663 3.84998 7.01663Z"
+                        }
+                        stroke={"#ffffff"}
+                        strokeWidth={1.7}
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </Svg>
                   </TouchableOpacity>
                   <TouchableOpacity>
                     <Ionicons

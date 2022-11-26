@@ -34,7 +34,6 @@ import ModalChoosePayment from "../../components/modal/ModalChoosePayment";
 import { Admin, Member, Partner } from "../../utils/AccessPermission";
 import { getDetailEventsAction } from "../../redux/actions/eventsAction";
 import Svg, { Path } from "react-native-svg";
-
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
 const ratio = w / 720;
@@ -168,40 +167,39 @@ const DetailEvents = ({ route }, props) => {
                   source={{ uri: `${URL}${event.detailEvent?.hinh_anh}` }}
                   style={{
                     width: "100%",
-                    height: 180,
+                    height: 215,
                     borderRadius: 10,
-                    opacity: 0.8,
+                    opacity: 1,
                     backgroundColor: "#474747",
                   }}
                 />
 
-                <View
+                {/* <View
                   style={{
                     position: "absolute",
                     width: "100%",
-                    height: 180,
+                    height: 215,
                     backgroundColor: "#0008",
                     borderRadius: 10,
-                  }}></View>
+                  }}></View> */}
 
                 <View
                   style={{
-                    fontSize: 15,
-                    fontWeight: "600",
                     color: "#ffffff",
                     position: "absolute",
                     flexDirection: "row",
                     justifyContent: "flex-start",
                     alignItems: "flex-end",
-                    height: 160,
-                    marginVertical: 10,
+                    height: 215,
+                    marginBottom: 30,
                     marginHorizontal: 13,
                   }}>
                   <Text
                     style={{
-                      fontSize: 25,
+                      fontSize: 20,
                       fontWeight: "600",
                       color: "#ffffff",
+                      marginBottom: 5,
                     }}>
                     {event.detailEvent?.ten_su_kien}
                   </Text>
