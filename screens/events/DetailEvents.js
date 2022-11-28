@@ -564,7 +564,13 @@ const DetailEvents = ({ route }, props) => {
                   marginTop: 10,
                 }}>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate("CheckQR")}>
+                  onPress={
+                    event.detailEvent?.trang_thai_checkin !== "1"
+                      ? () => navigation.navigate("CheckQR")
+                      : () => {
+                          return;
+                        }
+                  }>
                   <LinearGradient
                     start={{ x: 0, y: 0.3 }}
                     end={{ x: 1, y: 1 }}
@@ -585,7 +591,9 @@ const DetailEvents = ({ route }, props) => {
                         fontWeight: "600",
                         textAlign: "center",
                       }}>
-                      Check-in
+                      {event.detailEvent?.trang_thai_checkin !== "1"
+                        ? " Check-in"
+                        : "Đã check-in"}
                     </Text>
                   </LinearGradient>
                 </TouchableOpacity>

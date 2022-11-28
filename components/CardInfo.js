@@ -82,7 +82,7 @@ const CardInfo = () => {
               textAlign: "center",
               top: 10,
             }}>
-            {auth.permission?.name}
+            {auth.customer?.ten_kh}
           </Text>
         </View>
         <View style={{ paddingHorizontal: 10, bottom: 5, marginVertical: 15 }}>
