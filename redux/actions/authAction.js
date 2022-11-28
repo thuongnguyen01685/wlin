@@ -2,6 +2,7 @@ import { URL } from "../../utils/fetchApi";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import callApis from "../../utils/callApis";
 import callApi from "../../utils/callApi";
+import { Buffer } from "buffer";
 
 export const AUTH = {
   OTP: "OTP",
@@ -28,6 +29,34 @@ export const getOTP = (number) => async (dispatch) => {
     console.log(error);
     return;
   }
+};
+
+export const loginAction = (username, password) => {
+  var credentials = Buffer.from(username + ":" + password).toString("base64");
+  var basicAuth = "Basic " + credentials;
+
+  const add = async (dispatch) => {
+    try {
+      const res = await callApi(`auth/local`, "GET", "", {
+        Authorization: basicAuth,
+      });
+
+      if (res.data) {
+        await AsyncStorage.setItem("@token_key", res.data.token);
+        dispatch({
+          type: AUTH.TOKEN,
+          payload: res.data.token,
+        });
+      }
+      //  else {
+      //   dispatch({ type: AUTH.ERROR, payload: res.message });
+      // }
+      return res.data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  return add;
 };
 
 export const getTokenAction = (id_otp, code_opt) => async (dispatch) => {

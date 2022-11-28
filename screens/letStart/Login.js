@@ -34,7 +34,7 @@ const Login = () => {
   const phoneInput = useRef();
   const navigation = useNavigation();
   const [checked, setChecked] = useState(false);
-  const [modalSms, setModalSms] = useState(false);
+  //const [modalSms, setModalSms] = useState(false);
   const dispatch = useDispatch();
 
   const handleGetOtp = async () => {
@@ -43,31 +43,39 @@ const Login = () => {
     setValid(checkValid ? checkValid : false);
 
     if (checkValid && checked) {
-      const res = await dispatch(getOTP(value));
-      if (res) {
-        setModalSms(true);
-        setTimeout(() => {
-          dispatch({ type: AUTH.OTP, payload: "" });
-        }, 300 * 1000);
-      } else {
-        Toast.show("Tài khoản này không tồn tại !", {
-          duration: Toast.durations.LONG,
-          position: Toast.positions.BOTTOM,
-        });
-      }
+      // const res = await dispatch(getOTP(value));
+      // if (res) {
+      //   //setModalSms(true);
+      //   navigation.navigate("Otp", {
+      //     numberPhone: formattedValue,
+      //     value: value,
+      //   });
+      //   setTimeout(() => {
+      //     dispatch({ type: AUTH.OTP, payload: "" });
+      //   }, 300 * 1000);
+      // } else {
+      //   Toast.show("Tài khoản này không tồn tại !", {
+      //     duration: Toast.durations.LONG,
+      //     position: Toast.positions.BOTTOM,
+      //   });
+      // }
+      navigation.navigate("Otp", {
+        numberPhone: formattedValue,
+        value: value,
+      });
     }
   };
 
   return (
     <KeyboardAwareScrollView style={styles.container}>
-      {modalSms && (
+      {/* {modalSms && (
         <ModalSms
           modalSms={modalSms}
           setModalSms={setModalSms}
           numberphone={formattedValue}
           value={value}
         />
-      )}
+      )} */}
       <ScrollView>
         <View
           style={{

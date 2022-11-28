@@ -23,6 +23,7 @@ import {
   getProfileAction,
   getRankAction,
   getTokenAction,
+  loginAction,
 } from "../../redux/actions/authAction";
 import { getNotify } from "../../redux/actions/notifyAction";
 import ModalSms from "../../components/ModalSms";
@@ -38,9 +39,6 @@ const wait = (timeout) => {
 };
 // create a component
 const Otp = ({ route }) => {
-  const [value, setValue] = useState("");
-  const [formattedValue, setFormattedValue] = useState("");
-  const [valid, setValid] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
   const phoneInput = useRef();
   const navigation = useNavigation();
@@ -56,7 +54,7 @@ const Otp = ({ route }) => {
   const successMessage = "Đăng nhập thành công";
   const failColor = "#bf6060";
   const failHeader = "Đăng nhập thất bại";
-  const failMessage = "Kiểm tra lại mã OTP";
+  const failMessage = "Kiểm tra lại số điện thoại và mật khẩu.";
 
   const popIn = () => {
     Animated.timing(popAnim, {
@@ -93,54 +91,42 @@ const Otp = ({ route }) => {
   const fiveInput = useRef();
   const sixInput = useRef();
 
-  const [one, setOne] = useState(0);
-  const [two, setTwo] = useState(0);
-  const [three, setThree] = useState(0);
-  const [four, setFour] = useState(0);
-  const [five, setFive] = useState(0);
-  const [six, setSix] = useState(0);
+  const [password, setPassword] = useState("");
 
   const { auth } = useSelector((state) => state);
 
   const handleCheckOtp = async () => {
-    const maOtp =
-      one.toString() +
-      two.toString() +
-      three.toString() +
-      four.toString() +
-      five.toString() +
-      six.toString();
+    if (!route.params.value.startsWith("0"))
+      route.params.value = "0" + route.params.value;
+    // console.log(route.params.value);
+    const res = await dispatch(loginAction(route.params.value, password));
 
-    if (auth.otp.otp === maOtp.toString()) {
-      const res = await dispatch(getTokenAction(auth.otp._id, auth.otp.otp));
+    if (res) {
+      // dispatch(getProfileAction(res.token));
+      dispatch(getNotify(res.token));
+      // dispatch(getCustomerWlinAction(res.token, route.params.value));
+      // dispatch(getPermissionAction(res.token, route.params.value));
+      // dispatch(getRankAction(res.token, route.params.value));
+      setStatus("success");
+      popIn();
 
-      if (res) {
-        // dispatch(getProfileAction(res.token));
-        dispatch(getNotify(res.token));
-        // dispatch(getCustomerWlinAction(res.token, route.params.value));
-        // dispatch(getPermissionAction(res.token, route.params.value));
-        // dispatch(getRankAction(res.token, route.params.value));
-        setStatus("success");
-        popIn();
-
-        const resPhone = await dispatch(getProfileAction(res.token));
-        const access = await dispatch(getPermissionAction(res.token, resPhone));
-        if (resPhone) {
-          if (access !== Admin) {
-            const goi = await dispatch(getRankAction(res.token, resPhone));
-            dispatch({ type: AUTH.GOI, payload: goi });
-            dispatch(getCustomerWlinAction(res.token, resPhone));
-            if (goi) {
-              wait(500).then(() => navigation.navigate("TabBar"));
-            } else {
-              setShowAlertPermission(true);
-            }
-          } else {
-            const goi = await dispatch(getRankAction(res.token, resPhone));
-            dispatch({ type: AUTH.GOI, payload: goi });
-            dispatch(getCustomerWlinAction(res.token, resPhone));
+      const resPhone = await dispatch(getProfileAction(res.token));
+      const access = await dispatch(getPermissionAction(res.token, resPhone));
+      if (resPhone) {
+        if (access !== Admin) {
+          const goi = await dispatch(getRankAction(res.token, resPhone));
+          dispatch({ type: AUTH.GOI, payload: goi });
+          dispatch(getCustomerWlinAction(res.token, resPhone));
+          if (goi) {
             wait(500).then(() => navigation.navigate("TabBar"));
+          } else {
+            setShowAlertPermission(true);
           }
+        } else {
+          const goi = await dispatch(getRankAction(res.token, resPhone));
+          dispatch({ type: AUTH.GOI, payload: goi });
+          dispatch(getCustomerWlinAction(res.token, resPhone));
+          wait(500).then(() => navigation.navigate("TabBar"));
         }
       }
     } else {
@@ -285,69 +271,15 @@ const Otp = ({ route }) => {
               </Text>
             </Text>
             <Text style={styles.contentText}>
-              Vui lòng nhập mã OTP để xác nhận đăng nhập.
+              Vui lòng nhập mật khẩu để đăng nhập.
             </Text>
           </View>
 
           <View style={styles.inputPart}>
             <TextInput
               style={styles.input}
-              keyboardType="number-pad"
-              maxLength={1}
-              ref={firstInput}
               onChangeText={(text) => {
-                text && secondInput.current.focus();
-                setOne(text);
-              }}
-            />
-            <TextInput
-              style={styles.input}
-              keyboardType="number-pad"
-              maxLength={1}
-              ref={secondInput}
-              onChangeText={(text) => {
-                text ? thirdInput.current.focus() : firstInput.current.focus();
-                setTwo(text);
-              }}
-            />
-            <TextInput
-              style={styles.input}
-              keyboardType="number-pad"
-              maxLength={1}
-              ref={thirdInput}
-              onChangeText={(text) => {
-                text ? fourInput.current.focus() : secondInput.current.focus();
-                setThree(text);
-              }}
-            />
-            <TextInput
-              style={styles.input}
-              keyboardType="number-pad"
-              maxLength={1}
-              ref={fourInput}
-              onChangeText={(text) => {
-                text ? fiveInput.current.focus() : thirdInput.current.focus();
-                setFour(text);
-              }}
-            />
-            <TextInput
-              style={styles.input}
-              keyboardType="number-pad"
-              maxLength={1}
-              ref={fiveInput}
-              onChangeText={(text) => {
-                text ? sixInput.current.focus() : fourInput.current.focus();
-                setFive(text);
-              }}
-            />
-            <TextInput
-              style={styles.input}
-              keyboardType="number-pad"
-              maxLength={1}
-              ref={sixInput}
-              onChangeText={(text) => {
-                !text && fiveInput.current.focus();
-                setSix(text);
+                setPassword(text);
               }}
             />
           </View>
@@ -362,7 +294,7 @@ const Otp = ({ route }) => {
               top: 10,
             }}>
             <Text style={{ fontSize: 15, fontWeight: "600" }}>
-              Bạn quên mã OTP?
+              Bạn quên mật khẩu?
             </Text>
             <TouchableOpacity
               style={{ marginLeft: 10 }}
@@ -438,8 +370,8 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: "#E8E8E8",
     borderRadius: 10,
-    width: 50,
     textAlign: "center",
+    width: "90%",
   },
   //animated
   toastContainer: {
