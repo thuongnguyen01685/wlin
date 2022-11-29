@@ -112,7 +112,7 @@ const Unpaid = () => {
         <View style={{ marginBottom: "80%" }}>
           {event.detailEvent?.ds_tham_gia.length > 0 ? (
             event.detailEvent?.ds_tham_gia
-              .filter((items) => items.trang_thai_tt === "0")
+              .filter((items) => items.trang_thai_tt !== "1")
               .map((item, index) => (
                 <TouchableOpacity
                   key={index}
@@ -153,6 +153,7 @@ const Unpaid = () => {
                       style={{
                         flexDirection: "column",
                         justifyContent: "space-between",
+                        width: "60%",
                       }}>
                       <Text
                         style={{
@@ -176,7 +177,6 @@ const Unpaid = () => {
                     style={{
                       flexDirection: "row",
                       justifyContent: "space-around",
-                      width: "20%",
                     }}>
                     <TouchableOpacity>
                       <Ionicons
@@ -343,7 +343,7 @@ const Paid = () => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
         <View style={{ marginBottom: "80%" }}>
-          {event.detailEvent?.ds_tham_gia.length > 0 ? (
+          {event.detailEvent.ds_tham_gia.length > 0 ? (
             event.detailEvent?.ds_tham_gia
               .filter((items) => items.trang_thai_tt === "1")
               .map((item, index) => (
@@ -368,9 +368,6 @@ const Paid = () => {
                       justifyContent: "space-between",
                       alignItems: "center",
                     }}>
-                    {/* <View>
-                  <CheckBox value={item.check} onValueChange={setSelection} />
-                </View> */}
                     <View
                       style={{ flexDirection: "row", marginHorizontal: 10 }}>
                       <Image
@@ -383,6 +380,7 @@ const Paid = () => {
                       style={{
                         flexDirection: "column",
                         justifyContent: "space-between",
+                        width: "60%",
                       }}>
                       <Text
                         style={{
@@ -407,7 +405,6 @@ const Paid = () => {
                     style={{
                       flexDirection: "row",
                       justifyContent: "space-around",
-                      width: "20%",
                     }}>
                     <TouchableOpacity>
                       <Ionicons
