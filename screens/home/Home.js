@@ -187,9 +187,9 @@ const Home = () => {
         <Image
           style={{
             width: "93%",
-            height: 150,
+            height: 210,
             borderRadius: 10,
-            opacity: 0.8,
+            opacity: 1,
             backgroundColor: "#474747",
           }}
           source={{
@@ -200,7 +200,7 @@ const Home = () => {
           style={{
             position: "absolute",
             width: "100%",
-            height: 150,
+            height: 210,
             flexDirection: "column",
             justifyContent: "space-between",
             paddingVertical: 5,
@@ -210,7 +210,7 @@ const Home = () => {
           <View
             style={{
               width: "15%",
-              marginLeft: 10,
+              marginLeft: 20,
               backgroundColor: "#FCFCFC",
               borderRadius: 8,
               padding: 5,
@@ -265,18 +265,11 @@ const Home = () => {
           <View
             style={{
               flexDirection: "row",
-              //backgroundColor: "#ffffff",
               alignItems: "center",
               width: "80%",
               borderRadius: 7,
             }}>
-            <TouchableOpacity
-            // style={{
-            //   marginHorizontal: 10,
-            //   paddingHorizontal: 4,
-            //   paddingVertical: 3,
-            // }}
-            >
+            <TouchableOpacity>
               <Ionicons name="search-outline" size={30} color="#ffffff" />
             </TouchableOpacity>
             <TextInput
@@ -298,7 +291,6 @@ const Home = () => {
           <TouchableOpacity>
             <View
               style={{
-                // backgroundColor: "#ffffff",
                 width: 35,
                 height: 35,
                 borderRadius: 50,
@@ -442,7 +434,7 @@ const Home = () => {
 
               <Carousel
                 autoplay
-                autoplayTimeout={7000}
+                autoplayTimeout={5000}
                 loop
                 index={0}
                 pageSize={w}>
