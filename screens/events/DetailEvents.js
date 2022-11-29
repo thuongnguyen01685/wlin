@@ -173,16 +173,6 @@ const DetailEvents = ({ route }, props) => {
                     backgroundColor: "#474747",
                   }}
                 />
-
-                {/* <View
-                  style={{
-                    position: "absolute",
-                    width: "100%",
-                    height: 215,
-                    backgroundColor: "#0008",
-                    borderRadius: 10,
-                  }}></View> */}
-
                 <View
                   style={{
                     color: "#ffffff",
@@ -565,11 +555,11 @@ const DetailEvents = ({ route }, props) => {
                 }}>
                 <TouchableOpacity
                   onPress={
-                    event.detailEvent?.trang_thai_checkin !== "1"
-                      ? () => navigation.navigate("CheckQR")
-                      : () => {
+                    countParticipant?.length === 1
+                      ? () => {
                           return;
                         }
+                      : () => navigation.navigate("CheckQR")
                   }>
                   <LinearGradient
                     start={{ x: 0, y: 0.3 }}
@@ -591,9 +581,9 @@ const DetailEvents = ({ route }, props) => {
                         fontWeight: "600",
                         textAlign: "center",
                       }}>
-                      {event.detailEvent?.trang_thai_checkin !== "1"
-                        ? " Check-in"
-                        : "Đã check-in"}
+                      {countParticipant?.length === 1
+                        ? "Đã Check-in"
+                        : "Check-in"}
                     </Text>
                   </LinearGradient>
                 </TouchableOpacity>

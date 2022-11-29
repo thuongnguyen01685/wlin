@@ -1,5 +1,6 @@
 import { Admin, Member, Partner } from "../../utils/AccessPermission";
 import callApis from "../../utils/callApis";
+import Toast from "react-native-root-toast";
 
 export const EVENTS = {
   GETEVENTS: "GETEVENTS",
@@ -14,14 +15,14 @@ export const getEventsAction =
       //admin || partner
       if (permission === Admin || permission === Partner) {
         const res = await callApis(
-          `dmsukien?access_token=flex.public.token&q={"club":{"$in":[${array}]}}`
+          `dmsukien?access_token=${auth.token}&q={"club":{"$in":[${array}]}}`
         );
         dispatch({ type: EVENTS.GETEVENTS, payload: res.data });
       }
       //dmsukien?access_token=a32ace19895e836dc9c11ef730a86dac&limit=200&q={"ds_tham_gia":{"$elemMatch":{"ma_kh":"0338634204"}}}
       if (permission === Member) {
         const res = await callApis(
-          `dmsukien?access_token=flex.public.token&limit=200&q={"ds_tham_gia":{"$elemMatch":{"ma_kh":"${auth.profile.email}"}}}`
+          `dmsukien?access_token=${auth.token}&limit=200&q={"ds_tham_gia":{"$elemMatch":{"ma_kh":"${auth.profile.email}"}}}`
         );
         dispatch({ type: EVENTS.GETEVENTS, payload: res.data });
       }
@@ -82,6 +83,37 @@ export const checkPayImage =
         }
       );
       return res.data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+export const ChangeStatusLoveAction =
+  (_id, trang_thai, token, _idDelete) => async (dispatch) => {
+    try {
+      if (trang_thai) {
+        const res = await callApis(
+          `favourite/${_idDelete}?access_token=${token}`,
+          "DELETE"
+        );
+        if (res.data) {
+          Toast.show("Đã loại khỏi danh sách sự kiện yêu thích!", {
+            duration: Toast.durations.LONG,
+            position: Toast.positions.BOTTOM,
+          });
+        }
+      } else {
+        const res = await callApis(`favourite?access_token=${token}`, "POST", {
+          id_favourite: _id,
+          chung_tu: "dmsukien",
+        });
+        if (res.data) {
+          Toast.show("Đã thêm vào danh sách sự kiện yêu thích! ", {
+            duration: Toast.durations.LONG,
+            position: Toast.positions.BOTTOM,
+          });
+        }
+      }
     } catch (error) {
       console.log(error);
     }
