@@ -328,7 +328,6 @@ const Home = () => {
             },
             shadowOpacity: 0.25,
             shadowRadius: 3.84,
-
             elevation: 5,
             zIndex: 3,
             marginTop: -50,
@@ -348,7 +347,7 @@ const Home = () => {
           </TouchableOpacity>
         </View>
       ) : (
-        <Animated.View
+        <View
           style={{
             backgroundColor: "#ffffff",
             shadowColor: "#000",
@@ -363,9 +362,10 @@ const Home = () => {
             marginTop: -60,
             marginHorizontal: 15,
             borderRadius: 20,
-            height: headerHeight,
+            paddingHorizontal: 15,
+            paddingBottom: 15,
           }}>
-          <Animated.View
+          <View
             style={{
               flexDirection: "row",
               alignItems: "center",
@@ -373,15 +373,6 @@ const Home = () => {
               paddingHorizontal: 10,
               marginTop: 10,
               zIndex: 4,
-              transform: [
-                {
-                  translateY: animatedValue.interpolate({
-                    inputRange: [0, 100],
-                    outputRange: [0, 10],
-                    extrapolate: "clamp",
-                  }),
-                },
-              ],
             }}>
             <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
               Thông tin thành viên
@@ -392,29 +383,9 @@ const Home = () => {
                 Xem chi tiết
               </Text>
             </TouchableOpacity>
-          </Animated.View>
-          <Animated.View
-            style={{
-              paddingHorizontal: 20,
-              // height: headerHeight,
-              opacity: animatedValue.interpolate({
-                inputRange: [0, 4, 8, 25],
-                outputRange: [1, 0.5, 0.9, 0],
-                extrapolate: "clamp",
-              }),
-              transform: [
-                {
-                  translateY: animatedValue.interpolate({
-                    inputRange: [0, 100],
-                    outputRange: [0, -55],
-                    extrapolate: "clamp",
-                  }),
-                },
-              ],
-            }}>
-            <CardInfo />
-          </Animated.View>
-        </Animated.View>
+          </View>
+          <CardInfo />
+        </View>
       )}
 
       <ScrollView
