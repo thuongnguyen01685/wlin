@@ -8,7 +8,7 @@ const BenefitHome = ({ item }) => {
     <View
       style={{
         backgroundColor: "#ffffff",
-        borderRadius: 7,
+        borderRadius: 15,
         marginHorizontal: 15,
         paddingVertical: 5,
         marginVertical: 10,
@@ -53,15 +53,12 @@ const BenefitHome = ({ item }) => {
             justifyContent: "space-between",
             alignItems: "center",
             marginTop: 5,
-            backgroundColor: "#826CCF",
+            backgroundColor: "#9D85F2",
             paddingHorizontal: 5,
-            borderRadius: 10,
+            borderRadius: 15,
+            paddingVertical: 5,
+            paddingHorizontal: 10,
           }}>
-          <MaterialCommunityIcons
-            name="hand-extended-outline"
-            size={20}
-            color="#ffffff"
-          />
           <Text style={{ fontSize: 11, color: "#ffffff" }}>Trả QL</Text>
         </TouchableOpacity>
       </View>

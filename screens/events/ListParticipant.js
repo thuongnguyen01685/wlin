@@ -28,6 +28,7 @@ import CheckBox from "expo-checkbox";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import { getEventsAction } from "../../redux/actions/eventsAction";
 import ModalRequest from "../../components/modal/ModalRequest";
+import { URL } from "../../utils/fetchApi";
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -142,10 +143,17 @@ const Unpaid = () => {
                       />
                     </View>
                     <View
-                      style={{ flexDirection: "row", marginHorizontal: 10 }}>
+                      style={{
+                        flexDirection: "row",
+                        marginHorizontal: 10,
+                      }}>
                       <Image
-                        source={require("../../assets/truong.png")}
-                        style={{ width: 70, height: 70 }}
+                        source={
+                          item.avatar
+                            ? { uri: `${URL}/${item.avatar}` }
+                            : require("../../assets/avtUser.png")
+                        }
+                        style={{ width: 70, height: 70, borderRadius: 50 }}
                       />
                     </View>
 
@@ -371,8 +379,12 @@ const Paid = () => {
                     <View
                       style={{ flexDirection: "row", marginHorizontal: 10 }}>
                       <Image
-                        source={require("../../assets/truong.png")}
-                        style={{ width: 70, height: 70 }}
+                        source={
+                          item.avatar
+                            ? { uri: `${URL}/${item.avatar}` }
+                            : require("../../assets/avtUser.png")
+                        }
+                        style={{ width: 70, height: 70, borderRadius: 50 }}
                       />
                     </View>
 

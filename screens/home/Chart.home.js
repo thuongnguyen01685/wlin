@@ -7,20 +7,32 @@ import {
   TouchableOpacity,
   Dimensions,
 } from "react-native";
-import { StackedBarChart } from "react-native-chart-kit";
-const screenWidth = Dimensions.get("window").width;
+import {
+  VictoryBar,
+  VictoryChart,
+  VictoryTheme,
+  VictoryStack,
+  VictoryLine,
+} from "victory-native";
+const { width, height } = Dimensions.get("window");
 
-//stackbar chart
-
-const dataX = {
-  data: [[10], [6], [16], [4], [3], [3], [22], [33], [11], [23], [19], [27]],
-  labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
-  // legend: ["Referrals", "TYFCBs", "Event"],
-  legend: ["Event"],
-
-  //barColors: ["#9D85F2", "#5144A6", "#78B1E5"],
-  barColors: ["#78B1E5"],
-};
+const dataDes = [
+  {
+    _id: 1,
+    name: "Refferals",
+    color: "#9D85F2",
+  },
+  {
+    _id: 2,
+    name: "TYFCBS",
+    color: "#5144A6",
+  },
+  {
+    _id: 3,
+    name: "Sự kiện",
+    color: "#78B1E5",
+  },
+];
 // create a component
 const Chart = () => {
   return (
@@ -55,42 +67,133 @@ const Chart = () => {
           </Text>
         </TouchableOpacity>
       </View>
-
-      <View
-        style={{
-          paddingHorizontal: 10,
-          paddingBottom: 10,
-          marginTop: 10,
-        }}>
-        <StackedBarChart
-          data={dataX}
-          width={screenWidth / 1.07}
-          height={220}
-          strokeWidth={10}
-          radius={1}
-          chartConfig={{
-            backgroundGradientFrom: "#f0f0f0",
-            backgroundGradientFromOpacity: 0,
-            backgroundGradientTo: "#ffffff",
-            backgroundGradientToOpacity: 0.5,
-            barPercentage: 0.45,
-            useShadowColorFromDataset: false,
-            barRadius: 1,
-            decimalPlaces: 2, // optional, defaults to 2dp
-            color: (opacity = 1) => `rgba(13, 136, 56, ${opacity})`,
-            labelColor: (opacity = 1) => `rgba(0, 0,0, ${opacity})`,
-            propsForDots: {
-              r: "1",
-              strokeWidth: "2",
-              stroke: "#ffff",
-            },
-          }}
+      <View>
+        <View
           style={{
-            borderRadius: 1,
-            paddingHorizontal: 5,
-          }}
-          hideLegend={false}
-        />
+            flexDirection: "row",
+            justifyContent: "space-between",
+            width: width,
+            top: 10,
+          }}>
+          <Text style={{ top: 40, left: 15, fontSize: 12, fontWeight: "800" }}>
+            Số lượng
+          </Text>
+          <View
+            style={{
+              flexDirection: "row",
+              width: width * 0.5,
+              justifyContent: "space-around",
+            }}>
+            <Text>Từ ngày</Text>
+            <Text>Đến ngày</Text>
+          </View>
+        </View>
+        <VictoryChart
+          width={width}
+          domainPadding={20}
+          theme={VictoryTheme.material}>
+          <VictoryStack
+            colorScale={["#9D85F2", "#5144A6", "#78B1E5"]}
+            animate={{
+              duration: 2000,
+              onLoad: { duration: 1000 },
+            }}>
+            {/* refferals */}
+            <VictoryBar
+              barRatio={0.3}
+              data={[
+                { x: "1", y: 10 },
+                { x: "2", y: 3 },
+                { x: "3", y: 5 },
+                { x: "4", y: 2 },
+                { x: "5", y: 3 },
+                { x: "6", y: 5 },
+                { x: "7", y: 5 },
+              ]}
+            />
+            {/* tyfcbs */}
+            <VictoryBar
+              barRatio={0.3}
+              data={[
+                { x: "1", y: 8 },
+                { x: "2", y: 8 },
+                { x: "3", y: 5 },
+                { x: "4", y: 5 },
+                { x: "5", y: 1 },
+                { x: "6", y: 8 },
+                { x: "7", y: 5 },
+              ]}
+            />
+            {/* sự kiện */}
+            <VictoryBar
+              barRatio={0.3}
+              data={[
+                { x: "1", y: 8 },
+                { x: "2", y: 2 },
+                { x: "3", y: 4 },
+                { x: "4", y: 5 },
+                { x: "5", y: 1 },
+                { x: "6", y: 8 },
+                { x: "7", y: 5 },
+              ]}
+            />
+          </VictoryStack>
+          <VictoryLine
+            style={{
+              data: { stroke: "#DE83BC" },
+              parent: { border: "1px solid #ccc" },
+            }}
+            data={[
+              { x: 1, y: 2 },
+              { x: 2, y: 8 },
+              { x: 3, y: 3 },
+              { x: 4, y: 2 },
+              { x: 5, y: 5 },
+              { x: 6, y: 3 },
+              { x: 7, y: 5 },
+            ]}
+            animate={{
+              duration: 2000,
+              onLoad: { duration: 1000 },
+            }}
+          />
+        </VictoryChart>
+        <View
+          style={{
+            width,
+            justifyContent: "space-around",
+            flexDirection: "row",
+            alignItems: "center",
+            marginleft: 10,
+            top: -10,
+            paddingLeft: width * 0.2,
+          }}>
+          {dataDes.map((item) => (
+            <View
+              key={item._id}
+              style={{
+                marginRight: 15,
+                flexDirection: "row",
+                alignItems: "center",
+              }}>
+              <View
+                style={{
+                  width: 20,
+                  height: 20,
+                  backgroundColor: item.color,
+                }}></View>
+              <Text
+                style={{
+                  color: item.color,
+                  fontSize: 13,
+                  fontWeight: "600",
+                  marginLeft: 5,
+                }}>
+                {item.name}
+              </Text>
+            </View>
+          ))}
+        </View>
       </View>
     </View>
   );

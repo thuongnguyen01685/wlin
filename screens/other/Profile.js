@@ -2,7 +2,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import { StatusBar } from "expo-status-bar";
 import React, { Component, useEffect, useRef, useState } from "react";
 import * as ImagePicker from "expo-image-picker";
 import {
@@ -15,14 +14,18 @@ import {
   TouchableOpacity,
   ScrollView,
   Animated,
+  StatusBar,
 } from "react-native";
 import Toast from "react-native-root-toast";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import {
   AUTH,
+  getCustomerWlinAction,
   getImageUserAction,
+  getPermissionAction,
   getProfileAction,
+  getRankAction,
 } from "../../redux/actions/authAction";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import callApi from "../../utils/callApi";
@@ -30,23 +33,38 @@ import { URL } from "../../utils/fetchApi";
 import CardInfo from "../../components/CardInfo";
 import { formatDateDisplays } from "../../utils/datetime";
 import { Admin, Member, Partner } from "../../utils/AccessPermission";
+import { getBenefitAction } from "../../redux/actions/benefitAction";
+import { RefreshControl } from "react-native";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
 const ratio = w / 720;
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
 
-const HEADER_HEIGHT = 200;
 // create a component
 const Profile = () => {
   const navigation = useNavigation();
-  const [search, setSearch] = useState("");
+  const [refreshing, setRefreshing] = useState(false);
   const dispatch = useDispatch();
-
   const { auth, notify } = useSelector((state) => state);
   const [image, setImage] = useState(null);
-  const animatedValue = useRef(new Animated.Value(0)).current;
   const amin = useRef(new Animated.Value(0)).current;
-  const insets = useSafeAreaInsets();
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    dispatch(getProfileAction(auth.token));
+    dispatch(getPermissionAction(auth.token, auth.profile.email));
+    dispatch(getCustomerWlinAction(auth.token, auth.profile.email));
+    dispatch(getBenefitAction(auth.token, auth.profile.email));
+    async function it() {
+      const goi = await dispatch(getRankAction(auth.token, auth.profile.email));
+      dispatch({ type: AUTH.GOI, payload: goi });
+    }
+    it();
+    setRefreshing(false);
+  }, [dispatch, auth.profile.email]);
   const data = [
     {
       name: "Số điện thoại",
@@ -119,9 +137,7 @@ const Profile = () => {
       permission: [Member, Partner],
     },
   ];
-
   let dataHas = [];
-
   data.map((item) => {
     if (item.permission.includes(auth.permission.group_id) === true) {
       dataHas.push(item);
@@ -211,24 +227,13 @@ const Profile = () => {
     await dispatch(getProfileAction(auth.token));
   };
 
-  const initStyle = Platform.OS === "ios" ? insets.top + 40 : insets.top + 50;
-
-  const headerHeight = animatedValue.interpolate({
-    inputRange: [0, HEADER_HEIGHT + insets.top],
-    outputRange: [
-      HEADER_HEIGHT + initStyle,
-      Platform.OS === "ios" ? insets.top + 40 : insets.top + 30,
-    ],
-    extrapolate: "clamp",
-  });
-
   return (
     <View style={styles.container}>
       <View>
         <View>
           <View
             style={{
-              paddingTop: StatusBar.currentHeight || 40,
+              paddingTop: StatusBar.currentHeight || 30,
               zIndex: 2,
               position: "absolute",
               flexDirection: "row",
@@ -343,178 +348,7 @@ const Profile = () => {
             />
           </View>
         </View>
-        {/* <View
-          style={{
-            backgroundColor: "#ffffff",
-            shadowColor: "#000",
-            shadowOffset: {
-              width: 0,
-              height: 2,
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 3.84,
-
-            elevation: 5,
-            zIndex: 3,
-            marginTop: -40,
-            marginHorizontal: 15,
-            paddingVertical: 20,
-            borderRadius: 10,
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-            paddingHorizontal: 10,
-          }}>
-          <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
-            Thông tin quản trị viên
-          </Text>
-          <TouchableOpacity>
-            <Ionicons name="alert-circle-outline" size={20} color="#826CCF" />
-          </TouchableOpacity>
-        </View> */}
-        {auth.permission && auth.permission.group_id === Admin ? (
-          <View
-            style={{
-              backgroundColor: "#ffffff",
-              shadowColor: "#000",
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.84,
-
-              elevation: 5,
-              zIndex: 3,
-              marginTop: -40,
-              marginHorizontal: 15,
-              paddingVertical: 20,
-              borderRadius: 10,
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-              paddingHorizontal: 10,
-            }}>
-            <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
-              Thông tin quản trị viên
-            </Text>
-            <TouchableOpacity>
-              <Ionicons name="alert-circle-outline" size={20} color="#9D85F2" />
-            </TouchableOpacity>
-          </View>
-        ) : (
-          <Animated.View
-            style={{
-              backgroundColor: "#ffffff",
-              shadowColor: "#000",
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.84,
-              elevation: 5,
-              zIndex: 15,
-              marginTop: -40,
-              marginHorizontal: 15,
-              borderRadius: 20,
-              height: headerHeight,
-            }}>
-            <Animated.View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-                paddingHorizontal: 10,
-                marginTop: 10,
-                zIndex: 4,
-                transform: [
-                  {
-                    translateY: animatedValue.interpolate({
-                      inputRange: [0, 100],
-                      outputRange: [0, 10],
-                      extrapolate: "clamp",
-                    }),
-                  },
-                ],
-              }}>
-              <Text
-                style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
-                Thông tin thành viên
-              </Text>
-              <Animated.View
-                style={{
-                  opacity: animatedValue.interpolate({
-                    inputRange: [0, 4, 8, 25],
-                    outputRange: [0, 0.5, 0.9, 1],
-                    extrapolate: "clamp",
-                  }),
-                }}>
-                <TouchableOpacity
-                  style={{ flexDirection: "row" }}
-                  onPress={() => navigation.navigate("UpgradeMember")}>
-                  <Text
-                    style={{
-                      fontSize: 13,
-                      fontWeight: "600",
-                      color: "#cecece",
-                    }}>
-                    Nâng cấp
-                  </Text>
-                  <Ionicons name="arrow-up" color="#cecece" size={20} />
-                </TouchableOpacity>
-              </Animated.View>
-            </Animated.View>
-            <Animated.View
-              style={{
-                paddingHorizontal: 20,
-                // height: headerHeight,
-                opacity: animatedValue.interpolate({
-                  inputRange: [0, 4, 8, 25],
-                  outputRange: [1, 0.5, 0.9, 0],
-                  extrapolate: "clamp",
-                }),
-                transform: [
-                  {
-                    translateY: animatedValue.interpolate({
-                      inputRange: [0, 100],
-                      outputRange: [0, -55],
-                      extrapolate: "clamp",
-                    }),
-                  },
-                ],
-              }}>
-              <CardInfo />
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  top: 10,
-                }}>
-                <TouchableOpacity
-                  style={{
-                    flexDirection: "row",
-                    backgroundColor: "#9D85F2",
-                    borderRadius: 20,
-                    paddingHorizontal: 20,
-                    paddingVertical: 8,
-                  }}
-                  onPress={() => navigation.navigate("UpgradeMember")}>
-                  <Text
-                    style={{
-                      fontSize: 13,
-                      fontWeight: "600",
-                      color: "#fff",
-                    }}>
-                    Nâng cấp
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </Animated.View>
-          </Animated.View>
-        )}
-        <View style={styles.search}>
+        <View style={styles.header}>
           <View>
             <View
               style={{
@@ -543,8 +377,8 @@ const Profile = () => {
                       borderColor: "#ffffff",
                       borderWidth: 2,
                       borderRadius: 80,
-                      width: 90,
-                      height: 90,
+                      width: h * 0.112,
+                      height: h * 0.112,
                     }}
                   />
                 ) : (
@@ -554,8 +388,8 @@ const Profile = () => {
                       borderColor: "#ffffff",
                       borderWidth: 2,
                       borderRadius: 80,
-                      width: 90,
-                      height: 90,
+                      width: h * 0.112,
+                      height: h * 0.112,
                     }}
                   />
                 )}
@@ -591,20 +425,123 @@ const Profile = () => {
             </View>
           </View>
         </View>
+        {auth.permission && auth.permission.group_id === Admin ? (
+          <View
+            style={{
+              backgroundColor: "#ffffff",
+              shadowColor: "#000",
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.84,
+
+              elevation: 5,
+              zIndex: 3,
+              marginTop: -40,
+              marginHorizontal: 15,
+              paddingVertical: 20,
+              borderRadius: 10,
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              paddingHorizontal: 10,
+            }}>
+            <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
+              Thông tin quản trị viên
+            </Text>
+            <TouchableOpacity>
+              <Ionicons name="alert-circle-outline" size={20} color="#9D85F2" />
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <View
+            style={{
+              backgroundColor: "#fff",
+              shadowColor: "#000",
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.84,
+              elevation: 5,
+              zIndex: 15,
+              marginTop: -40,
+              marginHorizontal: 15,
+              borderRadius: 20,
+              paddingBottom: 10,
+            }}>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                paddingHorizontal: 10,
+                marginTop: 10,
+                zIndex: 4,
+              }}>
+              <Text
+                style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
+                Thông tin thành viên
+              </Text>
+            </View>
+            <View
+              style={{
+                paddingHorizontal: 20,
+              }}>
+              <CardInfo />
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginVertical: 5,
+                  top: 5,
+                }}>
+                <TouchableOpacity
+                  style={{
+                    flexDirection: "row",
+                    backgroundColor: "#9D85F2",
+                    borderRadius: 20,
+                    paddingHorizontal: 20,
+                    paddingVertical: 8,
+                  }}
+                  onPress={() => navigation.navigate("UpgradeMember")}>
+                  <Text
+                    style={{
+                      fontSize: 13,
+                      fontWeight: "600",
+                      color: "#fff",
+                    }}>
+                    Nâng cấp
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        )}
         <View style={styles.body}>
           <View style={{ height: "100%" }}>
             <ScrollView
               showsVerticalScrollIndicator={false}
-              onScroll={Animated.event(
-                [{ nativeEvent: { contentOffset: { y: animatedValue } } }],
-                { useNativeDriver: false }
-              )}
-              scrollEventThrottle={16}>
-              <View style={{ marginBottom: "5%" }}>
+              refreshControl={
+                <RefreshControl
+                  refreshing={refreshing}
+                  onRefresh={onRefresh}
+                  colors={["#9796F0", "green", "blue"]}
+                />
+              }>
+              <View
+                style={{
+                  marginBottom:
+                    auth.permission?.group_id === Admin ? "5%" : "120%",
+                }}>
                 <View
                   style={{
                     marginHorizontal: 15,
-                    paddingTop: 20,
+                    paddingTop: 10,
                   }}>
                   <View style={{ paddingHorizontal: 10 }}>
                     {auth.permission.group_id !== Admin && (
@@ -844,12 +781,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#ffffff",
   },
-  search: {
+  header: {
     zIndex: 5,
     position: "absolute",
     marginTop: "18%",
     width: "100%",
     paddingHorizontal: 20,
+    height: h * 0.15,
   },
   input: {
     height: 40,

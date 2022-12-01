@@ -35,13 +35,9 @@ import { getNotify } from "../../redux/actions/notifyAction";
 import HeaderPart from "../../components/HeaderPart/HeaderPart";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Toast from "react-native-root-toast";
-import Carousel from "react-native-banner-carousel-updated";
-import {
-  getDetailEventsAction,
-  getEventsAction,
-} from "../../redux/actions/eventsAction";
-import { URL } from "../../utils/fetchApi";
-import { formatDate, formatDateDisplays } from "../../utils/datetime";
+
+import { getEventsAction } from "../../redux/actions/eventsAction";
+
 import CardInfo from "../../components/CardInfo";
 import StatisticsHome from "./statistics/statistics.home";
 import { getCLub } from "../../redux/actions/ClupAction";
@@ -52,14 +48,12 @@ import BenefitHome from "./Benefit.home";
 import Chart from "./Chart.home";
 
 import { Admin, Partner } from "../../utils/AccessPermission";
+import CasouselEventing from "./CasouselEventing";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
 const ratio = w / 720;
-const wait = (timeout) => {
-  return new Promise((resolve) => setTimeout(resolve, timeout));
-};
-const HEADER_HEIGHT = 190;
+
 let backHandlerClickCount = 0;
 // create a component
 const Home = () => {
@@ -72,35 +66,6 @@ const Home = () => {
 
   const animatedValue = useRef(new Animated.Value(0)).current;
   const { auth, notify, event, club, benefit } = useSelector((state) => state);
-
-  const insets = useSafeAreaInsets();
-
-  let dateNow = new Date();
-  let year = dateNow.getFullYear();
-  let month = dateNow.getMonth() + 1;
-  let day =
-    dateNow.getDate() >= 10 ? dateNow.getDate() : `0${dateNow.getDate()}`;
-  let dayofweek = dateNow.getDay();
-  const dayNow = year + "-" + month + "-" + day;
-
-  //eventing
-
-  const eventing = event?.getEvents?.filter(
-    (item) =>
-      new Date(formatDateDisplays(item.ngay_su_kien)).getTime() >
-        new Date(dayNow).getTime() ||
-      new Date(formatDateDisplays(item.ngay_su_kien)).getTime() ===
-        new Date(dayNow).getTime()
-  );
-
-  const initStyle = Platform.OS === "ios" ? 20 : insets.top + 5;
-
-  const headerHeight = animatedValue.interpolate({
-    inputRange: [0, HEADER_HEIGHT + insets.top],
-    outputRange: [HEADER_HEIGHT + initStyle + 15, insets.top + 30],
-
-    extrapolate: "clamp",
-  });
 
   const backButtonHandler = () => {
     const shortToast = (message) => {
@@ -124,8 +89,8 @@ const Home = () => {
     return true;
   };
   useEffect(() => {
-    setRefreshing(true);
     if (auth.token) {
+      setRefreshing(true);
       dispatch(getProfileAction(auth.token));
       dispatch(getNotify(auth.token));
       dispatch(getRankAction(auth.token, auth.profile.email));
@@ -134,12 +99,13 @@ const Home = () => {
     async function it() {
       const goi = await dispatch(getRankAction(auth.token, auth.profile.email));
       dispatch({ type: AUTH.GOI, payload: goi });
+
       const res = await dispatch(getCLub(auth, 1, auth.permission.group_id));
       const arrayClub = res?.map((item) => item.ma_club);
       dispatch(getEventsAction(auth, arrayClub, auth.permission.group_id));
+      setRefreshing(false);
     }
     it();
-    setRefreshing(false);
   }, [dispatch, auth.profile.email, auth.permission.group_id]);
 
   useEffect(() => {
@@ -153,6 +119,7 @@ const Home = () => {
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
+    dispatch(getProfileAction(auth.token));
     dispatch(getPermissionAction(auth.token, auth.profile.email));
     dispatch(getCustomerWlinAction(auth.token, auth.profile.email));
     dispatch(getBenefitAction(auth.token, auth.profile.email));
@@ -166,90 +133,6 @@ const Home = () => {
     it();
     setRefreshing(false);
   }, [dispatch, auth.profile.email]);
-
-  const handleDetail = (_id) => {
-    dispatch(getDetailEventsAction(_id, auth.token));
-    navigation.navigate("DetailEvents", { _id: _id });
-  };
-
-  const images = eventing?.map((item) => item);
-
-  const renderPage = (item, index) => {
-    return (
-      <TouchableOpacity
-        key={item._id}
-        style={{
-          flexDirection: "row",
-          justifyContent: "center",
-          marginVertical: 5,
-        }}
-        onPress={() => handleDetail(item._id)}>
-        <Image
-          style={{
-            width: "93%",
-            height: 210,
-            borderRadius: 10,
-            opacity: 1,
-            backgroundColor: "#474747",
-          }}
-          source={{
-            uri: `${URL}`.concat(`${item.hinh_anh}`),
-          }}
-        />
-        <View
-          style={{
-            position: "absolute",
-            width: "100%",
-            height: 210,
-            flexDirection: "column",
-            justifyContent: "space-between",
-            paddingVertical: 5,
-            alignItems: "flex-start",
-            paddingHorizontal: 10,
-          }}>
-          <View
-            style={{
-              width: "15%",
-              marginLeft: 20,
-              backgroundColor: "#FCFCFC",
-              borderRadius: 8,
-              padding: 5,
-              opacity: 0.7,
-            }}>
-            <Text
-              style={{
-                color: "#503F8A",
-                fontSize: 8,
-                fontWeight: "600",
-                textAlign: "center",
-              }}>
-              Tháng {formatDate(item.ngay_su_kien, "thang")}
-            </Text>
-            <View
-              style={{
-                padding: 5,
-                backgroundColor: "#BEB0EF",
-                borderRadius: 8,
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                marginTop: 2,
-              }}>
-              <Text
-                style={{ color: "#503F8A", fontSize: 12, fontWeight: "600" }}>
-                {formatDate(item.ngay_su_kien, "ngay")}
-              </Text>
-              <Text
-                style={{ color: "#503F8A", fontSize: 10, fontWeight: "600" }}>
-                {formatDate(item.ngay_su_kien, "thu")}
-              </Text>
-            </View>
-          </View>
-          <Text style={styles.titleNews}>{item.ten_su_kien}</Text>
-        </View>
-      </TouchableOpacity>
-    );
-  };
 
   return (
     <View style={styles.container}>
@@ -334,9 +217,6 @@ const Home = () => {
           <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
             Trang Chủ
           </Text>
-          <TouchableOpacity>
-            <Ionicons name="alert-circle-outline" size={20} color="#9D85F2" />
-          </TouchableOpacity>
         </View>
       ) : (
         <View
@@ -431,15 +311,7 @@ const Home = () => {
                   </Text>
                 </TouchableOpacity>
               </View>
-
-              <Carousel
-                autoplay
-                autoplayTimeout={5000}
-                loop
-                index={0}
-                pageSize={w}>
-                {images?.map((image, index) => renderPage(image, index))}
-              </Carousel>
+              {refreshing ? <Loading size="small" /> : <CasouselEventing />}
             </View>
           )}
 
@@ -491,6 +363,7 @@ const Home = () => {
                       fontSize: 13,
                       fontWeight: "600",
                       textAlign: "center",
+                      marginTop: 10,
                     }}>
                     Hiện không có chỉ số quyền lợi nào
                   </Text>
@@ -516,25 +389,14 @@ const styles = StyleSheet.create({
     fontWeight: "400",
     marginVertical: 1,
   },
-  textContent: {
-    fontSize: 12,
-    fontWeight: "400",
-    color: "#ffffff",
-  },
-  titleNews: {
-    color: "#Ffffff",
-    fontSize: 15,
-    fontWeight: "800",
-    textAlign: "center",
-    paddingHorizontal: 15,
-    flexWrap: "wrap",
-  },
+
   //
   search: {
     zIndex: 1,
     position: "absolute",
     marginTop: "21%",
     width: "100%",
+
     flexDirection: "row",
     justifyContent: "space-between",
     alignContent: "center",
