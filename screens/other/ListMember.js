@@ -169,7 +169,7 @@ const ListMember = () => {
             <RefreshControl
               refreshing={refreshing}
               onRefresh={onRefresh}
-              colors={["#711775", "green", "blue"]}
+              colors={["#9D85F2", "green", "blue"]}
             />
           }>
           {refreshing ? (

@@ -13,9 +13,13 @@ export const getEventsAction =
   (auth, array, permission) => async (dispatch) => {
     try {
       //admin || partner
+      let condition = {
+        club: { $in: array },
+      };
+      condition = JSON.stringify(condition);
       if (permission === Admin || permission === Partner) {
         const res = await callApis(
-          `dmsukien?access_token=${auth.token}&q={"club":{"$in":[${array}]}}`
+          `dmsukien?access_token=${auth.token}&q=${condition}`
         );
         dispatch({ type: EVENTS.GETEVENTS, payload: res.data });
       }
