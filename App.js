@@ -4,14 +4,15 @@ import { store } from "./redux/store";
 import * as Updates from "expo-updates";
 import { Alert } from "react-native";
 
-export default function App() {
+export default  function App() {
+  
   Updates.checkForUpdateAsync().then((update) => {
     if (update.isAvailable) {
       Updates.fetchUpdateAsync().then((rs) => {
         if (rs.isNew) {
           Alert.alert(
-            " UPDATE",
-            "Chương trình có cập nhật mới. Bạn hãy khởi động lại chương trình để áp dụng phiên bản mới nhất!",
+            "UPDATE",
+            "Chương trình có cập nhật mới. Mời bạn khởi động lại chương trình để áp dụng phiên bản mới nhất nhé!",
             [
               {
                 text: "restart",
