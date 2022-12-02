@@ -4,6 +4,7 @@ import { GLOBAL } from "../actions/GlobalAsign";
 const initialState = {
   getPayBenefit: [],
   loading: false,
+  benefitMana: [],
 };
 
 const benefitReducer = (state = initialState, action) => {
@@ -18,6 +19,13 @@ const benefitReducer = (state = initialState, action) => {
       return {
         ...state,
         getPayBenefit: action.payload,
+        loading: false,
+      };
+    }
+    case BENEFIT.BENEFITMANAGEMENT: {
+      return {
+        ...state,
+        benefitMana: action.payload,
         loading: false,
       };
     }

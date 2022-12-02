@@ -61,7 +61,7 @@ const ModalSms = (props) => {
                 fontSize: 13,
                 marginTop: 15,
               }}>
-              Mã OTP đã được gửi về sms của bạn.
+              Mã OTP đã được gửi về SMS của bạn.
             </Text>
             <Text
               style={{ textAlign: "center", fontWeight: "400", fontSize: 13 }}>

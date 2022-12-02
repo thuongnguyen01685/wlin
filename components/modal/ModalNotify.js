@@ -15,7 +15,11 @@ import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { deleteNotify, getNotify } from "../../redux/actions/notifyAction";
+import {
+  changeIsReadAction,
+  deleteNotify,
+  getNotify,
+} from "../../redux/actions/notifyAction";
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -55,15 +59,16 @@ const ModalNotify = (props) => {
 
   const handleDeleteNo = async (id) => {
     const token = await AsyncStorage.getItem("@token_key");
-    await dispatch(deleteNotify(id, token));
+    await dispatch(deleteNotify(token, _id));
     dispatch(getNotify(token));
   };
 
-  const handleDeleteAllNo = async () => {
+  const handleChangeRead = async (_id) => {
     const token = await AsyncStorage.getItem("@token_key");
-    notify.getNotify.map((item) => dispatch(deleteNotify(item._id, token)));
+    await dispatch(changeIsReadAction(token, _id));
     dispatch(getNotify(token));
   };
+
   return (
     <Modal
       animationType={"fade"}
@@ -200,7 +205,10 @@ const ModalNotify = (props) => {
           {isRead
             ? notify.getNotify
               ? notify.getNotify.map((item) => (
-                  <View key={item._id} style={styles.notifyContainer}>
+                  <TouchableOpacity
+                    key={item._id}
+                    style={styles.notifyContainer}
+                    onPress={() => handleChangeRead(item._id)}>
                     <View style={styles.itemNew}>
                       <View
                         style={{
@@ -232,7 +240,7 @@ const ModalNotify = (props) => {
                               fontSize: 15,
                               color: "#000000",
                               fontWeight: "bold",
-                              opacity: 0.8,
+                              opacity: item.read === false ? 1 : 0.5,
                               marginBottom: 3,
                             }}>
                             {item.title}
@@ -261,21 +269,25 @@ const ModalNotify = (props) => {
                         }}>
                         <View
                           style={{
-                            backgroundColor: "#9D85F2",
+                            backgroundColor:
+                              item.read === false ? "#9D85F2" : "#d0d0d0",
                             padding: 5,
                             height: 5,
                             borderRadius: 50,
                           }}></View>
                       </View>
                     </View>
-                  </View>
+                  </TouchableOpacity>
                 ))
               : []
             : notify.getNotify
             ? notify.getNotify
                 .filter((items) => items.read === false)
                 .map((item) => (
-                  <View key={item._id} style={styles.notifyContainer}>
+                  <TouchableOpacity
+                    key={item._id}
+                    style={styles.notifyContainer}
+                    onPress={() => handleChangeRead(item._id)}>
                     <View style={styles.itemNew}>
                       <View
                         style={{
@@ -343,7 +355,7 @@ const ModalNotify = (props) => {
                           }}></View>
                       </View>
                     </View>
-                  </View>
+                  </TouchableOpacity>
                 ))
             : []}
         </ScrollView>
