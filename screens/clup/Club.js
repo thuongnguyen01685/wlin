@@ -69,7 +69,7 @@ const Nation = () => {
   };
 
   const clubNation = club.getClubs
-    .filter((item) => item.quoc_gia === auth.customer.quoc_gia)
+    .filter((item) => item.quoc_gia !== "")
     .map((i) => i);
 
   return (
@@ -137,7 +137,6 @@ const Nation = () => {
                               borderRadius: 8,
                               borderWidth: 0.4,
                               borderColor: "#DADADA",
-                              paddingVertical: 25,
                               paddingHorizontal: 5,
                               flexDirection: "column",
                               justifyContent: "center",
@@ -148,20 +147,12 @@ const Nation = () => {
                                 source={{
                                   uri: `${URL}/`.concat(`${item.hinh_anh}`),
                                 }}
-                                style={{
-                                  width: 80,
-                                  height: 40,
-                                  borderRadius: 7,
-                                }}
+                                style={styles.imgLogo}
                               />
                             ) : (
                               <Image
                                 source={require("../../assets/logo.png")}
-                                style={{
-                                  width: 80,
-                                  height: 40,
-                                  resizeMode: "contain",
-                                }}
+                                style={styles.imgLogo}
                               />
                             )}
                           </View>
@@ -278,31 +269,6 @@ const Nation = () => {
                                   20 TYFCBs
                                 </Text>
                               </View>
-                              {/* {dataFrameClub.map((item, index) => (
-                              <View
-                                style={{
-                                  backgroundColor: item.backgroundColor,
-                                  flexDirection: "row",
-                                  paddingHorizontal: 2,
-                                  borderRadius: 10,
-                                  alignItems: "center",
-                                  marginTop: 5,
-                                }}>
-                                <Ionicons
-                                  name={item.icon}
-                                  color={item.color}
-                                  size={20}
-                                />
-                                <Text
-                                  style={{
-                                    fontSize: 10,
-                                    fontWeight: "600",
-                                    color: item.color,
-                                  }}>
-                                  20 {item.name}
-                                </Text>
-                              </View>
-                            ))} */}
                             </View>
                           </View>
                         </View>
@@ -368,7 +334,7 @@ const Area = () => {
     navigation.navigate("DetailClub");
   };
   const clubArea = club.getClubs
-    .filter((item) => item.khu_vuc === auth.customer.khu_vuc)
+    .filter((item) => item.khu_vuc !== "")
     .map((i) => i);
 
   return (
@@ -437,7 +403,6 @@ const Area = () => {
                               borderRadius: 8,
                               borderWidth: 0.4,
                               borderColor: "#DADADA",
-                              paddingVertical: 25,
                               paddingHorizontal: 5,
                               flexDirection: "column",
                               justifyContent: "center",
@@ -448,20 +413,12 @@ const Area = () => {
                                 source={{
                                   uri: `${URL}/`.concat(`${item.hinh_anh}`),
                                 }}
-                                style={{
-                                  width: 80,
-                                  height: 40,
-                                  borderRadius: 7,
-                                }}
+                                style={styles.imgLogo}
                               />
                             ) : (
                               <Image
                                 source={require("../../assets/logo.png")}
-                                style={{
-                                  width: 80,
-                                  height: 40,
-                                  resizeMode: "contain",
-                                }}
+                                style={styles.imgLogo}
                               />
                             )}
                           </View>
@@ -703,7 +660,6 @@ const Region = () => {
                             borderRadius: 8,
                             borderWidth: 0.4,
                             borderColor: "#DADADA",
-                            paddingVertical: 25,
                             paddingHorizontal: 5,
                             flexDirection: "column",
                             justifyContent: "center",
@@ -714,20 +670,12 @@ const Region = () => {
                               source={{
                                 uri: `${URL}/`.concat(`${item.hinh_anh}`),
                               }}
-                              style={{
-                                width: 80,
-                                height: 40,
-                                borderRadius: 7,
-                              }}
+                              style={styles.imgLogo}
                             />
                           ) : (
                             <Image
                               source={require("../../assets/logo.png")}
-                              style={{
-                                width: 80,
-                                height: 40,
-                                resizeMode: "contain",
-                              }}
+                              style={styles.imgLogo}
                             />
                           )}
                         </View>
@@ -1016,15 +964,20 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "#F8f8f8",
+    backgroundColor: "#fff",
     borderBottomWidth: 0.5,
     borderColor: "#DADADA",
-    paddingTop: 22,
+    paddingTop: 10,
   },
   indicatorStyle: {
     backgroundColor: "#826CCF",
     padding: 1.5,
     marginBottom: -2,
+  },
+  imgLogo: {
+    resizeMode: "contain",
+    width: w * 0.2,
+    height: w * 0.2,
   },
 });
 

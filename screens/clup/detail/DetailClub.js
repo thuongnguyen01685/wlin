@@ -116,21 +116,33 @@ const DetailClub = () => {
             <View
               style={{
                 flexDirection: "column",
-                width: "40%",
+                width: w * 0.3,
                 justifyContent: "center",
                 alignItems: "center",
+                marginHorizontal: 10,
+                height: w * 0.3,
               }}>
               {club.detailClub.hinh_anh ? (
                 <Image
                   source={{
                     uri: `${URL}/`.concat(`${club.detailClub.hinh_anh}`),
                   }}
-                  style={{ width: 120, height: 70, borderRadius: 7 }}
+                  style={{
+                    width: w * 0.29,
+                    height: w * 0.24,
+                    borderRadius: 15,
+                    resizeMode: "contain",
+                  }}
                 />
               ) : (
                 <Image
                   source={require("../../../assets/logo.png")}
-                  style={{ width: 120, height: 50, borderRadius: 7 }}
+                  style={{
+                    width: 120,
+                    height: 50,
+                    borderRadius: 7,
+                    resizeMode: "contain",
+                  }}
                 />
               )}
             </View>

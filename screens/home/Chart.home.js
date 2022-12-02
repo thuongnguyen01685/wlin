@@ -56,7 +56,7 @@ const Chart = () => {
           }}>
           Số liệu chi tiết
         </Text>
-        <TouchableOpacity>
+        {/* <TouchableOpacity>
           <Text
             style={{
               fontSize: 12,
@@ -65,7 +65,7 @@ const Chart = () => {
             }}>
             Xem chi tiết
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
       <View>
         <View

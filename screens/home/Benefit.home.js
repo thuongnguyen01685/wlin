@@ -2,6 +2,7 @@
 import React, { Component } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+
 // create a component
 const BenefitHome = ({ item }) => {
   return (
@@ -21,12 +22,32 @@ const BenefitHome = ({ item }) => {
           paddingHorizontal: 5,
           alignItems: "center",
         }}>
-        <Image
-          source={require("../../assets/cup.png")}
-          style={{ width: 30, height: 30, top: 3 }}
-        />
+        {item.user.goi_thanh_vien === "01" ? (
+          <Image
+            source={require("../../assets/cupbac.png")}
+            style={styles.imgCup}
+          />
+        ) : item.user.goi_thanh_vien === "02" ? (
+          <Image
+            source={require("../../assets/cupvang.png")}
+            style={styles.imgCup}
+          />
+        ) : item.user.goi_thanh_vien === "03" ? (
+          <Image
+            source={require("../../assets/cupxanh.png")}
+            style={styles.imgCup}
+          />
+        ) : (
+          item.user.goi_thanh_vien === "04" && (
+            <Image
+              source={require("../../assets/cupden.png")}
+              style={styles.imgCup}
+            />
+          )
+        )}
+
         <Text style={{ fontSize: 14, fontWeight: "600" }}>
-          Tên hội viên: {item.ten_kh}
+          Tên hội viên: {item.user.ten_kh}
         </Text>
       </View>
       <View
@@ -67,7 +88,9 @@ const BenefitHome = ({ item }) => {
 };
 
 // define your styles
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  imgCup: { width: 30, height: 30, top: 3 },
+});
 
 //make this component available to the app
 export default BenefitHome;

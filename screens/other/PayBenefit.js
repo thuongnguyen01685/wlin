@@ -105,7 +105,7 @@ const PayBenefit = () => {
             {benefit.loading ? (
               <Loading size="large" />
             ) : (
-              benefit.getPayBenefit.map((item, index) => (
+              benefit.benefitMana.map((item, index) => (
                 <BenefitHome item={item} key={index} />
               ))
             )}

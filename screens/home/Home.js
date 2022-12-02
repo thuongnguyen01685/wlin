@@ -41,7 +41,10 @@ import { getEventsAction } from "../../redux/actions/eventsAction";
 import CardInfo from "../../components/CardInfo";
 import StatisticsHome from "./statistics/statistics.home";
 import { getCLub } from "../../redux/actions/ClupAction";
-import { getBenefitAction } from "../../redux/actions/benefitAction";
+import {
+  getBenefitAction,
+  getBenefitManagemant,
+} from "../../redux/actions/benefitAction";
 
 import Loading from "../../components/loading/Loading";
 import BenefitHome from "./Benefit.home";
@@ -103,6 +106,14 @@ const Home = () => {
       const res = await dispatch(getCLub(auth, 1, auth.permission.group_id));
       const arrayClub = res?.map((item) => item.ma_club);
       dispatch(getEventsAction(auth, arrayClub, auth.permission.group_id));
+
+      const arrMember = res
+        ?.flatMap((items) => items.ds_thanh_vien.map((item) => item.ma_kh))
+        .filter((item, index, arr) => {
+          const itemIndex = arr.findIndex((it) => it === item);
+          return itemIndex === index;
+        });
+      dispatch(getBenefitManagemant(auth.token, arrMember));
       setRefreshing(false);
     }
     it();
@@ -129,6 +140,13 @@ const Home = () => {
       const res = await dispatch(getCLub(auth, 1, auth.permission.group_id));
       const arrayClub = res.map((item) => item.ma_club);
       dispatch(getEventsAction(auth, arrayClub, auth.permission.group_id));
+      const arrMember = res
+        ?.flatMap((items) => items.ds_thanh_vien.map((item) => item.ma_kh))
+        .filter((item, index, arr) => {
+          const itemIndex = arr.findIndex((it) => it === item);
+          return itemIndex === index;
+        });
+      dispatch(getBenefitManagemant(auth.token, arrMember));
     }
     it();
     setRefreshing(false);
@@ -352,8 +370,8 @@ const Home = () => {
               </View>
               {benefit.loading ? (
                 <Loading />
-              ) : benefit.getPayBenefit.length > 0 ? (
-                benefit.getPayBenefit
+              ) : benefit.benefitMana.length > 0 ? (
+                benefit.benefitMana
                   .slice(0, 3)
                   .map((item, index) => <BenefitHome item={item} key={index} />)
               ) : (
@@ -383,34 +401,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#ffffff",
   },
-  contentHeader: {
-    color: "#000",
-    fontSize: 12,
-    fontWeight: "400",
-    marginVertical: 1,
-  },
-
-  //
   search: {
     zIndex: 1,
     position: "absolute",
     marginTop: "21%",
     width: "100%",
-
     flexDirection: "row",
     justifyContent: "space-between",
     alignContent: "center",
     alignItems: "center",
     paddingLeft: 20,
     paddingRight: 15,
-  },
-  input: {
-    height: 40,
-    // padding: 10,
-    width: "79%",
-    marginLeft: 10,
-    color: "#ffffff",
-    left: -5,
   },
 });
 
