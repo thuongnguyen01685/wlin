@@ -29,6 +29,7 @@ import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import { getEventsAction } from "../../redux/actions/eventsAction";
 import ModalRequest from "../../components/modal/ModalRequest";
 import { URL } from "../../utils/fetchApi";
+import Loading from "../../components/loading/Loading";
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -519,10 +520,6 @@ const ListPaticipant = () => {
             Danh sách người tham gia
           </Text>
         </View>
-
-        <TouchableOpacity>
-          <Ionicons name="alert-circle-outline" size={20} color="#826CCF" />
-        </TouchableOpacity>
       </View>
 
       <View

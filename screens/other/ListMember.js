@@ -30,7 +30,8 @@ import {
   getMemberAction,
 } from "../../redux/actions/ClupAction";
 import Loading from "../../components/loading/Loading";
-import Skeleton from "../../components/loading/Skeleton";
+
+import Lottie from "lottie-react-native";
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -45,6 +46,33 @@ const instructions = Platform.select({
     "Double tap R on your keyboard to reload,\n" +
     "Shake or press menu button for dev menu",
 });
+const dataColor = [
+  {
+    _id: 1,
+    bgColor: "#F1F1F1",
+    color: "#434343",
+  },
+  {
+    _id: 2,
+    bgColor: "#EEF4FF",
+    color: "#769CEC",
+  },
+  {
+    _id: 3,
+    bgColor: "#E9FBEF",
+    color: "#5BD3A1",
+  },
+  {
+    _id: 4,
+    bgColor: "#FEEAEA",
+    color: "#F96F6D",
+  },
+  {
+    _id: 5,
+    bgColor: "#FEF8E3",
+    color: "#FBD237",
+  },
+];
 // create a component
 const ListMember = () => {
   const navigation = useNavigation();
@@ -54,6 +82,8 @@ const ListMember = () => {
   const { auth, club } = useSelector((state) => state);
 
   const circleAnimatedValue = useRef(new Animated.Value(0)).current;
+
+  let temp = -1;
 
   const getUniqueListBy = (arr, key) => {
     return [...new Map(arr.map((item) => [item[key], item])).values()];
@@ -140,27 +170,8 @@ const ListMember = () => {
           <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
             Danh sách hội viên
           </Text>
-
-          {refreshing && (
-            <View
-              style={{
-                left: 10,
-                padding: 30,
-                position: "absolute",
-                left: "100%",
-              }}>
-              {/* <Lottie
-                source={require("../../assets/loading.json")}
-                autoPlay
-                loop
-              /> */}
-            </View>
-          )}
+          {refreshing && <Loading size="large" />}
         </View>
-
-        <TouchableOpacity>
-          <Ionicons name="alert-circle-outline" size={20} color="#826CCF" />
-        </TouchableOpacity>
       </View>
       <View style={{ height: "100%" }}>
         <ScrollView
@@ -189,12 +200,13 @@ const ListMember = () => {
                   key={index}>
                   <View
                     style={{
-                      width: 50,
-                      height: 50,
+                      width: w * 0.12,
+                      height: w * 0.12,
                       borderRadius: 60,
                       backgroundColor: "#ECEFF1",
                       overflow: "hidden",
-                      marginRight: 16,
+                      marginLeft: 20,
+                      marginRight: 25,
                     }}>
                     <Animated.View
                       style={{
@@ -210,9 +222,13 @@ const ListMember = () => {
                       flex: 1,
                       justifyContent: "space-evenly",
                       overflow: "hidden",
+                      borderRadius: 20,
                     }}>
                     <Animated.View
-                      style={{ backgroundColor: "#ECEFF1", height: 32 }}>
+                      style={{
+                        backgroundColor: "#ECEFF1",
+                        height: 28,
+                      }}>
                       <Animated.View
                         style={{
                           width: "20%",
@@ -222,7 +238,7 @@ const ListMember = () => {
                           transform: [{ translateX: translateX2 }],
                         }}></Animated.View>
                     </Animated.View>
-                    <View style={{ backgroundColor: "#ECEFF1", height: 32 }}>
+                    <View style={{ backgroundColor: "#ECEFF1", height: 28 }}>
                       <Animated.View
                         style={{
                           width: "20%",
@@ -237,105 +253,108 @@ const ListMember = () => {
               ))
           ) : (
             <View style={{ marginBottom: "70%" }}>
-              {getUniqueListBy(club.getMember, "ma_kh").map((item) => (
-                <TouchableOpacity
-                  key={item._id}
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    backgroundColor: "#Ffffff",
-                    marginVertical: 10,
-                    borderRadius: 15,
-                    paddingVertical: 5,
-                    marginHorizontal: 15,
-                    borderColor: "#dadada",
-                    borderWidth: 0.5,
-                  }}
-                  onPress={() => handleDetailMember(item.ma_kh)}>
-                  <View
+              {getUniqueListBy(club.getMember, "ma_kh").map((item) => {
+                temp++;
+
+                if (dataColor.length === temp) {
+                  temp = 0;
+                }
+
+                return (
+                  <TouchableOpacity
+                    key={item._id}
                     style={{
                       flexDirection: "row",
+                      justifyContent: "space-between",
                       alignItems: "center",
-                      width: "70%",
-                    }}>
+                      backgroundColor: "#Ffffff",
+                      marginVertical: 10,
+                      borderRadius: 20,
+                      paddingVertical: 10,
+                      marginHorizontal: 15,
+                      borderColor: "#dadada",
+                      borderWidth: 0.5,
+                    }}
+                    onPress={() => handleDetailMember(item.ma_kh)}>
                     <View
-                      style={{ flexDirection: "row", marginHorizontal: 10 }}>
-                      {item.hinh_anh ? (
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        width: w * 0.7,
+                      }}>
+                      <View
+                        style={{ flexDirection: "row", marginHorizontal: 25 }}>
                         <Image
-                          source={{
-                            uri: `${URL}/`.concat(`${item.hinh_anh}`),
-                          }}
+                          source={
+                            item.avatar
+                              ? {
+                                  uri: `${URL}/`.concat(`${item.avatar}`),
+                                }
+                              : require("../../assets/avtUser.png")
+                          }
                           style={{
-                            width: 70,
-                            height: 70,
+                            width: w * 0.12,
+                            height: w * 0.12,
                             borderRadius: 50,
                             resizeMode: "contain",
                           }}
                         />
-                      ) : (
-                        <Image
-                          source={require("../../assets/logo.png")}
+                      </View>
+
+                      <View
+                        style={{
+                          flexDirection: "column",
+                          justifyContent: "space-between",
+                          alignItems: "flex-start",
+                          width: w * 0.55,
+                        }}>
+                        <Text
                           style={{
-                            width: 70,
-                            height: 70,
-                            borderRadius: 50,
-                            resizeMode: "contain",
-                          }}
-                        />
-                      )}
+                            color: "#474747",
+                            fontSize: 15,
+                            fontWeight: "600",
+                            textAlign: "center",
+                          }}>
+                          {item.ten_kh}
+                        </Text>
+                        <View
+                          style={{
+                            backgroundColor: dataColor[temp].bgColor,
+                            borderRadius: 15,
+                            marginTop: 5,
+                          }}>
+                          <Text
+                            style={{
+                              color: dataColor[temp].color,
+                              fontSize: 12,
+                              fontWeight: "500",
+                              textAlign: "center",
+                              marginHorizontal: item.chuc_vu2 ? 10 : 0,
+                            }}>
+                            {item.chuc_vu2}
+                          </Text>
+                        </View>
+                      </View>
                     </View>
 
                     <View
                       style={{
-                        flexDirection: "column",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        width: "80%",
+                        flexDirection: "row",
+                        justifyContent: "space-around",
+                        width: w * 0.2,
                       }}>
-                      <Text
-                        style={{
-                          color: "#474747",
-                          fontSize: 15,
-                          fontWeight: "600",
-                          textAlign: "center",
-                        }}>
-                        {item.ten_kh}
-                      </Text>
-                      <View
-                        style={{
-                          backgroundColor: "#f1f1f1",
-                          borderRadius: 15,
-                          width: "60%",
-                        }}>
-                        <Text
-                          style={{
-                            color: "#434343",
-                            fontSize: 12,
-                            fontWeight: "500",
-                            textAlign: "center",
-                          }}>
-                          {item.ten_trang_thai}
-                        </Text>
-                      </View>
+                      <TouchableOpacity
+                        onPress={() => handleDetailMember(item.ma_kh)}>
+                        <Ionicons
+                          name="alert-circle-outline"
+                          size={20}
+                          color="#826CCF"
+                        />
+                      </TouchableOpacity>
                     </View>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-around",
-                      width: "20%",
-                    }}>
-                    <TouchableOpacity>
-                      <Ionicons
-                        name="alert-circle-outline"
-                        size={20}
-                        color="#826CCF"
-                      />
-                    </TouchableOpacity>
-                  </View>
-                </TouchableOpacity>
-              ))}
+                  </TouchableOpacity>
+                );
+              })}
             </View>
           )}
         </ScrollView>
@@ -388,9 +407,9 @@ const styles = StyleSheet.create({
     lineHeight: 25,
   },
   card: {
-    padding: 14,
+    padding: 10,
     shadowColor: "black",
-    borderRadius: 15,
+    borderRadius: 20,
     backgroundColor: "#FAFAFA",
     shadowColor: "black",
     shadowOffset: {

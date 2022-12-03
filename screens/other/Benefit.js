@@ -22,7 +22,7 @@ import {
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import HeaderPart from "../../components/HeaderPart/HeaderPart";
-
+import Loading from "../../components/loading/Loading";
 import {
   getDetailBenefit,
   getListBenefit,
@@ -96,26 +96,8 @@ const Benefit = () => {
             Danh sách nhóm quyền lợi
           </Text>
 
-          {/* {refreshing && (
-            <View
-              style={{
-                left: 10,
-                padding: 30,
-                position: "absolute",
-                left: "100%",
-              }}>
-              <Lottie
-                source={require("../../assets/loading.json")}
-                autoPlay
-                loop
-              />
-            </View>
-          )} */}
+          {refreshing && <Loading size="large" />}
         </View>
-
-        <TouchableOpacity>
-          <Ionicons name="alert-circle-outline" size={20} color="#826CCF" />
-        </TouchableOpacity>
       </View>
       <View style={{ height: "100%" }}>
         <ScrollView
@@ -125,7 +107,7 @@ const Benefit = () => {
               tintColor="#9D85F2"
               refreshing={refreshing}
               onRefresh={onRefresh}
-              colors={["#9D85F2", "green", "blue"]}
+              colors={["red", "yellow", "green"]}
             />
           }>
           <View

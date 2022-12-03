@@ -111,6 +111,7 @@ export const ChangeStatusLoveAction =
           id_favourite: _id,
           chung_tu: "dmsukien",
         });
+
         if (res.data) {
           Toast.show("Đã thêm vào danh sách sự kiện yêu thích! ", {
             duration: Toast.durations.LONG,

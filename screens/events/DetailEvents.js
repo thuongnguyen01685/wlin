@@ -34,6 +34,7 @@ import ModalChoosePayment from "../../components/modal/ModalChoosePayment";
 import { Admin, Member, Partner } from "../../utils/AccessPermission";
 import { getDetailEventsAction } from "../../redux/actions/eventsAction";
 import Svg, { Path } from "react-native-svg";
+import Loading from "../../components/loading/Loading";
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
 const ratio = w / 720;
@@ -123,26 +124,8 @@ const DetailEvents = ({ route }, props) => {
             Chi tiết sự kiện
           </Text>
 
-          {refreshing && (
-            <View
-              style={{
-                left: 10,
-                padding: 30,
-                position: "absolute",
-                left: "100%",
-              }}>
-              <Lottie
-                source={require("../../assets/loading.json")}
-                autoPlay
-                loop
-              />
-            </View>
-          )}
+          {refreshing && <Loading size="large" />}
         </View>
-
-        {/* <TouchableOpacity>
-          <Ionicons name="alert-circle-outline" size={20} color="#826CCF" />
-        </TouchableOpacity> */}
       </View>
       <View style={{ height: "100%" }}>
         <ScrollView
@@ -597,25 +580,27 @@ const DetailEvents = ({ route }, props) => {
                   paddingHorizontal: 15,
                   marginTop: 10,
                 }}>
-                <TouchableOpacity
-                  onPress={() => navigation.navigate("CheckQR")}>
-                  <LinearGradient
-                    start={{ x: 0, y: 0.3 }}
-                    end={{ x: 1, y: 1 }}
-                    colors={["#9D85F2", "rgba(157, 133, 242, 0.4)"]}
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      alignContent: "center",
-                      alignItems: "center",
-                      borderRadius: 20,
-                      marginRight: 10,
-                    }}>
-                    <View style={styles.buttonEx}>
-                      <Text style={styles.buttonText}>Check-in</Text>
-                    </View>
-                  </LinearGradient>
-                </TouchableOpacity>
+                {event.detailEvent.trang_thai !== "1" && (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate("CheckQR")}>
+                    <LinearGradient
+                      start={{ x: 0, y: 0.3 }}
+                      end={{ x: 1, y: 1 }}
+                      colors={["#9D85F2", "rgba(157, 133, 242, 0.4)"]}
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        alignContent: "center",
+                        alignItems: "center",
+                        borderRadius: 20,
+                        marginRight: 10,
+                      }}>
+                      <View style={styles.buttonEx}>
+                        <Text style={styles.buttonText}>Check-in</Text>
+                      </View>
+                    </LinearGradient>
+                  </TouchableOpacity>
+                )}
 
                 {auth.permission.group_id === Admin && (
                   <TouchableOpacity

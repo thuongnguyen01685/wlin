@@ -37,6 +37,7 @@ import {
   getRankAction,
 } from "../../redux/actions/authAction";
 import { Admin } from "../../utils/AccessPermission";
+import Loading from "../../components/loading/Loading";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
@@ -49,23 +50,54 @@ const Nation = () => {
   const [refreshing, setRefreshing] = React.useState(false);
 
   const scrollY = useRef(new Animated.Value(0)).current;
+  const circleAnimatedValue = useRef(new Animated.Value(0)).current;
+  const circleAnimated = () => {
+    circleAnimatedValue.setValue(0);
+    Animated.timing(circleAnimatedValue, {
+      toValue: 1,
+      duration: 350,
+      useNativeDriver: true,
+    }).start(() => {
+      setTimeout(() => {
+        circleAnimated();
+      }, 1000);
+    });
+  };
+
+  const translateX = circleAnimatedValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: [-10, 100],
+  });
+
+  const translateX2 = circleAnimatedValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: [-10, 200],
+  });
+  const translateX3 = circleAnimatedValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: [-10, 90],
+  });
 
   useEffect(() => {
     setRefreshing(true);
+    circleAnimated();
+
     dispatch(getCLub(auth, 1, auth.permission.group_id));
-    setRefreshing(false);
+    wait(1000).then(() => setRefreshing(false));
   }, []);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
+    circleAnimated();
+
     dispatch(getCLub(auth, 1, auth.permission.group_id));
     dispatch(getCustomerWlinAction(auth.token, auth.profile.email));
-    wait(500).then(() => setRefreshing(false));
+    wait(1000).then(() => setRefreshing(false));
   }, []);
 
   const handleDetail = (_id) => {
     dispatch(getDetailClub(_id, auth.token));
-    navigation.navigate("DetailClub");
+    navigation.navigate("DetailClub", { _id });
   };
 
   const clubNation = club.getClubs
@@ -74,9 +106,148 @@ const Nation = () => {
 
   return (
     <View style={styles.container}>
-      {auth.customer.goi_thanh_vien === "03" ||
-      auth.customer.goi_thanh_vien === "04" ||
-      auth.permission.group_id === Admin ? (
+      {refreshing ? (
+        Array(10)
+          .fill("")
+          .map((i, index) => (
+            <View style={[{ marginBottom: 8 }, styles.card]} key={index}>
+              <View
+                style={{
+                  flexDirection: "column",
+                  width: w * 0.24,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginHorizontal: 10,
+                  height: w * 0.2,
+                }}>
+                <View
+                  style={{
+                    width: w * 0.23,
+                    height: w * 0.2,
+                    borderRadius: 10,
+                    backgroundColor: "#ECEFF1",
+                    overflow: "hidden",
+                    marginRight: 16,
+                  }}>
+                  <Animated.View
+                    style={{
+                      width: "30%",
+                      opacity: 0.5,
+                      height: "100%",
+                      backgroundColor: "white",
+                      transform: [{ translateX: translateX }],
+                    }}></Animated.View>
+                </View>
+              </View>
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: "space-evenly",
+                  overflow: "hidden",
+                }}>
+                <Animated.View
+                  style={{ backgroundColor: "#ECEFF1", height: 30 }}>
+                  <Animated.View
+                    style={{
+                      width: "20%",
+                      height: "100%",
+                      backgroundColor: "white",
+                      opacity: 0.5,
+                      transform: [{ translateX: translateX2 }],
+                    }}></Animated.View>
+                </Animated.View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    width: w * 0.45,
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginTop: 5,
+                  }}>
+                  <View
+                    style={{
+                      width: w * 0.19,
+                      height: w * 0.05,
+                      borderRadius: 5,
+                      backgroundColor: "#ECEFF1",
+                      overflow: "hidden",
+                    }}>
+                    <Animated.View
+                      style={{
+                        width: "30%",
+                        opacity: 0.5,
+                        height: "100%",
+                        backgroundColor: "white",
+                        transform: [{ translateX: translateX }],
+                      }}></Animated.View>
+                  </View>
+                  <View
+                    style={{
+                      width: w * 0.2,
+                      height: w * 0.055,
+                      borderRadius: 5,
+                      backgroundColor: "#ECEFF1",
+                      overflow: "hidden",
+                    }}>
+                    <Animated.View
+                      style={{
+                        width: "30%",
+                        opacity: 0.5,
+                        height: "100%",
+                        backgroundColor: "white",
+                        transform: [{ translateX: translateX }],
+                      }}></Animated.View>
+                  </View>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    width: w * 0.45,
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginTop: 3,
+                  }}>
+                  <View
+                    style={{
+                      width: w * 0.19,
+                      height: w * 0.05,
+                      borderRadius: 5,
+                      backgroundColor: "#ECEFF1",
+                      overflow: "hidden",
+                    }}>
+                    <Animated.View
+                      style={{
+                        width: "30%",
+                        opacity: 0.5,
+                        height: "100%",
+                        backgroundColor: "white",
+                        transform: [{ translateX: translateX }],
+                      }}></Animated.View>
+                  </View>
+                  <View
+                    style={{
+                      width: w * 0.2,
+                      height: w * 0.055,
+                      borderRadius: 5,
+                      backgroundColor: "#ECEFF1",
+                      overflow: "hidden",
+                    }}>
+                    <Animated.View
+                      style={{
+                        width: "30%",
+                        opacity: 0.5,
+                        height: "100%",
+                        backgroundColor: "white",
+                        transform: [{ translateX: translateX }],
+                      }}></Animated.View>
+                  </View>
+                </View>
+              </View>
+            </View>
+          ))
+      ) : auth.customer.goi_thanh_vien === "03" ||
+        auth.customer.goi_thanh_vien === "04" ||
+        auth.permission.group_id === Admin ? (
         <View style={{ marginTop: 10, paddingBottom: "70%", height: "100%" }}>
           <Animated.FlatList
             onScroll={Animated.event(
@@ -220,7 +391,7 @@ const Nation = () => {
                                     fontWeight: "600",
                                     color: "#1D19D4",
                                   }}>
-                                  20 sự kiện
+                                  {item.count_sukien} sự kiện
                                 </Text>
                               </View>
                               <View
@@ -313,8 +484,36 @@ const Area = () => {
 
   const scrollY = useRef(new Animated.Value(0)).current;
 
+  const circleAnimatedValue = useRef(new Animated.Value(0)).current;
+  const circleAnimated = () => {
+    circleAnimatedValue.setValue(0);
+    Animated.timing(circleAnimatedValue, {
+      toValue: 1,
+      duration: 350,
+      useNativeDriver: true,
+    }).start(() => {
+      setTimeout(() => {
+        circleAnimated();
+      }, 1000);
+    });
+  };
+  const translateX = circleAnimatedValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: [-10, 100],
+  });
+
+  const translateX2 = circleAnimatedValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: [-10, 200],
+  });
+  const translateX3 = circleAnimatedValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: [-10, 90],
+  });
+
   useEffect(() => {
     setRefreshing(true);
+    circleAnimated();
     dispatch(getCLub(auth, 1, auth.permission.group_id));
     dispatch(getRankAction(auth.token, auth.profile.email));
     dispatch(getCustomerWlinAction(auth.token, auth.profile.email));
@@ -324,6 +523,7 @@ const Area = () => {
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
+    circleAnimated();
     dispatch(getCustomerWlinAction(auth.token, auth.profile.email));
     dispatch(getCLub(auth, 1, auth.permission.group_id));
     wait(500).then(() => setRefreshing(false));
@@ -331,7 +531,7 @@ const Area = () => {
 
   const handleDetail = (_id) => {
     dispatch(getDetailClub(_id, auth.token));
-    navigation.navigate("DetailClub");
+    navigation.navigate("DetailClub", { _id });
   };
   const clubArea = club.getClubs
     .filter((item) => item.khu_vuc !== "")
@@ -339,10 +539,149 @@ const Area = () => {
 
   return (
     <View style={styles.container}>
-      {auth.customer.goi_thanh_vien === "02" ||
-      auth.customer.goi_thanh_vien === "03" ||
-      auth.customer.goi_thanh_vien === "04" ||
-      auth.permission.group_id === Admin ? (
+      {refreshing ? (
+        Array(10)
+          .fill("")
+          .map((i, index) => (
+            <View style={[{ marginBottom: 8 }, styles.card]} key={index}>
+              <View
+                style={{
+                  flexDirection: "column",
+                  width: w * 0.24,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginHorizontal: 10,
+                  height: w * 0.2,
+                }}>
+                <View
+                  style={{
+                    width: w * 0.23,
+                    height: w * 0.2,
+                    borderRadius: 10,
+                    backgroundColor: "#ECEFF1",
+                    overflow: "hidden",
+                    marginRight: 16,
+                  }}>
+                  <Animated.View
+                    style={{
+                      width: "30%",
+                      opacity: 0.5,
+                      height: "100%",
+                      backgroundColor: "white",
+                      transform: [{ translateX: translateX }],
+                    }}></Animated.View>
+                </View>
+              </View>
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: "space-evenly",
+                  overflow: "hidden",
+                }}>
+                <Animated.View
+                  style={{ backgroundColor: "#ECEFF1", height: 30 }}>
+                  <Animated.View
+                    style={{
+                      width: "20%",
+                      height: "100%",
+                      backgroundColor: "white",
+                      opacity: 0.5,
+                      transform: [{ translateX: translateX2 }],
+                    }}></Animated.View>
+                </Animated.View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    width: w * 0.45,
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginTop: 5,
+                  }}>
+                  <View
+                    style={{
+                      width: w * 0.19,
+                      height: w * 0.05,
+                      borderRadius: 5,
+                      backgroundColor: "#ECEFF1",
+                      overflow: "hidden",
+                    }}>
+                    <Animated.View
+                      style={{
+                        width: "30%",
+                        opacity: 0.5,
+                        height: "100%",
+                        backgroundColor: "white",
+                        transform: [{ translateX: translateX }],
+                      }}></Animated.View>
+                  </View>
+                  <View
+                    style={{
+                      width: w * 0.2,
+                      height: w * 0.055,
+                      borderRadius: 5,
+                      backgroundColor: "#ECEFF1",
+                      overflow: "hidden",
+                    }}>
+                    <Animated.View
+                      style={{
+                        width: "30%",
+                        opacity: 0.5,
+                        height: "100%",
+                        backgroundColor: "white",
+                        transform: [{ translateX: translateX }],
+                      }}></Animated.View>
+                  </View>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    width: w * 0.45,
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginTop: 3,
+                  }}>
+                  <View
+                    style={{
+                      width: w * 0.19,
+                      height: w * 0.05,
+                      borderRadius: 5,
+                      backgroundColor: "#ECEFF1",
+                      overflow: "hidden",
+                    }}>
+                    <Animated.View
+                      style={{
+                        width: "30%",
+                        opacity: 0.5,
+                        height: "100%",
+                        backgroundColor: "white",
+                        transform: [{ translateX: translateX }],
+                      }}></Animated.View>
+                  </View>
+                  <View
+                    style={{
+                      width: w * 0.2,
+                      height: w * 0.055,
+                      borderRadius: 5,
+                      backgroundColor: "#ECEFF1",
+                      overflow: "hidden",
+                    }}>
+                    <Animated.View
+                      style={{
+                        width: "30%",
+                        opacity: 0.5,
+                        height: "100%",
+                        backgroundColor: "white",
+                        transform: [{ translateX: translateX }],
+                      }}></Animated.View>
+                  </View>
+                </View>
+              </View>
+            </View>
+          ))
+      ) : auth.customer.goi_thanh_vien === "02" ||
+        auth.customer.goi_thanh_vien === "03" ||
+        auth.customer.goi_thanh_vien === "04" ||
+        auth.permission.group_id === Admin ? (
         <View style={{ marginTop: 10, paddingBottom: "70%", height: "100%" }}>
           <Animated.FlatList
             onScroll={Animated.event(
@@ -486,7 +825,7 @@ const Area = () => {
                                     fontWeight: "600",
                                     color: "#1D19D4",
                                   }}>
-                                  20 sự kiện
+                                  {item.count_sukien} sự kiện
                                 </Text>
                               </View>
                               <View
@@ -578,9 +917,36 @@ const Region = () => {
   const [page, setPage] = useState(1);
 
   const scrollY = useRef(new Animated.Value(0)).current;
+  const circleAnimatedValue = useRef(new Animated.Value(0)).current;
+  const circleAnimated = () => {
+    circleAnimatedValue.setValue(0);
+    Animated.timing(circleAnimatedValue, {
+      toValue: 1,
+      duration: 350,
+      useNativeDriver: true,
+    }).start(() => {
+      setTimeout(() => {
+        circleAnimated();
+      }, 1000);
+    });
+  };
+  const translateX = circleAnimatedValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: [-10, 100],
+  });
+
+  const translateX2 = circleAnimatedValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: [-10, 200],
+  });
+  const translateX3 = circleAnimatedValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: [-10, 90],
+  });
 
   useEffect(() => {
     setRefreshing(true);
+    circleAnimated();
     // console.log(auth.token, page);
     dispatch(getCLub(auth, page, auth.permission.group_id));
 
@@ -589,225 +955,371 @@ const Region = () => {
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
+    circleAnimated();
     dispatch(getCLub(auth, page, auth.permission.group_id));
     wait(500).then(() => setRefreshing(false));
   }, [page]);
 
   const handleDetail = (_id) => {
     dispatch(getDetailClub(_id, auth.token));
-    navigation.navigate("DetailClub");
+    navigation.navigate("DetailClub", { _id });
   };
 
   return (
     <View style={styles.container}>
-      <View style={{ marginTop: 10, paddingBottom: "70%", height: "100%" }}>
-        <Animated.FlatList
-          onScroll={Animated.event(
-            [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-            { useNativeDriver: true }
-          )}
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={onRefresh}
-              colors={["#9796F0", "green", "blue"]}
-            />
-          }
-          data={club.getClubs}
-          onEndReachedThreshold={0.5}
-          // onEndReached={() => setPage(page + 1)}
-          keyExtractor={(item, index) => index}
-          renderItem={({ item, index }) => {
-            const inputRange = [
-              -1,
-              0,
-              (height * 0.1 + 15) * index,
-              (height * 0.1 + 15) * (index + 3),
-            ];
-            const scale = 1;
-            const opacity = scrollY.interpolate({
-              inputRange,
-              outputRange: [1, 1, 1, 0],
-            });
-            const Offset = scrollY.interpolate({
-              inputRange,
-              outputRange: [0, 0, 0, 500],
-            });
-            return (
-              <Animated.View
+      {refreshing ? (
+        Array(10)
+          .fill("")
+          .map((i, index) => (
+            <View style={[{ marginBottom: 8 }, styles.card]} key={index}>
+              <View
                 style={{
-                  transform: [{ scale: scale }, { translateX: Offset }],
-                  opacity: opacity,
+                  flexDirection: "column",
+                  width: w * 0.24,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginHorizontal: 10,
+                  height: w * 0.2,
                 }}>
-                <TouchableOpacity
-                  key={item._id}
-                  onPress={() => handleDetail(item._id)}>
-                  <Surface style={styles.surface}>
-                    <View
+                <View
+                  style={{
+                    width: w * 0.23,
+                    height: w * 0.2,
+                    borderRadius: 10,
+                    backgroundColor: "#ECEFF1",
+                    overflow: "hidden",
+                    marginRight: 16,
+                  }}>
+                  <Animated.View
+                    style={{
+                      width: "30%",
+                      opacity: 0.5,
+                      height: "100%",
+                      backgroundColor: "white",
+                      transform: [{ translateX: translateX }],
+                    }}></Animated.View>
+                </View>
+              </View>
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: "space-evenly",
+                  overflow: "hidden",
+                }}>
+                <Animated.View
+                  style={{ backgroundColor: "#ECEFF1", height: 30 }}>
+                  <Animated.View
+                    style={{
+                      width: "20%",
+                      height: "100%",
+                      backgroundColor: "white",
+                      opacity: 0.5,
+                      transform: [{ translateX: translateX2 }],
+                    }}></Animated.View>
+                </Animated.View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    width: w * 0.45,
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginTop: 5,
+                  }}>
+                  <View
+                    style={{
+                      width: w * 0.19,
+                      height: w * 0.05,
+                      borderRadius: 5,
+                      backgroundColor: "#ECEFF1",
+                      overflow: "hidden",
+                    }}>
+                    <Animated.View
                       style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        flex: 0.9,
-                        top: -10,
-                      }}>
+                        width: "30%",
+                        opacity: 0.5,
+                        height: "100%",
+                        backgroundColor: "white",
+                        transform: [{ translateX: translateX }],
+                      }}></Animated.View>
+                  </View>
+                  <View
+                    style={{
+                      width: w * 0.2,
+                      height: w * 0.055,
+                      borderRadius: 5,
+                      backgroundColor: "#ECEFF1",
+                      overflow: "hidden",
+                    }}>
+                    <Animated.View
+                      style={{
+                        width: "30%",
+                        opacity: 0.5,
+                        height: "100%",
+                        backgroundColor: "white",
+                        transform: [{ translateX: translateX }],
+                      }}></Animated.View>
+                  </View>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    width: w * 0.45,
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginTop: 3,
+                  }}>
+                  <View
+                    style={{
+                      width: w * 0.19,
+                      height: w * 0.05,
+                      borderRadius: 5,
+                      backgroundColor: "#ECEFF1",
+                      overflow: "hidden",
+                    }}>
+                    <Animated.View
+                      style={{
+                        width: "30%",
+                        opacity: 0.5,
+                        height: "100%",
+                        backgroundColor: "white",
+                        transform: [{ translateX: translateX }],
+                      }}></Animated.View>
+                  </View>
+                  <View
+                    style={{
+                      width: w * 0.2,
+                      height: w * 0.055,
+                      borderRadius: 5,
+                      backgroundColor: "#ECEFF1",
+                      overflow: "hidden",
+                    }}>
+                    <Animated.View
+                      style={{
+                        width: "30%",
+                        opacity: 0.5,
+                        height: "100%",
+                        backgroundColor: "white",
+                        transform: [{ translateX: translateX }],
+                      }}></Animated.View>
+                  </View>
+                </View>
+              </View>
+            </View>
+          ))
+      ) : (
+        <View style={{ marginTop: 10, paddingBottom: "70%", height: "100%" }}>
+          <Animated.FlatList
+            onScroll={Animated.event(
+              [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+              { useNativeDriver: true }
+            )}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+                colors={["#9796F0", "green", "blue"]}
+              />
+            }
+            data={club.getClubs}
+            onEndReachedThreshold={0.5}
+            // onEndReached={() => setPage(page + 1)}
+            keyExtractor={(item, index) => index}
+            renderItem={({ item, index }) => {
+              const inputRange = [
+                -1,
+                0,
+                (height * 0.1 + 15) * index,
+                (height * 0.1 + 15) * (index + 3),
+              ];
+              const scale = 1;
+              const opacity = scrollY.interpolate({
+                inputRange,
+                outputRange: [1, 1, 1, 0],
+              });
+              const Offset = scrollY.interpolate({
+                inputRange,
+                outputRange: [0, 0, 0, 500],
+              });
+              return (
+                <Animated.View
+                  style={{
+                    transform: [{ scale: scale }, { translateX: Offset }],
+                    opacity: opacity,
+                  }}>
+                  <TouchableOpacity
+                    key={item._id}
+                    onPress={() => handleDetail(item._id)}>
+                    <Surface style={styles.surface}>
                       <View
                         style={{
                           flexDirection: "row",
                           justifyContent: "space-between",
+                          flex: 0.9,
+                          top: -10,
                         }}>
                         <View
                           style={{
-                            borderRadius: 8,
-                            borderWidth: 0.4,
-                            borderColor: "#DADADA",
-                            paddingHorizontal: 5,
-                            flexDirection: "column",
-                            justifyContent: "center",
-                            alignItems: "center",
+                            flexDirection: "row",
+                            justifyContent: "space-between",
                           }}>
-                          {item.hinh_anh ? (
-                            <Image
-                              source={{
-                                uri: `${URL}/`.concat(`${item.hinh_anh}`),
-                              }}
-                              style={styles.imgLogo}
-                            />
-                          ) : (
-                            <Image
-                              source={require("../../assets/logo.png")}
-                              style={styles.imgLogo}
-                            />
-                          )}
-                        </View>
-
-                        <View
-                          style={{
-                            flexDirection: "column",
-                            marginLeft: 20,
-                          }}>
-                          <Text
-                            style={{
-                              color: "#474747",
-                              fontSize: 16,
-                              fontWeight: "600",
-                            }}>
-                            {item.ten_club}
-                          </Text>
                           <View
                             style={{
-                              flexDirection: "row",
-                              justifyContent: "space-between",
-                              flexWrap: "wrap",
-                              width: "70%",
+                              borderRadius: 8,
+                              borderWidth: 0.4,
+                              borderColor: "#DADADA",
+                              paddingHorizontal: 5,
+                              flexDirection: "column",
+                              justifyContent: "center",
+                              alignItems: "center",
                             }}>
-                            <View
-                              style={{
-                                backgroundColor: "#EDF8FC",
-                                flexDirection: "row",
-                                paddingHorizontal: 2,
-                                borderRadius: 10,
-                                alignItems: "center",
-                                marginTop: 5,
-                              }}>
-                              <Ionicons
-                                name="people"
-                                color="#139ECA"
-                                size={20}
+                            {item.hinh_anh ? (
+                              <Image
+                                source={{
+                                  uri: `${URL}/`.concat(`${item.hinh_anh}`),
+                                }}
+                                style={styles.imgLogo}
                               />
-                              <Text
-                                style={{
-                                  fontSize: 10,
-                                  fontWeight: "600",
-                                  color: "#139ECA",
-                                }}>
-                                {item.ds_thanh_vien.length} thành viên
-                              </Text>
-                            </View>
-                            <View
-                              style={{
-                                backgroundColor: "#ECECF9",
-                                flexDirection: "row",
-                                paddingHorizontal: 2,
-                                borderRadius: 10,
-                                alignItems: "center",
-                                marginTop: 5,
-                              }}>
-                              <Ionicons
-                                name="calendar"
-                                color="#1D19D4"
-                                size={20}
+                            ) : (
+                              <Image
+                                source={require("../../assets/logo.png")}
+                                style={styles.imgLogo}
                               />
-                              <Text
-                                style={{
-                                  fontSize: 10,
-                                  fontWeight: "600",
-                                  color: "#1D19D4",
-                                }}>
-                                20 sự kiện
-                              </Text>
-                            </View>
+                            )}
+                          </View>
+
+                          <View
+                            style={{
+                              flexDirection: "column",
+                              marginLeft: 20,
+                            }}>
+                            <Text
+                              style={{
+                                color: "#474747",
+                                fontSize: 16,
+                                fontWeight: "600",
+                              }}>
+                              {item.ten_club}
+                            </Text>
                             <View
                               style={{
-                                backgroundColor: "#FAEEF0",
                                 flexDirection: "row",
-                                paddingHorizontal: 2,
-                                borderRadius: 10,
-                                alignItems: "center",
-                                marginTop: 5,
+                                justifyContent: "space-between",
+                                flexWrap: "wrap",
+                                width: "70%",
                               }}>
-                              <Ionicons
-                                name="reader"
-                                color="#F12247"
-                                size={20}
-                              />
-                              <Text
+                              <View
                                 style={{
-                                  fontSize: 10,
-                                  fontWeight: "600",
-                                  color: "#F12247",
+                                  backgroundColor: "#EDF8FC",
+                                  flexDirection: "row",
+                                  paddingHorizontal: 2,
+                                  borderRadius: 10,
+                                  alignItems: "center",
+                                  marginTop: 5,
                                 }}>
-                                20 referrals
-                              </Text>
-                            </View>
-                            <View
-                              style={{
-                                backgroundColor: "#EEFBEE",
-                                flexDirection: "row",
-                                paddingHorizontal: 2,
-                                borderRadius: 10,
-                                alignItems: "center",
-                                marginTop: 5,
-                              }}>
-                              <Ionicons name="leaf" color="#058602" size={20} />
-                              <Text
+                                <Ionicons
+                                  name="people"
+                                  color="#139ECA"
+                                  size={20}
+                                />
+                                <Text
+                                  style={{
+                                    fontSize: 10,
+                                    fontWeight: "600",
+                                    color: "#139ECA",
+                                  }}>
+                                  {item.ds_thanh_vien.length} thành viên
+                                </Text>
+                              </View>
+                              <View
                                 style={{
-                                  fontSize: 10,
-                                  fontWeight: "600",
-                                  color: "#058602",
+                                  backgroundColor: "#ECECF9",
+                                  flexDirection: "row",
+                                  paddingHorizontal: 2,
+                                  borderRadius: 10,
+                                  alignItems: "center",
+                                  marginTop: 5,
                                 }}>
-                                20 TYFCBs
-                              </Text>
+                                <Ionicons
+                                  name="calendar"
+                                  color="#1D19D4"
+                                  size={20}
+                                />
+                                <Text
+                                  style={{
+                                    fontSize: 10,
+                                    fontWeight: "600",
+                                    color: "#1D19D4",
+                                  }}>
+                                  {item.count_sukien} sự kiện
+                                </Text>
+                              </View>
+                              <View
+                                style={{
+                                  backgroundColor: "#FAEEF0",
+                                  flexDirection: "row",
+                                  paddingHorizontal: 2,
+                                  borderRadius: 10,
+                                  alignItems: "center",
+                                  marginTop: 5,
+                                }}>
+                                <Ionicons
+                                  name="reader"
+                                  color="#F12247"
+                                  size={20}
+                                />
+                                <Text
+                                  style={{
+                                    fontSize: 10,
+                                    fontWeight: "600",
+                                    color: "#F12247",
+                                  }}>
+                                  20 referrals
+                                </Text>
+                              </View>
+                              <View
+                                style={{
+                                  backgroundColor: "#EEFBEE",
+                                  flexDirection: "row",
+                                  paddingHorizontal: 2,
+                                  borderRadius: 10,
+                                  alignItems: "center",
+                                  marginTop: 5,
+                                }}>
+                                <Ionicons
+                                  name="leaf"
+                                  color="#058602"
+                                  size={20}
+                                />
+                                <Text
+                                  style={{
+                                    fontSize: 10,
+                                    fontWeight: "600",
+                                    color: "#058602",
+                                  }}>
+                                  20 TYFCBs
+                                </Text>
+                              </View>
                             </View>
                           </View>
                         </View>
                       </View>
-                    </View>
-                    <TouchableOpacity
-                      onPress={() => handleDetail(item._id)}
-                      style={{ top: -10 }}>
-                      <Ionicons
-                        name="chevron-forward-outline"
-                        size={25}
-                        color="#9D85F2"
-                      />
-                    </TouchableOpacity>
-                  </Surface>
-                </TouchableOpacity>
-              </Animated.View>
-            );
-          }}
-        />
-      </View>
+                      <TouchableOpacity
+                        onPress={() => handleDetail(item._id)}
+                        style={{ top: -10 }}>
+                        <Ionicons
+                          name="chevron-forward-outline"
+                          size={25}
+                          color="#9D85F2"
+                        />
+                      </TouchableOpacity>
+                    </Surface>
+                  </TouchableOpacity>
+                </Animated.View>
+              );
+            }}
+          />
+        </View>
+      )}
     </View>
   );
 };
@@ -894,27 +1406,7 @@ const Club = () => {
           <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
             Danh sách CLUB
           </Text>
-
-          {refreshing && (
-            <View
-              style={{
-                left: 10,
-                padding: 30,
-                position: "absolute",
-                left: "100%",
-              }}>
-              {/* <Lottie
-                source={require("../../assets/loading.json")}
-                autoPlay
-                loop
-              /> */}
-            </View>
-          )}
         </View>
-
-        <TouchableOpacity>
-          <Ionicons name="alert-circle-outline" size={20} color="#826CCF" />
-        </TouchableOpacity>
       </View>
       <View
         style={{
@@ -959,7 +1451,7 @@ const styles = StyleSheet.create({
     height: height * 0.12,
     marginTop: 10,
     paddingHorizontal: 8,
-    marginHorizontal: 10,
+    marginHorizontal: 15,
     borderRadius: 8,
     flexDirection: "row",
     justifyContent: "space-between",
@@ -978,6 +1470,22 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
     width: w * 0.2,
     height: w * 0.2,
+  },
+  card: {
+    padding: 14,
+    shadowColor: "black",
+    backgroundColor: "#FAFAFA",
+    shadowColor: "black",
+    shadowOffset: {
+      width: 1,
+      height: 1,
+    },
+    shadowOpacity: 0.1,
+    flexDirection: "row",
+    marginVertical: 5,
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginHorizontal: 10,
   },
 });
 

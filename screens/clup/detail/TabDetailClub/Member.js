@@ -12,13 +12,21 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { URL } from "../../../../utils/fetchApi";
 import Svg, { Path } from "react-native-svg";
+import { useNavigation } from "@react-navigation/native";
+import { getDetailMember } from "../../../../redux/actions/ClupAction";
 
 // create a component
 const Member = () => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const { auth, club } = useSelector((state) => state);
 
   const [refreshing, setRefreshing] = useState(false);
+
+  const handleDetailMember = (ma_kh) => {
+    dispatch(getDetailMember(ma_kh, auth.token));
+    navigation.navigate("ManagementMember");
+  };
 
   return (
     <View style={styles.container}>
@@ -30,7 +38,7 @@ const Member = () => {
           }}>
           {club.detailClub.ds_thanh_vien &&
             club.detailClub.ds_thanh_vien.map((item, index) => (
-              <View
+              <TouchableOpacity
                 key={index}
                 style={{
                   flexDirection: "row",
@@ -43,6 +51,9 @@ const Member = () => {
                   paddingHorizontal: 10,
                   borderColor: "#dadada",
                   borderWidth: 0.7,
+                }}
+                onPress={() => {
+                  handleDetailMember(item.ma_kh);
                 }}>
                 <View
                   style={{
@@ -137,7 +148,7 @@ const Member = () => {
                     />
                   </TouchableOpacity>
                 </View>
-              </View>
+              </TouchableOpacity>
             ))}
         </View>
       </ScrollView>

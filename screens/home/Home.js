@@ -229,12 +229,20 @@ const Home = () => {
             borderRadius: 10,
             flexDirection: "row",
             alignItems: "center",
-            justifyContent: "space-between",
             paddingHorizontal: 10,
           }}>
-          <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
-            Trang Chủ
-          </Text>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}>
+            <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
+              Thống kê
+            </Text>
+
+            {refreshing && <Loading size="large" />}
+          </View>
         </View>
       ) : (
         <View
@@ -369,7 +377,7 @@ const Home = () => {
                 </TouchableOpacity>
               </View>
               {benefit.loading ? (
-                <Loading />
+                <Loading size="small" />
               ) : benefit.benefitMana.length > 0 ? (
                 benefit.benefitMana
                   .slice(0, 3)

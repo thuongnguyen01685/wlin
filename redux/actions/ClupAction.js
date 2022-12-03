@@ -67,7 +67,7 @@ export const getDetailMember = (ma_kh, token) => async (dispatch) => {
     const res = await callApis(
       `customer_wlin?access_token=${token}&limit=1000&q={"ma_kh":"${ma_kh}"}`
     );
-
+    // console.log(res.data);
     dispatch({ type: CLUB.DETAILMEMBER, payload: res.data[0] });
   } catch (error) {
     console.log(error);
