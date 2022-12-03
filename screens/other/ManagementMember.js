@@ -16,8 +16,10 @@ import {
   Animated,
   FlatList,
   ScrollView,
+  Platform,
+  ActivityIndicator,
 } from "react-native";
-
+import Lottie from "lottie-react-native";
 import HeaderPart from "../../components/HeaderPart/HeaderPart";
 import {
   getCLub,
@@ -26,6 +28,7 @@ import {
 } from "../../redux/actions/ClupAction";
 import { Avatar, Surface } from "react-native-paper";
 import { URL } from "../../utils/fetchApi";
+import Loading from "../../components/loading/Loading";
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -47,20 +50,17 @@ const ManagementMember = () => {
 
   const handleDetail = (_id) => {
     dispatch(getDetailClub(_id, auth.token));
-    navigation.navigate("DetailClub");
+    navigation.navigate("DetailClub", { _id: _id });
   };
 
   useEffect(() => {
     setRefreshing(true);
-    //dispatch(getCLub(auth.token, page));
-    //dispatch(getDetailMember(club.detailMember.ma_kh, auth.token));
     wait(500).then(() => setRefreshing(false));
   }, [dispatch]);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    //dispatch(getCLub(auth.token, page));
-    //dispatch(getDetailMember(club.detailMember.ma_kh, auth.token));
+
     wait(1000).then(() => setRefreshing(false));
   }, [dispatch]);
 
@@ -99,27 +99,8 @@ const ManagementMember = () => {
           <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
             Chi tiết hội viên
           </Text>
-
-          {refreshing && (
-            <View
-              style={{
-                left: 10,
-                padding: 30,
-                position: "absolute",
-                left: "100%",
-              }}>
-              {/* <Lottie
-                source={require("../../assets/loading.json")}
-                autoPlay
-                loop
-              /> */}
-            </View>
-          )}
+          {refreshing && <Loading size="large" />}
         </View>
-
-        <TouchableOpacity>
-          <Ionicons name="alert-circle-outline" size={20} color="#826CCF" />
-        </TouchableOpacity>
       </View>
       <View style={{ height: "100%" }}>
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -136,29 +117,22 @@ const ManagementMember = () => {
                 width: "100%",
                 alignItems: "center",
               }}>
-              {club.detailMember?.hinh_anh ? (
-                <Image
-                  source={{
-                    uri: `${URL}/`.concat(`${club.detailMember.hinh_anh}`),
-                  }}
-                  style={{
-                    width: 80,
-                    height: 80,
-                    borderRadius: 50,
-                    resizeMode: "contain",
-                  }}
-                />
-              ) : (
-                <Image
-                  source={require("../../assets/logo.png")}
-                  style={{
-                    width: 80,
-                    height: 80,
-                    borderRadius: 50,
-                    resizeMode: "contain",
-                  }}
-                />
-              )}
+              <Image
+                source={
+                  club.detailMember?.hinh_anh
+                    ? {
+                        uri: `${URL}/`.concat(`${club.detailMember.hinh_anh}`),
+                      }
+                    : require("../../assets/avtUser.png")
+                }
+                style={{
+                  width: 80,
+                  height: 80,
+                  borderRadius: 50,
+                  resizeMode: "contain",
+                }}
+              />
+
               <Text
                 style={{ fontSize: 13, fontWeight: "600", marginVertical: 10 }}>
                 {club.detailMember?.ten_kh}
@@ -176,7 +150,17 @@ const ManagementMember = () => {
                   <LinearGradient
                     start={{ x: 1, y: 0.7 }}
                     end={{ x: 0.3, y: 0.8 }}
-                    colors={["#F9C271", "#F4EFB8", "#F4EFB8", "#F9C271"]}
+                    colors={
+                      club.detailMember.goi_thanh_vien === "01"
+                        ? ["#ABABAB", "#DFDFDF", "#C5C5C5", "#B9B9B9"]
+                        : club.detailMember.goi_thanh_vien === "02"
+                        ? ["#DEC1A1", "#FBECD7", "#F5DFC7", "#D5B59C"]
+                        : club.detailMember.goi_thanh_vien === "03"
+                        ? ["#7289DD", "#D0DAFF", "#ABBCF8", "#7E96E9"]
+                        : club.detailMember.goi_thanh_vien === "04"
+                        ? ["#1F1F1f", "#646464", "#484848", "#373737"]
+                        : ["#000", "#000"]
+                    }
                     style={{ width: 20, height: 20, borderRadius: 5 }}>
                     <View
                       style={{
@@ -196,12 +180,28 @@ const ManagementMember = () => {
                   </LinearGradient>
                   <Text
                     style={{
-                      color: "#F9C271",
+                      color:
+                        club.detailMember.goi_thanh_vien === "01"
+                          ? "#6A6A6A"
+                          : club.detailMember.goi_thanh_vien === "02"
+                          ? "#8D6B48"
+                          : club.detailMember.goi_thanh_vien === "03"
+                          ? "#5A54A5"
+                          : club.detailMember.goi_thanh_vien === "04" &&
+                            "#1f1f1f",
                       fontSize: 11,
                       fontWeight: "500",
                       marginHorizontal: 10,
                     }}>
-                    Gói vàng
+                    {club.detailMember.goi_thanh_vien === "01"
+                      ? "Gói bạc"
+                      : club.detailMember.goi_thanh_vien === "02"
+                      ? "Gói vàng"
+                      : club.detailMember.goi_thanh_vien === "03"
+                      ? "Gói kim cương"
+                      : club.detailMember.goi_thanh_vien === "04"
+                      ? "Gói partner"
+                      : "Chưa có gói thành viên"}
                   </Text>
                 </View>
                 <Ionicons name="caret-down-outline" size={20} color="#474747" />
@@ -232,27 +232,20 @@ const ManagementMember = () => {
                             paddingHorizontal: 5,
                             top: -10,
                           }}>
-                          {item.hinh_anh ? (
-                            <Image
-                              source={{
-                                uri: `${URL}/`.concat(`${item.hinh_anh}`),
-                              }}
-                              style={{
-                                width: 80,
-                                height: 40,
-                                borderRadius: 7,
-                              }}
-                            />
-                          ) : (
-                            <Image
-                              source={require("../../assets/logo.png")}
-                              style={{
-                                width: 80,
-                                height: 40,
-                                resizeMode: "contain",
-                              }}
-                            />
-                          )}
+                          <Image
+                            source={
+                              item.hinh_anh
+                                ? {
+                                    uri: `${URL}/`.concat(`${item.hinh_anh}`),
+                                  }
+                                : require("../../assets/logo.png")
+                            }
+                            style={{
+                              width: 80,
+                              height: 40,
+                              borderRadius: 7,
+                            }}
+                          />
                         </View>
 
                         <View
@@ -294,7 +287,7 @@ const ManagementMember = () => {
                                   fontWeight: "600",
                                   color: "#139ECA",
                                 }}>
-                                20 thành viên
+                                {item.ds_thanh_vien.length} thành viên
                               </Text>
                             </View>
                             <View
@@ -456,12 +449,11 @@ const styles = StyleSheet.create({
     height: height * 0.12,
     marginTop: 10,
     paddingHorizontal: 8,
-    marginHorizontal: 10,
     borderRadius: 8,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "#F8f8f8",
+    backgroundColor: "#Fff",
     borderBottomWidth: 0.5,
     borderColor: "#DADADA",
     paddingTop: 22,

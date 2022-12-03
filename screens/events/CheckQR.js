@@ -78,9 +78,6 @@ const CheckQR = () => {
         <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
           {!showTakePicture ? "Check-QR" : "Xác thực biên lai"}
         </Text>
-        <TouchableOpacity>
-          <Ionicons name="alert-circle-outline" size={20} color="#9D85F2" />
-        </TouchableOpacity>
       </View>
       <View style={{ height: "100%" }}>
         <ScrollView showsVerticalScrollIndicator={false}>

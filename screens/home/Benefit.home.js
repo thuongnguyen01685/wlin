@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 
 // create a component
+
 const BenefitHome = ({ item }) => {
   return (
     <View
@@ -37,13 +38,21 @@ const BenefitHome = ({ item }) => {
             source={require("../../assets/cupxanh.png")}
             style={styles.imgCup}
           />
+        ) : item.user.goi_thanh_vien === "04" ? (
+          <Image
+            source={require("../../assets/cupden.png")}
+            style={styles.imgCup}
+          />
         ) : (
-          item.user.goi_thanh_vien === "04" && (
-            <Image
-              source={require("../../assets/cupden.png")}
-              style={styles.imgCup}
-            />
-          )
+          <Image
+            source={require("../../assets/cup0.png")}
+            style={{
+              width: 23,
+              height: 23,
+              resizeMode: "contain",
+              marginRight: 5,
+            }}
+          />
         )}
 
         <Text style={{ fontSize: 14, fontWeight: "600" }}>

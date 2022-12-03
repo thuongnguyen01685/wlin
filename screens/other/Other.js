@@ -90,7 +90,7 @@ const data = [
 // create a component
 const Other = () => {
   const navigation = useNavigation();
-
+  const [searchPart, setSearchPart] = useState(false);
   const { auth } = useSelector((state) => state);
 
   let dataHas = [];
@@ -104,7 +104,7 @@ const Other = () => {
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
-      <HeaderPart />
+      <HeaderPart searchPart={searchPart} />
       <View
         style={{
           backgroundColor: "#ffffff",
@@ -130,9 +130,6 @@ const Other = () => {
         <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
           Các mục khác
         </Text>
-        <TouchableOpacity>
-          <Ionicons name="alert-circle-outline" size={20} color="#9D85F2" />
-        </TouchableOpacity>
       </View>
       <View style={{ height: "100%" }}>
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -156,15 +153,6 @@ const Other = () => {
                     paddingHorizontal: 15,
                     borderWidth: 0.8,
                     borderColor: "#E8E8E8",
-                    // shadowColor: "#000",
-                    // shadowOffset: {
-                    //   width: 0,
-                    //   height: 1,
-                    // },
-                    // shadowOpacity: 0.25,
-                    // shadowRadius: 3.84,
-
-                    // elevation: 5,
                   }}
                   key={index}
                   onPress={() => navigation.navigate(`${item.navigation}`)}>
@@ -184,10 +172,6 @@ const Other = () => {
                           padding: 10,
                           borderRadius: 50,
                         }}>
-                        {/* <Image
-                          source={item.picture}
-                          style={{ width: 20, height: 22 }}
-                        /> */}
                         <MaterialCommunityIcons
                           name={item.icon}
                           size={30}
@@ -212,9 +196,7 @@ const Other = () => {
                       </View>
                     </View>
                   </View>
-                  <TouchableOpacity
-                  // onPress={() => navigation.navigate("DetailClub")}
-                  >
+                  <TouchableOpacity>
                     <Ionicons
                       name="chevron-forward-outline"
                       size={25}

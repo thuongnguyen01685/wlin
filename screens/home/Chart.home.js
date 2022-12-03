@@ -1,4 +1,5 @@
 //import liraries
+import { Ionicons } from "@expo/vector-icons";
 import React, { Component } from "react";
 import {
   View,
@@ -6,6 +7,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
+  Platform,
 } from "react-native";
 import {
   VictoryBar,
@@ -14,6 +16,9 @@ import {
   VictoryStack,
   VictoryLine,
 } from "victory-native";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import { useState } from "react";
+
 const { width, height } = Dimensions.get("window");
 
 const dataDes = [
@@ -35,6 +40,55 @@ const dataDes = [
 ];
 // create a component
 const Chart = () => {
+  const [showFromDate, setShowFromDate] = useState(false);
+  const [dateFrom, setDateFrom] = useState(new Date());
+  const [textFromDate, setTextFromDate] = useState("Từ ngày");
+
+  const [mode, setMode] = useState("date");
+
+  const [showToDate, setShowToDate] = useState(false);
+  const [dateTo, setDateTo] = useState(new Date());
+  const [textToDate, setTextToDate] = useState("Đến ngày");
+
+  const onChangeDateFrom = (event, selectedDate) => {
+    const currentDate = selectedDate || dateFrom;
+    setShowFromDate(Platform.OS === "ios");
+    setDateFrom(currentDate);
+
+    let temDate = new Date(currentDate);
+    let fDate =
+      temDate.getDate() +
+      "/" +
+      (temDate.getMonth() + 1) +
+      "/" +
+      temDate.getFullYear();
+    setTextFromDate(fDate);
+  };
+
+  const onChangeDateTo = (event, selectedDate) => {
+    const currentDate = selectedDate || dateTo;
+    setShowToDate(Platform.OS === "ios");
+    setDateTo(currentDate);
+
+    let temDate = new Date(currentDate);
+    let fDate =
+      temDate.getDate() +
+      "/" +
+      (temDate.getMonth() + 1) +
+      "/" +
+      temDate.getFullYear();
+    setTextToDate(fDate);
+  };
+
+  const showModeFrom = (currentMode) => {
+    setShowFromDate(true);
+    setMode(currentMode);
+  };
+  const showModeTo = (currentMode) => {
+    setShowToDate(true);
+    setMode(currentMode);
+  };
+
   return (
     <View
       style={{
@@ -67,6 +121,24 @@ const Chart = () => {
           </Text>
         </TouchableOpacity> */}
       </View>
+      {showFromDate && (
+        <DateTimePicker
+          testID="dateTimePicker"
+          value={dateFrom}
+          mode={mode}
+          display="default"
+          onChange={onChangeDateFrom}
+        />
+      )}
+      {showToDate && (
+        <DateTimePicker
+          testID="dateTimePicker"
+          value={dateTo}
+          mode={mode}
+          display="default"
+          onChange={onChangeDateTo}
+        />
+      )}
       <View>
         <View
           style={{
@@ -81,11 +153,26 @@ const Chart = () => {
           <View
             style={{
               flexDirection: "row",
-              width: width * 0.5,
-              justifyContent: "space-around",
+              width: width * 0.75,
+              marginRight: 15,
+              justifyContent: "flex-end",
             }}>
-            <Text>Từ ngày</Text>
-            <Text>Đến ngày</Text>
+            <TouchableOpacity
+              style={[styles.buttonTime, { paddingHorizontal: 7 }]}
+              onPress={() => showModeFrom("date")}>
+              <Text style={styles.textTime}>{textFromDate}</Text>
+              <Ionicons name="caret-down-outline" size={20} color="#826CCF" />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[
+                styles.buttonTime,
+                { marginLeft: 15, paddingHorizontal: 5 },
+              ]}
+              onPress={() => showModeTo("date")}>
+              <Text style={styles.textTime}>{textToDate}</Text>
+              <Ionicons name="caret-down-outline" size={20} color="#826CCF" />
+            </TouchableOpacity>
           </View>
         </View>
         <VictoryChart
@@ -200,7 +287,24 @@ const Chart = () => {
 };
 
 // define your styles
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  buttonTime: {
+    borderColor: "#826CCF",
+    borderWidth: 0.6,
+    backgroundColor: "#fff",
+    borderRadius: 5,
+    paddingVertical: 5,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  textTime: {
+    color: "#826CCF",
+    fontSize: 14,
+    textAlign: "center",
+    marginRight: 10,
+  },
+});
 
 //make this component available to the app
 export default Chart;

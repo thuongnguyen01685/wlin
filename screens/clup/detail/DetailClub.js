@@ -14,6 +14,8 @@ import {
   Animated,
   ActivityIndicator,
   useWindowDimensions,
+  ScrollView,
+  RefreshControl,
 } from "react-native";
 
 import HeaderPart from "../../../components/HeaderPart/HeaderPart";
@@ -23,6 +25,11 @@ import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import Board from "./TabDetailClub/Board";
 import Term from "./TabDetailClub/Term";
 import Member from "./TabDetailClub/Member";
+import Lottie from "lottie-react-native";
+
+import { getDetailClub } from "../../../redux/actions/ClupAction";
+import SkeletonDetailClub from "../../../components/loading/skeleton/SkeletonDetailClub";
+import Loading from "../../../components/loading/Loading";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
@@ -37,16 +44,35 @@ const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 // create a component
-const DetailClub = () => {
+const DetailClub = ({ route }) => {
   const navigation = useNavigation();
 
   const dispatch = useDispatch();
   const { auth, club } = useSelector((state) => state);
-
   const [refreshing, setRefreshing] = React.useState(false);
-
   const layout = useWindowDimensions();
   const [index, setIndex] = useState(0);
+
+  const circleAnimatedValue = useRef(new Animated.Value(0)).current;
+  const circleAnimated = () => {
+    circleAnimatedValue.setValue(0);
+    Animated.timing(circleAnimatedValue, {
+      toValue: 1,
+      duration: 350,
+      useNativeDriver: true,
+    }).start(() => {
+      setTimeout(() => {
+        circleAnimated();
+      }, 200);
+    });
+  };
+
+  useEffect(() => {
+    setRefreshing(true);
+    circleAnimated();
+    dispatch(getDetailClub(route.params._id, auth.token));
+    wait(2000).then(() => setRefreshing(false));
+  }, [dispatch]);
 
   const [routes] = useState([
     { key: "first", title: "Thành viên" },
@@ -89,23 +115,17 @@ const DetailClub = () => {
           <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
             Chi tiết CLUB
           </Text>
-          {refreshing && (
-            <View style={{ marginLeft: 10 }}>
-              <ActivityIndicator size="small" color="#826CCF" />
-            </View>
-          )}
+          {refreshing && <Loading size="large" />}
         </View>
-
-        <TouchableOpacity>
-          <Ionicons name="alert-circle-outline" size={20} color="#826CCF" />
-        </TouchableOpacity>
       </View>
-      <View
-        style={{
-          height: "100%",
-          paddingHorizontal: 15,
-        }}>
-        <Animated.View>
+      {refreshing ? (
+        <SkeletonDetailClub circleAnimatedValue={circleAnimatedValue} />
+      ) : (
+        <View
+          style={{
+            height: "100%",
+            paddingHorizontal: 15,
+          }}>
           <View
             style={{
               flexDirection: "row",
@@ -200,32 +220,32 @@ const DetailClub = () => {
               </View>
             </View>
           </View>
-        </Animated.View>
 
-        <TabView
-          navigationState={{ index, routes }}
-          renderScene={renderScene}
-          onIndexChange={setIndex}
-          initialLayout={{ width: layout.width }}
-          renderTabBar={(props) => (
-            <TabBar
-              {...props}
-              renderLabel={({ route, focused }) => (
-                <Text
-                  style={{
-                    color: focused ? "#826CCF" : "#dadada",
-                    fontSize: 12,
-                    fontWeight: "600",
-                  }}>
-                  {route.title}
-                </Text>
-              )}
-              indicatorStyle={styles.indicatorStyle}
-              style={{ backgroundColor: "#ffffff" }}
-            />
-          )}
-        />
-      </View>
+          <TabView
+            navigationState={{ index, routes }}
+            renderScene={renderScene}
+            onIndexChange={setIndex}
+            initialLayout={{ width: layout.width }}
+            renderTabBar={(props) => (
+              <TabBar
+                {...props}
+                renderLabel={({ route, focused }) => (
+                  <Text
+                    style={{
+                      color: focused ? "#826CCF" : "#dadada",
+                      fontSize: 12,
+                      fontWeight: "600",
+                    }}>
+                    {route.title}
+                  </Text>
+                )}
+                indicatorStyle={styles.indicatorStyle}
+                style={{ backgroundColor: "#ffffff" }}
+              />
+            )}
+          />
+        </View>
+      )}
     </View>
   );
 };

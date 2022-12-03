@@ -187,7 +187,7 @@ const Header = (props) => {
             height: 38,
             borderRadius: 20,
           }}>
-          {notify.getNotify.length > 0 ? (
+          {notify.getNotify.filter((item) => item.read === false).length > 0 ? (
             <Animated.View
               style={{
                 alignSelf: "center",
@@ -210,9 +210,11 @@ const Header = (props) => {
                       color: "#ffffff",
                       fontWeight: "600",
                     }}>
-                    {notify.getNotify.length > 9
+                    {notify.getNotify.filter((item) => item.read === false)
+                      .length > 9
                       ? "9+"
-                      : notify.getNotify.length}
+                      : notify.getNotify.filter((item) => item.read === false)
+                          .length}
                   </Text>
                 </View>
               </TouchableOpacity>

@@ -35,6 +35,7 @@ import { formatDateDisplays } from "../../utils/datetime";
 import { Admin, Member, Partner } from "../../utils/AccessPermission";
 import { getBenefitAction } from "../../redux/actions/benefitAction";
 import { RefreshControl } from "react-native";
+import Loading from "../../components/loading/Loading";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
@@ -63,7 +64,7 @@ const Profile = () => {
       dispatch({ type: AUTH.GOI, payload: goi });
     }
     it();
-    setRefreshing(false);
+    wait(2000).then(() => setRefreshing(false));
   }, [dispatch, auth.profile.email]);
   const data = [
     {
@@ -448,12 +449,19 @@ const Profile = () => {
               justifyContent: "space-between",
               paddingHorizontal: 10,
             }}>
-            <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
-              Thông tin quản trị viên
-            </Text>
-            <TouchableOpacity>
-              <Ionicons name="alert-circle-outline" size={20} color="#9D85F2" />
-            </TouchableOpacity>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}>
+              <Text
+                style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
+                Thông tin quản trị viên
+              </Text>
+
+              {refreshing && <Loading size="large" />}
+            </View>
           </View>
         ) : (
           <View
@@ -482,10 +490,19 @@ const Profile = () => {
                 marginTop: 10,
                 zIndex: 4,
               }}>
-              <Text
-                style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
-                Thông tin thành viên
-              </Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}>
+                <Text
+                  style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
+                  Thông tin thành viên
+                </Text>
+
+                {refreshing && <Loading size="large" />}
+              </View>
             </View>
             <View
               style={{

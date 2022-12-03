@@ -175,11 +175,11 @@ export const initSocket = async (token, email) => {
   });
 
   socket.on("notify:update", function (data) {
-    console.log(data, "datanews");
+    //console.log(data, "datanews");
     DeviceEventEmitter.emit("notificationUpdated", data);
   });
   socket.on("notify:new", function (data) {
-    console.log(data, "1");
+    //console.log(data, "1");
     DeviceEventEmitter.emit("notificationUpdated", data);
   });
 
@@ -190,7 +190,7 @@ export const initSocket = async (token, email) => {
     });
 
     socket.on(`${listNameApi[i]}:update`, function (data) {
-      console.log(`${listNameApi[i]}Update`, data, "update");
+      //console.log(`${listNameApi[i]}Update`, data, "update");
       DeviceEventEmitter.emit(`${listNameApi[i]}Update`, data);
     });
 

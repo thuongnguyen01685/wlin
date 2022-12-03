@@ -22,6 +22,7 @@ import {
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import HeaderPart from "../../components/HeaderPart/HeaderPart";
+import Loading from "../../components/loading/Loading";
 import { formatCash } from "../../utils/datetime";
 
 const w = Dimensions.get("window").width;
@@ -88,13 +89,11 @@ const DetailBenefit = () => {
   useEffect(() => {
     setRefreshing(true);
     //dispatch(getListBenefit(auth.token));
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 2000);
+    wait(2000).then(() => setRefreshing(false));
   }, [dispatch]);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    // dispatch(getListBenefit(auth.token));
+    //dispatch(getListBenefit(auth.token));
     wait(2000).then(() => setRefreshing(false));
   }, [dispatch]);
 
@@ -130,30 +129,19 @@ const DetailBenefit = () => {
             justifyContent: "space-between",
             alignItems: "center",
           }}>
-          <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
-            Chi tiết nhóm quyền lợi
-          </Text>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}>
+            <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
+              Chi tiết nhóm quyền lợi
+            </Text>
 
-          {/* {refreshing && (
-            <View
-              style={{
-                left: 10,
-                padding: 30,
-                position: "absolute",
-                left: "100%",
-              }}>
-              <Lottie
-                source={require("../../assets/loading.json")}
-                autoPlay
-                loop
-              />
-            </View>
-          )} */}
+            {refreshing && <Loading size="large" />}
+          </View>
         </View>
-
-        <TouchableOpacity>
-          <Ionicons name="alert-circle-outline" size={20} color="#826CCF" />
-        </TouchableOpacity>
       </View>
 
       <View>
@@ -248,7 +236,7 @@ const DetailBenefit = () => {
               </View>
             </View>
           </View>
-          {showDetail ? (
+          {!showDetail ? (
             <TouchableOpacity onPress={() => setShowDetail(!showDetail)}>
               <Ionicons name="chevron-up-outline" size={25} color="#9D85F2" />
             </TouchableOpacity>

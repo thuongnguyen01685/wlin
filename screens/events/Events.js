@@ -78,10 +78,6 @@ const Events = () => {
             Danh sách sự kiện
           </Text>
         </View>
-
-        <TouchableOpacity>
-          <Ionicons name="alert-circle-outline" size={20} color="#826CCF" />
-        </TouchableOpacity>
       </View>
       <View
         style={{
