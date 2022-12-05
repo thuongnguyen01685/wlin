@@ -272,7 +272,7 @@ const Home = () => {
               marginTop: 10,
               zIndex: 4,
             }}>
-            <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
+            <Text style={{ fontSize: 15, fontWeight: "600", color: "#826CCF" }}>
               Thông tin thành viên
             </Text>
             <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
