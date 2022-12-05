@@ -1,5 +1,6 @@
 //import liraries
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { Component, useEffect, useState } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
@@ -9,6 +10,7 @@ import { getRankAction } from "../redux/actions/authAction";
 // create a component
 const CardInfo = () => {
   const { auth } = useSelector((state) => state);
+  const navigation = useNavigation();
 
   return (
     <View>
@@ -58,7 +60,7 @@ const CardInfo = () => {
             marginHorizontal: 10,
             marginTop: 5,
           }}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate("Benefit")}>
             <MaterialCommunityIcons
               name="dots-horizontal"
               color="#FFFFFF"

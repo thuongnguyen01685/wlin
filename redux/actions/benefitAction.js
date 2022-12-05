@@ -4,6 +4,7 @@ import { GLOBAL } from "./GlobalAsign";
 export const BENEFIT = {
   GETBENEFIT: "GETBENEFIT",
   BENEFITMANAGEMENT: "BENEFITMANAGEMENT",
+  GETBENEFITOFMEMBER: "GETBENEFITOFMEMBER",
 };
 
 export const getBenefitAction = (token, email) => async (dispatch) => {
@@ -38,6 +39,17 @@ export const getBenefitManagemant = (token, arrMember) => async (dispatch) => {
       `dsquyenloi?access_token=${token}&q=${condition}&limit=1000`
     );
     dispatch({ type: BENEFIT.BENEFITMANAGEMENT, payload: res.data });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getBenefitMember = (token, ma_kh) => async (dispatch) => {
+  try {
+    const res = await callApis(
+      `dsquyenloi?access_token=${token}&q={"ma_kh": "${ma_kh}"}&limit=500`
+    );
+    dispatch({ type: BENEFIT.GETBENEFITOFMEMBER, payload: res.data });
   } catch (error) {
     console.log(error);
   }

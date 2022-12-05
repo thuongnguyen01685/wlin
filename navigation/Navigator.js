@@ -45,6 +45,8 @@ import { initSocket } from "../utils/pushNotify";
 import DetailClub from "../screens/clup/detail/DetailClub";
 import PayBenefit from "../screens/other/PayBenefit";
 import ManagementMember from "../screens/other/ManagementMember";
+import Benefit from "../screens/other/Benefit";
+import DetailBenefit from "../screens/other/DetailBenefit";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -195,6 +197,16 @@ const Navigator = () => {
         <Stack.Screen
           name="PayBenefit"
           component={PayBenefit}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Benefit"
+          component={Benefit}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="DetailBenefit"
+          component={DetailBenefit}
           options={{ headerShown: false }}
         />
         <Stack.Screen

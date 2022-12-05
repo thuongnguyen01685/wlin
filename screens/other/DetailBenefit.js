@@ -266,7 +266,7 @@ const DetailBenefit = () => {
               marginTop: 10,
             }}>
             {showDetail &&
-              data.map((item, index) => (
+              club.detailBenefit.details.map((item, index) => (
                 <View
                   style={{
                     flexDirection: "row",
@@ -301,7 +301,7 @@ const DetailBenefit = () => {
                       width: "80%",
                     }}>
                     <Text style={{ fontSize: 10, fontWeight: "600" }}>
-                      {item.detail}
+                      {item.ten_quyen_loi}
                     </Text>
                     <View
                       style={{
@@ -317,7 +317,11 @@ const DetailBenefit = () => {
                           fontWeight: "600",
                           color: "#769CEC",
                         }}>
-                        Giá trị: {formatCash(item.gia_tri.toString(10))} VND
+                        Giá trị:{" "}
+                        {item.gia_tri
+                          ? formatCash(item.gia_tri.toString(10))
+                          : 0}{" "}
+                        VND
                       </Text>
                     </View>
                   </View>

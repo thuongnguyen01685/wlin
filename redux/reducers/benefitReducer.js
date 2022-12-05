@@ -5,6 +5,7 @@ const initialState = {
   getPayBenefit: [],
   loading: false,
   benefitMana: [],
+  benefitMember: [],
 };
 
 const benefitReducer = (state = initialState, action) => {
@@ -26,6 +27,13 @@ const benefitReducer = (state = initialState, action) => {
       return {
         ...state,
         benefitMana: action.payload,
+        loading: false,
+      };
+    }
+    case BENEFIT.GETBENEFITOFMEMBER: {
+      return {
+        ...state,
+        benefitMember: action.payload,
         loading: false,
       };
     }
