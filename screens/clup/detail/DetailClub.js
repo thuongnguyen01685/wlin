@@ -52,6 +52,7 @@ const DetailClub = ({ route }) => {
   const [refreshing, setRefreshing] = React.useState(false);
   const layout = useWindowDimensions();
   const [index, setIndex] = useState(0);
+  const [searchPart, setSearchPart] = useState(false);
 
   const circleAnimatedValue = useRef(new Animated.Value(0)).current;
   const circleAnimated = () => {
@@ -83,7 +84,7 @@ const DetailClub = ({ route }) => {
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
-      <HeaderPart />
+      <HeaderPart searchPart={searchPart} />
       <View
         style={{
           backgroundColor: "#ffffff",

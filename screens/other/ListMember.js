@@ -26,6 +26,7 @@ import {
 import HeaderPart from "../../components/HeaderPart/HeaderPart";
 import { URL } from "../../utils/fetchApi";
 import {
+  getCLub,
   getDetailMember,
   getMemberAction,
 } from "../../redux/actions/ClupAction";
@@ -85,9 +86,9 @@ const ListMember = () => {
 
   let temp = -1;
 
-  const getUniqueListBy = (arr, key) => {
-    return [...new Map(arr.map((item) => [item[key], item])).values()];
-  };
+  // const getUniqueListBy = (arr, key) => {
+  //   return [...new Map(arr.map((item) => [item[key], item])).values()];
+  // };
 
   const circleAnimated = () => {
     circleAnimatedValue.setValue(0);
@@ -119,14 +120,35 @@ const ListMember = () => {
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     circleAnimated();
-    dispatch(getMemberAction(auth.token, auth.profile.email));
+    async function it() {
+      const res = await dispatch(getCLub(auth, 1, auth.permission.group_id));
+      const arrMember = res
+        ?.flatMap((items) => items.ds_thanh_vien.map((item) => item.ma_kh))
+        .filter((item, index, arr) => {
+          const itemIndex = arr.findIndex((it) => it === item);
+          return itemIndex === index;
+        });
+      dispatch(getMemberAction(auth.token, arrMember));
+    }
+    it();
     wait(2000).then(() => setRefreshing(false));
   }, [dispatch]);
 
   useEffect(() => {
     setRefreshing(true);
     circleAnimated();
-    dispatch(getMemberAction(auth.token, auth.profile.email));
+
+    async function it() {
+      const res = await dispatch(getCLub(auth, 1, auth.permission.group_id));
+      const arrMember = res
+        ?.flatMap((items) => items.ds_thanh_vien.map((item) => item.ma_kh))
+        .filter((item, index, arr) => {
+          const itemIndex = arr.findIndex((it) => it === item);
+          return itemIndex === index;
+        });
+      dispatch(getMemberAction(auth.token, arrMember));
+    }
+    it();
     wait(2000).then(() => setRefreshing(false));
   }, [dispatch]);
 
@@ -253,7 +275,7 @@ const ListMember = () => {
               ))
           ) : (
             <View style={{ marginBottom: "70%" }}>
-              {getUniqueListBy(club.getMember, "ma_kh").map((item) => {
+              {club.getMember.map((item) => {
                 temp++;
 
                 if (dataColor.length === temp) {
@@ -286,9 +308,9 @@ const ListMember = () => {
                         style={{ flexDirection: "row", marginHorizontal: 25 }}>
                         <Image
                           source={
-                            item.avatar
+                            item.hinh_anh
                               ? {
-                                  uri: `${URL}/`.concat(`${item.avatar}`),
+                                  uri: `${URL}/`.concat(`${item.hinh_anh}`),
                                 }
                               : require("../../assets/avtUser.png")
                           }
@@ -329,9 +351,13 @@ const ListMember = () => {
                               fontSize: 12,
                               fontWeight: "500",
                               textAlign: "center",
-                              marginHorizontal: item.chuc_vu2 ? 10 : 0,
+                              marginHorizontal: 10,
                             }}>
-                            {item.chuc_vu2}
+                            {item.trang_thai === "1"
+                              ? "Hội viên"
+                              : item.trang_thai === "2"
+                              ? "Partner"
+                              : "Kh tiềm năng"}
                           </Text>
                         </View>
                       </View>

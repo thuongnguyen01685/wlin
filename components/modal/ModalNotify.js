@@ -20,6 +20,7 @@ import {
   deleteNotify,
   getNotify,
 } from "../../redux/actions/notifyAction";
+import { useNavigation } from "@react-navigation/native";
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -30,6 +31,7 @@ const ModalNotify = (props) => {
   const { notify } = useSelector((state) => state);
   const [isRead, setIsRead] = useState(true);
   const [reload, setReload] = useState(false);
+  const navigation = useNavigation();
   const dispatch = useDispatch();
 
   const sumNotifyNotRead = notify.getNotify
@@ -63,10 +65,17 @@ const ModalNotify = (props) => {
     dispatch(getNotify(token));
   };
 
-  const handleChangeRead = async (_id) => {
+  const handleChangeRead = async (_id, title, id_event) => {
     const token = await AsyncStorage.getItem("@token_key");
     await dispatch(changeIsReadAction(token, _id));
     dispatch(getNotify(token));
+
+    if (title === "chúc mừng bạn đã checkin thành công!") {
+      navigation.navigate("DetailEvents", { _id: id_event });
+    }
+    if (title === "Chúc mừng bạn đã thanh toán thành công!") {
+      navigation.navigate("DetailEvents", { _id: id_event });
+    }
   };
 
   return (
@@ -208,7 +217,13 @@ const ModalNotify = (props) => {
                   <TouchableOpacity
                     key={item._id}
                     style={styles.notifyContainer}
-                    onPress={() => handleChangeRead(item._id)}>
+                    onPress={() =>
+                      handleChangeRead(
+                        item._id,
+                        item.title,
+                        item.exfields._id_su_kien
+                      )
+                    }>
                     <View style={styles.itemNew}>
                       <View
                         style={{
@@ -291,7 +306,13 @@ const ModalNotify = (props) => {
                   <TouchableOpacity
                     key={item._id}
                     style={styles.notifyContainer}
-                    onPress={() => handleChangeRead(item._id)}>
+                    onPress={() =>
+                      handleChangeRead(
+                        item._id,
+                        item.title,
+                        item.exfields._id_su_kien
+                      )
+                    }>
                     <View style={styles.itemNew}>
                       <View
                         style={{
