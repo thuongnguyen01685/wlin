@@ -2,7 +2,7 @@
     "expo": {
         "name": "CRM WGH",
         "slug": "wlinprod",
-        "version": "1.0.1",
+        "version": "1.0.2",
         "orientation": "portrait",
         "icon": "./assets/logo2.png",
         "notification": {
@@ -68,7 +68,7 @@
             ],
             "package": "com.fostech.wlin",
             "useNextNotificationsApi": true,
-            "versionCode": 55
+            "versionCode": 56
         },
         
         "plugins": [

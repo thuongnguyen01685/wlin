@@ -84,8 +84,8 @@ const CheckQR = () => {
       </View>
       <View style={{ height: "100%" }}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          {auth.permission?.group_id !== Admin ? (
-            <View style={{ marginBottom: "80%" }}>
+         
+            <View style={{}}>
               <View
                 style={{
                   flexDirection: "column",
@@ -182,17 +182,17 @@ const CheckQR = () => {
                 </View>
               </View>
             </View>
-          ) : !showTakePicture ? (
+         
             <QRAdmin
               showTakePicture={showTakePicture}
               setShowTakePicture={setShowTakePicture}
             />
-          ) : (
+{/*          
             <PushImage
               showTakePicture={showTakePicture}
               setShowTakePicture={setShowTakePicture}
             />
-          )}
+           */}
 
           {modalCheckGuestSuccess && (
             <ModalSuccessCheckGuest

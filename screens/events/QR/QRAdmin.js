@@ -67,10 +67,12 @@ const QRAdmin = (props) => {
   }, [hasPermission]);
 
   const handleBarCodeScanned = async ({ type, data }, error) => {
+    console.log("okkk")
     setScanned(true);
+    console.log(data,"sa",event)
     if (data) {
       dispatch({ type: AUTH.MA_KHQR, payload: data });
-      const personParticipant = event.detailEvent.ds_tham_gia.filter(
+      const personParticipant = event.getEvents[0].ds_tham_gia.filter(
         (item) => item.ma_kh === data
       );
 
