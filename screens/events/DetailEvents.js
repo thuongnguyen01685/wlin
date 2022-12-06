@@ -246,91 +246,108 @@ const DetailEvents = ({ route }, props) => {
                           return;
                         }
                   }>
-                  {event.detailEvent.ds_tham_gia.length > 0 && (
+                  {event.detailEvent?.ds_tham_gia?.length > 0 && (
                     <View
                       style={{
                         flexDirection: "row",
                         justifyContent: "space-between",
                         alignItems: "center",
                       }}>
-                      <Image
-                        source={
-                          event.detailEvent?.ds_tham_gia[0]?.avatar
-                            ? {
-                                uri: `${URL}${event.detailEvent?.ds_tham_gia[0]?.avatar}`,
-                              }
-                            : require("../../assets/avtUser.png")
-                        }
-                        style={{
-                          width: 20,
-                          height: 20,
-                          borderRadius: 20,
-                          left: 14,
-                          zIndex: 3,
-                          resizeMode: "contain",
-                        }}
-                      />
-
-                      <Image
-                        source={
-                          event.detailEvent.ds_tham_gia[1]?.avatar
-                            ? {
-                                uri: `${URL}${event.detailEvent.ds_tham_gia[1].avatar}`,
-                              }
-                            : require("../../assets/avtUser.png")
-                        }
-                        style={{
-                          width: 20,
-                          height: 20,
-                          borderRadius: 20,
-                          left: 6,
-                          zIndex: 2,
-                          resizeMode: "contain",
-                        }}
-                      />
-
-                      <Image
-                        source={
-                          event.detailEvent.ds_tham_gia[2]?.avatar
-                            ? {
-                                uri: `${URL}${event.detailEvent.ds_tham_gia[2]?.avatar}`,
-                              }
-                            : require("../../assets/avtUser.png")
-                        }
-                        style={{
-                          width: 20,
-                          height: 20,
-                          borderRadius: 20,
-                          left: -3,
-                          zIndex: 1,
-                          resizeMode: "contain",
-                        }}
-                      />
-                      <View
-                        style={{
-                          width: 20,
-                          height: 20,
-                          borderRadius: 50,
-                          left: -8,
-                          backgroundColor: "#000",
-                          opacity: 0.5,
-                          flexDirection: "row",
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}>
-                        <Text
+                      {event.detailEvent?.ds_tham_gia?.length >= 1 && (
+                        <Image
+                          source={
+                            event.detailEvent?.ds_tham_gia[0]?.avatar
+                              ? {
+                                  uri: `${URL}${event.detailEvent?.ds_tham_gia[0]?.avatar}`,
+                                }
+                              : require("../../assets/avtUser.png")
+                          }
                           style={{
-                            textAlign: "center",
-                            fontSize: 10,
-                            opacity: 0.8,
-                            color: "#fff",
+                            width: 20,
+                            height: 20,
+                            borderRadius: 20,
+                            left:
+                              event.detailEvent?.ds_tham_gia?.length === 2
+                                ? 8
+                                : event.detailEvent?.ds_tham_gia?.length === 1
+                                ? 0
+                                : 14,
+                            zIndex: 3,
+                            resizeMode: "contain",
+                          }}
+                        />
+                      )}
+
+                      {event.detailEvent?.ds_tham_gia?.length >= 2 && (
+                        <Image
+                          source={
+                            event.detailEvent.ds_tham_gia[1]?.avatar
+                              ? {
+                                  uri: `${URL}${event.detailEvent.ds_tham_gia[1].avatar}`,
+                                }
+                              : require("../../assets/avtUser.png")
+                          }
+                          style={{
+                            width: 20,
+                            height: 20,
+                            borderRadius: 20,
+                            left:
+                              event.detailEvent?.ds_tham_gia?.length === 2
+                                ? 0
+                                : 6,
+                            zIndex: 2,
+                            resizeMode: "contain",
+                          }}
+                        />
+                      )}
+
+                      {event.detailEvent?.ds_tham_gia?.length >= 3 && (
+                        <Image
+                          source={
+                            event.detailEvent.ds_tham_gia[2]?.avatar
+                              ? {
+                                  uri: `${URL}${event.detailEvent.ds_tham_gia[2]?.avatar}`,
+                                }
+                              : require("../../assets/avtUser.png")
+                          }
+                          style={{
+                            width: 20,
+                            height: 20,
+                            borderRadius: 20,
+                            left: -3,
+                            zIndex: 1,
+                            resizeMode: "contain",
+                          }}
+                        />
+                      )}
+
+                      {event.detailEvent.ds_tham_gia.length > 3 && (
+                        <View
+                          style={{
+                            width: 20,
+                            height: 20,
+                            borderRadius: 50,
+                            left: -8,
+                            backgroundColor: "#000",
+                            opacity: 0.5,
+                            flexDirection: "row",
+                            justifyContent: "center",
+                            alignItems: "center",
                           }}>
-                          +
-                          {event.detailEvent?.ds_tham_gia
-                            ? event.detailEvent.ds_tham_gia.length - 3
-                            : 0}
-                        </Text>
-                      </View>
+                          <Text
+                            style={{
+                              textAlign: "center",
+                              fontSize: 10,
+                              opacity: 0.8,
+                              color: "#fff",
+                            }}>
+                            +
+                            {event.detailEvent?.ds_tham_gia
+                              ? event.detailEvent.ds_tham_gia.length - 3
+                              : 0}
+                          </Text>
+                        </View>
+                      )}
                     </View>
                   )}
 
