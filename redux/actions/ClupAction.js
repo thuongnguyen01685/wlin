@@ -51,11 +51,19 @@ export const getDetailBenefit = (_id, token) => async (dispatch) => {
   }
 };
 
-export const getMemberAction = (token, email) => async (dispatch) => {
+export const getMemberAction = (token, array) => async (dispatch) => {
   try {
+    let condition = {
+      of_user: { $in: array },
+    };
+    condition = JSON.stringify(condition);
     const res = await callApis(
-      `fos_dsthanhvien?access_token=${token}&email=${email}`
+      `customer_wlin?access_token=${token}&q=${condition}`
     );
+
+    // const res = await callApis(
+    //   `fos_dsthanhvien?access_token=${token}&email=${email}`
+    // );
     dispatch({ type: CLUB.GETMEMBER, payload: res.data });
   } catch (error) {
     console.log(error);

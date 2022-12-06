@@ -45,6 +45,7 @@ const ManagementMember = () => {
   const [refreshing, setRefreshing] = React.useState(false);
   const { auth, club } = useSelector((state) => state);
   const [page, setPage] = useState(1);
+  const [searchPart, setSearchPart] = useState(false);
 
   const scrollY = useRef(new Animated.Value(0)).current;
 
@@ -67,7 +68,7 @@ const ManagementMember = () => {
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
-      <HeaderPart />
+      <HeaderPart searchPart={searchPart} />
       <View
         style={{
           backgroundColor: "#ffffff",
@@ -151,13 +152,13 @@ const ManagementMember = () => {
                     start={{ x: 1, y: 0.7 }}
                     end={{ x: 0.3, y: 0.8 }}
                     colors={
-                      club.detailMember.goi_thanh_vien === "01"
+                      club.detailMember?.goi_thanh_vien === "01"
                         ? ["#ABABAB", "#DFDFDF", "#C5C5C5", "#B9B9B9"]
-                        : club.detailMember.goi_thanh_vien === "02"
+                        : club.detailMember?.goi_thanh_vien === "02"
                         ? ["#DEC1A1", "#FBECD7", "#F5DFC7", "#D5B59C"]
-                        : club.detailMember.goi_thanh_vien === "03"
+                        : club.detailMember?.goi_thanh_vien === "03"
                         ? ["#7289DD", "#D0DAFF", "#ABBCF8", "#7E96E9"]
-                        : club.detailMember.goi_thanh_vien === "04"
+                        : club.detailMember?.goi_thanh_vien === "04"
                         ? ["#1F1F1f", "#646464", "#484848", "#373737"]
                         : ["#000", "#000"]
                     }
@@ -310,7 +311,7 @@ const ManagementMember = () => {
                                   fontWeight: "600",
                                   color: "#1D19D4",
                                 }}>
-                                20 sự kiện
+                                {item.count_sukien} sự kiện
                               </Text>
                             </View>
                             <View
