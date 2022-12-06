@@ -253,7 +253,13 @@ const DetailEvents = ({ route }, props) => {
                       alignItems: "center",
                     }}>
                     <Image
-                      source={require("../../assets/a1.png")}
+                      source={
+                        event.detailEvent?.ds_tham_gia[0].avatar
+                          ? {
+                              uri: `${URL}${event.detailEvent.ds_tham_gia[0].avatar}`,
+                            }
+                          : require("../../assets/avtUser.png")
+                      }
                       style={{
                         width: 20,
                         height: 20,
@@ -263,8 +269,15 @@ const DetailEvents = ({ route }, props) => {
                         resizeMode: "contain",
                       }}
                     />
+
                     <Image
-                      source={require("../../assets/a2.png")}
+                      source={
+                        event.detailEvent.ds_tham_gia[1].avatar
+                          ? {
+                              uri: `${URL}${event.detailEvent.ds_tham_gia[1].avatar}`,
+                            }
+                          : require("../../assets/avtUser.png")
+                      }
                       style={{
                         width: 20,
                         height: 20,
@@ -274,15 +287,49 @@ const DetailEvents = ({ route }, props) => {
                         resizeMode: "contain",
                       }}
                     />
+
                     <Image
-                      source={require("../../assets/a3.png")}
+                      source={
+                        event.detailEvent.ds_tham_gia[2].avatar
+                          ? {
+                              uri: `${URL}${event.detailEvent.ds_tham_gia[2].avatar}`,
+                            }
+                          : require("../../assets/avtUser.png")
+                      }
                       style={{
                         width: 20,
                         height: 20,
                         borderRadius: 20,
+                        left: -3,
+                        zIndex: 1,
                         resizeMode: "contain",
                       }}
                     />
+                    <View
+                      style={{
+                        width: 20,
+                        height: 20,
+                        borderRadius: 50,
+                        left: -8,
+                        backgroundColor: "#000",
+                        opacity: 0.5,
+                        flexDirection: "row",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}>
+                      <Text
+                        style={{
+                          textAlign: "center",
+                          fontSize: 10,
+                          opacity: 0.8,
+                          color: "#fff",
+                        }}>
+                        +
+                        {event.detailEvent?.ds_tham_gia
+                          ? event.detailEvent.ds_tham_gia.length - 3
+                          : 0}
+                      </Text>
+                    </View>
                   </View>
 
                   <Text style={{ fontSize: 10, marginLeft: 2 }}>
