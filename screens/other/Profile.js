@@ -301,7 +301,8 @@ const Profile = () => {
                 height: 38,
                 borderRadius: 20,
               }}>
-              {notify.getNotify.length > 0 ? (
+              {notify.getNotify.filter((item) => item.read === false).length >
+              0 ? (
                 <Animated.View
                   style={{
                     alignSelf: "center",
@@ -325,9 +326,12 @@ const Profile = () => {
                           color: "#ffffff",
                           fontWeight: "600",
                         }}>
-                        {notify.getNotify.length > 9
+                        {notify.getNotify.filter((item) => item.read === false)
+                          .length > 9
                           ? "9+"
-                          : notify.getNotify.length}
+                          : notify.getNotify.filter(
+                              (item) => item.read === false
+                            ).length}
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -633,10 +637,9 @@ const Profile = () => {
                           </View>
                         </View>
                         <TouchableOpacity>
-                          <Ionicons
-                            name="create-outline"
-                            size={25}
-                            color="#9D85F2"
+                          <Image
+                            source={require("../../assets/Edite.png")}
+                            style={{ width: w * 0.041, height: w * 0.041 }}
                           />
                         </TouchableOpacity>
                       </View>
@@ -712,10 +715,9 @@ const Profile = () => {
                           </View>
                         </View>
                         <TouchableOpacity>
-                          <Ionicons
-                            name="create-outline"
-                            size={25}
-                            color="#9D85F2"
+                          <Image
+                            source={require("../../assets/Edite.png")}
+                            style={{ width: w * 0.041, height: w * 0.041 }}
                           />
                         </TouchableOpacity>
                       </View>
