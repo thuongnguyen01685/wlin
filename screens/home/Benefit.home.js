@@ -23,22 +23,22 @@ const BenefitHome = ({ item }) => {
           paddingHorizontal: 5,
           alignItems: "center",
         }}>
-        {item.user.goi_thanh_vien === "01" ? (
+        {item?.user?.goi_thanh_vien === "01" ? (
           <Image
             source={require("../../assets/cupbac.png")}
             style={styles.imgCup}
           />
-        ) : item.user.goi_thanh_vien === "02" ? (
+        ) : item?.user?.goi_thanh_vien === "02" ? (
           <Image
             source={require("../../assets/cupvang.png")}
             style={styles.imgCup}
           />
-        ) : item.user.goi_thanh_vien === "03" ? (
+        ) : item?.user?.goi_thanh_vien === "03" ? (
           <Image
             source={require("../../assets/cupxanh.png")}
             style={styles.imgCup}
           />
-        ) : item.user.goi_thanh_vien === "04" ? (
+        ) : item?.user?.goi_thanh_vien === "04" ? (
           <Image
             source={require("../../assets/cupden.png")}
             style={styles.imgCup}
@@ -56,7 +56,7 @@ const BenefitHome = ({ item }) => {
         )}
 
         <Text style={{ fontSize: 14, fontWeight: "600" }}>
-          Tên hội viên: {item.user.ten_kh}
+          Tên hội viên: {item?.user?.ten_kh}
         </Text>
       </View>
       <View
@@ -75,7 +75,7 @@ const BenefitHome = ({ item }) => {
 
             marginHorizontal: 15,
           }}>
-          {item.ten_quyen_loi}
+          {item?.ten_quyen_loi}
         </Text>
         <TouchableOpacity
           style={{

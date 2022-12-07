@@ -38,7 +38,9 @@ export const getBenefitManagemant = (token, arrMember) => async (dispatch) => {
     const res = await callApis(
       `dsquyenloi?access_token=${token}&q=${condition}&limit=1000`
     );
+
     dispatch({ type: BENEFIT.BENEFITMANAGEMENT, payload: res.data });
+    return res.data;
   } catch (error) {
     console.log(error);
   }

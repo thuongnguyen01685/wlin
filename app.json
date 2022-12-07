@@ -66,6 +66,11 @@
                 "com.sec.android.provider.badge.permission.WRITE",
                 "com.sonyericsson.home.permission.BROADCAST_BADGE"
             ],
+            "config": {
+                "googleMaps": {
+                    "apiKey": "AIzaSyBogLh772OrNo1zlEF-KUaaR3p9Jh1vyaQ"
+                }
+            },
             "package": "com.thuongnguyen.wlin",
             "useNextNotificationsApi": true
         },

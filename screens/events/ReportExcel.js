@@ -27,11 +27,12 @@ import { useSelector } from "react-redux";
 const ReportExcel = () => {
   const { event } = useSelector((state) => state);
   const navigation = useNavigation();
+  const [searchPart, setSearchPart] = useState(false);
 
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
-      <HeaderPart />
+      <HeaderPart searchPart={searchPart} />
       <View
         style={{
           backgroundColor: "#ffffff",
@@ -57,9 +58,6 @@ const ReportExcel = () => {
         <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
           Báo cáo chi tiết sự kiện
         </Text>
-        <TouchableOpacity>
-          <Ionicons name="alert-circle-outline" size={20} color="#826CCF" />
-        </TouchableOpacity>
       </View>
       <View style={{ height: "100%" }}>
         <ScrollView showsVerticalScrollIndicator={false}>

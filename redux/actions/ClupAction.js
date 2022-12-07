@@ -20,6 +20,7 @@ export const getCLub = (auth, page, permission) => async (dispatch) => {
     console.log(error);
   }
 };
+
 export const getDetailClub = (_id, token) => async (dispatch) => {
   try {
     const res = await callApis(`wlin_club/${_id}?access_token=${token}`);
@@ -65,6 +66,7 @@ export const getMemberAction = (token, array) => async (dispatch) => {
     //   `fos_dsthanhvien?access_token=${token}&email=${email}`
     // );
     dispatch({ type: CLUB.GETMEMBER, payload: res.data });
+    return res.data;
   } catch (error) {
     console.log(error);
   }

@@ -22,6 +22,7 @@ export const getEventsAction =
           `dmsukien?access_token=${auth.token}&q=${condition}`
         );
         dispatch({ type: EVENTS.GETEVENTS, payload: res.data });
+        return res.data;
       }
       //dmsukien?access_token=a32ace19895e836dc9c11ef730a86dac&limit=200&q={"ds_tham_gia":{"$elemMatch":{"ma_kh":"0338634204"}}}
       if (permission === Member) {
@@ -29,6 +30,7 @@ export const getEventsAction =
           `dmsukien?access_token=${auth.token}&limit=200&q={"ds_tham_gia":{"$elemMatch":{"ma_kh":"${auth.profile.email}"}}}`
         );
         dispatch({ type: EVENTS.GETEVENTS, payload: res.data });
+        return res.data;
       }
     } catch (error) {
       console.log(error);
