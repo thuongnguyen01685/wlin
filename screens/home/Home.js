@@ -18,6 +18,7 @@ import {
   RefreshControl,
   Platform,
   TextInput,
+  FlatList,
 } from "react-native";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -64,8 +65,11 @@ const Home = () => {
   const [backHome, setBackHome] = useState(false);
   const dispatch = useDispatch();
   const [refreshing, setRefreshing] = useState(false);
+
+  //search
   const [search, setSearch] = useState("");
-  const [searchPart, setSearchPart] = useState(false);
+  const [filteredDataSource, setFilteredDataSource] = useState([]);
+  const [masterDataSource, setMasterDataSource] = useState([]);
 
   const animatedValue = useRef(new Animated.Value(0)).current;
   const { auth, notify, event, club, benefit } = useSelector((state) => state);
@@ -113,7 +117,10 @@ const Home = () => {
           const itemIndex = arr.findIndex((it) => it === item);
           return itemIndex === index;
         });
-      dispatch(getBenefitManagemant(auth.token, arrMember));
+      const reBe = await dispatch(getBenefitManagemant(auth.token, arrMember));
+
+      setFilteredDataSource(reBe);
+      setMasterDataSource(reBe);
       setRefreshing(false);
     }
     it();
@@ -127,6 +134,29 @@ const Home = () => {
       BackHandler.removeEventListener("hardwareBackPress", backButtonHandler);
     };
   }, [backHome]);
+
+  const searchFilterFunction = (text) => {
+    // Check if searched text is not blank
+    if (text) {
+      // Inserted text is not blank
+      // Filter the masterDataSource and update FilteredDataSource
+      const newData = masterDataSource.filter(function (item) {
+        // Applying filter for the inserted text in search bar
+        const itemData = item.ten_quyen_loi
+          ? item.ten_quyen_loi.toUpperCase()
+          : "".toUpperCase();
+        const textData = text.toUpperCase();
+        return itemData.indexOf(textData) > -1;
+      });
+      setFilteredDataSource(newData);
+      setSearch(text);
+    } else {
+      // Inserted text is blank
+      // Update FilteredDataSource with masterDataSource
+      setFilteredDataSource(masterDataSource);
+      setSearch(text);
+    }
+  };
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -146,7 +176,10 @@ const Home = () => {
           const itemIndex = arr.findIndex((it) => it === item);
           return itemIndex === index;
         });
-      dispatch(getBenefitManagemant(auth.token, arrMember));
+      const reBe = await dispatch(getBenefitManagemant(auth.token, arrMember));
+
+      setFilteredDataSource(reBe);
+      setMasterDataSource(reBe);
     }
     it();
     setRefreshing(false);
@@ -156,11 +189,7 @@ const Home = () => {
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
 
-      <HeaderPart
-        backHome={backHome}
-        setBackHome={setBackHome}
-        searchPart={searchPart}
-      />
+      <HeaderPart backHome={backHome} setBackHome={setBackHome} />
       {auth.permission?.group_id === Admin && (
         <View style={styles.search}>
           <View
@@ -170,7 +199,7 @@ const Home = () => {
               width: "80%",
               borderRadius: 7,
             }}>
-            <TouchableOpacity>
+            <TouchableOpacity style={{ marginRight: 10 }}>
               <Ionicons name="search-outline" size={30} color="#ffffff" />
             </TouchableOpacity>
             <TextInput
@@ -184,7 +213,7 @@ const Home = () => {
               }}
               underlineColorAndroid="transparent"
               style={styles.input}
-              onChangeText={(keySearch) => setSearch(keySearch)}
+              onChangeText={(text) => searchFilterFunction(text)}
               value={search}
               placeholder="Tìm kiếm"
             />
@@ -257,7 +286,7 @@ const Home = () => {
             shadowRadius: 3.84,
             elevation: 5,
             zIndex: 3,
-            marginTop: -60,
+            marginTop: -90,
             marginHorizontal: 15,
             borderRadius: 20,
             paddingHorizontal: 15,
@@ -300,7 +329,7 @@ const Home = () => {
             colors={["#9796F0", "green", "blue"]}
           />
         }>
-        <Animated.View
+        <View
           style={{
             marginBottom: "20%",
             marginTop: 5,
@@ -376,12 +405,12 @@ const Home = () => {
                   </Text>
                 </TouchableOpacity>
               </View>
-              {benefit.loading ? (
+              {refreshing ? (
                 <Loading size="small" />
-              ) : benefit.benefitMana.length > 0 ? (
-                benefit.benefitMana
-                  .slice(0, 3)
-                  .map((item, index) => <BenefitHome item={item} key={index} />)
+              ) : filteredDataSource?.length > 0 ? (
+                filteredDataSource.map((item, index) => (
+                  <BenefitHome item={item} key={index} />
+                ))
               ) : (
                 <View>
                   <Text
@@ -397,7 +426,7 @@ const Home = () => {
               )}
             </View>
           )}
-        </Animated.View>
+        </View>
       </ScrollView>
     </View>
   );
@@ -412,7 +441,7 @@ const styles = StyleSheet.create({
   search: {
     zIndex: 1,
     position: "absolute",
-    marginTop: "21%",
+    marginTop: "23%",
     width: "100%",
     flexDirection: "row",
     justifyContent: "space-between",
@@ -420,6 +449,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingLeft: 20,
     paddingRight: 15,
+  },
+  input: {
+    height: 40,
+    width: "79%",
+    marginLeft: 10,
+    color: "#ffffff",
   },
 });
 

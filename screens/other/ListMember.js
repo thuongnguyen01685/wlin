@@ -82,6 +82,34 @@ const ListMember = () => {
   const [refreshing, setRefreshing] = React.useState(false);
   const { auth, club } = useSelector((state) => state);
 
+  //search
+  const [search, setSearch] = useState("");
+  const [filteredDataSource, setFilteredDataSource] = useState([]);
+  const [masterDataSource, setMasterDataSource] = useState([]);
+
+  const searchFilterFunction = (text) => {
+    // Check if searched text is not blank
+    if (text) {
+      // Inserted text is not blank
+      // Filter the masterDataSource and update FilteredDataSource
+      const newData = masterDataSource.filter(function (item) {
+        // Applying filter for the inserted text in search bar
+        const itemData = item.ten_kh
+          ? item.ten_kh.toUpperCase()
+          : "".toUpperCase();
+        const textData = text.toUpperCase();
+        return itemData.indexOf(textData) > -1;
+      });
+      setFilteredDataSource(newData);
+      setSearch(text);
+    } else {
+      // Inserted text is blank
+      // Update FilteredDataSource with masterDataSource
+      setFilteredDataSource(masterDataSource);
+      setSearch(text);
+    }
+  };
+
   const circleAnimatedValue = useRef(new Animated.Value(0)).current;
 
   let temp = -1;
@@ -128,7 +156,9 @@ const ListMember = () => {
           const itemIndex = arr.findIndex((it) => it === item);
           return itemIndex === index;
         });
-      dispatch(getMemberAction(auth.token, arrMember));
+      const reListMe = await dispatch(getMemberAction(auth.token, arrMember));
+      setFilteredDataSource(reListMe);
+      setMasterDataSource(reListMe);
     }
     it();
     wait(2000).then(() => setRefreshing(false));
@@ -146,7 +176,9 @@ const ListMember = () => {
           const itemIndex = arr.findIndex((it) => it === item);
           return itemIndex === index;
         });
-      dispatch(getMemberAction(auth.token, arrMember));
+      const reListMe = await dispatch(getMemberAction(auth.token, arrMember));
+      setFilteredDataSource(reListMe);
+      setMasterDataSource(reListMe);
     }
     it();
     wait(2000).then(() => setRefreshing(false));
@@ -161,6 +193,52 @@ const ListMember = () => {
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
       <HeaderPart />
+      <View style={styles.search}>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            width: "80%",
+            borderRadius: 7,
+          }}>
+          <TouchableOpacity style={{ marginRight: 10 }}>
+            <Ionicons name="search-outline" size={30} color="#ffffff" />
+          </TouchableOpacity>
+          <TextInput
+            placeholderTextColor={"#ffffff"}
+            theme={{
+              roundness: 50,
+              colors: {
+                primary: "green",
+                underlineColor: "transparent",
+              },
+            }}
+            underlineColorAndroid="transparent"
+            style={styles.input}
+            onChangeText={(text) => searchFilterFunction(text)}
+            value={search}
+            placeholder="Tìm kiếm"
+          />
+        </View>
+        <TouchableOpacity>
+          <View
+            style={{
+              width: 35,
+              height: 35,
+              borderRadius: 50,
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+            }}>
+            <Ionicons
+              name="options-outline"
+              size={25}
+              color="#ffffff"
+              style={{ transform: [{ rotate: "-90deg" }] }}
+            />
+          </View>
+        </TouchableOpacity>
+      </View>
       <View
         style={{
           backgroundColor: "#ffffff",
@@ -275,7 +353,7 @@ const ListMember = () => {
               ))
           ) : (
             <View style={{ marginBottom: "70%" }}>
-              {club.getMember.map((item) => {
+              {filteredDataSource.map((item) => {
                 temp++;
 
                 if (dataColor.length === temp) {
@@ -318,7 +396,6 @@ const ListMember = () => {
                             width: w * 0.12,
                             height: w * 0.12,
                             borderRadius: 50,
-                            resizeMode: "contain",
                           }}
                         />
                       </View>
@@ -446,6 +523,24 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginVertical: 10,
     marginHorizontal: 15,
+  },
+  search: {
+    zIndex: 1,
+    position: "absolute",
+    marginTop: "23%",
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignContent: "center",
+    alignItems: "center",
+    paddingLeft: 20,
+    paddingRight: 15,
+  },
+  input: {
+    height: 40,
+    width: "79%",
+    marginLeft: 10,
+    color: "#ffffff",
   },
 });
 

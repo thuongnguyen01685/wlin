@@ -20,8 +20,10 @@ import {
   TextInput,
 } from "react-native";
 
-import MapView from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
+import { useSelector } from "react-redux";
 import Header from "../../components/Header";
+import { URL } from "../../utils/fetchApi";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
@@ -30,6 +32,7 @@ const ratio = w / 720;
 // create a component
 const Map = () => {
   const navigation = useNavigation();
+  const { event } = useSelector((state) => state);
   const [search, setSearch] = useState("");
   const color = "#826CCF";
 
@@ -38,12 +41,20 @@ const Map = () => {
       <MapView
         style={styles.map}
         initialRegion={{
-          latitude: 10.7449908,
-          longitude: 106.6978285,
+          latitude: 13.4435651676475,
+          longitude: 144.775596791471,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
-        }}
-      />
+        }}>
+        <Marker
+          coordinate={{
+            latitude: 13.4435651676475,
+            longitude: 144.775596791471,
+          }}
+          image={require("../../assets/map.png")}
+          style={{ width: 100, height: 100 }}
+        />
+      </MapView>
 
       <View
         style={{

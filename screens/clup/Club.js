@@ -248,7 +248,7 @@ const Nation = () => {
       ) : auth.customer.goi_thanh_vien === "03" ||
         auth.customer.goi_thanh_vien === "04" ||
         auth.permission.group_id === Admin ? (
-        <View style={{ marginTop: 10, paddingBottom: "70%", height: "100%" }}>
+        <View style={{ marginTop: 10, paddingBottom: "82%", height: "100%" }}>
           <Animated.FlatList
             onScroll={Animated.event(
               [{ nativeEvent: { contentOffset: { y: scrollY } } }],
@@ -682,7 +682,7 @@ const Area = () => {
         auth.customer.goi_thanh_vien === "03" ||
         auth.customer.goi_thanh_vien === "04" ||
         auth.permission.group_id === Admin ? (
-        <View style={{ marginTop: 10, paddingBottom: "70%", height: "100%" }}>
+        <View style={{ marginTop: 10, paddingBottom: "82%", height: "100%" }}>
           <Animated.FlatList
             onScroll={Animated.event(
               [{ nativeEvent: { contentOffset: { y: scrollY } } }],
@@ -1107,7 +1107,7 @@ const Region = () => {
             </View>
           ))
       ) : (
-        <View style={{ marginTop: 10, paddingBottom: "70%", height: "100%" }}>
+        <View style={{ marginTop: 10, paddingBottom: "82%", height: "100%" }}>
           <Animated.FlatList
             onScroll={Animated.event(
               [{ nativeEvent: { contentOffset: { y: scrollY } } }],
@@ -1353,12 +1353,50 @@ const Club = () => {
   const [refreshing, setRefreshing] = React.useState(false);
   const [page, setPage] = useState(1);
 
+  //search
+  const [search, setSearch] = useState("");
+  const [filteredDataSource, setFilteredDataSource] = useState([]);
+  const [masterDataSource, setMasterDataSource] = useState([]);
+
+  const searchFilterFunction = (text) => {
+    // Check if searched text is not blank
+    if (text) {
+      // Inserted text is not blank
+      // Filter the masterDataSource and update FilteredDataSource
+      const newData = masterDataSource.filter(function (item) {
+        // Applying filter for the inserted text in search bar
+        const itemData = item.ten_club
+          ? item.ten_club.toUpperCase()
+          : "".toUpperCase();
+        const textData = text.toUpperCase();
+        return itemData.indexOf(textData) > -1;
+      });
+      setFilteredDataSource(newData);
+      setSearch(text);
+    } else {
+      // Inserted text is blank
+      // Update FilteredDataSource with masterDataSource
+      setFilteredDataSource(masterDataSource);
+      setSearch(text);
+    }
+  };
+
   // const scrollY = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     setRefreshing(true);
     // console.log(auth.token, page);
-    dispatch(getCLub(auth, page, auth.permission.group_id));
+    async function it() {
+      const reClub = await dispatch(
+        getCLub(auth, page, auth.permission.group_id)
+      );
+
+      setFilteredDataSource(reClub);
+      setMasterDataSource(reClub);
+    }
+
+    it();
+
     dispatch(getRankAction(auth.token, auth.profile.email));
     setTimeout(() => {
       setRefreshing(false);
@@ -1375,6 +1413,122 @@ const Club = () => {
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
       <HeaderPart />
+      <View style={styles.search}>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            width: "80%",
+            borderRadius: 7,
+          }}>
+          <TouchableOpacity style={{ marginRight: 10 }}>
+            <Ionicons name="search-outline" size={30} color="#ffffff" />
+          </TouchableOpacity>
+          <TextInput
+            placeholderTextColor={"#ffffff"}
+            theme={{
+              roundness: 50,
+              colors: {
+                primary: "green",
+                underlineColor: "transparent",
+              },
+            }}
+            underlineColorAndroid="transparent"
+            style={styles.input}
+            onChangeText={(text) => searchFilterFunction(text)}
+            value={search}
+            placeholder="Tìm kiếm"
+          />
+        </View>
+        <TouchableOpacity>
+          <View
+            style={{
+              width: 35,
+              height: 35,
+              borderRadius: 50,
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+            }}>
+            <Ionicons
+              name="options-outline"
+              size={25}
+              color="#ffffff"
+              style={{ transform: [{ rotate: "-90deg" }] }}
+            />
+          </View>
+        </TouchableOpacity>
+      </View>
+      {search !== "" && (
+        <View style={styles.resultSearch}>
+          <View
+            style={{
+              borderBottomWidth: 0.3,
+              borderColor: "#826CCF",
+              width: w * 0.3,
+              marginTop: 10,
+              marginBottom: 10,
+            }}>
+            <Text style={{ fontSize: 13, fontWeight: "400", color: "#826CCF" }}>
+              Kết quả tìm kiếm.
+            </Text>
+          </View>
+          <ScrollView>
+            {filteredDataSource.length > 0 ? (
+              filteredDataSource.map((item) => (
+                <TouchableOpacity
+                  key={item._id}
+                  style={{
+                    paddingVertical: 5,
+                    borderBottomWidth: 0.5,
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}
+                  onPress={() =>
+                    navigation.navigate("DetailClub", { _id: item._id })
+                  }>
+                  <Image
+                    source={{ uri: `${URL}${item.hinh_anh}` }}
+                    style={{
+                      width: w * 0.1,
+                      height: w * 0.1,
+                      resizeMode: "contain",
+                      borderRadius: 5,
+                    }}
+                  />
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      fontWeight: "600",
+                      color: "#474747",
+                      marginLeft: 10,
+                    }}>
+                    {item.ten_club}
+                  </Text>
+                </TouchableOpacity>
+              ))
+            ) : (
+              <View
+                style={{
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  height: h * 0.2,
+                }}>
+                <Image
+                  source={require("../../assets/search.png")}
+                  style={{ width: w * 0.2, height: w * 0.2, right: 5 }}
+                />
+                <Text
+                  style={{ fontSize: 15, fontWeight: "600", color: "#474747" }}>
+                  Chưa tìm thấy kết quả
+                </Text>
+              </View>
+            )}
+          </ScrollView>
+        </View>
+      )}
+
       <View
         style={{
           backgroundColor: "#ffffff",
@@ -1388,7 +1542,7 @@ const Club = () => {
 
           elevation: 5,
           zIndex: 3,
-          marginTop: -55,
+          marginTop: -50,
           marginHorizontal: 15,
           paddingVertical: 20,
           borderRadius: 10,
@@ -1450,8 +1604,6 @@ const styles = StyleSheet.create({
   surface: {
     height: height * 0.12,
     marginTop: 10,
-    paddingHorizontal: 8,
-    marginHorizontal: 15,
     borderRadius: 8,
     flexDirection: "row",
     justifyContent: "space-between",
@@ -1459,7 +1611,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderBottomWidth: 0.5,
     borderColor: "#DADADA",
-    paddingTop: 10,
+    paddingTop: 20,
+    paddingHorizontal: 5,
   },
   indicatorStyle: {
     backgroundColor: "#826CCF",
@@ -1486,6 +1639,37 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginHorizontal: 10,
+  },
+  search: {
+    zIndex: 1,
+    position: "absolute",
+    marginTop: "23%",
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignContent: "center",
+    alignItems: "center",
+    paddingLeft: 20,
+    paddingRight: 15,
+  },
+  input: {
+    height: 40,
+    width: "79%",
+    marginLeft: 10,
+    color: "#ffffff",
+  },
+  resultSearch: {
+    zIndex: 5,
+    position: "absolute",
+    marginTop: "35%",
+    width: "90%",
+    marginHorizontal: 20,
+    backgroundColor: "#E6E1F8",
+    height: height * 0.25,
+    borderRadius: 20,
+    borderWidth: 0.8,
+    borderColor: "#f8f8f8",
+    paddingHorizontal: 15,
   },
 });
 

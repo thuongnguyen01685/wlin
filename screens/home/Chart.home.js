@@ -15,9 +15,11 @@ import {
   VictoryTheme,
   VictoryStack,
   VictoryLine,
+  VictoryLabel,
 } from "victory-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useState } from "react";
+import ChooseTime from "./ChooseTime";
 
 const { width, height } = Dimensions.get("window");
 
@@ -38,57 +40,12 @@ const dataDes = [
     color: "#78B1E5",
   },
 ];
+
+const PropsDay = (day) => {
+  //console.log(day);
+};
 // create a component
 const Chart = () => {
-  const [showFromDate, setShowFromDate] = useState(false);
-  const [dateFrom, setDateFrom] = useState(new Date());
-  const [textFromDate, setTextFromDate] = useState("Từ ngày");
-
-  const [mode, setMode] = useState("date");
-
-  const [showToDate, setShowToDate] = useState(false);
-  const [dateTo, setDateTo] = useState(new Date());
-  const [textToDate, setTextToDate] = useState("Đến ngày");
-
-  const onChangeDateFrom = (event, selectedDate) => {
-    const currentDate = selectedDate || dateFrom;
-    setShowFromDate(Platform.OS === "ios");
-    setDateFrom(currentDate);
-
-    let temDate = new Date(currentDate);
-    let fDate =
-      temDate.getDate() +
-      "/" +
-      (temDate.getMonth() + 1) +
-      "/" +
-      temDate.getFullYear();
-    setTextFromDate(fDate);
-  };
-
-  const onChangeDateTo = (event, selectedDate) => {
-    const currentDate = selectedDate || dateTo;
-    setShowToDate(Platform.OS === "ios");
-    setDateTo(currentDate);
-
-    let temDate = new Date(currentDate);
-    let fDate =
-      temDate.getDate() +
-      "/" +
-      (temDate.getMonth() + 1) +
-      "/" +
-      temDate.getFullYear();
-    setTextToDate(fDate);
-  };
-
-  const showModeFrom = (currentMode) => {
-    setShowFromDate(true);
-    setMode(currentMode);
-  };
-  const showModeTo = (currentMode) => {
-    setShowToDate(true);
-    setMode(currentMode);
-  };
-
   return (
     <View
       style={{
@@ -121,24 +78,7 @@ const Chart = () => {
           </Text>
         </TouchableOpacity> */}
       </View>
-      {showFromDate && (
-        <DateTimePicker
-          testID="dateTimePicker"
-          value={dateFrom}
-          mode={mode}
-          display="default"
-          onChange={onChangeDateFrom}
-        />
-      )}
-      {showToDate && (
-        <DateTimePicker
-          testID="dateTimePicker"
-          value={dateTo}
-          mode={mode}
-          display="default"
-          onChange={onChangeDateTo}
-        />
-      )}
+
       <View>
         <View
           style={{
@@ -157,22 +97,7 @@ const Chart = () => {
               marginRight: 15,
               justifyContent: "flex-end",
             }}>
-            <TouchableOpacity
-              style={[styles.buttonTime, { paddingHorizontal: 7 }]}
-              onPress={() => showModeFrom("date")}>
-              <Text style={styles.textTime}>{textFromDate}</Text>
-              <Ionicons name="caret-down-outline" size={20} color="#826CCF" />
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={[
-                styles.buttonTime,
-                { marginLeft: 15, paddingHorizontal: 5 },
-              ]}
-              onPress={() => showModeTo("date")}>
-              <Text style={styles.textTime}>{textToDate}</Text>
-              <Ionicons name="caret-down-outline" size={20} color="#826CCF" />
-            </TouchableOpacity>
+            <ChooseTime PropsDay={PropsDay} />
           </View>
         </View>
         <VictoryChart
@@ -180,13 +105,13 @@ const Chart = () => {
           domainPadding={20}
           theme={VictoryTheme.material}>
           <VictoryStack
-            colorScale={["#9D85F2", "#5144A6", "#78B1E5"]}
+            colorScale={["#78B1E5"]}
             animate={{
               duration: 2000,
               onLoad: { duration: 1000 },
             }}>
             {/* refferals */}
-            <VictoryBar
+            {/* <VictoryBar
               barRatio={0.3}
               data={[
                 { x: "1", y: 10 },
@@ -197,9 +122,9 @@ const Chart = () => {
                 { x: "6", y: 5 },
                 { x: "7", y: 5 },
               ]}
-            />
+            /> */}
             {/* tyfcbs */}
-            <VictoryBar
+            {/* <VictoryBar
               barRatio={0.3}
               data={[
                 { x: "1", y: 8 },
@@ -210,18 +135,30 @@ const Chart = () => {
                 { x: "6", y: 8 },
                 { x: "7", y: 5 },
               ]}
-            />
+            /> */}
             {/* sự kiện */}
             <VictoryBar
-              barRatio={0.3}
+              barRatio={0.6}
+              labels={({ datum }) => datum.y}
+              labelComponent={
+                <VictoryLabel dy={({ datum }) => (datum.y ? 20 : 0)} />
+              }
               data={[
                 { x: "1", y: 8 },
-                { x: "2", y: 2 },
+                { x: "2", y: 0 },
                 { x: "3", y: 4 },
                 { x: "4", y: 5 },
                 { x: "5", y: 1 },
                 { x: "6", y: 8 },
                 { x: "7", y: 5 },
+                { x: "8", y: 8 },
+                { x: "9", y: 2 },
+                { x: "10", y: 4 },
+                { x: "11", y: 5 },
+                { x: "12", y: 1 },
+                { x: "13", y: 8 },
+                { x: "14", y: 5 },
+                { x: "15", y: 5 },
               ]}
             />
           </VictoryStack>
