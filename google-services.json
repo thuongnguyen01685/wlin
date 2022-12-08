@@ -1,41 +1,41 @@
 {
   "project_info": {
-    "project_number": "738734331346",
-    "project_id": "wlin-88c70",
-    "storage_bucket": "wlin-88c70.appspot.com"
+    "project_number": "982079230878",
+    "project_id": "wlinprod",
+    "storage_bucket": "wlinprod.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:738734331346:android:f60240cc71c7409385640b",
+        "mobilesdk_app_id": "1:982079230878:android:bb67e7d13808c8bb86bc8f",
         "android_client_info": {
-          "package_name": "com.thuongnguyen.wlin"
+          "package_name": "com.fostech.wlin"
         }
       },
       "oauth_client": [
         {
-          "client_id": "738734331346-tjg0emb41takg4oa1cg4njqbn6o7to7g.apps.googleusercontent.com",
+          "client_id": "982079230878-9fm94gr02j4l1o467uma9c275r801e3m.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.thuongnguyen.wlin",
-            "certificate_hash": "f4697c17614e619057d4d742291e3b35f2bba1bc"
+            "package_name": "com.fostech.wlin",
+            "certificate_hash": "4c2ab577a301eb8726cfac3837dbf2e4b5167dc5"
           }
         },
         {
-          "client_id": "738734331346-mn275nooo8kec13bhnudqet556mo3vqi.apps.googleusercontent.com",
+          "client_id": "982079230878-cshp09bpsldpplg7heqt6981pvmtb85u.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBogLh772OrNo1zlEF-KUaaR3p9Jh1vyaQ"
+          "current_key": "AIzaSyC_ga7IfRzLgjtDos1sOexwlH_EKSrm_-U"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "738734331346-mn275nooo8kec13bhnudqet556mo3vqi.apps.googleusercontent.com",
+              "client_id": "982079230878-cshp09bpsldpplg7heqt6981pvmtb85u.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

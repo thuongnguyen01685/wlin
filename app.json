@@ -1,15 +1,15 @@
 {
     "expo": {
         "name": "CRM WGH",
-        "slug": "wlin",
-        "version": "1.0.0",
+        "slug": "wlinprod",
+        "version": "1.0.3",
         "orientation": "portrait",
-        "icon": "./assets/icon.png",
+        "icon": "./assets/logo2.png",
         "notification": {
             "icon": "./assets/icon.png",
             "color": "#FFFFFF",
             "androidMode": "collapse",
-            "androidCollapsedTitle": "wlin"
+            "androidCollapsedTitle": "wlinprod"
         },
         "userInterfaceStyle": "light",
         "splash": {
@@ -26,7 +26,7 @@
             "**/*"
         ],
         "ios": {
-            "bundleIdentifier": "com.thuongnguyen.wlin",
+            "bundleIdentifier": "com.wgh.wlinplatform",
             "supportsTablet": false,
             "googleServicesFile": "./GoogleService-Info.plist",
             "infoPlist": {
@@ -66,28 +66,16 @@
                 "com.sec.android.provider.badge.permission.WRITE",
                 "com.sonyericsson.home.permission.BROADCAST_BADGE"
             ],
+            "package": "com.fostech.wlin",
+            "useNextNotificationsApi": true,
+            "versionCode": 57,
             "config": {
                 "googleMaps": {
                     "apiKey": "AIzaSyBogLh772OrNo1zlEF-KUaaR3p9Jh1vyaQ"
                 }
-            },
-            "package": "com.thuongnguyen.wlin",
-            "useNextNotificationsApi": true
-        },
-        "web": {
-            "favicon": "./assets/favicon.png",
-            "config": {
-                "firebase": {
-                    "apiKey": "AIzaSyBYu82r3ggcMcIhSVLLApN_eGJ48XVDPFg",
-                    "authDomain": "wlin-88c70.firebaseapp.com",
-                    "projectId": "wlin-88c70",
-                    "storageBucket": "wlin-88c70.appspot.com",
-                    "messagingSenderId": "738734331346",
-                    "appId": "1:738734331346:web:f249e7562dd555ef85640b",
-                    "measurementId": "G-0ENWEQZCDZ"
-                }
             }
         },
+        
         "plugins": [
             [
                 "expo-image-picker",
