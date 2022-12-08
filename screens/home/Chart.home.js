@@ -162,7 +162,7 @@ const Chart = () => {
               ]}
             />
           </VictoryStack>
-          <VictoryLine
+          {/* <VictoryLine
             style={{
               data: { stroke: "#DE83BC" },
               parent: { border: "1px solid #ccc" },
@@ -180,7 +180,7 @@ const Chart = () => {
               duration: 2000,
               onLoad: { duration: 1000 },
             }}
-          />
+          /> */}
         </VictoryChart>
         <View
           style={{

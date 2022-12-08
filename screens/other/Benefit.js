@@ -422,9 +422,9 @@ const Benefit = () => {
                               fontSize: 12,
                               fontWeight: "400",
                             }}>
-                            {item.trang_thai === 2
+                            {item.trang_thai === "2"
                               ? "Đã trả QL"
-                              : item.trang_thai === 1
+                              : item.trang_thai === "1"
                               ? "Đang trả QL"
                               : "Chưa trả QL"}
                           </Text>

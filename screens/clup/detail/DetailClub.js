@@ -72,7 +72,7 @@ const DetailClub = ({ route }) => {
     setRefreshing(true);
     circleAnimated();
     dispatch(getDetailClub(route.params._id, auth.token));
-    wait(2000).then(() => setRefreshing(false));
+    wait(1000).then(() => setRefreshing(false));
   }, [dispatch]);
 
   const [routes] = useState([

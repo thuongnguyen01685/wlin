@@ -1,7 +1,7 @@
 //import liraries
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import React, { Component, useEffect, useState } from "react";
+import React, { Component, useEffect, useRef, useState } from "react";
 import {
   View,
   Text,
@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   Image,
   Dimensions,
+  Animated,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { getCLub } from "../../../redux/actions/ClupAction";
@@ -37,6 +38,31 @@ const EventingRoute = () => {
   const [refreshing, setRefreshing] = useState(false);
   const { auth, event } = useSelector((state) => state);
 
+  //skeleton
+  const circleAnimatedValue = useRef(new Animated.Value(0)).current;
+  const circleAnimated = () => {
+    circleAnimatedValue.setValue(0);
+    Animated.timing(circleAnimatedValue, {
+      toValue: 1,
+      duration: 350,
+      useNativeDriver: true,
+    }).start(() => {
+      setTimeout(() => {
+        circleAnimated();
+      }, 1000);
+    });
+  };
+
+  const translateX = circleAnimatedValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: [-10, 100],
+  });
+
+  const translateX2 = circleAnimatedValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: [-10, 200],
+  });
+
   const handleDetail = (_id) => {
     dispatch(getDetailEventsAction(_id, auth.token));
     navigation.navigate("DetailEvents", { _id: _id });
@@ -61,6 +87,7 @@ const EventingRoute = () => {
 
   useEffect(() => {
     setRefreshing(true);
+    circleAnimated();
     async function it() {
       const res = await dispatch(getCLub(auth, 1, auth.permission.group_id));
 
@@ -74,6 +101,7 @@ const EventingRoute = () => {
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
+    circleAnimated();
     async function it() {
       const res = await dispatch(getCLub(auth, 1, auth.permission.group_id));
 
@@ -112,7 +140,112 @@ const EventingRoute = () => {
             height: "100%",
             marginBottom: "75%",
           }}>
-          {eventing?.length > 0 ? (
+          {refreshing ? (
+            Array(10)
+              .fill("")
+              .map((i, index) => (
+                <View style={[{ marginBottom: 5 }, styles.card]} key={index}>
+                  <View
+                    style={{
+                      flexDirection: "column",
+                      width: w * 0.24,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginHorizontal: 10,
+                      height: w * 0.2,
+                    }}>
+                    <View
+                      style={{
+                        width: w * 0.2,
+                        height: w * 0.18,
+                        borderRadius: 10,
+                        backgroundColor: "#ECEFF1",
+                        overflow: "hidden",
+                        marginRight: 16,
+                      }}>
+                      <Animated.View
+                        style={{
+                          width: "30%",
+                          opacity: 0.5,
+                          height: "100%",
+                          backgroundColor: "white",
+                          transform: [{ translateX: translateX }],
+                        }}></Animated.View>
+                    </View>
+                  </View>
+                  <View
+                    style={{
+                      flex: 1,
+                      justifyContent: "space-evenly",
+                      overflow: "hidden",
+                    }}>
+                    <Animated.View
+                      style={{ backgroundColor: "#ECEFF1", height: 25 }}>
+                      <Animated.View
+                        style={{
+                          width: "20%",
+                          height: "100%",
+                          backgroundColor: "white",
+                          opacity: 0.5,
+                          transform: [{ translateX: translateX2 }],
+                        }}></Animated.View>
+                    </Animated.View>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        width: w * 0.45,
+                        justifyContent: "flex-start",
+                        alignItems: "center",
+                        marginTop: 5,
+                      }}>
+                      <View
+                        style={{
+                          width: w * 0.19,
+                          height: w * 0.05,
+                          borderRadius: 5,
+                          backgroundColor: "#ECEFF1",
+                          overflow: "hidden",
+                        }}>
+                        <Animated.View
+                          style={{
+                            width: "30%",
+                            opacity: 0.5,
+                            height: "100%",
+                            backgroundColor: "white",
+                            transform: [{ translateX: translateX }],
+                          }}></Animated.View>
+                      </View>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        width: w * 0.45,
+                        justifyContent: "flex-start",
+                        alignItems: "center",
+                        marginTop: 3,
+                      }}>
+                      <View
+                        style={{
+                          width: w * 0.4,
+                          height: w * 0.05,
+                          borderRadius: 5,
+                          backgroundColor: "#ECEFF1",
+                          overflow: "hidden",
+                        }}>
+                        <Animated.View
+                          style={{
+                            width: "30%",
+                            opacity: 0.5,
+                            height: "100%",
+                            backgroundColor: "white",
+                            transform: [{ translateX: translateX }],
+                          }}></Animated.View>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              ))
+          ) : eventing?.length > 0 ? (
             eventing.map((item) => (
               <ItemEvent
                 onChangeStatusLove={onChangeStatusLove}
@@ -146,6 +279,21 @@ const EventingRoute = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  card: {
+    shadowColor: "black",
+    backgroundColor: "#FAFAFA",
+    shadowColor: "black",
+    shadowOffset: {
+      width: 1,
+      height: 1,
+    },
+    shadowOpacity: 0.1,
+    flexDirection: "row",
+    marginVertical: 5,
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: 5,
   },
 });
 

@@ -50,6 +50,7 @@ const Nation = () => {
   const [refreshing, setRefreshing] = React.useState(false);
 
   const scrollY = useRef(new Animated.Value(0)).current;
+
   const circleAnimatedValue = useRef(new Animated.Value(0)).current;
   const circleAnimated = () => {
     circleAnimatedValue.setValue(0);
@@ -1421,7 +1422,7 @@ const Club = () => {
             width: "80%",
             borderRadius: 7,
           }}>
-          <TouchableOpacity style={{ marginRight: 10 }}>
+          <TouchableOpacity>
             <Ionicons name="search-outline" size={30} color="#ffffff" />
           </TouchableOpacity>
           <TextInput
@@ -1665,11 +1666,11 @@ const styles = StyleSheet.create({
     width: "90%",
     marginHorizontal: 20,
     backgroundColor: "#E6E1F8",
-    height: height * 0.25,
     borderRadius: 20,
     borderWidth: 0.8,
     borderColor: "#f8f8f8",
     paddingHorizontal: 15,
+    paddingBottom: 10,
   },
 });
 

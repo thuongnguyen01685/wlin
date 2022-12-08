@@ -199,7 +199,7 @@ const Home = () => {
               width: "80%",
               borderRadius: 7,
             }}>
-            <TouchableOpacity style={{ marginRight: 10 }}>
+            <TouchableOpacity>
               <Ionicons name="search-outline" size={30} color="#ffffff" />
             </TouchableOpacity>
             <TextInput

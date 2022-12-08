@@ -105,7 +105,7 @@ const Events = () => {
             width: "80%",
             borderRadius: 7,
           }}>
-          <TouchableOpacity style={{ marginRight: 10 }}>
+          <TouchableOpacity>
             <Ionicons name="search-outline" size={30} color="#ffffff" />
           </TouchableOpacity>
           <TextInput
@@ -197,7 +197,7 @@ const Events = () => {
                   flexDirection: "column",
                   alignItems: "center",
                   justifyContent: "center",
-                  height: h * 0.2,
+                  height: height * 0.2,
                 }}>
                 <Image
                   source={require("../../assets/search.png")}
@@ -314,11 +314,11 @@ const styles = StyleSheet.create({
     width: "90%",
     marginHorizontal: 20,
     backgroundColor: "#E6E1F8",
-    height: height * 0.25,
     borderRadius: 20,
     borderWidth: 0.8,
     borderColor: "#f8f8f8",
     paddingHorizontal: 15,
+    paddingBottom: 10,
   },
 });
 

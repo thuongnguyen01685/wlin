@@ -51,6 +51,7 @@ const Member = () => {
                   paddingHorizontal: 10,
                   borderColor: "#dadada",
                   borderWidth: 0.7,
+                  backgroundColor: "#ff0",
                 }}
                 onPress={() => {
                   handleDetailMember(item.ma_kh);
@@ -58,7 +59,6 @@ const Member = () => {
                 <View
                   style={{
                     flexDirection: "row",
-                    width: "55%",
                   }}>
                   <View style={{ flexDirection: "row" }}>
                     <Image
@@ -76,7 +76,6 @@ const Member = () => {
                         resizeMode: "contain",
                       }}
                     />
-
                     <Svg
                       width={18}
                       height={18}
@@ -100,12 +99,7 @@ const Member = () => {
                     </Svg>
                   </View>
 
-                  <View
-                    style={{
-                      flexDirection: "column",
-                      justifyContent: "center",
-                      marginLeft: 4,
-                    }}>
+                  <View style={{ marginLeft: 10 }}>
                     <Text
                       style={{
                         color: "#474747",
@@ -132,22 +126,16 @@ const Member = () => {
                     </View>
                   </View>
                 </View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    width: "20%",
-                    height: "50%",
+                <TouchableOpacity
+                  onPress={() => {
+                    handleDetailMember(item.ma_kh);
                   }}>
-                  <TouchableOpacity>
-                    <Ionicons
-                      name="alert-circle-outline"
-                      size={20}
-                      color="#5457A6"
-                    />
-                  </TouchableOpacity>
-                </View>
+                  <Ionicons
+                    name="alert-circle-outline"
+                    size={20}
+                    color="#5457A6"
+                  />
+                </TouchableOpacity>
               </TouchableOpacity>
             ))}
         </View>
