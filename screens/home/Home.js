@@ -98,15 +98,8 @@ const Home = () => {
   useEffect(() => {
     if (auth.token) {
       setRefreshing(true);
-      dispatch(getProfileAction(auth.token));
-      dispatch(getNotify(auth.token));
-      dispatch(getRankAction(auth.token, auth.profile.email));
-      dispatch(getBenefitAction(auth.token, auth.profile.email));
     }
     async function it() {
-      const goi = await dispatch(getRankAction(auth.token, auth.profile.email));
-      dispatch({ type: AUTH.GOI, payload: goi });
-
       const res = await dispatch(getCLub(auth, 1, auth.permission.group_id));
       const arrayClub = res?.map((item) => item.ma_club);
       dispatch(getEventsAction(auth, arrayClub, auth.permission.group_id));
@@ -117,8 +110,8 @@ const Home = () => {
           const itemIndex = arr.findIndex((it) => it === item);
           return itemIndex === index;
         });
-      const reBe = await dispatch(getBenefitManagemant(auth.token, arrMember));
 
+      const reBe = await dispatch(getBenefitManagemant(auth.token, arrMember));
       setFilteredDataSource(reBe);
       setMasterDataSource(reBe);
       setRefreshing(false);
@@ -136,12 +129,8 @@ const Home = () => {
   }, [backHome]);
 
   const searchFilterFunction = (text) => {
-    // Check if searched text is not blank
     if (text) {
-      // Inserted text is not blank
-      // Filter the masterDataSource and update FilteredDataSource
       const newData = masterDataSource.filter(function (item) {
-        // Applying filter for the inserted text in search bar
         const itemData = item.ten_quyen_loi
           ? item.ten_quyen_loi.toUpperCase()
           : "".toUpperCase();
@@ -151,8 +140,6 @@ const Home = () => {
       setFilteredDataSource(newData);
       setSearch(text);
     } else {
-      // Inserted text is blank
-      // Update FilteredDataSource with masterDataSource
       setFilteredDataSource(masterDataSource);
       setSearch(text);
     }
@@ -168,6 +155,7 @@ const Home = () => {
       const goi = await dispatch(getRankAction(auth.token, auth.profile.email));
       dispatch({ type: AUTH.GOI, payload: goi });
       const res = await dispatch(getCLub(auth, 1, auth.permission.group_id));
+
       const arrayClub = res.map((item) => item.ma_club);
       dispatch(getEventsAction(auth, arrayClub, auth.permission.group_id));
       const arrMember = res
@@ -199,7 +187,7 @@ const Home = () => {
               width: "80%",
               borderRadius: 7,
             }}>
-            <TouchableOpacity style={{ marginRight: 10 }}>
+            <TouchableOpacity>
               <Ionicons name="search-outline" size={30} color="#ffffff" />
             </TouchableOpacity>
             <TextInput

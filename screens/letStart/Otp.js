@@ -116,10 +116,10 @@ const Otp = ({ route }) => {
 
       if (res) {
         // dispatch(getProfileAction(res.token));
-        dispatch(getNotify(res.token));
         // dispatch(getCustomerWlinAction(res.token, route.params.value));
         // dispatch(getPermissionAction(res.token, route.params.value));
         // dispatch(getRankAction(res.token, route.params.value));
+        dispatch(getNotify(res.token));
         setStatus("success");
         popIn();
 

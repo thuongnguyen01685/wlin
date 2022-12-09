@@ -4,6 +4,7 @@ const initialState = {
   getEvents: [],
   detailEvent: [],
   socketCheckin: [],
+  eventChart: [],
 };
 
 const eventReducer = (state = initialState, action) => {
@@ -22,6 +23,11 @@ const eventReducer = (state = initialState, action) => {
       return {
         ...state,
         socketCheckin: action.payload,
+      };
+    case EVENTS.EVENTCHART:
+      return {
+        ...state,
+        eventChart: action.payload,
       };
     default:
       return state;

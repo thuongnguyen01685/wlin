@@ -21,6 +21,7 @@ import {
   getNotify,
 } from "../../redux/actions/notifyAction";
 import { useNavigation } from "@react-navigation/native";
+import { Alert } from "react-native";
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -41,17 +42,6 @@ const ModalNotify = (props) => {
           .map((item) => item)
       : 0
     : 0;
-
-  useEffect(() => {
-    async function it() {
-      const token = await AsyncStorage.getItem("@token_key");
-      if (token) {
-        await dispatch(getNotify(token));
-      }
-    }
-    it();
-  }, [dispatch]);
-
   const onRefresh = React.useCallback(async () => {
     setReload(true);
     const token = await AsyncStorage.getItem("@token_key");
@@ -70,11 +60,15 @@ const ModalNotify = (props) => {
     await dispatch(changeIsReadAction(token, _id));
     dispatch(getNotify(token));
 
-    if (title === "chúc mừng bạn đã checkin thành công!") {
+    if (title === "chúc mừng bạn đã checkin thành công!" && id_event) {
       navigation.navigate("DetailEvents", { _id: id_event });
+    } else {
+      Alert.alert("Không tồn tại sự kiện này.");
     }
-    if (title === "Chúc mừng bạn đã thanh toán thành công!") {
+    if (title === "Chúc mừng bạn đã thanh toán thành công!" && id_event) {
       navigation.navigate("DetailEvents", { _id: id_event });
+    } else {
+      Alert.alert("Không tồn tại sự kiện này.");
     }
   };
 
@@ -199,6 +193,30 @@ const ModalNotify = (props) => {
                 </Text>
               )}
             </View>
+
+            {notify.getNotify.filter((item) => item.read === false).length >
+              0 && (
+              <View
+                style={{
+                  backgroundColor: "#ff0000",
+                  borderRadius: 20,
+                  height: 15,
+                  width: 15,
+                  position: "absolute",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  right: 0,
+                }}>
+                <Text
+                  style={{ color: "#fff", fontSize: 10, fontWeight: "400" }}>
+                  {
+                    notify.getNotify.filter((item) => item.read === false)
+                      .length
+                  }
+                </Text>
+              </View>
+            )}
           </TouchableOpacity>
         </View>
         <ScrollView

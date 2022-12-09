@@ -201,7 +201,7 @@ const ListMember = () => {
             width: "80%",
             borderRadius: 7,
           }}>
-          <TouchableOpacity style={{ marginRight: 10 }}>
+          <TouchableOpacity>
             <Ionicons name="search-outline" size={30} color="#ffffff" />
           </TouchableOpacity>
           <TextInput
@@ -359,7 +359,6 @@ const ListMember = () => {
                 if (dataColor.length === temp) {
                   temp = 0;
                 }
-
                 return (
                   <TouchableOpacity
                     key={item._id}

@@ -141,11 +141,7 @@ function OtherScreen() {
         component={Other}
         options={{ headerShown: false }}
       />
-      {/* <Stack.Screen
-        name="Profile"
-        component={Profile}
-        options={{ headerShown: false }}
-      /> */}
+
       <Stack.Screen
         name="Benefit"
         component={Benefit}
@@ -235,15 +231,7 @@ const TabBar = () => {
                 </Svg>
               );
             }
-            // if (route.name === "SlipsScreen") {
-            //   return (
-            //     <Ionicons
-            //       name="reader-outline"
-            //       size={30}
-            //       color={focused ? "#9D85F2" : "#909090"}
-            //     />
-            //   );
-            // }
+
             if (route.name === "OtherScreen") {
               return (
                 <Svg
@@ -268,8 +256,8 @@ const TabBar = () => {
             if (route.name === "ClubScreen") {
               return focused ? (
                 <Svg
-                  width={23}
-                  height={26}
+                  width={24}
+                  height={28}
                   viewBox="0 0 17 20"
                   fill={"#9D85F2"}
                   xmlns="http://www.w3.org/2000/svg"
@@ -286,8 +274,8 @@ const TabBar = () => {
                 </Svg>
               ) : (
                 <Svg
-                  width={28}
-                  height={27}
+                  width={29.5}
+                  height={31}
                   viewBox="0 0 24 24"
                   fill={"none"}
                   xmlns="http://www.w3.org/2000/svg"

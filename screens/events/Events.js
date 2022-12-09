@@ -42,7 +42,7 @@ const Events = () => {
   const layout = useWindowDimensions();
   const [index, setIndex] = useState(0);
 
-  const { auth, club } = useSelector((state) => state);
+  const { auth, club, event } = useSelector((state) => state);
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
@@ -52,12 +52,8 @@ const Events = () => {
   const [masterDataSource, setMasterDataSource] = useState([]);
 
   const searchFilterFunction = (text) => {
-    // Check if searched text is not blank
     if (text) {
-      // Inserted text is not blank
-      // Filter the masterDataSource and update FilteredDataSource
       const newData = masterDataSource.filter(function (item) {
-        // Applying filter for the inserted text in search bar
         const itemData = item.ten_su_kien
           ? item.ten_su_kien.toUpperCase()
           : "".toUpperCase();
@@ -67,25 +63,15 @@ const Events = () => {
       setFilteredDataSource(newData);
       setSearch(text);
     } else {
-      // Inserted text is blank
-      // Update FilteredDataSource with masterDataSource
       setFilteredDataSource(masterDataSource);
       setSearch(text);
     }
   };
 
   useEffect(() => {
-    async function it() {
-      const arrayClub = club.getClubs.map((item) => item.ma_club);
-
-      const reEvent = await dispatch(
-        getEventsAction(auth, arrayClub, auth.permission.group_id)
-      );
-      setFilteredDataSource(reEvent);
-      setMasterDataSource(reEvent);
-    }
-    it();
-  }, [dispatch]);
+    setFilteredDataSource(event.getEvents);
+    setMasterDataSource(event.getEvents);
+  }, []);
 
   const [routes] = useState([
     { key: "first", title: "Đang diễn ra" },
@@ -105,7 +91,7 @@ const Events = () => {
             width: "80%",
             borderRadius: 7,
           }}>
-          <TouchableOpacity style={{ marginRight: 10 }}>
+          <TouchableOpacity>
             <Ionicons name="search-outline" size={30} color="#ffffff" />
           </TouchableOpacity>
           <TextInput
@@ -197,7 +183,7 @@ const Events = () => {
                   flexDirection: "column",
                   alignItems: "center",
                   justifyContent: "center",
-                  height: h * 0.2,
+                  height: height * 0.2,
                 }}>
                 <Image
                   source={require("../../assets/search.png")}
@@ -314,11 +300,11 @@ const styles = StyleSheet.create({
     width: "90%",
     marginHorizontal: 20,
     backgroundColor: "#E6E1F8",
-    height: height * 0.25,
     borderRadius: 20,
     borderWidth: 0.8,
     borderColor: "#f8f8f8",
     paddingHorizontal: 15,
+    paddingBottom: 10,
   },
 });
 

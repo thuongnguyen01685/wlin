@@ -5,7 +5,6 @@ import { LinearGradient } from "expo-linear-gradient";
 import React, { Component, useEffect, useState } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { getRankAction } from "../redux/actions/authAction";
 
 // create a component
 const CardInfo = () => {
@@ -34,24 +33,26 @@ const CardInfo = () => {
           paddingBottom: 10,
           borderRadius: 15,
         }}>
-        <Image
-          source={
-            auth.ma_goi === "01"
-              ? require("../assets/bac.png")
-              : auth.ma_goi === "02"
-              ? require("../assets/cchuong.png")
-              : auth.ma_goi === "03"
-              ? require("../assets/kc.png")
-              : auth.ma_goi === "04" && require("../assets/partner.png")
-          }
-          style={{
-            width: 75,
-            height: 75,
-            resizeMode: "contain",
-            position: "absolute",
-            left: 30,
-          }}
-        />
+        {auth?.ma_goi && (
+          <Image
+            source={
+              auth?.ma_goi === "01"
+                ? require("../assets/bac.png")
+                : auth?.ma_goi === "02"
+                ? require("../assets/cchuong.png")
+                : auth?.ma_goi === "03"
+                ? require("../assets/kc.png")
+                : auth?.ma_goi === "04" && require("../assets/partner.png")
+            }
+            style={{
+              width: 75,
+              height: 75,
+              resizeMode: "contain",
+              position: "absolute",
+              left: 30,
+            }}
+          />
+        )}
         <View
           style={{
             flexDirection: "row",

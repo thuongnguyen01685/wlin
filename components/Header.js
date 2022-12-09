@@ -24,6 +24,7 @@ const Header = (props) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [modalVisible, setModalVisible] = useState(false);
+
   const handleShowProfile = () => {
     //dispatch({ type: AUTH.SHOWPROFILE, payload: true });
     navigation.navigate("Profile");
@@ -139,7 +140,11 @@ const Header = (props) => {
                 borderRadius: 50,
               }}>
               <Image
-                source={{ uri: `${URL}${auth.profile.picture}` }}
+                source={
+                  auth?.profile?.picture
+                    ? { uri: `${URL}${auth.profile.picture}` }
+                    : require("../assets/avtUser.png")
+                }
                 style={{
                   width: 50,
                   height: 50,

@@ -14,8 +14,10 @@ export const getCLub = (auth, page, permission) => async (dispatch) => {
   try {
     const res = await getdataApiClub(`wlin_club`, auth, page, permission);
 
-    dispatch({ type: CLUB.GETCLUB, payload: res.data });
-    return res.data;
+    if (res.data) {
+      dispatch({ type: CLUB.GETCLUB, payload: res.data });
+      return res.data;
+    }
   } catch (error) {
     console.log(error);
   }
@@ -55,16 +57,13 @@ export const getDetailBenefit = (_id, token) => async (dispatch) => {
 export const getMemberAction = (token, array) => async (dispatch) => {
   try {
     let condition = {
-      of_user: { $in: array },
+      ma_kh: { $in: array },
     };
     condition = JSON.stringify(condition);
     const res = await callApis(
       `customer_wlin?access_token=${token}&q=${condition}`
     );
 
-    // const res = await callApis(
-    //   `fos_dsthanhvien?access_token=${token}&email=${email}`
-    // );
     dispatch({ type: CLUB.GETMEMBER, payload: res.data });
     return res.data;
   } catch (error) {
@@ -75,10 +74,24 @@ export const getMemberAction = (token, array) => async (dispatch) => {
 export const getDetailMember = (ma_kh, token) => async (dispatch) => {
   try {
     const res = await callApis(
-      `customer_wlin?access_token=${token}&limit=1000&q={"ma_kh":"${ma_kh}"}`
+      `customer_wlin?access_token=${token}&q={"ma_kh":"${ma_kh}"}`
     );
     // console.log(res.data);
     dispatch({ type: CLUB.DETAILMEMBER, payload: res.data[0] });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const deleteBQTAction = (token, arr, id_club) => async (dispatch) => {
+  try {
+    const res = await callApis(
+      `wlin_club/${id_club}?access_token=${token}`,
+      "PUT",
+      {
+        quan_tri: arr,
+      }
+    );
   } catch (error) {
     console.log(error);
   }

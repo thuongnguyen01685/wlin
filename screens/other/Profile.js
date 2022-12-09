@@ -36,6 +36,7 @@ import { Admin, Member, Partner } from "../../utils/AccessPermission";
 import { getBenefitAction } from "../../redux/actions/benefitAction";
 import { RefreshControl } from "react-native";
 import Loading from "../../components/loading/Loading";
+import ModalNotify from "../../components/modal/ModalNotify";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
@@ -51,6 +52,7 @@ const Profile = () => {
   const dispatch = useDispatch();
   const { auth, notify } = useSelector((state) => state);
   const [image, setImage] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
   const amin = useRef(new Animated.Value(0)).current;
 
   const onRefresh = React.useCallback(() => {
@@ -149,9 +151,6 @@ const Profile = () => {
     navigation.goBack();
   };
   useEffect(() => {
-    if (auth.token === null || auth.token === "") {
-      navigation.navigate("Splash");
-    }
     Animated.loop(
       Animated.sequence([
         Animated.timing(amin, {
@@ -189,24 +188,6 @@ const Profile = () => {
     outputRange: ["-10deg", "10deg"], // before that we have to check now it's perfect
   });
 
-  const handleLogout = async () => {
-    try {
-      await AsyncStorage.removeItem("@token_key");
-
-      // console.log("Token removed");
-      await dispatch({ type: AUTH.TOKEN, payload: null });
-      await dispatch({ type: AUTH.PROFILE, payload: [] });
-
-      Toast.show("Bạn đã đăng xuất !", {
-        duration: Toast.durations.LONG,
-        position: Toast.positions.BOTTOM,
-      });
-      // BackHandler.exitApp();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -231,6 +212,12 @@ const Profile = () => {
   return (
     <View style={styles.container}>
       <View>
+        {modalVisible && (
+          <ModalNotify
+            modalVisible={modalVisible}
+            setModalVisible={setModalVisible}
+          />
+        )}
         <View>
           <View
             style={{
@@ -722,67 +709,6 @@ const Profile = () => {
                         </TouchableOpacity>
                       </View>
                     ))}
-                    <TouchableOpacity
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        backgroundColor: "#Ffffff",
-                        marginVertical: 10,
-                        borderRadius: 15,
-                        paddingVertical: 10,
-                        paddingHorizontal: 20,
-                        borderColor: "#dadada",
-                        borderWidth: 0.5,
-                      }}
-                      onPress={handleLogout}>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                        }}>
-                        <View
-                          style={{
-                            flexDirection: "row",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                          }}>
-                          <View
-                            style={{
-                              flexDirection: "row",
-                              justifyContent: "space-between",
-                              alignItems: "center",
-                              backgroundColor: "#ffffff",
-                              padding: 10,
-                              paddingHorizontal: 11,
-                              borderRadius: 50,
-                            }}>
-                            <Ionicons
-                              name="log-out"
-                              size={25}
-                              color="#711775"
-                            />
-                          </View>
-
-                          <View
-                            style={{
-                              flexDirection: "column",
-                              marginLeft: 10,
-                              justifyContent: "center",
-                              width: "70%",
-                            }}>
-                            <Text
-                              style={{
-                                color: "#474747",
-                                fontSize: 15,
-                                fontWeight: "600",
-                              }}>
-                              Đăng xuất
-                            </Text>
-                          </View>
-                        </View>
-                      </View>
-                    </TouchableOpacity>
                   </View>
                 </View>
               </View>

@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   Image,
   Dimensions,
+  Animated,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { getCLub } from "../../../redux/actions/ClupAction";
@@ -23,6 +24,7 @@ import { formatDateDisplay, formatDateDisplays } from "../../../utils/datetime";
 import { URL } from "../../../utils/fetchApi";
 import Svg, { Path } from "react-native-svg";
 import ItemEvent from "./ItemEvent";
+import { useRef } from "react";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
@@ -35,6 +37,31 @@ const EventRoute = () => {
   const dispatch = useDispatch();
   const [refreshing, setRefreshing] = useState(false);
   const { auth, event } = useSelector((state) => state);
+
+  //skeleton
+  const circleAnimatedValue = useRef(new Animated.Value(0)).current;
+  const circleAnimated = () => {
+    circleAnimatedValue.setValue(0);
+    Animated.timing(circleAnimatedValue, {
+      toValue: 1,
+      duration: 350,
+      useNativeDriver: true,
+    }).start(() => {
+      setTimeout(() => {
+        circleAnimated();
+      }, 1000);
+    });
+  };
+
+  const translateX = circleAnimatedValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: [-10, 100],
+  });
+
+  const translateX2 = circleAnimatedValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: [-10, 200],
+  });
 
   const handleDetail = (_id) => {
     dispatch(getDetailEventsAction(_id, auth.token));
@@ -60,6 +87,7 @@ const EventRoute = () => {
 
   useEffect(() => {
     setRefreshing(true);
+    circleAnimated();
     async function it() {
       const res = await dispatch(getCLub(auth, 1, auth.permission.group_id));
 
@@ -68,11 +96,12 @@ const EventRoute = () => {
       dispatch(getEventsAction(auth, arrayClub, auth.permission.group_id));
     }
     it();
-    setRefreshing(false);
+    wait(100).then(() => setRefreshing(false));
   }, [auth.profile.email, auth.permission.group_id]);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
+    circleAnimated();
     async function it() {
       const res = await dispatch(getCLub(auth, 1, auth.permission.group_id));
 
@@ -81,7 +110,7 @@ const EventRoute = () => {
       dispatch(getEventsAction(auth, arrayClub, auth.permission.group_id));
     }
     it();
-    wait(2000).then(() => setRefreshing(false));
+    wait(1000).then(() => setRefreshing(false));
   }, [auth.profile.email, auth.permission.group_id]);
 
   const onChangeStatusLove = async (_id, trang_thai, _idDelete) => {
@@ -111,7 +140,112 @@ const EventRoute = () => {
             marginTop: 10,
             height: h,
           }}>
-          {events?.length > 0 ? (
+          {refreshing ? (
+            Array(10)
+              .fill("")
+              .map((i, index) => (
+                <View style={[{ marginBottom: 5 }, styles.card]} key={index}>
+                  <View
+                    style={{
+                      flexDirection: "column",
+                      width: w * 0.24,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginHorizontal: 10,
+                      height: w * 0.2,
+                    }}>
+                    <View
+                      style={{
+                        width: w * 0.2,
+                        height: w * 0.18,
+                        borderRadius: 10,
+                        backgroundColor: "#ECEFF1",
+                        overflow: "hidden",
+                        marginRight: 16,
+                      }}>
+                      <Animated.View
+                        style={{
+                          width: "30%",
+                          opacity: 0.5,
+                          height: "100%",
+                          backgroundColor: "white",
+                          transform: [{ translateX: translateX }],
+                        }}></Animated.View>
+                    </View>
+                  </View>
+                  <View
+                    style={{
+                      flex: 1,
+                      justifyContent: "space-evenly",
+                      overflow: "hidden",
+                    }}>
+                    <Animated.View
+                      style={{ backgroundColor: "#ECEFF1", height: 25 }}>
+                      <Animated.View
+                        style={{
+                          width: "20%",
+                          height: "100%",
+                          backgroundColor: "white",
+                          opacity: 0.5,
+                          transform: [{ translateX: translateX2 }],
+                        }}></Animated.View>
+                    </Animated.View>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        width: w * 0.45,
+                        justifyContent: "flex-start",
+                        alignItems: "center",
+                        marginTop: 5,
+                      }}>
+                      <View
+                        style={{
+                          width: w * 0.19,
+                          height: w * 0.05,
+                          borderRadius: 5,
+                          backgroundColor: "#ECEFF1",
+                          overflow: "hidden",
+                        }}>
+                        <Animated.View
+                          style={{
+                            width: "30%",
+                            opacity: 0.5,
+                            height: "100%",
+                            backgroundColor: "white",
+                            transform: [{ translateX: translateX }],
+                          }}></Animated.View>
+                      </View>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        width: w * 0.45,
+                        justifyContent: "flex-start",
+                        alignItems: "center",
+                        marginTop: 3,
+                      }}>
+                      <View
+                        style={{
+                          width: w * 0.4,
+                          height: w * 0.05,
+                          borderRadius: 5,
+                          backgroundColor: "#ECEFF1",
+                          overflow: "hidden",
+                        }}>
+                        <Animated.View
+                          style={{
+                            width: "30%",
+                            opacity: 0.5,
+                            height: "100%",
+                            backgroundColor: "white",
+                            transform: [{ translateX: translateX }],
+                          }}></Animated.View>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              ))
+          ) : events?.length > 0 ? (
             events.map((item) => (
               <ItemEvent
                 onChangeStatusLove={onChangeStatusLove}
@@ -145,6 +279,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#ffffff",
+  },
+  card: {
+    shadowColor: "black",
+    backgroundColor: "#FAFAFA",
+    shadowColor: "black",
+    shadowOffset: {
+      width: 1,
+      height: 1,
+    },
+    shadowOpacity: 0.1,
+    flexDirection: "row",
+    marginVertical: 5,
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: 5,
   },
 });
 

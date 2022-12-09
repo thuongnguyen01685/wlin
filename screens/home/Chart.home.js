@@ -1,6 +1,6 @@
 //import liraries
 import { Ionicons } from "@expo/vector-icons";
-import React, { Component } from "react";
+import React, { Component, useEffect } from "react";
 import {
   View,
   Text,
@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Dimensions,
   Platform,
+  Alert,
 } from "react-native";
 import {
   VictoryBar,
@@ -20,6 +21,10 @@ import {
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useState } from "react";
 import ChooseTime from "./ChooseTime";
+import { useDispatch, useSelector } from "react-redux";
+import { eventChartAction } from "../../redux/actions/eventsAction";
+import { formatDateDisplays } from "../../utils/datetime";
+import moment from "moment";
 
 const { width, height } = Dimensions.get("window");
 
@@ -41,11 +46,44 @@ const dataDes = [
   },
 ];
 
-const PropsDay = (day) => {
-  //console.log(day);
-};
 // create a component
 const Chart = () => {
+  const [fromTime, setFromTime] = useState(
+    moment().add(-1, "M").format("YYYY-MM-DD")
+  );
+  const [toTime, setToTime] = useState(new Date());
+  const { auth, event } = useSelector((state) => state);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const dueTimeDay = moment(toTime).diff(moment(fromTime), "M");
+    if (dueTimeDay <= 3) {
+      dispatch(
+        eventChartAction(
+          auth,
+          formatDateDisplays(fromTime, "-"),
+          formatDateDisplays(toTime, "-")
+        )
+      );
+    } else {
+      Alert.alert(
+        "Thông báo",
+        "Vui lòng chọn thời gian không vượt quá 3 tháng.",
+        [{ text: "Quay lại" }]
+      );
+    }
+  }, [fromTime, toTime]);
+
+  // event.eventChart.sort((a, b) => a.tuan - b.tuan);
+
+  let temp = [];
+  for (let i = 0; i < event.eventChart.length; i++) {
+    temp.push({
+      x: `${event.eventChart[i].tuan}`,
+      y: event.eventChart[i].su_kien.length,
+    });
+  }
+
   return (
     <View
       style={{
@@ -97,7 +135,12 @@ const Chart = () => {
               marginRight: 15,
               justifyContent: "flex-end",
             }}>
-            <ChooseTime PropsDay={PropsDay} />
+            <ChooseTime
+              fromTime={fromTime}
+              setFromTime={setFromTime}
+              toTime={toTime}
+              setToTime={setToTime}
+            />
           </View>
         </View>
         <VictoryChart
@@ -143,26 +186,10 @@ const Chart = () => {
               labelComponent={
                 <VictoryLabel dy={({ datum }) => (datum.y ? 20 : 0)} />
               }
-              data={[
-                { x: "1", y: 8 },
-                { x: "2", y: 0 },
-                { x: "3", y: 4 },
-                { x: "4", y: 5 },
-                { x: "5", y: 1 },
-                { x: "6", y: 8 },
-                { x: "7", y: 5 },
-                { x: "8", y: 8 },
-                { x: "9", y: 2 },
-                { x: "10", y: 4 },
-                { x: "11", y: 5 },
-                { x: "12", y: 1 },
-                { x: "13", y: 8 },
-                { x: "14", y: 5 },
-                { x: "15", y: 5 },
-              ]}
+              data={temp}
             />
           </VictoryStack>
-          <VictoryLine
+          {/* <VictoryLine
             style={{
               data: { stroke: "#DE83BC" },
               parent: { border: "1px solid #ccc" },
@@ -180,7 +207,7 @@ const Chart = () => {
               duration: 2000,
               onLoad: { duration: 1000 },
             }}
-          />
+          /> */}
         </VictoryChart>
         <View
           style={{

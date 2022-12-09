@@ -35,11 +35,6 @@ const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
 const ratio = w / 720;
 
-const renderScene = SceneMap({
-  first: Member,
-  second: Term,
-  third: Board,
-});
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
@@ -52,7 +47,6 @@ const DetailClub = ({ route }) => {
   const [refreshing, setRefreshing] = React.useState(false);
   const layout = useWindowDimensions();
   const [index, setIndex] = useState(0);
-  const [searchPart, setSearchPart] = useState(false);
 
   const circleAnimatedValue = useRef(new Animated.Value(0)).current;
   const circleAnimated = () => {
@@ -71,8 +65,7 @@ const DetailClub = ({ route }) => {
   useEffect(() => {
     setRefreshing(true);
     circleAnimated();
-    dispatch(getDetailClub(route.params._id, auth.token));
-    wait(2000).then(() => setRefreshing(false));
+    wait(100).then(() => setRefreshing(false));
   }, [dispatch]);
 
   const [routes] = useState([
@@ -81,10 +74,22 @@ const DetailClub = ({ route }) => {
     { key: "third", title: "Ban quản trị" },
   ]);
 
+  const id_event = route.params._id;
+  const renderScene = ({ route }) => {
+    switch (route.key) {
+      case "first":
+        return <Member id_event={id_event} />;
+      case "second":
+        return <Term id_event={id_event} />;
+      case "third":
+        return <Board id_event={id_event} />;
+    }
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
-      <HeaderPart searchPart={searchPart} />
+      <HeaderPart />
       <View
         style={{
           backgroundColor: "#ffffff",
@@ -116,6 +121,7 @@ const DetailClub = ({ route }) => {
           <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
             Chi tiết CLUB
           </Text>
+
           {refreshing && <Loading size="large" />}
         </View>
       </View>
@@ -143,29 +149,21 @@ const DetailClub = ({ route }) => {
                 marginHorizontal: 10,
                 height: w * 0.3,
               }}>
-              {club.detailClub.hinh_anh ? (
-                <Image
-                  source={{
-                    uri: `${URL}/`.concat(`${club.detailClub.hinh_anh}`),
-                  }}
-                  style={{
-                    width: w * 0.29,
-                    height: w * 0.24,
-                    borderRadius: 15,
-                    resizeMode: "contain",
-                  }}
-                />
-              ) : (
-                <Image
-                  source={require("../../../assets/logo.png")}
-                  style={{
-                    width: 120,
-                    height: 50,
-                    borderRadius: 7,
-                    resizeMode: "contain",
-                  }}
-                />
-              )}
+              <Image
+                source={
+                  club.detailClub.hinh_anh
+                    ? {
+                        uri: `${URL}${club.detailClub.hinh_anh}`,
+                      }
+                    : require("../../../assets/logo.png")
+                }
+                style={{
+                  width: w * 0.29,
+                  height: w * 0.24,
+                  borderRadius: 15,
+                  resizeMode: "contain",
+                }}
+              />
             </View>
 
             <View style={{ width: "55%" }}>

@@ -50,6 +50,7 @@ const Nation = () => {
   const [refreshing, setRefreshing] = React.useState(false);
 
   const scrollY = useRef(new Animated.Value(0)).current;
+
   const circleAnimatedValue = useRef(new Animated.Value(0)).current;
   const circleAnimated = () => {
     circleAnimatedValue.setValue(0);
@@ -81,18 +82,14 @@ const Nation = () => {
   useEffect(() => {
     setRefreshing(true);
     circleAnimated();
-
-    dispatch(getCLub(auth, 1, auth.permission.group_id));
-    wait(1000).then(() => setRefreshing(false));
+    wait(200).then(() => setRefreshing(false));
   }, []);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     circleAnimated();
-
     dispatch(getCLub(auth, 1, auth.permission.group_id));
-    dispatch(getCustomerWlinAction(auth.token, auth.profile.email));
-    wait(1000).then(() => setRefreshing(false));
+    wait(500).then(() => setRefreshing(false));
   }, []);
 
   const handleDetail = (_id) => {
@@ -514,17 +511,12 @@ const Area = () => {
   useEffect(() => {
     setRefreshing(true);
     circleAnimated();
-    dispatch(getCLub(auth, 1, auth.permission.group_id));
-    dispatch(getRankAction(auth.token, auth.profile.email));
-    dispatch(getCustomerWlinAction(auth.token, auth.profile.email));
-
     setRefreshing(false);
   }, [auth.permission.group_id]);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     circleAnimated();
-    dispatch(getCustomerWlinAction(auth.token, auth.profile.email));
     dispatch(getCLub(auth, 1, auth.permission.group_id));
     wait(500).then(() => setRefreshing(false));
   }, [auth.permission.group_id]);
@@ -947,9 +939,7 @@ const Region = () => {
   useEffect(() => {
     setRefreshing(true);
     circleAnimated();
-    // console.log(auth.token, page);
     dispatch(getCLub(auth, page, auth.permission.group_id));
-
     setRefreshing(false);
   }, [page]);
 
@@ -957,7 +947,7 @@ const Region = () => {
     setRefreshing(true);
     circleAnimated();
     dispatch(getCLub(auth, page, auth.permission.group_id));
-    wait(500).then(() => setRefreshing(false));
+    setRefreshing(false);
   }, [page]);
 
   const handleDetail = (_id) => {
@@ -1337,11 +1327,8 @@ const wait = (timeout) => {
 const { height } = Dimensions.get("screen");
 const Club = () => {
   const navigation = useNavigation();
-
   const layout = useWindowDimensions();
-
   const [index, setIndex] = useState(0);
-
   const [routes] = useState([
     { key: "first", title: "Quốc gia" },
     { key: "second", title: "Khu vực" },
@@ -1351,13 +1338,11 @@ const Club = () => {
   const dispatch = useDispatch();
   const { auth, club } = useSelector((state) => state);
   const [refreshing, setRefreshing] = React.useState(false);
-  const [page, setPage] = useState(1);
 
   //search
   const [search, setSearch] = useState("");
   const [filteredDataSource, setFilteredDataSource] = useState([]);
   const [masterDataSource, setMasterDataSource] = useState([]);
-
   const searchFilterFunction = (text) => {
     // Check if searched text is not blank
     if (text) {
@@ -1381,33 +1366,12 @@ const Club = () => {
     }
   };
 
-  // const scrollY = useRef(new Animated.Value(0)).current;
-
   useEffect(() => {
     setRefreshing(true);
-    // console.log(auth.token, page);
-    async function it() {
-      const reClub = await dispatch(
-        getCLub(auth, page, auth.permission.group_id)
-      );
-
-      setFilteredDataSource(reClub);
-      setMasterDataSource(reClub);
-    }
-
-    it();
-
-    dispatch(getRankAction(auth.token, auth.profile.email));
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 2000);
-  }, [dispatch, page]);
-
-  // const onRefresh = React.useCallback(() => {
-  //   setRefreshing(true);
-  //   dispatch(getCLub(auth.token, page));
-  //   wait(2000).then(() => setRefreshing(false));
-  // }, [dispatch, page]);
+    setFilteredDataSource(club.getClubs);
+    setMasterDataSource(club.getClubs);
+    setRefreshing(false);
+  }, [dispatch]);
 
   return (
     <View style={styles.container}>
@@ -1421,7 +1385,7 @@ const Club = () => {
             width: "80%",
             borderRadius: 7,
           }}>
-          <TouchableOpacity style={{ marginRight: 10 }}>
+          <TouchableOpacity>
             <Ionicons name="search-outline" size={30} color="#ffffff" />
           </TouchableOpacity>
           <TextInput
@@ -1560,6 +1524,7 @@ const Club = () => {
           <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
             Danh sách CLUB
           </Text>
+          {refreshing && <Loading size="large" />}
         </View>
       </View>
       <View
@@ -1665,11 +1630,11 @@ const styles = StyleSheet.create({
     width: "90%",
     marginHorizontal: 20,
     backgroundColor: "#E6E1F8",
-    height: height * 0.25,
     borderRadius: 20,
     borderWidth: 0.8,
     borderColor: "#f8f8f8",
     paddingHorizontal: 15,
+    paddingBottom: 10,
   },
 });
 
