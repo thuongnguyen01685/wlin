@@ -89,7 +89,7 @@ const DetailBenefit = () => {
   useEffect(() => {
     setRefreshing(true);
     //dispatch(getListBenefit(auth.token));
-    wait(2000).then(() => setRefreshing(false));
+    wait(100).then(() => setRefreshing(false));
   }, [dispatch]);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);

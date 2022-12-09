@@ -9,11 +9,8 @@ import {
   Text,
   StyleSheet,
   Image,
-  TouchableOpacity,
   Dimensions,
-  TouchableHighlight,
   ActivityIndicator,
-  BackHandler,
   Platform,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
@@ -28,13 +25,6 @@ import { getNotify } from "../../redux/actions/notifyAction";
 import Lottie from "lottie-react-native";
 import { Admin } from "../../utils/AccessPermission";
 import ModalALertPermission from "../../components/modal/ModalALertPermission";
-// import {
-//   CirclesLoader,
-//   PulseLoader,
-//   TextLoader,
-//   DotsLoader,
-//   BubblesLoader,
-// } from "react-native-indicator";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
@@ -51,6 +41,7 @@ const Splash = () => {
   useEffect(() => {
     const it = async () => {
       const token = await AsyncStorage.getItem("@token_key");
+
       setLoading(true);
       setTimeout(async () => {
         if (token) {
@@ -111,7 +102,6 @@ const Splash = () => {
         <View
           style={{
             paddingHorizontal: 20,
-
             flexDirection: "column",
             justifyContent: "center",
           }}>

@@ -91,15 +91,9 @@ const EventedRoute = () => {
   useEffect(() => {
     setRefreshing(true);
     circleAnimated();
-    async function it() {
-      const res = await dispatch(getCLub(auth, 1, auth.permission.group_id));
-
-      const arrayClub = res.map((item) => item.ma_club);
-
-      dispatch(getEventsAction(auth, arrayClub, auth.permission.group_id));
-    }
-    it();
-    setRefreshing(false);
+    const arrayClub = event.getEvents.map((item) => item.ma_club);
+    dispatch(getEventsAction(auth, arrayClub, auth.permission.group_id));
+    wait(100).then(() => setRefreshing(false));
   }, [dispatch, auth.profile.email, auth.permission.group_id]);
 
   const onRefresh = React.useCallback(() => {

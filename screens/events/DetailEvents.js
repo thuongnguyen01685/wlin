@@ -20,6 +20,7 @@ import {
   TextInput,
   RefreshControl,
   Animated,
+  Alert,
 } from "react-native";
 import Lottie from "lottie-react-native";
 import HeaderPart from "../../components/HeaderPart/HeaderPart";
@@ -37,6 +38,7 @@ import { getDetailEventsAction } from "../../redux/actions/eventsAction";
 import Svg, { Path } from "react-native-svg";
 import Loading from "../../components/loading/Loading";
 import SkeletonDetailEvents from "../../components/loading/skeleton/SkeletonDetailEvents";
+import { log } from "react-native-reanimated";
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
 const ratio = w / 720;
@@ -74,7 +76,7 @@ const DetailEvents = ({ route }, props) => {
     setRefreshing(true);
     circleAnimated();
     dispatch(getDetailEventsAction(route.params._id, auth.token));
-    wait(1000).then(() => setRefreshing(false));
+    wait(100).then(() => setRefreshing(false));
   }, []);
 
   const onRefresh = React.useCallback(() => {
@@ -497,7 +499,23 @@ const DetailEvents = ({ route }, props) => {
                           alignItems: "center",
                           width: "100%",
                         }}
-                        onPress={() => navigation.navigate("Map")}>
+                        onPress={() => {
+                          if (event.detailEvent?.exfields?.location) {
+                            navigation.navigate("Map", {
+                              location: event.detailEvent.exfields.location,
+                            });
+                          } else {
+                            Alert.alert(
+                              "Thông báo",
+                              "Hiện chưa chọn vị trí trên bản đồ",
+                              [
+                                {
+                                  text: "Quay lại",
+                                },
+                              ]
+                            );
+                          }
+                        }}>
                         <LinearGradient
                           start={{ x: 1, y: 0.3 }}
                           end={{ x: 1, y: 1 }}

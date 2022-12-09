@@ -8,20 +8,40 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
+  RefreshControl,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
+import { getDetailClub } from "../../../../redux/actions/ClupAction";
 import { formatDateDisplay } from "../../../../utils/datetime";
 
 // create a component
-const Term = () => {
+
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
+const Term = (props) => {
   const dispatch = useDispatch();
   const { auth, club } = useSelector((state) => state);
 
   const [refreshing, setRefreshing] = React.useState(false);
 
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    dispatch(getDetailClub(props.id_event, auth.token));
+    wait(500).then(() => setRefreshing(false));
+  }, []);
+
   return (
     <View style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={["#9796F0", "green", "blue"]}
+          />
+        }>
         <View
           style={{
             marginBottom: "80%",
@@ -110,16 +130,6 @@ const Term = () => {
                     </View>
                   </View>
                 </View>
-                <TouchableOpacity
-                  style={{
-                    marginRight: 15,
-                    backgroundColor: "#ffffff",
-                    borderColor: "#9D85F2",
-                    borderWidth: 1,
-                    borderRadius: 7,
-                  }}>
-                  <MaterialIcons name="add" size={15} color="#9D85F2" />
-                </TouchableOpacity>
               </View>
             ))}
         </View>

@@ -42,17 +42,6 @@ const ModalNotify = (props) => {
           .map((item) => item)
       : 0
     : 0;
-
-  useEffect(() => {
-    async function it() {
-      const token = await AsyncStorage.getItem("@token_key");
-      if (token) {
-        await dispatch(getNotify(token));
-      }
-    }
-    it();
-  }, [dispatch]);
-
   const onRefresh = React.useCallback(async () => {
     setReload(true);
     const token = await AsyncStorage.getItem("@token_key");

@@ -7,6 +7,7 @@ export const EVENTS = {
   DETAILEVENTS: "DETAILEVENTS",
   NEWSEVENTS: "NEWSEVENTS",
   SOCKETCHECKIN: "SOCKETCHECKIN",
+  EVENTCHART: "EVENTCHART",
 };
 
 export const getEventsAction =
@@ -120,6 +121,26 @@ export const ChangeStatusLoveAction =
             position: Toast.positions.BOTTOM,
           });
         }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+export const eventChartAction =
+  (auth, fromTime, toTime) => async (dispatch) => {
+    try {
+      if (auth.permission.group_id === Admin) {
+        const res = await callApis(
+          `fos_chart?access_token=${auth.token}&email=${auth.profile.email}&tu_ngay=${fromTime}&den_ngay=${toTime}`
+        );
+        dispatch({ type: EVENTS.EVENTCHART, payload: res.data });
+      }
+      if (auth.permission.group_id === Partner) {
+        const res = await callApis(
+          `fos_chart?access_token=${auth.token}&partner=${auth.customer.ma_kh}&tu_ngay=${fromTime}&den_ngay=${toTime}`
+        );
+        dispatch({ type: EVENTS.EVENTCHART, payload: res.data });
       }
     } catch (error) {
       console.log(error);

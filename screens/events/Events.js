@@ -42,7 +42,7 @@ const Events = () => {
   const layout = useWindowDimensions();
   const [index, setIndex] = useState(0);
 
-  const { auth, club } = useSelector((state) => state);
+  const { auth, club, event } = useSelector((state) => state);
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
@@ -52,12 +52,8 @@ const Events = () => {
   const [masterDataSource, setMasterDataSource] = useState([]);
 
   const searchFilterFunction = (text) => {
-    // Check if searched text is not blank
     if (text) {
-      // Inserted text is not blank
-      // Filter the masterDataSource and update FilteredDataSource
       const newData = masterDataSource.filter(function (item) {
-        // Applying filter for the inserted text in search bar
         const itemData = item.ten_su_kien
           ? item.ten_su_kien.toUpperCase()
           : "".toUpperCase();
@@ -67,25 +63,15 @@ const Events = () => {
       setFilteredDataSource(newData);
       setSearch(text);
     } else {
-      // Inserted text is blank
-      // Update FilteredDataSource with masterDataSource
       setFilteredDataSource(masterDataSource);
       setSearch(text);
     }
   };
 
   useEffect(() => {
-    async function it() {
-      const arrayClub = club.getClubs.map((item) => item.ma_club);
-
-      const reEvent = await dispatch(
-        getEventsAction(auth, arrayClub, auth.permission.group_id)
-      );
-      setFilteredDataSource(reEvent);
-      setMasterDataSource(reEvent);
-    }
-    it();
-  }, [dispatch]);
+    setFilteredDataSource(event.getEvents);
+    setMasterDataSource(event.getEvents);
+  }, []);
 
   const [routes] = useState([
     { key: "first", title: "Đang diễn ra" },

@@ -110,7 +110,7 @@ const EventingRoute = () => {
       dispatch(getEventsAction(auth, arrayClub, auth.permission.group_id));
     }
     it();
-    wait(1000).then(() => setRefreshing(false));
+    wait(100).then(() => setRefreshing(false));
   }, [auth.profile.email, auth.permission.group_id]);
 
   const onChangeStatusLove = async (_id, trang_thai, _idDelete) => {

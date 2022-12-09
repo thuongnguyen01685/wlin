@@ -96,7 +96,7 @@ const EventRoute = () => {
       dispatch(getEventsAction(auth, arrayClub, auth.permission.group_id));
     }
     it();
-    wait(1500).then(() => setRefreshing(false));
+    wait(100).then(() => setRefreshing(false));
   }, [auth.profile.email, auth.permission.group_id]);
 
   const onRefresh = React.useCallback(() => {

@@ -62,7 +62,7 @@ export const getProfileAction = (token) => async (dispatch) => {
 export const getPermissionAction = (token, email) => async (dispatch) => {
   try {
     const res = await callApis(
-      `participant?access_token=flex.public.token&q={"email": "${email}"}&limit=1000`
+      `participant?access_token=flex.public.token&q={"email": "${email}"}&limit=500`
     );
 
     dispatch({ type: AUTH.PERSSION, payload: res?.data[0] });
@@ -75,19 +75,19 @@ export const getPermissionAction = (token, email) => async (dispatch) => {
 
 export const getCustomerWlinAction = (token, phone) => async (dispatch) => {
   try {
+    const q = {
+      $and: [{ of_user: phone }, { trang_thai: { $ne: "0" } }],
+    };
+
     const res = await callApis(
-      `customer_wlin?access_token=${token}&limit=1000`
+      `customer_wlin?access_token=${token}&limit=500&q=${JSON.stringify(q)}`
     );
 
     dispatch({
       type: AUTH.CUSTOMER_WLIN,
-      payload: res.data.filter(
-        (item) => item.of_user === phone && item.trang_thai !== 0
-      ),
+      payload: res.data,
     });
-    return res.data.filter(
-      (item) => item.of_user === phone && item.trang_thai !== 0
-    );
+    return res.data;
   } catch (error) {
     console.log(error);
   }
@@ -99,16 +99,14 @@ export const getRankAction = (token, email) => async (dispatch) => {
       `customer?access_token=flex.public.token&q={"of_user":"${email}"}`
     );
 
-    const getRankMember = await callApis(
-      `dmgoithanhvien?access_token=${token}&limit=1000`
-    );
-
-    if (getRankMember.data && res?.data[0]) {
-      var dataFilter = getRankMember.data.filter(
-        (item) => item.ma_goi == res.data[0].goi_thanh_vien
-      )[0];
+    let dataFilter = [];
+    if (res.data && res.data.length > 0) {
+      dataFilter = await callApis(
+        `dmgoithanhvien?access_token=${token}&q=${JSON.stringify({
+          ma_goi: res.data[0].goi_thanh_vien,
+        })}`
+      );
     }
-
     dispatch({ type: AUTH.RANK, payload: { ...dataFilter, ...res.data[0] } });
     return res.data[0]?.goi_thanh_vien;
   } catch (error) {

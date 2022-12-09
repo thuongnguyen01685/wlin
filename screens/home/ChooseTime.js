@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   Appearance,
 } from "react-native";
+
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { formatDateDisplays } from "../../utils/datetime";
 import moment from "moment";
@@ -19,7 +20,6 @@ const ChooseTime = (props) => {
   //From time
   const [isDatePickerVisibleFrom, setDatePickerVisibilityFrom] =
     useState(false);
-  const [fromTime, setFromTime] = useState("Từ ngày");
 
   const showDatePickerFromTime = () => {
     setDatePickerVisibilityFrom(true);
@@ -30,14 +30,12 @@ const ChooseTime = (props) => {
   };
 
   const handleConfirmFromTime = (date) => {
-    setFromTime(date);
+    props.setFromTime(date);
     hideDatePickerFromTime();
   };
 
-  // const { PropsDay } = props;
-
   //To time
-  const [toTime, setToTime] = useState("Đến ngày");
+
   const [isDatePickerVisibleTo, setDatePickerVisibilityTo] = useState(false);
 
   const showDatePickerToTime = () => {
@@ -49,12 +47,11 @@ const ChooseTime = (props) => {
   };
 
   const handleConfirmToTime = (date) => {
-    setToTime(date);
+    props.setToTime(date);
     hideDatePickerToTime();
   };
 
   // const dueTimeDay = moment(toTime).diff(moment(fromTime), "days");
-  // PropsDay(dueTimeDay);
 
   // const q = {
   //   $and: [
@@ -100,9 +97,7 @@ const ChooseTime = (props) => {
         style={[styles.buttonTime, { paddingHorizontal: 7 }]}
         onPress={showDatePickerFromTime}>
         <Text style={styles.textTime}>
-          {fromTime === "Từ ngày"
-            ? fromTime
-            : formatDateDisplays(fromTime, "/")}
+          {formatDateDisplays(props.fromTime, "/")}
         </Text>
         <Ionicons name="caret-down-outline" size={20} color="#826CCF" />
       </TouchableOpacity>
@@ -111,7 +106,7 @@ const ChooseTime = (props) => {
         style={[styles.buttonTime, { marginLeft: 15, paddingHorizontal: 5 }]}
         onPress={showDatePickerToTime}>
         <Text style={styles.textTime}>
-          {toTime === "Đến ngày" ? toTime : formatDateDisplays(toTime, "/")}
+          {formatDateDisplays(props.toTime, "/")}
         </Text>
         <Ionicons name="caret-down-outline" size={20} color="#826CCF" />
       </TouchableOpacity>
