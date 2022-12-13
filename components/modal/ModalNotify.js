@@ -57,16 +57,21 @@ const ModalNotify = (props) => {
 
   const handleChangeRead = async (_id, title, id_event) => {
     const token = await AsyncStorage.getItem("@token_key");
-    await dispatch(changeIsReadAction(token, _id));
+
     dispatch(getNotify(token));
 
     if (title === "chúc mừng bạn đã checkin thành công!" && id_event) {
+      await dispatch(changeIsReadAction(token, _id));
       navigation.navigate("DetailEvents", { _id: id_event });
-    } else {
-      Alert.alert("Không tồn tại sự kiện này.");
-    }
-    if (title === "Chúc mừng bạn đã thanh toán thành công!" && id_event) {
+
+      props.setModalVisible(false);
+    } else if (
+      title === "Chúc mừng bạn đã thanh toán thành công!" &&
+      id_event
+    ) {
+      await dispatch(changeIsReadAction(token, _id));
       navigation.navigate("DetailEvents", { _id: id_event });
+      props.setModalVisible(false);
     } else {
       Alert.alert("Không tồn tại sự kiện này.");
     }

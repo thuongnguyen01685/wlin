@@ -95,6 +95,12 @@ const Other = () => {
     }
   });
 
+  useEffect(() => {
+    if (!auth.token) {
+      navigation.navigate("Wellcome");
+    }
+  }, [auth.token]);
+
   const handleLogout = async () => {
     try {
       await AsyncStorage.removeItem("@token_key");
@@ -109,6 +115,7 @@ const Other = () => {
         duration: Toast.durations.LONG,
         position: Toast.positions.BOTTOM,
       });
+
       // BackHandler.exitApp();
     } catch (error) {
       console.log(error);

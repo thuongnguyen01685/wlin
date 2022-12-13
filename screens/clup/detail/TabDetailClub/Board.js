@@ -1,7 +1,7 @@
 //import liraries
 import { Ionicons } from "@expo/vector-icons";
 import SelectDropdown from "react-native-select-dropdown";
-import React, { Component, useState } from "react";
+import React, { Component, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -16,8 +16,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { Admin, Partner } from "../../../../utils/AccessPermission";
 import {
   deleteBQTAction,
+  getCLub,
   getDetailClub,
+  getDmchucvu,
+  getMemberAction,
 } from "../../../../redux/actions/ClupAction";
+import { useNavigation } from "@react-navigation/native";
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -25,11 +29,26 @@ const wait = (timeout) => {
 
 // create a component
 const Board = (props) => {
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const { auth, club } = useSelector((state) => state);
   const [maNk, setMaNk] = useState("");
   const [refreshing, setRefreshing] = React.useState(false);
 
+  useEffect(() => {
+    dispatch(getDmchucvu());
+    async function it() {
+      const res = await dispatch(getCLub(auth, 1, auth.permission.group_id));
+      const arrMember = res
+        ?.flatMap((items) => items.ds_thanh_vien.map((item) => item.ma_kh))
+        .filter((item, index, arr) => {
+          const itemIndex = arr.findIndex((it) => it === item);
+          return itemIndex === index;
+        });
+      await dispatch(getMemberAction(auth.token, arrMember));
+    }
+    it();
+  }, []);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     dispatch(getDetailClub(props.id_event, auth.token));
@@ -198,13 +217,19 @@ const Board = (props) => {
                           width: "25%",
                           marginHorizontal: 5,
                         }}>
-                        {/* <TouchableOpacity>
+                        <TouchableOpacity
+                          onPress={() => {
+                            navigation.navigate("EditBoard", {
+                              id_event: props.id_event,
+                              id_board: item._id,
+                            });
+                          }}>
                           <Ionicons
                             name="create-outline"
                             size={20}
                             color="#9D85F2"
                           />
-                        </TouchableOpacity> */}
+                        </TouchableOpacity>
                         <TouchableOpacity
                           onPress={() => handleDeleteMember(item._id)}>
                           <Ionicons

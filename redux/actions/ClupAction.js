@@ -8,6 +8,7 @@ export const CLUB = {
   GETMEMBER: "GETMEMBER",
   DETAILMEMBER: "DETAILMEMBER",
   DETAILBENEFIT: "DETAILBENEFIT",
+  DMCHUCVU: "DMCHUCVU",
 };
 
 export const getCLub = (auth, page, permission) => async (dispatch) => {
@@ -92,6 +93,15 @@ export const deleteBQTAction = (token, arr, id_club) => async (dispatch) => {
         quan_tri: arr,
       }
     );
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const getDmchucvu = () => async (dispatch) => {
+  try {
+    const res = await callApis(`dmchucvu?access_token=flex.public.token`);
+
+    dispatch({ type: CLUB.DMCHUCVU, payload: res.data });
   } catch (error) {
     console.log(error);
   }

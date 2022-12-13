@@ -91,8 +91,7 @@ const EventedRoute = () => {
   useEffect(() => {
     setRefreshing(true);
     circleAnimated();
-    const arrayClub = event.getEvents.map((item) => item.ma_club);
-    dispatch(getEventsAction(auth, arrayClub, auth.permission.group_id));
+
     wait(100).then(() => setRefreshing(false));
   }, [dispatch, auth.profile.email, auth.permission.group_id]);
 
@@ -107,7 +106,6 @@ const EventedRoute = () => {
       dispatch(getEventsAction(auth, arrayClub, auth.permission.group_id));
     }
     it();
-    // dispatch(getEventsAction(auth.token));
     wait(1000).then(() => setRefreshing(false));
   }, [dispatch, auth.profile.email, auth.permission.group_id]);
 

@@ -105,10 +105,10 @@ const Member = (props) => {
                     marginVertical: 10,
                     borderRadius: 20,
                     paddingVertical: 10,
-                    marginHorizontal: 5,
-                    paddingHorizontal: 15,
+                    paddingHorizontal: 20,
                     borderColor: "#dadada",
                     borderWidth: 0.7,
+                    width: width * 0.92,
                   }}
                   onPress={() => {
                     handleDetailMember(item.ma_kh);
