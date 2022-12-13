@@ -7,6 +7,7 @@ const initialState = {
   detailBenefit: {},
   getMember: [],
   detailMember: {},
+  dmchucvu: [],
 };
 
 const clubReducer = (state = initialState, action) => {
@@ -42,6 +43,11 @@ const clubReducer = (state = initialState, action) => {
       return {
         ...state,
         detailMember: action.payload,
+      };
+    case CLUB.DMCHUCVU:
+      return {
+        ...state,
+        dmchucvu: action.payload,
       };
     default:
       return state;

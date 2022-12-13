@@ -45,7 +45,6 @@ const ManagementMember = () => {
   const dispatch = useDispatch();
   const [refreshing, setRefreshing] = React.useState(false);
   const { auth, club } = useSelector((state) => state);
-  const [page, setPage] = useState(1);
   const [searchPart, setSearchPart] = useState(false);
 
   //skeleton
@@ -63,8 +62,6 @@ const ManagementMember = () => {
     });
   };
 
-  const scrollY = useRef(new Animated.Value(0)).current;
-
   const handleDetail = (_id) => {
     dispatch(getDetailClub(_id, auth.token));
     navigation.navigate("DetailClub", { _id: _id });
@@ -73,13 +70,13 @@ const ManagementMember = () => {
   useEffect(() => {
     setRefreshing(true);
     circleAnimated();
-    wait(1000).then(() => setRefreshing(false));
+    wait(100).then(() => setRefreshing(false));
   }, [dispatch]);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     circleAnimated();
-    wait(500).then(() => setRefreshing(false));
+    wait(100).then(() => setRefreshing(false));
   }, [dispatch]);
 
   return (

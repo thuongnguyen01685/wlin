@@ -26,6 +26,7 @@ import { Admin } from "../../utils/AccessPermission";
 import { EVENTS } from "../../redux/actions/eventsAction";
 import ModalFailCheck from "../../components/modal/ModalFailCheck";
 import ModalSuccessCheckGuest from "../../components/modal/ModalSuccessCheckGuest";
+import { getNotify } from "../../redux/actions/notifyAction";
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
 const ratio = w / 720;
@@ -41,10 +42,18 @@ const CheckQR = () => {
   const [searchPart, setSearchPart] = useState(false);
 
   useEffect(() => {
-    DeviceEventEmitter.addListener("onwlinCheck", async (data) => {
+    DeviceEventEmitter.addListener("wlincheckin", async (data) => {
       if (data) {
         dispatch({ type: EVENTS.SOCKETCHECKIN, payload: data });
         setModalCheckGuestSuccess(true);
+        dispatch(getNotify(auth.token));
+      } else {
+        setModalFail(true);
+      }
+    });
+    DeviceEventEmitter.addListener("wlinthanhtoan", async (data) => {
+      if (data) {
+        dispatch(getNotify(auth.token));
       } else {
         setModalFail(true);
       }

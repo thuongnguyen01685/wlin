@@ -66,7 +66,7 @@ const Profile = () => {
       dispatch({ type: AUTH.GOI, payload: goi });
     }
     it();
-    wait(2000).then(() => setRefreshing(false));
+    wait(1000).then(() => setRefreshing(false));
   }, [dispatch, auth.profile.email]);
   const data = [
     {
@@ -181,7 +181,7 @@ const Profile = () => {
         }),
       ])
     ).start();
-  }, [auth.token, dispatch]);
+  }, [auth.token]);
 
   const rotation = amin.interpolate({
     inputRange: [-1, 1], // left side to right side

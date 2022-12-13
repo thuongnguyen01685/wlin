@@ -55,14 +55,14 @@ const BenefitHome = ({ item }) => {
           />
         )}
 
-        <Text style={{ fontSize: 14, fontWeight: "600" }}>
+        <Text style={{ fontSize: 14, fontWeight: "600", marginLeft: 5 }}>
           Tên hội viên: {item?.user?.ten_kh}
         </Text>
       </View>
       <View
         style={{
           flexDirection: "row",
-          paddingLeft: 18,
+          paddingLeft: 25,
           paddingRight: 5,
           alignItems: "center",
         }}>
@@ -77,7 +77,7 @@ const BenefitHome = ({ item }) => {
           }}>
           {item?.ten_quyen_loi}
         </Text>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={{
             flexDirection: "row",
             justifyContent: "space-between",
@@ -90,7 +90,7 @@ const BenefitHome = ({ item }) => {
             paddingHorizontal: 10,
           }}>
           <Text style={{ fontSize: 11, color: "#ffffff" }}>Trả QL</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </View>
   );

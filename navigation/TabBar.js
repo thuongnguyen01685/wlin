@@ -35,6 +35,7 @@ import { Ionicons, MaterialCommunityIcons, Octicons } from "@expo/vector-icons";
 import DetailBenefit from "../screens/other/DetailBenefit";
 import DetailClub from "../screens/clup/detail/DetailClub";
 import Svg, { Path } from "react-native-svg";
+import EditBoard from "../screens/clup/detail/TabDetailClub/EditBoard";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -50,6 +51,11 @@ function ClubScreen() {
       <Stack.Screen
         name="DetailClub"
         component={DetailClub}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="EditBoard"
+        component={EditBoard}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
