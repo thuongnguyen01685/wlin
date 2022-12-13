@@ -1373,6 +1373,11 @@ const Club = () => {
     setRefreshing(false);
   }, [dispatch]);
 
+  const handleDetailClub = (_id) => {
+    dispatch(getDetailClub(_id, auth.token));
+    navigation.navigate("DetailClub", { _id });
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
@@ -1448,9 +1453,7 @@ const Club = () => {
                     flexDirection: "row",
                     alignItems: "center",
                   }}
-                  onPress={() =>
-                    navigation.navigate("DetailClub", { _id: item._id })
-                  }>
+                  onPress={() => handleDetailClub(item._id)}>
                   <Image
                     source={{ uri: `${URL}${item.hinh_anh}` }}
                     style={{
