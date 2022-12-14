@@ -156,12 +156,17 @@ const Member = (props) => {
                       </Svg>
                     </View>
 
-                    <View style={{ marginLeft: 10 }}>
+                    <View
+                      style={{
+                        marginLeft: 10,
+                        width: width * 0.5,
+                        flexDirection: "column",
+                      }}>
                       <Text
                         style={{
                           color: "#474747",
-                          fontSize: 14,
-                          fontWeight: "600",
+                          fontSize: 15,
+                          fontFamily: "LexendDeca_600SemiBold",
                         }}>
                         {item.ten_kh}
                       </Text>
@@ -172,12 +177,13 @@ const Member = (props) => {
                             : "#ffff",
                           padding: item.ten_chuc_vu ? 5 : 0,
                           borderRadius: 15,
+                          width: "50%",
                         }}>
                         <Text
                           style={{
                             color: dataColor[temp].color,
                             fontSize: 12,
-                            fontWeight: "600",
+                            fontFamily: "LexendDeca_400Regular",
                             textAlign: "center",
                           }}>
                           {item.ten_chuc_vu}

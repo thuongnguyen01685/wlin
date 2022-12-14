@@ -118,9 +118,7 @@ const DetailClub = ({ route }) => {
             marginLeft: 10,
             alignItems: "center",
           }}>
-          <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
-            Chi tiết CLUB
-          </Text>
+          <Text style={styles.headerTitle}>Chi tiết CLUB</Text>
 
           {refreshing && <Loading size="large" />}
         </View>
@@ -178,12 +176,7 @@ const DetailClub = ({ route }) => {
                     justifyContent: "space-between",
                   }}>
                   <View>
-                    <Text
-                      style={{
-                        fontSize: 20,
-                        fontWeight: "800",
-                        color: "#826CCF",
-                      }}>
+                    <Text style={styles.headerTitle}>
                       {club.detailClub.ten_club}
                     </Text>
                   </View>
@@ -232,8 +225,8 @@ const DetailClub = ({ route }) => {
                   <Text
                     style={{
                       color: focused ? "#826CCF" : "#dadada",
-                      fontSize: 12,
-                      fontWeight: "600",
+                      fontSize: 14,
+                      fontFamily: "LexendDeca_500Medium",
                     }}>
                     {route.title}
                   </Text>
@@ -255,14 +248,20 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#ffffff",
   },
+  headerTitle: {
+    fontSize: 16,
+    color: "#826CCF",
+    fontFamily: "LexendDeca_600SemiBold",
+  },
+
   contentHeader: {
     color: "#000",
     fontSize: 12,
     fontWeight: "400",
   },
   textContent: {
-    fontSize: 13,
-    fontWeight: "400",
+    fontSize: 12,
+    fontFamily: "LexendDeca_400Regular",
     marginVertical: 3,
   },
   indicatorStyle: {

@@ -171,7 +171,7 @@ const PushImage = (props) => {
             style={{
               textAlign: "center",
               fontSize: 12,
-              fontWeight: "600",
+              fontFamily: "LexendDeca_500Medium",
             }}>
             Dùng máy ảnh của bạn chụp lại
           </Text>

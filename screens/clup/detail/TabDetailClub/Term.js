@@ -77,7 +77,7 @@ const Term = (props) => {
                       borderWidth: 0.7,
                       borderRadius: 15,
                       paddingHorizontal: 2,
-                      paddingVertical: 15,
+                      paddingVertical: 10,
                     }}>
                     <Image
                       source={require("../../../../assets/logo.png")}
@@ -98,8 +98,8 @@ const Term = (props) => {
                     <Text
                       style={{
                         color: "#474747",
-                        fontSize: 18,
-                        fontWeight: "600",
+                        fontSize: 15,
+                        fontFamily: "LexendDeca_600SemiBold",
                         marginBottom: 5,
                       }}>
                       {item.ten_nhiem_ky}
@@ -121,8 +121,8 @@ const Term = (props) => {
                         style={{
                           color: "rgba(157, 133, 242, 0.6)",
                           fontSize: 12,
-                          fontWeight: "600",
                           marginLeft: 5,
+                          fontFamily: "LexendDeca_400Regular",
                         }}>
                         {formatDateDisplay(item.tu_ngay)} -{" "}
                         {formatDateDisplay(item.den_ngay)}

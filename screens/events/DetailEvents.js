@@ -141,7 +141,12 @@ const DetailEvents = ({ route }, props) => {
             justifyContent: "space-between",
             alignItems: "center",
           }}>
-          <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
+          <Text
+            style={{
+              fontSize: 16,
+              color: "#826CCF",
+              fontFamily: "LexendDeca_600SemiBold",
+            }}>
             Chi tiết sự kiện
           </Text>
 
@@ -194,7 +199,7 @@ const DetailEvents = ({ route }, props) => {
                     <Text
                       style={{
                         fontSize: 20,
-                        fontWeight: "600",
+                        fontFamily: "LexendDeca_600SemiBold",
                         color: "#ffffff",
                         marginBottom: 5,
                       }}>
@@ -227,7 +232,7 @@ const DetailEvents = ({ route }, props) => {
                       style={{
                         color: "#826CCF",
                         fontSize: 10,
-                        fontWeight: "600",
+                        fontFamily: "LexendDeca_500Medium",
                       }}>
                       Hội thảo
                     </Text>
@@ -249,7 +254,7 @@ const DetailEvents = ({ route }, props) => {
                           fontSize: 12,
                           color: "#b0b0b0",
                           marginLeft: 5,
-                          fontWeight: "600",
+                          fontFamily: "LexendDeca_400Regular",
                         }}>
                         {countParticipant?.length === 1
                           ? "Bạn đang tham gia"
@@ -365,6 +370,7 @@ const DetailEvents = ({ route }, props) => {
                                 fontSize: 10,
                                 opacity: 0.8,
                                 color: "#fff",
+                                fontFamily: "LexendDeca_400Regular",
                               }}>
                               +
                               {event.detailEvent?.ds_tham_gia
@@ -376,7 +382,12 @@ const DetailEvents = ({ route }, props) => {
                       </View>
                     )}
 
-                    <Text style={{ fontSize: 10, marginLeft: 2 }}>
+                    <Text
+                      style={{
+                        fontSize: 10,
+                        marginLeft: 2,
+                        fontFamily: "LexendDeca_400Regular",
+                      }}>
                       {event.detailEvent?.ds_tham_gia
                         ? event.detailEvent.ds_tham_gia.length
                         : 0}{" "}
@@ -415,7 +426,7 @@ const DetailEvents = ({ route }, props) => {
                     <Text
                       style={{
                         fontSize: 28,
-                        fontWeight: "800",
+                        fontFamily: "LexendDeca_600SemiBold",
                         color: "#ffffff",
                       }}>
                       {day}
@@ -429,7 +440,7 @@ const DetailEvents = ({ route }, props) => {
                       <Text
                         style={{
                           fontSize: 15,
-                          fontWeight: "600",
+                          fontFamily: "LexendDeca_600SemiBold",
                           color: "#ffffff",
                         }}>
                         {dayname[dayofweek]}
@@ -437,7 +448,7 @@ const DetailEvents = ({ route }, props) => {
                       <Text
                         style={{
                           fontSize: 17,
-                          fontWeight: "600",
+                          fontFamily: "LexendDeca_600SemiBold",
                           color: "#ffffff",
                         }}>
                         Tháng {month}, {year}
@@ -449,7 +460,7 @@ const DetailEvents = ({ route }, props) => {
                     <Text
                       style={{
                         fontSize: 12,
-                        fontWeight: "400",
+                        fontFamily: "LexendDeca_400Regular",
                         color: "#ffffff",
                         left: 5,
                       }}>
@@ -527,13 +538,17 @@ const DetailEvents = ({ route }, props) => {
                             flexDirection: "row",
                             justifyContent: "center",
                           }}>
-                          <Ionicons name="location" size={15} color="#ffffff" />
+                          <Ionicons
+                            name="location-outline"
+                            size={15}
+                            color="#ffffff"
+                          />
                           <Text
                             style={{
                               fontSize: 12,
                               color: "#ffffff",
                               textAlign: "center",
-                              fontWeight: "500",
+                              fontFamily: "LexendDeca_400Regular",
                             }}>
                             Xem bản đồ
                           </Text>
@@ -623,7 +638,7 @@ const DetailEvents = ({ route }, props) => {
                           <Text
                             style={{
                               fontSize: 13,
-                              fontWeight: "400",
+                              fontFamily: "LexendDeca_400Regular",
                               marginVertical: 5,
                               marginHorizontal: 10,
                               color: "#474747",
@@ -669,7 +684,7 @@ const DetailEvents = ({ route }, props) => {
                         style={{
                           fontSize: 25,
                           color: "#ffffff",
-                          fontWeight: "600",
+                          fontFamily: "LexendDeca_400Regular",
                           textAlign: "center",
                         }}>
                         {countParticipant?.length === 1
@@ -799,13 +814,13 @@ const styles = StyleSheet.create({
     marginRight: "10%",
   },
   headerContent: {
-    fontSize: 15,
-    fontWeight: "600",
+    fontSize: 14,
+    fontFamily: "LexendDeca_600SemiBold",
     lineHeight: 20,
   },
   bodyContent: {
     fontSize: 12,
-    fontWeight: "400",
+    fontFamily: "LexendDeca_400Regular",
     textAlign: "justify",
     marginVertical: 3,
     color: "#474747",
@@ -824,14 +839,14 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 12,
-    fontWeight: "400",
+    fontFamily: "LexendDeca_400Regular",
     color: "#B0B0B0",
     paddingHorizontal: 15,
     paddingVertical: 5,
   },
   timeEvent: {
     fontSize: 13,
-    fontWeight: "400",
+    fontFamily: "LexendDeca_400Regular",
     color: "#474747",
     paddingHorizontal: 10,
     paddingVertical: 5,
@@ -849,7 +864,7 @@ const styles = StyleSheet.create({
 
   buttonText: {
     fontSize: 14,
-    fontWeight: "600",
+    fontFamily: "LexendDeca_400Regular",
     color: "#ffffff",
   },
 });

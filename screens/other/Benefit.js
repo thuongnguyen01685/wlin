@@ -96,7 +96,12 @@ const Benefit = () => {
             justifyContent: "space-between",
             alignItems: "center",
           }}>
-          <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
+          <Text
+            style={{
+              fontSize: 16,
+              color: "#826CCF",
+              fontFamily: "LexendDeca_600SemiBold",
+            }}>
             Danh sách nhóm quyền lợi
           </Text>
 
@@ -179,7 +184,7 @@ const Benefit = () => {
                                 style={{
                                   color: "#474747",
                                   fontSize: 15,
-                                  fontWeight: "600",
+                                  fontFamily: "LexendDeca_600SemiBold",
                                 }}>
                                 {item.ten_nhquyenloi}
                               </Text>
@@ -200,7 +205,7 @@ const Benefit = () => {
                                   style={{
                                     color: "#000000",
                                     fontSize: 12,
-                                    fontWeight: "500",
+                                    fontFamily: "LexendDeca_500Medium",
                                     textAlign: "center",
                                   }}>
                                   Gói: {item.ten_goi_thanh_vien}
@@ -280,7 +285,7 @@ const Benefit = () => {
                                   style={{
                                     color: "#474747",
                                     fontSize: 15,
-                                    fontWeight: "600",
+                                    fontFamily: "LexendDeca_600SemiBold",
                                   }}>
                                   {item.ten_nhquyenloi}
                                 </Text>
@@ -301,7 +306,7 @@ const Benefit = () => {
                                     style={{
                                       color: "#000000",
                                       fontSize: 12,
-                                      fontWeight: "500",
+                                      fontFamily: "LexendDeca_500Medium",
                                       textAlign: "center",
                                     }}>
                                     Gói: {item.ten_goi_thanh_vien}
@@ -361,7 +366,13 @@ const Benefit = () => {
                             justifyContent: "center",
                             alignItems: "center",
                           }}>
-                          <Text>{index + 1}</Text>
+                          <Text
+                            style={{
+                              fontFamily: "LexendDeca_500Medium",
+                              color: "#fff",
+                            }}>
+                            {index + 1}
+                          </Text>
                         </LinearGradient>
                         <View
                           style={{
@@ -370,7 +381,11 @@ const Benefit = () => {
                             marginLeft: 10,
                             width: "80%",
                           }}>
-                          <Text style={{ fontSize: 10, fontWeight: "600" }}>
+                          <Text
+                            style={{
+                              fontSize: 10,
+                              fontFamily: "LexendDeca_600SemiBold",
+                            }}>
                             {item.ten_quyen_loi}
                           </Text>
                           <View
@@ -384,7 +399,7 @@ const Benefit = () => {
                             <Text
                               style={{
                                 fontSize: 12,
-                                fontWeight: "600",
+                                fontFamily: "LexendDeca_500Medium",
                                 color: "#769CEC",
                               }}>
                               Giá trị:{" "}
@@ -418,7 +433,7 @@ const Benefit = () => {
                             style={{
                               color: "#fff",
                               fontSize: 12,
-                              fontWeight: "400",
+                              fontFamily: "LexendDeca_400Regular",
                             }}>
                             {item.trang_thai === "2"
                               ? "Đã trả QL"
@@ -484,7 +499,7 @@ const Benefit = () => {
                             style={{
                               color: "#474747",
                               fontSize: 15,
-                              fontWeight: "600",
+                              fontFamily: "LexendDeca_600SemiBold",
                             }}>
                             {item.ten_nhquyenloi}
                           </Text>
@@ -505,7 +520,7 @@ const Benefit = () => {
                               style={{
                                 color: "#000000",
                                 fontSize: 12,
-                                fontWeight: "500",
+                                fontFamily: "LexendDeca_500Medium",
                                 textAlign: "center",
                               }}>
                               Gói: {item.ten_goi_thanh_vien}
@@ -541,7 +556,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 16,
-    fontWeight: "600",
+    fontFamily: "LexendDeca_600SemiBold",
     color: "#826CCF",
     marginHorizontal: 8,
   },

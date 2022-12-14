@@ -268,12 +268,15 @@ const Profile = () => {
                   flexDirection: "row",
                   alignItems: "center",
                   alignContent: "center",
-
                   borderRadius: 10,
                   paddingHorizontal: 10,
                 }}>
                 <Text
-                  style={{ color: "#ffffff", fontSize: 20, fontWeight: "800" }}>
+                  style={{
+                    color: "#ffffff",
+                    fontSize: 18,
+                    fontFamily: "LexendDeca_600SemiBold",
+                  }}>
                   Hồ sơ cá nhân
                 </Text>
               </View>
@@ -488,7 +491,11 @@ const Profile = () => {
                   alignItems: "center",
                 }}>
                 <Text
-                  style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
+                  style={{
+                    fontSize: 16,
+                    color: "#826CCF",
+                    fontFamily: "LexendDeca_600SemiBold",
+                  }}>
                   Thông tin thành viên
                 </Text>
 
@@ -520,7 +527,7 @@ const Profile = () => {
                   <Text
                     style={{
                       fontSize: 13,
-                      fontWeight: "600",
+                      fontFamily: "LexendDeca_600SemiBold",
                       color: "#fff",
                     }}>
                     Nâng cấp
@@ -583,14 +590,14 @@ const Profile = () => {
                                 justifyContent: "space-between",
                                 alignItems: "center",
                                 backgroundColor: "#ffffff",
-                                paddingVertical: 9.7,
+                                paddingVertical: 5,
                                 paddingHorizontal: 17.8,
                                 borderRadius: 50,
                               }}>
                               <Text
                                 style={{
-                                  fontSize: 20,
-                                  fontWeight: "600",
+                                  fontSize: 26,
+                                  fontFamily: "LexendDeca_600SemiBold",
                                   color: "#9D85F2",
                                 }}>
                                 #
@@ -608,7 +615,7 @@ const Profile = () => {
                                 style={{
                                   color: "#474747",
                                   fontSize: 15,
-                                  fontWeight: "600",
+                                  fontFamily: "LexendDeca_500Medium",
                                 }}>
                                 Mã hội viên
                               </Text>
@@ -616,7 +623,7 @@ const Profile = () => {
                                 style={{
                                   color: "#434343",
                                   fontSize: 12,
-                                  fontWeight: "400",
+                                  fontFamily: "LexendDeca_400Regular",
                                 }}>
                                 {auth.customer.ma_kh}
                               </Text>
@@ -686,7 +693,7 @@ const Profile = () => {
                                 style={{
                                   color: "#474747",
                                   fontSize: 15,
-                                  fontWeight: "600",
+                                  fontFamily: "LexendDeca_500Medium",
                                 }}>
                                 {item.name}
                               </Text>
@@ -694,7 +701,7 @@ const Profile = () => {
                                 style={{
                                   color: "#434343",
                                   fontSize: 12,
-                                  fontWeight: "400",
+                                  fontFamily: "LexendDeca_400Regular",
                                 }}>
                                 {item.value}
                               </Text>

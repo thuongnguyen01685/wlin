@@ -97,14 +97,7 @@ const Chart = () => {
           paddingHorizontal: 15,
           marginVertical: 10,
         }}>
-        <Text
-          style={{
-            fontSize: 15,
-            fontWeight: "600",
-            color: "#826CCF",
-          }}>
-          Số liệu chi tiết
-        </Text>
+        <Text style={styles.headerTitle}>Số liệu chi tiết</Text>
         {/* <TouchableOpacity>
           <Text
             style={{
@@ -125,7 +118,13 @@ const Chart = () => {
             width: width,
             top: 10,
           }}>
-          <Text style={{ top: 40, left: 15, fontSize: 12, fontWeight: "800" }}>
+          <Text
+            style={{
+              top: 40,
+              left: 15,
+              fontSize: 10,
+              fontFamily: "LexendDeca_500Medium",
+            }}>
             Số lượng
           </Text>
           <View
@@ -236,8 +235,8 @@ const Chart = () => {
               <Text
                 style={{
                   color: item.color,
-                  fontSize: 13,
-                  fontWeight: "600",
+                  fontSize: 12,
+                  fontFamily: "LexendDeca_400Regular",
                   marginLeft: 5,
                 }}>
                 {item.name}
@@ -264,9 +263,15 @@ const styles = StyleSheet.create({
   },
   textTime: {
     color: "#826CCF",
-    fontSize: 14,
+    fontSize: 12,
     textAlign: "center",
     marginRight: 10,
+    fontFamily: "LexendDeca_400Regular",
+  },
+  headerTitle: {
+    fontSize: 16,
+    color: "#826CCF",
+    fontFamily: "LexendDeca_600SemiBold",
   },
 });
 

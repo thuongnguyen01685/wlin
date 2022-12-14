@@ -62,7 +62,7 @@ const ItemEvent = (props) => {
               style={{
                 color: "#474747",
                 fontSize: 14,
-                fontWeight: "600",
+                fontFamily: "LexendDeca_600SemiBold",
               }}>
               {props.item.ten_su_kien}
             </Text>
@@ -83,19 +83,19 @@ const ItemEvent = (props) => {
               style={{
                 color: "#769CEC",
                 fontSize: 11,
-                fontWeight: "600",
+                fontFamily: "LexendDeca_400Regular",
                 left: 10,
               }}>
               {formatDateDisplay(props.item.ngay_su_kien)}
             </Text>
           </View>
           <View style={{ flexDirection: "row" }}>
-            <Ionicons name="location" size={14} />
+            <Ionicons name="location-outline" size={14} />
             <Text
               style={{
                 color: "#000000",
                 fontSize: 10,
-                fontWeight: "600",
+                fontFamily: "LexendDeca_400Regular",
                 left: 5,
               }}>
               {props.item.dia_diem}

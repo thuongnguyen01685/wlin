@@ -33,6 +33,7 @@ const ItemStatistics = (props) => {
               fontSize: 12,
               color: props.color,
               marginLeft: 5,
+              fontFamily: "LexendDeca_500Medium",
             }}>
             {props.name}
           </Text>
@@ -41,6 +42,7 @@ const ItemStatistics = (props) => {
           style={{
             fontSize: 10,
             textAlign: "center",
+            fontFamily: "LexendDeca_300Light",
           }}>
           {dayNow}
         </Text>
@@ -97,9 +99,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   quantityStatistics: {
-    fontSize: 25,
+    fontSize: 24,
     color: "#ffffff",
-    fontWeight: "700",
+    fontFamily: "LexendDeca_500Medium",
   },
 });
 

@@ -148,7 +148,12 @@ const Other = () => {
           justifyContent: "space-between",
           paddingHorizontal: 10,
         }}>
-        <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
+        <Text
+          style={{
+            fontSize: 16,
+            color: "#826CCF",
+            fontFamily: "LexendDeca_600SemiBold",
+          }}>
           Các mục khác
         </Text>
       </View>
@@ -210,7 +215,7 @@ const Other = () => {
                           style={{
                             color: "#474747",
                             fontSize: 15,
-                            fontWeight: "800",
+                            fontFamily: "LexendDeca_400Regular",
                           }}>
                           {item.name}
                         </Text>
@@ -274,10 +279,14 @@ const Other = () => {
                         style={{
                           color: "#474747",
                           fontSize: 15,
-                          fontWeight: "800",
+                          fontFamily: "LexendDeca_400Regular",
                         }}>
                         Phiên bản hiện tại:{" "}
-                        <Text style={{ fontWeight: "400", fontSize: 15 }}>
+                        <Text
+                          style={{
+                            fontFamily: "LexendDeca_400Regular",
+                            fontSize: 15,
+                          }}>
                           V1.01
                         </Text>
                       </Text>
@@ -335,7 +344,7 @@ const Other = () => {
                         style={{
                           color: "#474747",
                           fontSize: 15,
-                          fontWeight: "800",
+                          fontFamily: "LexendDeca_400Regular",
                         }}>
                         Đăng xuất
                       </Text>

@@ -84,7 +84,12 @@ const CheckQR = () => {
           justifyContent: "space-between",
           paddingHorizontal: 10,
         }}>
-        <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
+        <Text
+          style={{
+            fontSize: 16,
+            color: "#826CCF",
+            fontFamily: "LexendDeca_600SemiBold",
+          }}>
           {!showTakePicture ? "Check-QR" : "Xác thực biên lai"}
         </Text>
       </View>
@@ -103,7 +108,7 @@ const CheckQR = () => {
                     style={{
                       textAlign: "center",
                       fontSize: 18,
-                      fontWeight: "600",
+                      fontFamily: "LexendDeca_500Medium",
                     }}>
                     Mã QR của bạn
                   </Text>
@@ -121,7 +126,7 @@ const CheckQR = () => {
                     style={{
                       textAlign: "center",
                       fontSize: 15,
-                      fontWeight: "500",
+                      fontFamily: "LexendDeca_400Regular",
                     }}>
                     Đưa mã QR cho QTV để checkin sự kiện
                   </Text>
@@ -131,7 +136,7 @@ const CheckQR = () => {
                     style={{
                       textAlign: "center",
                       fontSize: 15,
-                      fontWeight: "400",
+                      fontFamily: "LexendDeca_400Regular",
                     }}>
                     Mã hội viên
                   </Text>
@@ -149,7 +154,7 @@ const CheckQR = () => {
                       <Text
                         style={{
                           fontSize: 15,
-                          fontWeight: "300",
+                          fontFamily: "LexendDeca_300Light",
                           color: "#474747",
                         }}>
                         {auth.profile.email}
@@ -177,7 +182,7 @@ const CheckQR = () => {
                         <Text
                           style={{
                             fontSize: 12,
-                            fontWeight: "400",
+                            fontFamily: "LexendDeca_400Regular",
                             color: "#ffffff",
                           }}>
                           Chép

@@ -10,15 +10,7 @@ const StatisticsHome = () => {
 
   return (
     <View style={{ marginVertical: 5 }}>
-      <Text
-        style={{
-          fontSize: 15,
-          fontWeight: "600",
-          color: "#826CCF",
-          paddingHorizontal: 15,
-        }}>
-        Tổng thống kê
-      </Text>
+      <Text style={styles.headerTitle}>Tổng thống kê</Text>
       <View style={styles.row}>
         <ItemStatistics
           bg="#E8E2FE"
@@ -66,6 +58,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-evenly",
     flexWrap: "wrap",
+  },
+  headerTitle: {
+    fontSize: 16,
+    color: "#826CCF",
+    fontFamily: "LexendDeca_600SemiBold",
+    paddingHorizontal: 15,
   },
 });
 

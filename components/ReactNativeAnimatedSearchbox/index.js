@@ -83,7 +83,7 @@ class ReactNativeAnimatedSearchbox extends React.Component {
           justifyContent: "center",
           alignItems: "center",
         }}>
-        <Ionicons name="chevron-forward-outline" size={25} color="#474747" />
+        <Ionicons name="chevron-forward-outline" size={25} color="#826CCF" />
       </View>
     );
   };
@@ -184,6 +184,7 @@ class ReactNativeAnimatedSearchbox extends React.Component {
                 borderRadius: borderRadius,
                 fontSize: fontSize,
                 paddingLeft: height,
+                fontFamily: "LexendDeca_400Regular",
               },
             ]}
           />
@@ -251,7 +252,7 @@ ReactNativeAnimatedSearchbox.defaultProps = {
   searchIconSize: 20,
   focusAfterOpened: false,
   placeholderTextColor: "#555555",
-  fontSize: 16,
+  fontSize: 15,
   backgroundColor: "rgba(255,255,255,0.70)",
   shadowColor: "rgba(0,0,0,0.12)",
   animationSpeed: [200, 250],

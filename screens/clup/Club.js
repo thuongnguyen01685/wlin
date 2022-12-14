@@ -334,8 +334,8 @@ const Nation = () => {
                             <Text
                               style={{
                                 color: "#474747",
-                                fontSize: 16,
-                                fontWeight: "600",
+                                fontSize: 15,
+                                fontFamily: "LexendDeca_600SemiBold",
                               }}>
                               {item.ten_club}
                             </Text>
@@ -363,7 +363,7 @@ const Nation = () => {
                                 <Text
                                   style={{
                                     fontSize: 10,
-                                    fontWeight: "600",
+                                    fontFamily: "LexendDeca_300Light",
                                     color: "#139ECA",
                                   }}>
                                   {item.ds_thanh_vien.length} thành viên
@@ -386,7 +386,7 @@ const Nation = () => {
                                 <Text
                                   style={{
                                     fontSize: 10,
-                                    fontWeight: "600",
+                                    fontFamily: "LexendDeca_300Light",
                                     color: "#1D19D4",
                                   }}>
                                   {item.count_sukien} sự kiện
@@ -409,7 +409,7 @@ const Nation = () => {
                                 <Text
                                   style={{
                                     fontSize: 10,
-                                    fontWeight: "600",
+                                    fontFamily: "LexendDeca_300Light",
                                     color: "#F12247",
                                   }}>
                                   20 referrals
@@ -432,7 +432,7 @@ const Nation = () => {
                                 <Text
                                   style={{
                                     fontSize: 10,
-                                    fontWeight: "600",
+                                    fontFamily: "LexendDeca_300Light",
                                     color: "#058602",
                                   }}>
                                   20 TYFCBs
@@ -763,8 +763,8 @@ const Area = () => {
                             <Text
                               style={{
                                 color: "#474747",
-                                fontSize: 16,
-                                fontWeight: "600",
+                                fontSize: 15,
+                                fontFamily: "LexendDeca_600SemiBold",
                               }}>
                               {item.ten_club}
                             </Text>
@@ -792,7 +792,7 @@ const Area = () => {
                                 <Text
                                   style={{
                                     fontSize: 10,
-                                    fontWeight: "600",
+                                    fontFamily: "LexendDeca_300Light",
                                     color: "#139ECA",
                                   }}>
                                   {item.ds_thanh_vien.length} thành viên
@@ -815,7 +815,7 @@ const Area = () => {
                                 <Text
                                   style={{
                                     fontSize: 10,
-                                    fontWeight: "600",
+                                    fontFamily: "LexendDeca_300Light",
                                     color: "#1D19D4",
                                   }}>
                                   {item.count_sukien} sự kiện
@@ -838,7 +838,7 @@ const Area = () => {
                                 <Text
                                   style={{
                                     fontSize: 10,
-                                    fontWeight: "600",
+                                    fontFamily: "LexendDeca_300Light",
                                     color: "#F12247",
                                   }}>
                                   20 referrals
@@ -861,7 +861,7 @@ const Area = () => {
                                 <Text
                                   style={{
                                     fontSize: 10,
-                                    fontWeight: "600",
+                                    fontFamily: "LexendDeca_300Light",
                                     color: "#058602",
                                   }}>
                                   20 TYFCBs
@@ -1186,8 +1186,8 @@ const Region = () => {
                             <Text
                               style={{
                                 color: "#474747",
-                                fontSize: 16,
-                                fontWeight: "600",
+                                fontSize: 15,
+                                fontFamily: "LexendDeca_600SemiBold",
                               }}>
                               {item.ten_club}
                             </Text>
@@ -1215,7 +1215,7 @@ const Region = () => {
                                 <Text
                                   style={{
                                     fontSize: 10,
-                                    fontWeight: "600",
+                                    fontFamily: "LexendDeca_300Light",
                                     color: "#139ECA",
                                   }}>
                                   {item.ds_thanh_vien.length} thành viên
@@ -1238,7 +1238,7 @@ const Region = () => {
                                 <Text
                                   style={{
                                     fontSize: 10,
-                                    fontWeight: "600",
+                                    fontFamily: "LexendDeca_300Light",
                                     color: "#1D19D4",
                                   }}>
                                   {item.count_sukien} sự kiện
@@ -1261,7 +1261,7 @@ const Region = () => {
                                 <Text
                                   style={{
                                     fontSize: 10,
-                                    fontWeight: "600",
+                                    fontFamily: "LexendDeca_300Light",
                                     color: "#F12247",
                                   }}>
                                   20 referrals
@@ -1284,7 +1284,7 @@ const Region = () => {
                                 <Text
                                   style={{
                                     fontSize: 10,
-                                    fontWeight: "600",
+                                    fontFamily: "LexendDeca_300Light",
                                     color: "#058602",
                                   }}>
                                   20 TYFCBs
@@ -1456,7 +1456,13 @@ const Club = () => {
               marginTop: 10,
               marginBottom: 10,
             }}>
-            <Text style={{ fontSize: 13, fontWeight: "400", color: "#826CCF" }}>
+            <Text
+              style={{
+                fontSize: 13,
+                fontWeight: "400",
+                color: "#826CCF",
+                fontFamily: "LexendDeca_300Light",
+              }}>
               Kết quả tìm kiếm.
             </Text>
           </View>
@@ -1487,6 +1493,7 @@ const Club = () => {
                       fontWeight: "600",
                       color: "#474747",
                       marginLeft: 10,
+                      fontFamily: "LexendDeca_500Medium",
                     }}>
                     {item.ten_club}
                   </Text>
@@ -1505,7 +1512,12 @@ const Club = () => {
                   style={{ width: w * 0.2, height: w * 0.2, right: 5 }}
                 />
                 <Text
-                  style={{ fontSize: 15, fontWeight: "600", color: "#474747" }}>
+                  style={{
+                    fontSize: 15,
+                    fontWeight: "600",
+                    color: "#474747",
+                    fontFamily: "LexendDeca_400Regular",
+                  }}>
                   Chưa tìm thấy kết quả
                 </Text>
               </View>
@@ -1542,9 +1554,7 @@ const Club = () => {
             justifyContent: "space-between",
             alignItems: "center",
           }}>
-          <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
-            Danh sách CLUB
-          </Text>
+          <Text style={styles.headerTitle}>Danh sách CLUB</Text>
           {refreshing && <Loading size="large" />}
         </View>
       </View>
@@ -1565,8 +1575,8 @@ const Club = () => {
                 <Text
                   style={{
                     color: focused ? "#826CCF" : "#dadada",
-                    fontSize: 12,
-                    fontWeight: "600",
+                    fontSize: 13,
+                    fontFamily: "LexendDeca_600SemiBold",
                   }}>
                   {route.title}
                 </Text>
@@ -1586,6 +1596,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#ffffff",
+  },
+  headerTitle: {
+    fontSize: 16,
+    color: "#826CCF",
+    fontFamily: "LexendDeca_600SemiBold",
   },
   surface: {
     height: height * 0.12,

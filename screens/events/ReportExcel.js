@@ -55,9 +55,7 @@ const ReportExcel = () => {
           justifyContent: "space-between",
           paddingHorizontal: 10,
         }}>
-        <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
-          Báo cáo chi tiết sự kiện
-        </Text>
+        <Text style={styles.headerTitle}>Báo cáo chi tiết sự kiện</Text>
       </View>
       <View style={{ height: "100%" }}>
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -93,14 +91,13 @@ const ReportExcel = () => {
                   flexDirection: "row",
                   justifyContent: "center",
                   alignItems: "center",
-                  marginTop: 20,
                 }}>
                 <Ionicons name="arrow-redo" size={40} color="#826CCF" />
                 <Text
                   style={{
                     color: "#826CCF",
                     fontSize: 15,
-                    fontWeight: "700",
+                    fontFamily: "LexendDeca_600SemiBold",
                     marginLeft: 5,
                   }}>
                   Chia sẻ file Excel (.xlsx)
@@ -119,6 +116,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#ffffff",
+  },
+  headerTitle: {
+    fontSize: 16,
+    color: "#826CCF",
+    fontFamily: "LexendDeca_600SemiBold",
   },
 });
 

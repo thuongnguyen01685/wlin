@@ -163,7 +163,7 @@ const QRAdmin = (props) => {
           style={{
             textAlign: "center",
             fontSize: 12,
-            fontWeight: "600",
+            fontFamily: "LexendDeca_600SemiBold",
           }}>
           Quét mã QR bằng thiết bị của bạn để checkin sự kiện
         </Text>
@@ -253,7 +253,12 @@ const QRAdmin = (props) => {
         }}
         onPress={decode}>
         <Ionicons name="image-outline" size={20} />
-        <Text style={{ fontSize: 12, fontWeight: "600", marginLeft: 5 }}>
+        <Text
+          style={{
+            fontSize: 12,
+            fontFamily: "LexendDeca_400Regular",
+            marginLeft: 5,
+          }}>
           Tải mã QR có sẵn
         </Text>
       </TouchableOpacity>

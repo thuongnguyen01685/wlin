@@ -264,7 +264,11 @@ const EventRoute = () => {
                 alignItems: "center",
               }}>
               <Text
-                style={{ fontSize: 15, color: "#474747", fontWeight: "600" }}>
+                style={{
+                  fontSize: 15,
+                  color: "#474747",
+                  fontFamily: "LexendDeca_600SemiBold",
+                }}>
                 Không có sự kiện nào đang diễn ra.
               </Text>
             </View>

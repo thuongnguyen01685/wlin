@@ -20,11 +20,12 @@ const ModalSms = (props) => {
         style={{
           backgroundColor: "white",
           borderRadius: 30,
-          padding: 10,
+
           elevation: 5,
           marginHorizontal: 15,
           bottom: 20,
           height: "auto",
+          paddingVertical: 15,
         }}>
         <View style={{ flexDirection: "row", justifyContent: "center" }}>
           <Image
@@ -48,23 +49,27 @@ const ModalSms = (props) => {
             <Text
               style={{
                 textAlign: "center",
-                fontSize: 20,
+                fontSize: 22,
                 color: "#000000",
-                fontWeight: "600",
+                fontFamily: "LexendDeca_400Regular",
               }}>
               Chúc mừng
             </Text>
             <Text
               style={{
                 textAlign: "center",
-                fontWeight: "400",
-                fontSize: 13,
+                fontFamily: "LexendDeca_300Light",
+                fontSize: 15,
                 marginTop: 15,
               }}>
               Mã OTP đã được gửi về SMS của bạn.
             </Text>
             <Text
-              style={{ textAlign: "center", fontWeight: "400", fontSize: 13 }}>
+              style={{
+                textAlign: "center",
+                fontFamily: "LexendDeca_300Light",
+                fontSize: 15,
+              }}>
               Vui lòng kiểm tra, sau đó nhập mã OTP để đăng nhập
             </Text>
           </View>
@@ -89,7 +94,12 @@ const ModalSms = (props) => {
                 width: "100%",
               }}>
               <Text
-                style={{ fontSize: 15, color: "#ffffff", textAlign: "center" }}>
+                style={{
+                  fontSize: 16,
+                  color: "#ffffff",
+                  textAlign: "center",
+                  fontFamily: "LexendDeca_500Medium",
+                }}>
                 Tiếp tục
               </Text>
             </TouchableOpacity>

@@ -88,50 +88,6 @@ const Events = () => {
       <StatusBar barStyle="light-content" />
       <HeaderPart />
       <View style={styles.search}>
-        {/* <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            width: "80%",
-            borderRadius: 7,
-          }}>
-          <TouchableOpacity>
-            <Ionicons name="search-outline" size={30} color="#ffffff" />
-          </TouchableOpacity>
-          <TextInput
-            placeholderTextColor={"#ffffff"}
-            theme={{
-              roundness: 50,
-              colors: {
-                primary: "green",
-                underlineColor: "transparent",
-              },
-            }}
-            underlineColorAndroid="transparent"
-            style={styles.input}
-            onChangeText={(text) => searchFilterFunction(text)}
-            value={search}
-            placeholder="Tìm kiếm"
-          />
-        </View>
-        <TouchableOpacity>
-          <View
-            style={{
-              width: 35,
-              height: 35,
-              borderRadius: 50,
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-            }}>
-            <Ionicons
-              name="options-outline"
-              size={25}
-              color="#ffffff"
-              style={{ transform: [{ rotate: "-90deg" }] }}
-            />
-          </View>
-        </TouchableOpacity> */}
         <ReactNativeAnimatedSearchbox
           onChangeText={(text) => searchFilterFunction(text)}
           value={search}
@@ -157,7 +113,13 @@ const Events = () => {
               marginTop: 10,
               marginBottom: 10,
             }}>
-            <Text style={{ fontSize: 13, fontWeight: "400", color: "#826CCF" }}>
+            <Text
+              style={{
+                fontSize: 13,
+                fontWeight: "400",
+                color: "#826CCF",
+                fontFamily: "LexendDeca_300Light",
+              }}>
               Kết quả tìm kiếm.
             </Text>
           </View>
@@ -190,6 +152,7 @@ const Events = () => {
                       fontWeight: "600",
                       color: "#474747",
                       marginLeft: 10,
+                      fontFamily: "LexendDeca_500Medium",
                     }}>
                     {item.ten_su_kien}
                   </Text>
@@ -243,9 +206,7 @@ const Events = () => {
             justifyContent: "space-between",
             alignItems: "center",
           }}>
-          <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
-            Danh sách sự kiện
-          </Text>
+          <Text style={styles.headerTitle}>Danh sách sự kiện</Text>
         </View>
       </View>
       <View
@@ -263,7 +224,11 @@ const Events = () => {
               {...props}
               renderLabel={({ route, color }) => (
                 <Text
-                  style={{ color: "#826CCF", fontSize: 12, fontWeight: "600" }}>
+                  style={{
+                    color: "#826CCF",
+                    fontSize: 13,
+                    fontFamily: "LexendDeca_600SemiBold",
+                  }}>
                   {route.title}
                 </Text>
               )}
@@ -282,6 +247,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#ffffff",
+  },
+  headerTitle: {
+    fontSize: 16,
+    color: "#826CCF",
+    fontFamily: "LexendDeca_600SemiBold",
   },
   contentHeader: {
     color: "#000",
