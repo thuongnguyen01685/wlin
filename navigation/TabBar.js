@@ -355,7 +355,7 @@ const TabBar = () => {
           tabBarInactiveTintColor: "#909090",
           tabBarLabelStyle: {
             fontSize: 12,
-            fontWeight: "600",
+            fontFamily: "LexendDeca_600SemiBold",
           },
 
           tabBarBackground: () => (
