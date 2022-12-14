@@ -60,6 +60,7 @@ export const getMemberAction = (token, array) => async (dispatch) => {
     let condition = {
       ma_kh: { $in: array },
     };
+
     condition = JSON.stringify(condition);
     const res = await callApis(
       `customer_wlin?access_token=${token}&q=${condition}`
@@ -100,7 +101,6 @@ export const deleteBQTAction = (token, arr, id_club) => async (dispatch) => {
 export const getDmchucvu = () => async (dispatch) => {
   try {
     const res = await callApis(`dmchucvu?access_token=flex.public.token`);
-
     dispatch({ type: CLUB.DMCHUCVU, payload: res.data });
   } catch (error) {
     console.log(error);

@@ -220,25 +220,25 @@ const ManagementMember = () => {
                     <Text
                       style={{
                         color:
-                          club.detailMember.goi_thanh_vien === "01"
+                          club.detailMember?.goi_thanh_vien === "01"
                             ? "#6A6A6A"
-                            : club.detailMember.goi_thanh_vien === "02"
+                            : club.detailMember?.goi_thanh_vien === "02"
                             ? "#8D6B48"
-                            : club.detailMember.goi_thanh_vien === "03"
+                            : club.detailMember?.goi_thanh_vien === "03"
                             ? "#5A54A5"
-                            : club.detailMember.goi_thanh_vien === "04" &&
+                            : club.detailMember?.goi_thanh_vien === "04" &&
                               "#1f1f1f",
                         fontSize: 11,
                         fontFamily: "LexendDeca_500Medium",
                         marginHorizontal: 10,
                       }}>
-                      {club.detailMember.goi_thanh_vien === "01"
+                      {club.detailMember?.goi_thanh_vien === "01"
                         ? "Gói bạc"
-                        : club.detailMember.goi_thanh_vien === "02"
+                        : club.detailMember?.goi_thanh_vien === "02"
                         ? "Gói vàng"
-                        : club.detailMember.goi_thanh_vien === "03"
+                        : club.detailMember?.goi_thanh_vien === "03"
                         ? "Gói kim cương"
-                        : club.detailMember.goi_thanh_vien === "04"
+                        : club.detailMember?.goi_thanh_vien === "04"
                         ? "Gói partner"
                         : "Chưa có gói thành viên"}
                     </Text>

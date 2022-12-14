@@ -171,7 +171,11 @@ const Events = () => {
                   style={{ width: w * 0.2, height: w * 0.2, right: 5 }}
                 />
                 <Text
-                  style={{ fontSize: 15, fontWeight: "600", color: "#474747" }}>
+                  style={{
+                    fontSize: 15,
+                    fontFamily: "LexendDeca_500Medium",
+                    color: "#474747",
+                  }}>
                   Chưa tìm thấy kết quả
                 </Text>
               </View>

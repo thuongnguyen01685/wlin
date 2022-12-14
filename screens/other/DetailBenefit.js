@@ -135,7 +135,12 @@ const DetailBenefit = () => {
               justifyContent: "space-between",
               alignItems: "center",
             }}>
-            <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
+            <Text
+              style={{
+                fontSize: 16,
+                color: "#826CCF",
+                fontFamily: "LexendDeca_600SemiBold",
+              }}>
               Chi tiết nhóm quyền lợi
             </Text>
 
@@ -196,12 +201,17 @@ const DetailBenefit = () => {
                   style={{
                     color: "#474747",
                     fontSize: 15,
-                    fontWeight: "600",
+                    fontFamily: "LexendDeca_600SemiBold",
                   }}>
                   {club.detailBenefit.ten_nhquyenloi}
                 </Text>
-                <View
+
+                <Text
                   style={{
+                    color: "#000000",
+                    fontSize: 12,
+                    fontFamily: "LexendDeca_500Medium",
+                    textAlign: "center",
                     backgroundColor:
                       club.detailBenefit.goi_thanh_vien === "03"
                         ? "#EEF4FF"
@@ -211,23 +221,15 @@ const DetailBenefit = () => {
                         ? "#F0ECFF"
                         : "#FEF8E3",
                     borderRadius: 10,
-                    width: "60%",
                   }}>
-                  <Text
-                    style={{
-                      color: "#000000",
-                      fontSize: 12,
-                      fontWeight: "500",
-                      textAlign: "center",
-                    }}>
-                    Gói: {club.detailBenefit.ten_goi_thanh_vien}
-                  </Text>
-                </View>
+                  Gói: {club.detailBenefit.ten_goi_thanh_vien}
+                </Text>
+
                 <Text
                   style={{
                     fontSize: 12,
                     color: "#474747",
-                    fontWeight: "600",
+                    fontFamily: "LexendDeca_600SemiBold",
                   }}>
                   {club.detailBenefit.gia_tri &&
                     formatCash(club.detailBenefit.gia_tri.toString(10))}{" "}
@@ -261,7 +263,7 @@ const DetailBenefit = () => {
           }>
           <View
             style={{
-              marginBottom: "100%",
+              marginBottom: "110%",
               paddingHorizontal: 15,
               marginTop: 10,
             }}>
@@ -291,7 +293,13 @@ const DetailBenefit = () => {
                       justifyContent: "center",
                       alignItems: "center",
                     }}>
-                    <Text>{index + 1}</Text>
+                    <Text
+                      style={{
+                        fontFamily: "LexendDeca_500Medium",
+                        color: "#fff",
+                      }}>
+                      {index + 1}
+                    </Text>
                   </LinearGradient>
                   <View
                     style={{
@@ -300,7 +308,11 @@ const DetailBenefit = () => {
                       marginLeft: 10,
                       width: "80%",
                     }}>
-                    <Text style={{ fontSize: 10, fontWeight: "600" }}>
+                    <Text
+                      style={{
+                        fontSize: 10,
+                        fontFamily: "LexendDeca_600SemiBold",
+                      }}>
                       {item.ten_quyen_loi}
                     </Text>
                     <View
@@ -314,7 +326,7 @@ const DetailBenefit = () => {
                       <Text
                         style={{
                           fontSize: 12,
-                          fontWeight: "600",
+                          fontFamily: "LexendDeca_500Medium",
                           color: "#769CEC",
                         }}>
                         Giá trị:{" "}

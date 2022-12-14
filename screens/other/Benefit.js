@@ -188,8 +188,13 @@ const Benefit = () => {
                                 }}>
                                 {item.ten_nhquyenloi}
                               </Text>
-                              <View
+
+                              <Text
                                 style={{
+                                  color: "#000000",
+                                  fontSize: 12,
+                                  fontFamily: "LexendDeca_500Medium",
+                                  textAlign: "center",
                                   backgroundColor:
                                     item.goi_thanh_vien === "03"
                                       ? "#EEF4FF"
@@ -199,18 +204,11 @@ const Benefit = () => {
                                       ? "#F0ECFF"
                                       : "#FEF8E3",
                                   borderRadius: 10,
-                                  width: "60%",
+                                  marginHorizontal: 10,
+                                  marginVertical: 5,
                                 }}>
-                                <Text
-                                  style={{
-                                    color: "#000000",
-                                    fontSize: 12,
-                                    fontFamily: "LexendDeca_500Medium",
-                                    textAlign: "center",
-                                  }}>
-                                  Gói: {item.ten_goi_thanh_vien}
-                                </Text>
-                              </View>
+                                Gói: {item.ten_goi_thanh_vien}
+                              </Text>
                             </View>
                           </View>
                         </View>
