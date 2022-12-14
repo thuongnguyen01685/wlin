@@ -53,6 +53,7 @@ import Chart from "./Chart.home";
 
 import { Admin, Partner } from "../../utils/AccessPermission";
 import CasouselEventing from "./CasouselEventing";
+import ReactNativeAnimatedSearchbox from "../../components/ReactNativeAnimatedSearchbox";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
@@ -73,6 +74,13 @@ const Home = () => {
 
   const animatedValue = useRef(new Animated.Value(0)).current;
   const { auth, notify, event, club, benefit } = useSelector((state) => state);
+
+  //search animated
+  const [searchIconColor, setSearchIconColor] = useState("#909090");
+  const refSearchBox = useRef();
+
+  const openSearchBox = () => refSearchBox.current.open();
+  const closeSearchBox = () => refSearchBox.current.close();
 
   const backButtonHandler = () => {
     const shortToast = (message) => {
@@ -180,7 +188,7 @@ const Home = () => {
       <HeaderPart backHome={backHome} setBackHome={setBackHome} />
       {auth.permission?.group_id === Admin && (
         <View style={styles.search}>
-          <View
+          {/* <View
             style={{
               flexDirection: "row",
               alignItems: "center",
@@ -205,8 +213,8 @@ const Home = () => {
               value={search}
               placeholder="Tìm kiếm"
             />
-          </View>
-          <TouchableOpacity>
+          </View> */}
+          {/* <TouchableOpacity>
             <View
               style={{
                 width: 35,
@@ -223,7 +231,20 @@ const Home = () => {
                 style={{ transform: [{ rotate: "-90deg" }] }}
               />
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
+          <ReactNativeAnimatedSearchbox
+            onChangeText={(text) => searchFilterFunction(text)}
+            value={search}
+            placeholder={"Tìm kiếm..."}
+            ref={refSearchBox}
+            searchIconColor={searchIconColor}
+            onClosed={() => {
+              setSearchIconColor("#555");
+            }}
+            onOpening={() => {
+              setSearchIconColor("#555");
+            }}
+          />
         </View>
       )}
 
@@ -430,13 +451,11 @@ const styles = StyleSheet.create({
     zIndex: 1,
     position: "absolute",
     marginTop: "23%",
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignContent: "center",
-    alignItems: "center",
-    paddingLeft: 20,
-    paddingRight: 15,
+    width: "95%",
+    // flexDirection: "row",
+    // justifyContent: "space-between",
+    // alignContent: "center",
+    paddingLeft: 15,
   },
   input: {
     height: 40,

@@ -16,11 +16,9 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import HeaderPart from "../../components/HeaderPart/HeaderPart";
 import Loading from "../../components/loading/Loading";
+import ReactNativeAnimatedSearchbox from "../../components/ReactNativeAnimatedSearchbox";
 
-import {
-  getBenefitAction,
-  getBenefitManagemant,
-} from "../../redux/actions/benefitAction";
+import { getBenefitManagemant } from "../../redux/actions/benefitAction";
 import { getCLub } from "../../redux/actions/ClupAction";
 import BenefitHome from "../home/Benefit.home";
 
@@ -40,6 +38,9 @@ const PayBenefit = () => {
   const [search, setSearch] = useState("");
   const [filteredDataSource, setFilteredDataSource] = useState([]);
   const [masterDataSource, setMasterDataSource] = useState([]);
+  //search animated
+  const [searchIconColor, setSearchIconColor] = useState("#909090");
+  const refSearchBox = useRef();
 
   //animated
   const circleAnimatedValue = useRef(new Animated.Value(0)).current;
@@ -141,7 +142,7 @@ const PayBenefit = () => {
       <StatusBar barStyle="light-content" />
       <HeaderPart />
       <View style={styles.search}>
-        <View
+        {/* <View
           style={{
             flexDirection: "row",
             alignItems: "center",
@@ -184,7 +185,20 @@ const PayBenefit = () => {
               style={{ transform: [{ rotate: "-90deg" }] }}
             />
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
+        <ReactNativeAnimatedSearchbox
+          onChangeText={(text) => searchFilterFunction(text)}
+          value={search}
+          placeholder={"Tìm kiếm..."}
+          ref={refSearchBox}
+          searchIconColor={searchIconColor}
+          onClosed={() => {
+            setSearchIconColor("#555");
+          }}
+          onOpening={() => {
+            setSearchIconColor("#555");
+          }}
+        />
       </View>
 
       <View
@@ -329,17 +343,16 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     marginHorizontal: 15,
   },
+
   search: {
     zIndex: 1,
     position: "absolute",
-    marginTop: h * 0.13,
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignContent: "center",
-    alignItems: "center",
-    paddingLeft: 20,
-    paddingRight: 15,
+    marginTop: "23%",
+    width: "95%",
+    // flexDirection: "row",
+    // justifyContent: "space-between",
+    // alignContent: "center",
+    paddingLeft: 15,
   },
   input: {
     height: 40,

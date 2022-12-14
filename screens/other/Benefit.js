@@ -50,15 +50,13 @@ const Benefit = () => {
     setRefreshing(true);
     dispatch(getListBenefit(auth.token));
     dispatch(getBenefitMember(auth.token, auth.customer.of_user));
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 2000);
+    wait(100).then(() => setRefreshing(false));
   }, [dispatch]);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     dispatch(getListBenefit(auth.token));
     dispatch(getBenefitMember(auth.token, auth.customer.of_user));
-    wait(2000).then(() => setRefreshing(false));
+    wait(1000).then(() => setRefreshing(false));
   }, [dispatch]);
 
   const handleDetailBenefit = (_id) => {

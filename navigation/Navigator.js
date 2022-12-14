@@ -47,6 +47,7 @@ import PayBenefit from "../screens/other/PayBenefit";
 import ManagementMember from "../screens/other/ManagementMember";
 import Benefit from "../screens/other/Benefit";
 import DetailBenefit from "../screens/other/DetailBenefit";
+import EditBoard from "../screens/clup/detail/TabDetailClub/EditBoard";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -212,6 +213,11 @@ const Navigator = () => {
         <Stack.Screen
           name="ManagementMember"
           component={ManagementMember}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="EditBoard"
+          component={EditBoard}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
