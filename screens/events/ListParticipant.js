@@ -62,40 +62,6 @@ const Unpaid = () => {
   }, [dispatch]);
   return (
     <View style={styles.container}>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "flex-end",
-        }}>
-        <SelectDropdown
-          data={selectData}
-          onSelect={(selectedItem, index) => {
-            console.log(selectedItem, index);
-          }}
-          defaultButtonText={"Chọn nhiệm kì"}
-          buttonTextAfterSelection={(selectedItem, index) => {
-            return selectedItem;
-          }}
-          rowTextForSelection={(item, index) => {
-            return item;
-          }}
-          buttonStyle={styles.dropdown1BtnStyle}
-          buttonTextStyle={styles.dropdown1BtnTxtStyle}
-          dropdownIconPosition={"right"}
-          dropdownStyle={styles.dropdown1DropdownStyle}
-          rowStyle={styles.dropdown1RowStyle}
-          rowTextStyle={styles.dropdown1RowTxtStyle}
-          renderDropdownIcon={(isOpened) => {
-            return (
-              <Ionicons
-                name={isOpened ? "caret-up-outline" : "caret-down-outline"}
-                color={"#444"}
-                size={18}
-              />
-            );
-          }}
-        />
-      </View>
       {modalSuccess && (
         <ModalRequest
           modalSuccess={modalSuccess}
@@ -316,36 +282,6 @@ const Paid = () => {
 
   return (
     <View style={styles.container}>
-      <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
-        <SelectDropdown
-          data={selectData}
-          onSelect={(selectedItem, index) => {
-            console.log(selectedItem, index);
-          }}
-          defaultButtonText={"Chọn nhiệm kì"}
-          buttonTextAfterSelection={(selectedItem, index) => {
-            return selectedItem;
-          }}
-          rowTextForSelection={(item, index) => {
-            return item;
-          }}
-          buttonStyle={styles.dropdown1BtnStyle}
-          buttonTextStyle={styles.dropdown1BtnTxtStyle}
-          dropdownIconPosition={"right"}
-          dropdownStyle={styles.dropdown1DropdownStyle}
-          rowStyle={styles.dropdown1RowStyle}
-          rowTextStyle={styles.dropdown1RowTxtStyle}
-          renderDropdownIcon={(isOpened) => {
-            return (
-              <Ionicons
-                name={isOpened ? "caret-up-outline" : "caret-down-outline"}
-                color={"#444"}
-                size={18}
-              />
-            );
-          }}
-        />
-      </View>
       <ScrollView
         showsVerticalScrollIndicator={false}
         refreshControl={

@@ -57,23 +57,25 @@ const ModalNotify = (props) => {
 
   const handleChangeRead = async (_id, title, id_event) => {
     const token = await AsyncStorage.getItem("@token_key");
+    await dispatch(changeIsReadAction(token, _id));
+    dispatch(getNotify(token));
 
-    if (title === "chúc mừng bạn đã checkin thành công!" && id_event) {
-      navigation.navigate("DetailEvents", { _id: id_event });
-      await dispatch(changeIsReadAction(token, _id));
-      dispatch(getNotify(token));
-      props.setModalVisible(false);
-    } else if (
-      title === "Chúc mừng bạn đã thanh toán thành công!" &&
-      id_event
-    ) {
-      navigation.navigate("DetailEvents", { _id: id_event });
-      await dispatch(changeIsReadAction(token, _id));
-      dispatch(getNotify(token));
-      props.setModalVisible(false);
-    } else {
-      Alert.alert("Không tồn tại sự kiện này.");
-    }
+    // if (title === "chúc mừng bạn đã checkin thành công!" && id_event) {
+    //   navigation.navigate("DetailEvents", { _id: id_event });
+    //   await dispatch(changeIsReadAction(token, _id));
+    //   dispatch(getNotify(token));
+    //   props.setModalVisible(false);
+    // } else if (
+    //   title === "Chúc mừng bạn đã thanh toán thành công!" &&
+    //   id_event
+    // ) {
+    //   navigation.navigate("DetailEvents", { _id: id_event });
+    //   await dispatch(changeIsReadAction(token, _id));
+    //   dispatch(getNotify(token));
+    //   props.setModalVisible(false);
+    // } else {
+    //   Alert.alert("Không tồn tại sự kiện này.");
+    // }
   };
 
   return (
@@ -294,6 +296,16 @@ const ModalNotify = (props) => {
                             }}>
                             {item.title}
                           </Text>
+                          <Text
+                            style={{
+                              fontSize: 12,
+                              color: "#000000",
+                              opacity: item.read === false ? 1 : 0.5,
+                              marginBottom: 3,
+                              fontFamily: "LexendDeca_400Regular",
+                            }}>
+                            {item.content}
+                          </Text>
                           <View
                             style={{
                               flexDirection: "row",
@@ -379,6 +391,16 @@ const ModalNotify = (props) => {
                               marginBottom: 3,
                             }}>
                             {item.title}
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 12,
+                              color: "#000000",
+                              opacity: item.read === false ? 1 : 0.5,
+                              marginBottom: 3,
+                              fontFamily: "LexendDeca_400Regular",
+                            }}>
+                            {item.content}
                           </Text>
                           <View
                             style={{
