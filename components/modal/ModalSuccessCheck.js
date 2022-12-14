@@ -54,45 +54,62 @@ const ModalSuccessCheck = (props) => {
             marginTop: 5,
           }}>
           <Text
-            style={{ fontSize: 20, fontWeight: "800", textAlign: "center" }}>
+            style={{
+              fontSize: 22,
+              fontFamily: "LexendDeca_600SemiBold",
+              textAlign: "center",
+              color: "#000",
+            }}>
             Chúc mừng
           </Text>
           <View style={{ marginTop: 10 }}>
             <Text
-              style={{ fontSize: 14, fontWeight: "600", textAlign: "center" }}>
+              style={{
+                fontSize: 15,
+                fontFamily: "LexendDeca_300Light",
+                textAlign: "center",
+              }}>
               Bạn đã check-in thành công sự kiện
             </Text>
             <Text
               style={{
                 fontSize: 12,
-                fontWeight: "600",
+                fontFamily: "LexendDeca_600SemiBold",
                 textAlign: "center",
                 color: "#000000",
                 marginTop: 5,
               }}>
               Tên hội viên:{" "}
-              {props.dataCheck === props.detailData[0].ma_kh
-                ? props.detailData[0].ten_kh
-                : ""}
+              <Text style={{ fontFamily: "LexendDeca_400Regular" }}>
+                {props.dataCheck === props.detailData[0].ma_kh
+                  ? props.detailData[0].ten_kh
+                  : ""}
+              </Text>
             </Text>
             <Text
               style={{
                 fontSize: 12,
-                fontWeight: "600",
+                fontFamily: "LexendDeca_600SemiBold",
                 textAlign: "center",
                 color: "#000000",
                 marginVertical: 5,
               }}>
-              Vai trò: {props.detailData[0].vai_tro}
+              Vai trò:{" "}
+              <Text style={{ fontFamily: "LexendDeca_400Regular" }}>
+                {props.detailData[0].vai_tro}
+              </Text>
             </Text>
             <Text
               style={{
                 fontSize: 12,
-                fontWeight: "600",
+                fontFamily: "LexendDeca_600SemiBold",
                 textAlign: "center",
                 color: "#000000",
               }}>
-              Giá vé: {formatCash(props.detailData[0].gia_ve.toString(10))} VND
+              Giá vé:{" "}
+              <Text style={{ fontFamily: "LexendDeca_400Regular" }}>
+                {formatCash(props.detailData[0].gia_ve.toString(10))} VND
+              </Text>
             </Text>
           </View>
           <View
@@ -115,7 +132,12 @@ const ModalSuccessCheck = (props) => {
                 width: "100%",
               }}>
               <View style={styles.borderBacRounded}>
-                <Text style={{ color: "#ffffff", textAlign: "center" }}>
+                <Text
+                  style={{
+                    color: "#ffffff",
+                    textAlign: "center",
+                    fontFamily: "LexendDeca_400Regular",
+                  }}>
                   Thanh toán
                 </Text>
               </View>

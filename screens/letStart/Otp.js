@@ -194,7 +194,7 @@ const Otp = ({ route }) => {
           style={{
             color: "#ffffff",
             fontSize: 25,
-            fontWeight: "600",
+            fontFamily: "LexendDeca_600SemiBold",
             marginLeft: 15,
           }}>
           WLIN xin chào
@@ -214,10 +214,12 @@ const Otp = ({ route }) => {
                 color={status === "success" ? successColor : failColor}
               />
               <View style={styles.toastText}>
-                <Text style={{ fontWeight: "bold", fontSize: 15 }}>
+                <Text
+                  style={{ fontSize: 15, fontFamily: "LexendDeca_500Medium" }}>
                   {status === "success" ? successHeader : failHeader}
                 </Text>
-                <Text style={{ fontSize: 12 }}>
+                <Text
+                  style={{ fontSize: 12, fontFamily: "LexendDeca_400Regular" }}>
                   {status === "success" ? successMessage : failMessage}
                 </Text>
               </View>
@@ -260,7 +262,8 @@ const Otp = ({ route }) => {
             style={{
               fontSize: 25,
               color: "#9D85F2",
-              fontWeight: "800",
+              fontFamily: "LexendDeca_600SemiBold",
+              textAlign: "center",
               paddingLeft: 25,
               paddingTop: 18,
               textAlign: "center",
@@ -271,7 +274,7 @@ const Otp = ({ route }) => {
             <Text
               style={{
                 fontSize: 15,
-                fontWeight: "600",
+                fontFamily: "LexendDeca_400Regular",
                 textAlign: "center",
               }}>
               Xin chào,
@@ -361,7 +364,7 @@ const Otp = ({ route }) => {
               marginVertical: 35,
               top: 10,
             }}>
-            <Text style={{ fontSize: 15, fontWeight: "600" }}>
+            <Text style={{ fontSize: 14, fontFamily: "LexendDeca_400Regular" }}>
               Bạn quên mã OTP?
             </Text>
             <TouchableOpacity
@@ -374,8 +377,8 @@ const Otp = ({ route }) => {
               <Text
                 style={{
                   color: "#9D85F2",
-                  fontSize: 15,
-                  fontWeight: "600",
+                  fontSize: 14,
+                  fontFamily: "LexendDeca_400Regular",
                 }}>
                 Xem tại đây.
               </Text>
@@ -389,15 +392,15 @@ const Otp = ({ route }) => {
               alignItems: "center",
               marginBottom: 30,
               marginHorizontal: 15,
-              paddingVertical: 17,
+              paddingVertical: 15,
               borderRadius: 30,
               backgroundColor: "#9796f0",
             }}>
             <Text
               style={{
-                fontSize: 18,
-                fontWeight: "600",
+                fontSize: 22,
                 color: "#ffffff",
+                fontFamily: "LexendDeca_400Regular",
               }}>
               Tiếp tục
             </Text>
@@ -427,6 +430,7 @@ const styles = StyleSheet.create({
     lineHeight: 23,
     fontSize: 13,
     textAlign: "center",
+    fontFamily: "LexendDeca_400Regular",
   },
   inputPart: {
     flexDirection: "row",
@@ -440,6 +444,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: 50,
     textAlign: "center",
+    fontFamily: "LexendDeca_400Regular",
   },
   //animated
   toastContainer: {
@@ -467,6 +472,7 @@ const styles = StyleSheet.create({
   toastText: {
     width: "70%",
     padding: 2,
+    fontFamily: "LexendDeca_500Medium",
   },
 });
 

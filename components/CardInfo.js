@@ -80,8 +80,8 @@ const CardInfo = () => {
                   : auth.ma_goi === "03"
                   ? "#5A54A5"
                   : auth.ma_goi === "04" && "#6A6A6A",
-              fontSize: 25,
-              fontWeight: "800",
+              fontSize: 22,
+              fontFamily: "LexendDeca_800ExtraBold",
               textAlign: "center",
               top: 10,
             }}>
@@ -160,8 +160,8 @@ const styles = StyleSheet.create({
     marginVertical: 1,
   },
   textContent: {
-    fontSize: 11,
-    fontWeight: "400",
+    fontSize: 12,
+    fontFamily: "LexendDeca_400Regular",
     textAlign: "center",
     marginTop: 5,
   },

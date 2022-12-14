@@ -111,7 +111,12 @@ const ManagementMember = () => {
             justifyContent: "space-between",
             alignItems: "center",
           }}>
-          <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
+          <Text
+            style={{
+              fontSize: 16,
+              color: "#826CCF",
+              fontFamily: "LexendDeca_600SemiBold",
+            }}>
             Chi tiết hội viên
           </Text>
           {refreshing && <Loading size="large" />}
@@ -163,9 +168,11 @@ const ManagementMember = () => {
 
                 <Text
                   style={{
-                    fontSize: 13,
-                    fontWeight: "600",
+                    fontSize: 15,
+                    fontFamily: "LexendDeca_600SemiBold",
                     marginVertical: 10,
+                    color: "#474747",
+                    opacity: 0.9,
                   }}>
                   {club.detailMember?.ten_kh}
                 </Text>
@@ -206,7 +213,7 @@ const ManagementMember = () => {
                           style={{ width: 10, height: 10 }}
                         />
                         <Text style={{ fontSize: 3, color: "#969696" }}>
-                          Gói vàng
+                          Gói hội viên
                         </Text>
                       </View>
                     </LinearGradient>
@@ -222,7 +229,7 @@ const ManagementMember = () => {
                             : club.detailMember.goi_thanh_vien === "04" &&
                               "#1f1f1f",
                         fontSize: 11,
-                        fontWeight: "500",
+                        fontFamily: "LexendDeca_500Medium",
                         marginHorizontal: 10,
                       }}>
                       {club.detailMember.goi_thanh_vien === "01"
@@ -292,8 +299,8 @@ const ManagementMember = () => {
                             <Text
                               style={{
                                 color: "#474747",
-                                fontSize: 14,
-                                fontWeight: "600",
+                                fontSize: 15,
+                                fontFamily: "LexendDeca_600SemiBold",
                               }}>
                               {item.ten_club}
                             </Text>
@@ -320,7 +327,7 @@ const ManagementMember = () => {
                                 <Text
                                   style={{
                                     fontSize: 10,
-                                    fontWeight: "600",
+                                    fontFamily: "LexendDeca_400Regular",
                                     color: "#139ECA",
                                   }}>
                                   {item.ds_thanh_vien.length} thành viên
@@ -343,7 +350,7 @@ const ManagementMember = () => {
                                 <Text
                                   style={{
                                     fontSize: 10,
-                                    fontWeight: "600",
+                                    fontFamily: "LexendDeca_400Regular",
                                     color: "#1D19D4",
                                   }}>
                                   {item.count_sukien} sự kiện
@@ -366,7 +373,7 @@ const ManagementMember = () => {
                                 <Text
                                   style={{
                                     fontSize: 10,
-                                    fontWeight: "600",
+                                    fontFamily: "LexendDeca_400Regular",
                                     color: "#F12247",
                                   }}>
                                   20 referrals
@@ -389,7 +396,7 @@ const ManagementMember = () => {
                                 <Text
                                   style={{
                                     fontSize: 10,
-                                    fontWeight: "600",
+                                    fontFamily: "LexendDeca_400Regular",
                                     color: "#058602",
                                   }}>
                                   20 TYFCBs
@@ -483,7 +490,7 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 14,
     color: "#474747",
-    fontWeight: "600",
+    fontFamily: "LexendDeca_600SemiBold",
     marginBottom: 7,
   },
   surface: {

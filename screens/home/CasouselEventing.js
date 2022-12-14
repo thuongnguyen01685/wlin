@@ -83,7 +83,7 @@ const CasouselEventing = (props) => {
               style={{
                 color: "#503F8A",
                 fontSize: 8,
-                fontWeight: "600",
+                fontFamily: "LexendDeca_600SemiBold",
                 textAlign: "center",
               }}>
               Tháng {formatDate(item.ngay_su_kien, "thang")}
@@ -99,11 +99,19 @@ const CasouselEventing = (props) => {
                 marginTop: 2,
               }}>
               <Text
-                style={{ color: "#503F8A", fontSize: 12, fontWeight: "600" }}>
+                style={{
+                  color: "#503F8A",
+                  fontSize: 12,
+                  fontFamily: "LexendDeca_600SemiBold",
+                }}>
                 {formatDate(item.ngay_su_kien, "ngay")}
               </Text>
               <Text
-                style={{ color: "#503F8A", fontSize: 10, fontWeight: "600" }}>
+                style={{
+                  color: "#503F8A",
+                  fontSize: 10,
+                  fontFamily: "LexendDeca_600SemiBold",
+                }}>
                 {formatDate(item.ngay_su_kien, "thu")}
               </Text>
             </View>
@@ -128,13 +136,13 @@ const CasouselEventing = (props) => {
 const styles = StyleSheet.create({
   textContent: {
     fontSize: 12,
-    fontWeight: "400",
+    fontFamily: "LexendDeca_400Regular",
     color: "#ffffff",
   },
   titleNews: {
     color: "#Ffffff",
     fontSize: 15,
-    fontWeight: "800",
+    fontFamily: "LexendDeca_600SemiBold",
     textAlign: "center",
     paddingHorizontal: 15,
     flexWrap: "wrap",

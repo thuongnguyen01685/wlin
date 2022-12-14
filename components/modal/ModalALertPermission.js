@@ -61,15 +61,19 @@ const ModalALertPermission = (props) => {
         </View>
         <View>
           <Text
-            style={{ fontSize: 18, fontWeight: "800", textAlign: "center" }}>
+            style={{
+              fontSize: 22,
+              fontFamily: "LexendDeca_600SemiBold",
+              textAlign: "center",
+            }}>
             Rất tiếc
           </Text>
           <Text
             style={{
-              fontSize: 12,
-              fontWeight: "600",
+              fontSize: 15,
               textAlign: "center",
               marginVertical: 20,
+              fontFamily: "LexendDeca_400Regular",
             }}>
             {props.content}
           </Text>
@@ -96,7 +100,14 @@ const ModalALertPermission = (props) => {
                 paddingHorizontal: 10,
               }}>
               <View style={styles.borderBacRounded}>
-                <Text style={{ color: "#ffffff" }}>Thoát ứng dụng</Text>
+                <Text
+                  style={{
+                    color: "#ffffff",
+                    fontFamily: "LexendDeca_400Regular",
+                    fontSize: 15,
+                  }}>
+                  Thoát ứng dụng
+                </Text>
               </View>
             </LinearGradient>
           </TouchableOpacity>
@@ -115,7 +126,8 @@ const styles = StyleSheet.create({
   },
   borderBacRounded: {
     paddingHorizontal: 20,
-    paddingVertical: 5,
+    paddingVertical: 8,
+    borderRadius: 15,
   },
 });
 

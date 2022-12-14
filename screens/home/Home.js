@@ -79,9 +79,6 @@ const Home = () => {
   const [searchIconColor, setSearchIconColor] = useState("#909090");
   const refSearchBox = useRef();
 
-  const openSearchBox = () => refSearchBox.current.open();
-  const closeSearchBox = () => refSearchBox.current.close();
-
   const backButtonHandler = () => {
     const shortToast = (message) => {
       Toast.show(message, {
@@ -275,9 +272,7 @@ const Home = () => {
               justifyContent: "space-between",
               alignItems: "center",
             }}>
-            <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
-              Thống kê
-            </Text>
+            <Text style={styles.headerTitle}>Thống kê</Text>
 
             {refreshing && <Loading size="large" />}
           </View>
@@ -310,12 +305,14 @@ const Home = () => {
               marginTop: 10,
               zIndex: 4,
             }}>
-            <Text style={{ fontSize: 15, fontWeight: "600", color: "#826CCF" }}>
-              Thông tin thành viên
-            </Text>
+            <Text style={styles.headerTitle}>Thông tin thành viên</Text>
             <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
               <Text
-                style={{ fontSize: 12, fontWeight: "400", color: "#909090" }}>
+                style={{
+                  fontSize: 12,
+                  fontFamily: "LexendDeca_400Regular",
+                  color: "#909090",
+                }}>
                 Xem chi tiết
               </Text>
             </TouchableOpacity>
@@ -352,14 +349,7 @@ const Home = () => {
                   alignItems: "center",
                   paddingHorizontal: 15,
                 }}>
-                <Text
-                  style={{
-                    fontSize: 15,
-                    fontWeight: "600",
-                    color: "#826CCF",
-                  }}>
-                  Sự kiện sắp diễn ra
-                </Text>
+                <Text style={styles.headerTitle}>Sự kiện sắp diễn ra</Text>
 
                 <TouchableOpacity
                   onPress={() => {
@@ -368,7 +358,7 @@ const Home = () => {
                   <Text
                     style={{
                       fontSize: 12,
-                      fontWeight: "400",
+                      fontFamily: "LexendDeca_400Regular",
                       color: "#909090",
                     }}>
                     Xem chi tiết
@@ -392,12 +382,7 @@ const Home = () => {
                   alignItems: "center",
                   paddingHorizontal: 15,
                 }}>
-                <Text
-                  style={{
-                    fontSize: 15,
-                    fontWeight: "600",
-                    color: "#826CCF",
-                  }}>
+                <Text style={styles.headerTitle}>
                   Danh sách chỉ số quyền lợi
                 </Text>
                 <TouchableOpacity
@@ -407,7 +392,7 @@ const Home = () => {
                   <Text
                     style={{
                       fontSize: 12,
-                      fontWeight: "400",
+                      fontFamily: "LexendDeca_400Regular",
                       color: "#909090",
                     }}>
                     Xem thêm
@@ -462,6 +447,11 @@ const styles = StyleSheet.create({
     width: "79%",
     marginLeft: 10,
     color: "#ffffff",
+  },
+  headerTitle: {
+    fontSize: 16,
+    color: "#826CCF",
+    fontFamily: "LexendDeca_600SemiBold",
   },
 });
 

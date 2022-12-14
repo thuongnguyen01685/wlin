@@ -58,19 +58,18 @@ const ModalNotify = (props) => {
   const handleChangeRead = async (_id, title, id_event) => {
     const token = await AsyncStorage.getItem("@token_key");
 
-    dispatch(getNotify(token));
-
     if (title === "chúc mừng bạn đã checkin thành công!" && id_event) {
-      await dispatch(changeIsReadAction(token, _id));
       navigation.navigate("DetailEvents", { _id: id_event });
-
+      await dispatch(changeIsReadAction(token, _id));
+      dispatch(getNotify(token));
       props.setModalVisible(false);
     } else if (
       title === "Chúc mừng bạn đã thanh toán thành công!" &&
       id_event
     ) {
-      await dispatch(changeIsReadAction(token, _id));
       navigation.navigate("DetailEvents", { _id: id_event });
+      await dispatch(changeIsReadAction(token, _id));
+      dispatch(getNotify(token));
       props.setModalVisible(false);
     } else {
       Alert.alert("Không tồn tại sự kiện này.");
@@ -115,9 +114,9 @@ const ModalNotify = (props) => {
         <View style={{ flexDirection: "row", justifyContent: "center" }}>
           <Text
             style={{
-              fontSize: 25,
-              color: "#826CCF",
-              fontWeight: "bold",
+              fontSize: 22,
+              color: "#000",
+              fontFamily: "LexendDeca_400Regular",
               textAlign: "center",
             }}>
             Thông báo
@@ -147,6 +146,7 @@ const ModalNotify = (props) => {
                     borderRadius: 20,
                     paddingHorizontal: 15,
                     paddingVertical: 5,
+                    fontFamily: "LexendDeca_400Regular",
                   }}>
                   Tất cả
                 </Text>
@@ -159,6 +159,7 @@ const ModalNotify = (props) => {
                     borderRadius: 20,
                     paddingHorizontal: 15,
                     paddingVertical: 5,
+                    fontFamily: "LexendDeca_400Regular",
                   }}>
                   Tất cả
                 </Text>
@@ -181,6 +182,7 @@ const ModalNotify = (props) => {
                     borderRadius: 20,
                     paddingHorizontal: 15,
                     paddingVertical: 5,
+                    fontFamily: "LexendDeca_400Regular",
                   }}>
                   Chưa đọc
                 </Text>
@@ -193,6 +195,7 @@ const ModalNotify = (props) => {
                     borderRadius: 20,
                     paddingHorizontal: 15,
                     paddingVertical: 5,
+                    fontFamily: "LexendDeca_400Regular",
                   }}>
                   Chưa đọc
                 </Text>
@@ -214,7 +217,11 @@ const ModalNotify = (props) => {
                   right: 0,
                 }}>
                 <Text
-                  style={{ color: "#fff", fontSize: 10, fontWeight: "400" }}>
+                  style={{
+                    color: "#fff",
+                    fontSize: 10,
+                    fontFamily: "LexendDeca_400Regular",
+                  }}>
                   {
                     notify.getNotify.filter((item) => item.read === false)
                       .length
@@ -279,11 +286,11 @@ const ModalNotify = (props) => {
                         <View>
                           <Text
                             style={{
-                              fontSize: 15,
+                              fontSize: 14,
                               color: "#000000",
-                              fontWeight: "bold",
                               opacity: item.read === false ? 1 : 0.5,
                               marginBottom: 3,
+                              fontFamily: "LexendDeca_600SemiBold",
                             }}>
                             {item.title}
                           </Text>
@@ -297,6 +304,7 @@ const ModalNotify = (props) => {
                                 fontSize: 13,
                                 color: "#C1C1C1",
                                 opacity: 0.9,
+                                fontFamily: "LexendDeca_300Light",
                               }}>
                               {moment(item.date_created).fromNow()}
                             </Text>
@@ -364,9 +372,9 @@ const ModalNotify = (props) => {
                         <View>
                           <Text
                             style={{
-                              fontSize: 15,
+                              fontSize: 14,
                               color: "#000000",
-                              fontWeight: "bold",
+                              fontFamily: "LexendDeca_600SemiBold",
                               opacity: 0.8,
                               marginBottom: 3,
                             }}>
@@ -382,6 +390,7 @@ const ModalNotify = (props) => {
                                 fontSize: 13,
                                 color: "#C1C1C1",
                                 opacity: 0.9,
+                                fontFamily: "LexendDeca_300Light",
                               }}>
                               {moment(item.date_created).fromNow()}
                             </Text>
@@ -413,7 +422,6 @@ const ModalNotify = (props) => {
             justifyContent: "center",
             alignContent: "center",
             alignItems: "center",
-
             top: 10,
           }}>
           <TouchableOpacity
@@ -428,7 +436,12 @@ const ModalNotify = (props) => {
               marginVertical: 5,
             }}
             onPress={() => props.setModalVisible(false)}>
-            <Text style={{ color: "#ffffff", fontWeight: "600", fontSize: 15 }}>
+            <Text
+              style={{
+                color: "#ffffff",
+                fontFamily: "LexendDeca_400Regular",
+                fontSize: 15,
+              }}>
               Đóng
             </Text>
           </TouchableOpacity>

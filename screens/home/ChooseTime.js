@@ -131,6 +131,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: "center",
     marginRight: 10,
+    fontFamily: "LexendDeca_400Regular",
   },
 });
 

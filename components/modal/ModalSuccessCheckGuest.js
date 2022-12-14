@@ -69,13 +69,17 @@ const ModalSuccessCheckGuest = (props) => {
           }}>
           <View>
             <Text
-              style={{ fontSize: 20, fontWeight: "800", textAlign: "center" }}>
+              style={{
+                fontSize: 22,
+                fontFamily: "LexendDeca_600SemiBold",
+                textAlign: "center",
+              }}>
               Chúc mừng
             </Text>
             <Text
               style={{
-                fontSize: 14,
-                fontWeight: "600",
+                fontSize: 15,
+                fontFamily: "LexendDeca_300Light",
                 textAlign: "center",
                 marginTop: 15,
               }}>
@@ -98,7 +102,12 @@ const ModalSuccessCheckGuest = (props) => {
                 width: "100%",
               }}>
               <Text
-                style={{ fontSize: 15, color: "#ffffff", textAlign: "center" }}>
+                style={{
+                  fontSize: 15,
+                  color: "#ffffff",
+                  textAlign: "center",
+                  fontFamily: "LexendDeca_400Regular",
+                }}>
                 Tiếp tục
               </Text>
             </TouchableOpacity>

@@ -110,7 +110,7 @@ const Login = () => {
             style={{
               color: "#ffffff",
               fontSize: 25,
-              fontWeight: "600",
+              fontFamily: "LexendDeca_600SemiBold",
               marginLeft: 15,
             }}>
             WLIN xin chào
@@ -147,14 +147,24 @@ const Login = () => {
             style={{
               fontSize: 25,
               color: "#9D85F2",
-              fontWeight: "800",
+              fontFamily: "LexendDeca_600SemiBold",
               textAlign: "center",
             }}>
             Đăng nhập
           </Text>
-          <View style={{ marginTop: 10 }}>
+          <View style={{ marginTop: 20 }}>
             <View style={{ flexDirection: "row", justifyContent: "center" }}>
               <PhoneInput
+                containerStyle={{ borderRadius: 10 }}
+                textInputStyle={{
+                  fontSize: 15,
+                  fontFamily: "LexendDeca_400Regular",
+                  height: 35,
+                }}
+                textContainerStyle={{
+                  borderRadius: 10,
+                }}
+                placeholder="Nhập số điện thoại."
                 ref={phoneInput}
                 defaultValue={value}
                 defaultCode="VN"
@@ -176,11 +186,24 @@ const Login = () => {
                 <></>
               ) : value === "" ? (
                 <Text
-                  style={{ fontSize: 10, color: "#FF0000", left: 15, top: 5 }}>
+                  style={{
+                    fontSize: 10,
+                    color: "#E51104",
+                    left: 15,
+                    top: 5,
+                    fontFamily: "LexendDeca_300Light",
+                  }}>
                   Vui lòng nhập đầy đủ số điện thoại
                 </Text>
               ) : (
-                <Text style={{ fontSize: 10, color: "#FF0000" }}>
+                <Text
+                  style={{
+                    top: 5,
+                    left: 15,
+                    fontSize: 10,
+                    color: "#E51104",
+                    fontFamily: "LexendDeca_300Light",
+                  }}>
                   Định dạng số chưa đúng.
                 </Text>
               )
@@ -202,7 +225,12 @@ const Login = () => {
                 onPress={() => setChecked(!checked)}
               />
 
-              <Text style={{ fontSize: 12, left: -15 }}>
+              <Text
+                style={{
+                  fontSize: 13,
+                  left: -15,
+                  fontFamily: "LexendDeca_400Regular",
+                }}>
                 Đồng ý với{" "}
                 <Text style={{ color: "#9D85F2" }}>điều khoản & điều kiện</Text>
               </Text>
@@ -217,14 +245,14 @@ const Login = () => {
               justifyContent: "center",
               marginTop: 20,
               backgroundColor: checked ? "#9796f0" : "#b2b2b2",
-              paddingVertical: 17,
+              paddingVertical: 15,
               borderRadius: 30,
             }}>
             <Text
               style={{
-                fontSize: 18,
-                fontWeight: "600",
+                fontSize: 22,
                 color: "#ffffff",
+                fontFamily: "LexendDeca_400Regular",
               }}>
               Tiếp tục
             </Text>
@@ -248,7 +276,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 50,
     borderTopLeftRadius: 50,
     paddingHorizontal: 30,
-    paddingVertical: 30,
+    paddingVertical: 25,
     top: 18,
   },
 });

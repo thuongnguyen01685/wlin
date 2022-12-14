@@ -46,13 +46,17 @@ const ModalFailCheck = (props) => {
           }}>
           <View>
             <Text
-              style={{ fontSize: 20, fontWeight: "800", textAlign: "center" }}>
+              style={{
+                fontSize: 22,
+                fontFamily: "LexendDeca_600SemiBold",
+                textAlign: "center",
+              }}>
               Rất tiếc
             </Text>
             <Text
               style={{
-                fontSize: 12,
-                fontWeight: "600",
+                fontSize: 15,
+                fontFamily: "LexendDeca_400Regular",
                 textAlign: "center",
                 marginVertical: 20,
               }}>
@@ -75,7 +79,12 @@ const ModalFailCheck = (props) => {
                 width: "100%",
               }}>
               <View style={styles.borderBacRounded}>
-                <Text style={{ color: "#ffffff", textAlign: "center" }}>
+                <Text
+                  style={{
+                    color: "#ffffff",
+                    textAlign: "center",
+                    fontFamily: "LexendDeca_400Regular",
+                  }}>
                   Thử lại
                 </Text>
               </View>

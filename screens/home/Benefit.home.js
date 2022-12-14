@@ -55,7 +55,12 @@ const BenefitHome = ({ item }) => {
           />
         )}
 
-        <Text style={{ fontSize: 14, fontWeight: "600", marginLeft: 5 }}>
+        <Text
+          style={{
+            fontSize: 13,
+            fontFamily: "LexendDeca_500Medium",
+            marginLeft: 5,
+          }}>
           Tên hội viên: {item?.user?.ten_kh}
         </Text>
       </View>
@@ -69,7 +74,7 @@ const BenefitHome = ({ item }) => {
         <Text
           style={{
             fontSize: 11,
-            fontWeight: "500",
+            fontFamily: "LexendDeca_400Regular",
             width: "70%",
             textAlign: "justify",
 

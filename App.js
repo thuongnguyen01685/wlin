@@ -3,6 +3,18 @@ import Navigator from "./navigation/Navigator";
 import { store } from "./redux/store";
 import * as Updates from "expo-updates";
 import { Alert } from "react-native";
+import {
+  useFonts,
+  LexendDeca_100Thin,
+  LexendDeca_200ExtraLight,
+  LexendDeca_300Light,
+  LexendDeca_400Regular,
+  LexendDeca_500Medium,
+  LexendDeca_600SemiBold,
+  LexendDeca_700Bold,
+  LexendDeca_800ExtraBold,
+  LexendDeca_900Black,
+} from "@expo-google-fonts/lexend-deca";
 
 export default function App() {
   Updates.checkForUpdateAsync().then((update) => {
@@ -25,6 +37,20 @@ export default function App() {
       });
     }
   });
+  let [fontsLoaded] = useFonts({
+    LexendDeca_100Thin,
+    LexendDeca_200ExtraLight,
+    LexendDeca_300Light,
+    LexendDeca_400Regular,
+    LexendDeca_500Medium,
+    LexendDeca_600SemiBold,
+    LexendDeca_700Bold,
+    LexendDeca_800ExtraBold,
+    LexendDeca_900Black,
+  });
+  if (!fontsLoaded) {
+    return null;
+  }
   return (
     <Provider store={store}>
       <Navigator />

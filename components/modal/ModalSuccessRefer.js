@@ -57,16 +57,16 @@ const ModalSuccessRefer = (props) => {
             <View>
               <Text
                 style={{
-                  fontSize: 20,
-                  fontWeight: "800",
+                  fontSize: 22,
+                  fontFamily: "LexendDeca_600SemiBold",
                   textAlign: "center",
                 }}>
                 Chúc mừng
               </Text>
               <Text
                 style={{
-                  fontSize: 14,
-                  fontWeight: "600",
+                  fontSize: 15,
+                  fontFamily: "LexendDeca_400Regular",
                   textAlign: "center",
                   marginTop: 10,
                 }}>
@@ -93,7 +93,12 @@ const ModalSuccessRefer = (props) => {
                   width: "100%",
                 }}>
                 <View style={styles.borderBacRounded}>
-                  <Text style={{ color: "#ffffff", textAlign: "center" }}>
+                  <Text
+                    style={{
+                      color: "#ffffff",
+                      textAlign: "center",
+                      fontFamily: "LexendDeca_400Regular",
+                    }}>
                     Tiếp tục
                   </Text>
                 </View>

@@ -59,8 +59,8 @@ const ModalPayment = (props) => {
             <View>
               <Text
                 style={{
-                  fontSize: 20,
-                  fontWeight: "800",
+                  fontSize: 22,
+                  fontFamily: "LexendDeca_600SemiBold",
                   textAlign: "center",
                 }}>
                 Chúc mừng
@@ -68,7 +68,7 @@ const ModalPayment = (props) => {
               <Text
                 style={{
                   fontSize: 14,
-                  fontWeight: "600",
+                  fontFamily: "LexendDeca_400Regular",
                   textAlign: "center",
                   color: "#474747",
                   marginTop: 15,
@@ -93,7 +93,12 @@ const ModalPayment = (props) => {
                   width: "100%",
                 }}>
                 <View style={styles.borderBacRounded}>
-                  <Text style={{ color: "#ffffff", textAlign: "center" }}>
+                  <Text
+                    style={{
+                      color: "#ffffff",
+                      textAlign: "center",
+                      fontFamily: "LexendDeca_400Regular",
+                    }}>
                     {props.textButton}
                   </Text>
                 </View>

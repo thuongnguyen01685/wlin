@@ -13,6 +13,7 @@ import {
   Dimensions,
   TextInput,
 } from "react-native";
+
 import { useDispatch, useSelector } from "react-redux";
 import HeaderPart from "../../components/HeaderPart/HeaderPart";
 import Loading from "../../components/loading/Loading";
@@ -229,7 +230,7 @@ const PayBenefit = () => {
             justifyContent: "space-between",
             alignItems: "center",
           }}>
-          <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
+          <Text style={styles.headerTitle}>
             Danh sách chỉ số quyền lợi chưa trả
           </Text>
         </View>
@@ -359,6 +360,11 @@ const styles = StyleSheet.create({
     width: "79%",
     marginLeft: 10,
     color: "#ffffff",
+  },
+  headerTitle: {
+    fontSize: 16,
+    color: "#826CCF",
+    fontFamily: "LexendDeca_600SemiBold",
   },
 });
 

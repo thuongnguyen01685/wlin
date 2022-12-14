@@ -516,9 +516,7 @@ const ListPaticipant = () => {
             justifyContent: "space-between",
             alignItems: "center",
           }}>
-          <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
-            Danh sách người tham gia
-          </Text>
+          <Text style={styles.headerTitle}>Danh sách người tham gia</Text>
         </View>
       </View>
 
@@ -567,6 +565,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#ffffff",
+  },
+  headerTitle: {
+    fontSize: 16,
+    color: "#826CCF",
+    fontFamily: "LexendDeca_600SemiBold",
   },
   contentHeader: {
     color: "#000",

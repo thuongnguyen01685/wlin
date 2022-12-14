@@ -137,16 +137,16 @@ const Wellcome = () => {
               flexDirection: "row",
               justifyContent: "center",
               backgroundColor: "#9796f0",
-              paddingVertical: 17,
+              paddingVertical: 15,
               marginHorizontal: 15,
               borderRadius: 30,
               width: "90%",
             }}>
             <Text
               style={{
-                fontSize: 18,
-                fontWeight: "700",
+                fontSize: 22,
                 color: "#ffffff",
+                fontFamily: "LexendDeca_400Regular",
               }}>
               Tiếp tục
             </Text>
@@ -163,13 +163,14 @@ const styles = StyleSheet.create({
     fontSize: 13,
     marginTop: 10,
     textAlign: "center",
-    lineHeight: 23,
+    lineHeight: 20,
+    fontFamily: "LexendDeca_400Regular",
   },
   title: {
     color: COLORS.purple,
-    fontSize: 25,
-    fontWeight: "bold",
-    marginTop: 20,
+    fontSize: 30,
+    fontFamily: "LexendDeca_600SemiBold",
+    marginTop: 18,
     textAlign: "center",
   },
 

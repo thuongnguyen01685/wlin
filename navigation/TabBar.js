@@ -11,7 +11,7 @@ import Club from "../screens/clup/Club";
 import Events from "../screens/events/Events";
 import DetailEvents from "../screens/events/DetailEvents";
 import CheckQR from "../screens/events/CheckQR";
-import CheckImage from "../screens/events/CheckImage";
+
 import Slips from "../screens/slips/Slips";
 import CreateRefer from "../screens/slips/CreateRefer";
 import Other from "../screens/other/Other";
@@ -23,7 +23,7 @@ import UpgradeMember from "../screens/other/UpgradeMember";
 import { useSelector } from "react-redux";
 import ListPaticipant from "../screens/events/ListParticipant";
 import ConfirmPayment from "../screens/events/ConfirmPayment";
-import UpdateEvent from "../screens/events/UpdateEvent";
+
 import ReportExcel from "../screens/events/ReportExcel";
 import ListMember from "../screens/other/ListMember";
 import ManagementMember from "../screens/other/ManagementMember";
@@ -80,11 +80,7 @@ function EventsScreen() {
         component={CheckQR}
         options={{ headerShown: false }}
       />
-      <Stack.Screen
-        name="CheckImage"
-        component={CheckImage}
-        options={{ headerShown: false }}
-      />
+
       <Stack.Screen
         name="ListParticipant"
         component={ListPaticipant}
@@ -95,11 +91,7 @@ function EventsScreen() {
         component={ConfirmPayment}
         options={{ headerShown: false }}
       />
-      <Stack.Screen
-        name="UpdateEvent"
-        component={UpdateEvent}
-        options={{ headerShown: false }}
-      />
+
       <Stack.Screen
         name="ReportExcel"
         component={ReportExcel}

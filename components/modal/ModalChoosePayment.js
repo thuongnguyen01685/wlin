@@ -79,8 +79,8 @@ const ModalChoosePayment = (props) => {
             <View>
               <Text
                 style={{
-                  fontSize: 20,
-                  fontWeight: "800",
+                  fontSize: 22,
+                  fontFamily: "LexendDeca_600SemiBold",
                   textAlign: "center",
                 }}>
                 Phương thức thanh toán
@@ -103,6 +103,7 @@ const ModalChoosePayment = (props) => {
                       backgroundColor: "#F7F8FB",
                       borderRadius: 10,
                     }}
+                    textStyle={{ fontFamily: "LexendDeca_400Regular" }}
                   />
                 </View>
                 <View
@@ -121,6 +122,7 @@ const ModalChoosePayment = (props) => {
                       backgroundColor: "#F7F8FB",
                       borderRadius: 10,
                     }}
+                    textStyle={{ fontFamily: "LexendDeca_400Regular" }}
                   />
                 </View>
               </View>
@@ -141,7 +143,12 @@ const ModalChoosePayment = (props) => {
                   width: "100%",
                 }}>
                 <View style={styles.borderBacRounded}>
-                  <Text style={{ color: "#ffffff", textAlign: "center" }}>
+                  <Text
+                    style={{
+                      color: "#ffffff",
+                      textAlign: "center",
+                      fontFamily: "LexendDeca_400Regular",
+                    }}>
                     Thanh toán
                   </Text>
                 </View>

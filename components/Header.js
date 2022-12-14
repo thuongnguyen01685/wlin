@@ -158,8 +158,8 @@ const Header = (props) => {
               <Text
                 style={{
                   color: props.color ? props.color : "#FFFFFF",
-                  fontSize: 15,
-                  fontWeight: "400",
+                  fontSize: 14,
+                  fontFamily: "LexendDeca_400Regular",
                 }}>
                 Chào buổi sáng
               </Text>
@@ -167,8 +167,8 @@ const Header = (props) => {
             <Text
               style={{
                 color: props.color ? props.color : "#FFFFFF",
-                fontSize: 22,
-                fontWeight: "600",
+                fontSize: 20,
+                fontFamily: "LexendDeca_500Medium",
               }}>
               {auth.profile.name}
             </Text>
@@ -213,7 +213,7 @@ const Header = (props) => {
                       fontSize: 8,
                       paddingHorizontal: notify.getNotify.length > 9 ? 2 : 4,
                       color: "#ffffff",
-                      fontWeight: "600",
+                      fontFamily: "LexendDeca_600SemiBold",
                     }}>
                     {notify.getNotify.filter((item) => item.read === false)
                       .length > 9

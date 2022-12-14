@@ -145,9 +145,7 @@ const EditBoard = ({ route }) => {
             marginLeft: 10,
             alignItems: "center",
           }}>
-          <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
-            Chỉnh sửa thông tin
-          </Text>
+          <Text style={styles.headerTitle}>Chỉnh sửa thông tin</Text>
 
           {refreshing && <Loading size="large" />}
         </View>
@@ -292,6 +290,8 @@ const EditBoard = ({ route }) => {
                     marginHorizontal: 20,
                     fontSize: 12,
                     color: "#474747",
+                    width: "90%",
+                    fontFamily: "LexendDeca_400Regular",
                   }}
                   onChangeText={setCDDD}
                   value={CDDD}
@@ -311,6 +311,7 @@ const EditBoard = ({ route }) => {
                     fontSize: 12,
                     color: "#474747",
                     width: "90%",
+                    fontFamily: "LexendDeca_400Regular",
                   }}
                   onChangeText={setDescription}
                   value={description}
@@ -352,11 +353,11 @@ const EditBoard = ({ route }) => {
                   }}>
                   <Text
                     style={{
-                      fontSize: 12,
+                      fontSize: 15,
                       color: "#ffffff",
                       textAlign: "center",
                       width: "100%",
-                      fontWeight: "600",
+                      fontFamily: "LexendDeca_400Regular",
                     }}>
                     Lưu
                   </Text>
@@ -376,6 +377,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
   },
+  headerTitle: {
+    fontSize: 16,
+    color: "#826CCF",
+    fontFamily: "LexendDeca_600SemiBold",
+  },
   contentHeader: {
     color: "#000",
     fontSize: 12,
@@ -389,7 +395,8 @@ const styles = StyleSheet.create({
   headerName: {
     color: "#474747",
     fontSize: 14,
-    fontWeight: "600",
+    fontFamily: "LexendDeca_600SemiBold",
+    opacity: 0.7,
   },
   cardContainer: {
     marginBottom: 5,
@@ -410,18 +417,6 @@ const styles = StyleSheet.create({
     elevation: 5,
     borderRadius: 8,
   },
-  input: {
-    height: 25,
-    width: "100%",
-    color: "rgba(71, 71, 71, 0.3)",
-    fontSize: 11,
-    marginHorizontal: 20,
-  },
-  textInput: {
-    color: "#474747",
-    fontSize: 11,
-    fontWeight: "500",
-  },
 
   ///drop select
   dropdown1BtnStyle: {
@@ -432,13 +427,21 @@ const styles = StyleSheet.create({
     width: w * 0.86,
     marginTop: 10,
   },
-  dropdown1BtnTxtStyle: { color: "#474747", fontSize: 15 },
+  dropdown1BtnTxtStyle: {
+    color: "#474747",
+    fontSize: 15,
+    fontFamily: "LexendDeca_400Regular",
+  },
   dropdown1DropdownStyle: { backgroundColor: "#EFEFEF", borderRadius: 15 },
   dropdown1RowStyle: {
     backgroundColor: "#EFEFEF",
     borderBottomColor: "#C5C5C5",
   },
-  dropdown1RowTxtStyle: { color: "#474747", textAlign: "left" },
+  dropdown1RowTxtStyle: {
+    color: "#474747",
+    textAlign: "left",
+    fontFamily: "LexendDeca_400Regular",
+  },
 });
 
 //make this component available to the app
