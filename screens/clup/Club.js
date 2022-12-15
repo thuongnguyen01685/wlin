@@ -1476,6 +1476,7 @@ const Club = () => {
                     borderBottomWidth: 0.5,
                     flexDirection: "row",
                     alignItems: "center",
+                    width: w * 0.65,
                   }}
                   onPress={() => handleDetailClub(item._id)}>
                   <Image
@@ -1669,6 +1670,7 @@ const styles = StyleSheet.create({
     borderColor: "#f8f8f8",
     paddingHorizontal: 15,
     paddingBottom: 10,
+    height: height * 0.5,
   },
 });
 

@@ -57,7 +57,9 @@ const Chart = () => {
 
   useEffect(() => {
     const dueTimeDay = moment(toTime).diff(moment(fromTime), "M");
-    if (dueTimeDay <= 3) {
+    const dueTimeDate = moment(toTime).diff(moment(fromTime), "d");
+
+    if (dueTimeDay <= 3 && dueTimeDate >= 0) {
       dispatch(
         eventChartAction(
           auth,
@@ -68,7 +70,7 @@ const Chart = () => {
     } else {
       Alert.alert(
         "Thông báo",
-        "Vui lòng chọn thời gian không vượt quá 3 tháng.",
+        "Vui lòng chọn thời gian không vượt quá 3 tháng và có ngày kết thúc lớn hơn ngày bắt đầu.",
         [{ text: "Quay lại" }]
       );
     }

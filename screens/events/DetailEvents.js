@@ -725,29 +725,30 @@ const DetailEvents = ({ route }, props) => {
                     </TouchableOpacity>
                   )}
 
-                  {auth.permission.group_id === Admin && (
-                    <TouchableOpacity
-                      onPress={() => {
-                        setModalSuccess(true);
-                      }}>
-                      <LinearGradient
-                        start={{ x: 0, y: 0.3 }}
-                        end={{ x: 1, y: 1 }}
-                        colors={["#9D85F2", "rgba(157, 133, 242, 0.4)"]}
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          alignContent: "center",
-                          alignItems: "center",
-                          borderRadius: 20,
-                          marginRight: 10,
+                  {auth.permission.group_id === Admin &&
+                    event.detailEvent.trang_thai !== "1" && (
+                      <TouchableOpacity
+                        onPress={() => {
+                          setModalSuccess(true);
                         }}>
-                        <View style={styles.buttonEx}>
-                          <Text style={styles.buttonText}>Thanh toán</Text>
-                        </View>
-                      </LinearGradient>
-                    </TouchableOpacity>
-                  )}
+                        <LinearGradient
+                          start={{ x: 0, y: 0.3 }}
+                          end={{ x: 1, y: 1 }}
+                          colors={["#9D85F2", "rgba(157, 133, 242, 0.4)"]}
+                          style={{
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            alignContent: "center",
+                            alignItems: "center",
+                            borderRadius: 20,
+                            marginRight: 10,
+                          }}>
+                          <View style={styles.buttonEx}>
+                            <Text style={styles.buttonText}>Thanh toán</Text>
+                          </View>
+                        </LinearGradient>
+                      </TouchableOpacity>
+                    )}
                   {(auth.permission.group_id === Admin ||
                     auth.permission.group_id === Partner) && (
                     <TouchableOpacity

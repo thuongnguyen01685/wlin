@@ -55,23 +55,27 @@ export const getDetailBenefit = (_id, token) => async (dispatch) => {
   }
 };
 
-export const getMemberAction = (token, array) => async (dispatch) => {
-  try {
-    let condition = {
-      ma_kh: { $in: array },
-    };
+export const getMemberAction =
+  (token, array, page, search) => async (dispatch) => {
+    try {
+      let condition = {
+        $and: [
+          { ma_kh: { $in: array } },
+          { ten_kh: { $regex: search, $options: "i" } },
+        ],
+      };
 
-    condition = JSON.stringify(condition);
-    const res = await callApis(
-      `customer_wlin?access_token=${token}&q=${condition}`
-    );
+      condition = JSON.stringify(condition);
+      const res = await callApis(
+        `customer_wlin?access_token=${token}&q=${condition}&limit=10&page=${page}`
+      );
 
-    dispatch({ type: CLUB.GETMEMBER, payload: res.data });
-    return res.data;
-  } catch (error) {
-    console.log(error);
-  }
-};
+      dispatch({ type: CLUB.GETMEMBER, payload: res.data });
+      return res.data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
 export const getDetailMember = (ma_kh, token) => async (dispatch) => {
   try {

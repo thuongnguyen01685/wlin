@@ -14,6 +14,8 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Platform,
+  FlatList,
+  Image,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import HeaderPart from "../../../../components/HeaderPart/HeaderPart";
@@ -27,6 +29,7 @@ import {
 } from "../../../../redux/actions/ClupAction";
 import SelectDropdown from "react-native-select-dropdown";
 import { LinearGradient } from "expo-linear-gradient";
+import { URL } from "../../../../utils/fetchApi";
 
 // create a component
 const w = Dimensions.get("window").width;
@@ -41,9 +44,7 @@ const EditBoard = ({ route }) => {
 
   const dispatch = useDispatch();
   const { auth, club } = useSelector((state) => state);
-
   const [refreshing, setRefreshing] = useState(false);
-
   const infoBoard = club.detailClub.quan_tri.filter(
     (item) => item._id === route.params.id_board
   )[0];
@@ -57,6 +58,10 @@ const EditBoard = ({ route }) => {
   const [chucvu, setChucvu] = useState(infoBoard.chuc_vu);
   const [CDDD, setCDDD] = useState(infoBoard.chuc_vu2);
   const [description, setDescription] = useState(infoBoard.dien_giai);
+  const [position, setPosition] = useState("");
+  const [showResult, setShowResult] = useState(false);
+  const [data, setData] = useState([]);
+  const [nameHV, setNameHV] = useState(infoBoard.ten_kh);
 
   const listBoard = {
     ...infoBoard,
@@ -73,6 +78,26 @@ const EditBoard = ({ route }) => {
 
   const putQuantri = [...DiffBoard, listBoard];
 
+  useEffect(() => {
+    setRefreshing(true);
+    async function it() {
+      const res = await dispatch(getCLub(auth, 1, auth.permission.group_id));
+      const arrMember = res
+        ?.flatMap((items) => items.ds_thanh_vien.map((item) => item.ma_kh))
+        .filter((item, index, arr) => {
+          const itemIndex = arr.findIndex((it) => it === item);
+          return itemIndex === index;
+        });
+      const reListMe = await dispatch(
+        getMemberAction(auth.token, arrMember, 1, position)
+      );
+
+      setData([...data, ...reListMe]);
+    }
+    it();
+    setRefreshing(false);
+  }, [position]);
+
   const onRefresh = () => {
     setRefreshing(true);
     dispatch(getDmchucvu());
@@ -84,8 +109,10 @@ const EditBoard = ({ route }) => {
           const itemIndex = arr.findIndex((it) => it === item);
           return itemIndex === index;
         });
-      const reListMe = await dispatch(getMemberAction(auth.token, arrMember));
-      setHoiVien(reListMe);
+      const reListMe = await dispatch(
+        getMemberAction(auth.token, arrMember, 1, position)
+      );
+      setData([...data, ...reListMe]);
     }
     it();
     wait(1000).then(() => setRefreshing(false));
@@ -153,13 +180,14 @@ const EditBoard = ({ route }) => {
       <View style={{ height: "100%" }}>
         <ScrollView
           showsVerticalScrollIndicator={false}
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={onRefresh}
-              colors={["#9D85F2", "green", "blue"]}
-            />
-          }>
+          // refreshControl={
+          //   <RefreshControl
+          //     refreshing={refreshing}
+          //     onRefresh={onRefresh}
+          //     colors={["#9D85F2", "green", "blue"]}
+          //   />
+          // }
+        >
           <KeyboardAvoidingView
             style={{
               marginBottom: "70%",
@@ -168,7 +196,7 @@ const EditBoard = ({ route }) => {
               flex: 1,
             }}
             behavior={"position"}
-            keyboardVerticalOffset={Platform.OS === "ios" ? 200 : 240}>
+            keyboardVerticalOffset={Platform.OS === "ios" ? h * 0.1 : h * 0.1}>
             {/* ten nhiem ki */}
             <View style={styles.cardContainer}>
               <Text style={styles.headerName}>Tên nhiệm kì(*)</Text>
@@ -213,7 +241,120 @@ const EditBoard = ({ route }) => {
             <View style={styles.cardContainer}>
               <Text style={styles.headerName}>Hội viên(*)</Text>
 
-              <SelectDropdown
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  backgroundColor: "#f8f8f8",
+                  borderRadius: 10,
+                  marginVertical: 10,
+                  justifyContent: "center",
+                }}>
+                <TextInput
+                  style={styles.input}
+                  onChangeText={(text) => {
+                    setData([]);
+                    setPosition(text);
+                  }}
+                  value={position}
+                  placeholder={nameHV}
+                />
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: "#f8f8f8",
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    paddingVertical: 8,
+                    paddingHorizontal: 5,
+                    top: 0.1,
+                  }}
+                  onPress={() => setShowResult(!showResult)}>
+                  <Ionicons name="caret-down-outline" size={18} />
+                </TouchableOpacity>
+              </View>
+              {(showResult || position !== "") && (
+                <View
+                  style={{
+                    backgroundColor: "#efefef",
+                    position: "absolute",
+                    zIndex: 5,
+                    top: h * 0.1,
+                    borderRadius: 10,
+                    height: h * 0.3,
+                    paddingHorizontal: 10,
+                    width: w * 0.8,
+                  }}>
+                  <View
+                    style={{
+                      borderColor: "#826CCF",
+                      marginTop: 10,
+                      marginBottom: 10,
+                    }}>
+                    <Text
+                      style={{
+                        fontSize: 13,
+                        fontWeight: "400",
+                        color: "#826CCF",
+                        fontFamily: "LexendDeca_300Light",
+                      }}>
+                      Chọn thành viên bên dưới.
+                    </Text>
+                  </View>
+
+                  <ScrollView>
+                    {data.map((item, index) => (
+                      <TouchableOpacity
+                        key={index}
+                        style={{
+                          paddingVertical: 5,
+                          borderBottomWidth: 0.5,
+                          flexDirection: "row",
+                          alignItems: "center",
+                          width: w * 0.65,
+                        }}
+                        onPress={() => {
+                          setMaHV(item.ma_kh);
+                          setNameHV(item.ten_kh);
+                          setPosition("");
+                          setShowResult(false);
+                        }}>
+                        <Image
+                          source={
+                            item.hinh_anh
+                              ? { uri: `${URL}${item.hinh_anh}` }
+                              : require("../../../../assets/avtUser.png")
+                          }
+                          style={{
+                            width: w * 0.1,
+                            height: w * 0.1,
+                            resizeMode: "contain",
+                            borderRadius: 5,
+                          }}
+                        />
+                        <Text
+                          style={{
+                            fontSize: 14,
+                            fontWeight: "600",
+                            color: "#474747",
+                            marginLeft: 10,
+                            fontFamily: "LexendDeca_500Medium",
+                          }}>
+                          {item.ten_kh}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </ScrollView>
+                </View>
+              )}
+            </View>
+
+            {/* chuc danh  */}
+
+            <View style={styles.cardContainer}>
+              <Text style={styles.headerName}>Chức danh(*)</Text>
+
+              {/* <SelectDropdown
                 data={club.getMember}
                 onSelect={(selectedItem, index) => {
                   setMaHV(selectedItem.ma_kh);
@@ -242,13 +383,7 @@ const EditBoard = ({ route }) => {
                     />
                   );
                 }}
-              />
-            </View>
-
-            {/* chuc danh  */}
-            <View style={styles.cardContainer}>
-              <Text style={styles.headerName}>Chức danh(*)</Text>
-
+              /> */}
               <SelectDropdown
                 data={club.dmchucvu}
                 onSelect={(selectedItem, index) => {
@@ -280,14 +415,13 @@ const EditBoard = ({ route }) => {
                 }}
               />
             </View>
-
             {/* chuc danh day du */}
             <View style={styles.cardContainer}>
               <Text style={styles.headerName}>Chức danh đầy đủ</Text>
               <View style={styles.card}>
                 <TextInput
                   style={{
-                    marginHorizontal: 20,
+                    marginHorizontal: 15,
                     fontSize: 12,
                     color: "#474747",
                     width: "90%",
@@ -307,7 +441,7 @@ const EditBoard = ({ route }) => {
               <View style={styles.card}>
                 <TextInput
                   style={{
-                    marginHorizontal: 20,
+                    marginHorizontal: 15,
                     fontSize: 12,
                     color: "#474747",
                     width: "90%",
@@ -431,6 +565,8 @@ const styles = StyleSheet.create({
     color: "#474747",
     fontSize: 15,
     fontFamily: "LexendDeca_400Regular",
+    textAlign: "left",
+    opacity: 0.6,
   },
   dropdown1DropdownStyle: { backgroundColor: "#EFEFEF", borderRadius: 15 },
   dropdown1RowStyle: {
@@ -440,6 +576,16 @@ const styles = StyleSheet.create({
   dropdown1RowTxtStyle: {
     color: "#474747",
     textAlign: "left",
+    fontFamily: "LexendDeca_400Regular",
+  },
+  //
+  input: {
+    height: 40,
+    backgroundColor: "#f8f8f8",
+    paddingHorizontal: 10,
+    width: "90%",
+    borderTopLeftRadius: 10,
+    borderBottomLeftRadius: 10,
     fontFamily: "LexendDeca_400Regular",
   },
 });

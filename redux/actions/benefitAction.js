@@ -26,25 +26,28 @@ export const getBenefitAction = (token, email) => async (dispatch) => {
   }
 };
 
-export const getBenefitManagemant = (token, arrMember) => async (dispatch) => {
-  try {
-    let condition = {
-      $and: [
-        { ma_kh: { $in: arrMember } },
-        { trang_thai: { $nin: ["1", "2"] } },
-      ],
-    };
-    condition = JSON.stringify(condition);
-    const res = await callApis(
-      `dsquyenloi?access_token=${token}&q=${condition}&limit=1000`
-    );
+export const getBenefitManagemant =
+  (token, arrMember, page, search) => async (dispatch) => {
+    try {
+      let condition = {
+        $and: [
+          { ma_kh: { $in: arrMember } },
+          { trang_thai: { $nin: ["1", "2"] } },
+          { ten_quyen_loi: { $regex: search, $options: "i" } },
+        ],
+      };
 
-    dispatch({ type: BENEFIT.BENEFITMANAGEMENT, payload: res.data });
-    return res.data;
-  } catch (error) {
-    console.log(error);
-  }
-};
+      condition = JSON.stringify(condition);
+      const res = await callApis(
+        `dsquyenloi?access_token=${token}&q=${condition}&limit=10&page=${page}`
+      );
+
+      dispatch({ type: BENEFIT.BENEFITMANAGEMENT, payload: res.data });
+      return res.data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
 export const getBenefitMember = (token, ma_kh) => async (dispatch) => {
   try {

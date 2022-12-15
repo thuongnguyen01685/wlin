@@ -314,7 +314,7 @@ const Profile = () => {
                           paddingHorizontal:
                             notify.getNotify.length > 9 ? 2 : 4,
                           color: "#ffffff",
-                          fontWeight: "600",
+                          fontFamily: "LexendDeca_600SemiBold",
                         }}>
                         {notify.getNotify.filter((item) => item.read === false)
                           .length > 9
@@ -412,7 +412,7 @@ const Profile = () => {
                 style={{
                   color: "#ffffff",
                   fontSize: 18,
-                  fontWeight: "600",
+                  fontFamily: "LexendDeca_600SemiBold",
                   textAlign: "center",
                 }}>
                 {auth.profile.name}
@@ -450,7 +450,11 @@ const Profile = () => {
                 alignItems: "center",
               }}>
               <Text
-                style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
+                style={{
+                  fontSize: 16,
+                  color: "#826CCF",
+                  fontFamily: "LexendDeca_600SemiBold",
+                }}>
                 Thông tin quản trị viên
               </Text>
 

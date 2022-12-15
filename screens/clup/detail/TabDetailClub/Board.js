@@ -45,7 +45,7 @@ const Board = (props) => {
           const itemIndex = arr.findIndex((it) => it === item);
           return itemIndex === index;
         });
-      await dispatch(getMemberAction(auth.token, arrMember));
+      await dispatch(getMemberAction(auth.token, arrMember, 1, ""));
     }
     it();
   }, []);
