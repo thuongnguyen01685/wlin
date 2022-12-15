@@ -69,8 +69,6 @@ const Home = () => {
 
   //search
   const [search, setSearch] = useState("");
-  const [filteredDataSource, setFilteredDataSource] = useState([]);
-  const [masterDataSource, setMasterDataSource] = useState([]);
 
   const animatedValue = useRef(new Animated.Value(0)).current;
   const { auth, notify, event, club, benefit } = useSelector((state) => state);
@@ -115,14 +113,13 @@ const Home = () => {
           const itemIndex = arr.findIndex((it) => it === item);
           return itemIndex === index;
         });
-
-      const reBe = await dispatch(getBenefitManagemant(auth.token, arrMember));
-      setFilteredDataSource(reBe);
-      setMasterDataSource(reBe);
+      const reBe = await dispatch(
+        getBenefitManagemant(auth.token, arrMember, 1, search)
+      );
       setRefreshing(false);
     }
     it();
-  }, [dispatch, auth.profile.email, auth.permission.group_id]);
+  }, [dispatch, auth.profile.email, auth.permission.group_id, search]);
 
   useEffect(() => {
     if (backHome === false) {
@@ -132,23 +129,6 @@ const Home = () => {
       BackHandler.removeEventListener("hardwareBackPress", backButtonHandler);
     };
   }, [backHome]);
-
-  const searchFilterFunction = (text) => {
-    if (text) {
-      const newData = masterDataSource.filter(function (item) {
-        const itemData = item.ten_quyen_loi
-          ? item.ten_quyen_loi.toUpperCase()
-          : "".toUpperCase();
-        const textData = text.toUpperCase();
-        return itemData.indexOf(textData) > -1;
-      });
-      setFilteredDataSource(newData);
-      setSearch(text);
-    } else {
-      setFilteredDataSource(masterDataSource);
-      setSearch(text);
-    }
-  };
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -169,10 +149,9 @@ const Home = () => {
           const itemIndex = arr.findIndex((it) => it === item);
           return itemIndex === index;
         });
-      const reBe = await dispatch(getBenefitManagemant(auth.token, arrMember));
-
-      setFilteredDataSource(reBe);
-      setMasterDataSource(reBe);
+      const reBe = await dispatch(
+        getBenefitManagemant(auth.token, arrMember, 1, search)
+      );
     }
     it();
     setRefreshing(false);
@@ -185,52 +164,8 @@ const Home = () => {
       <HeaderPart backHome={backHome} setBackHome={setBackHome} />
       {auth.permission?.group_id === Admin && (
         <View style={styles.search}>
-          {/* <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              width: "80%",
-              borderRadius: 7,
-            }}>
-            <TouchableOpacity>
-              <Ionicons name="search-outline" size={30} color="#ffffff" />
-            </TouchableOpacity>
-            <TextInput
-              placeholderTextColor={"#ffffff"}
-              theme={{
-                roundness: 50,
-                colors: {
-                  primary: "green",
-                  underlineColor: "transparent",
-                },
-              }}
-              underlineColorAndroid="transparent"
-              style={styles.input}
-              onChangeText={(text) => searchFilterFunction(text)}
-              value={search}
-              placeholder="Tìm kiếm"
-            />
-          </View> */}
-          {/* <TouchableOpacity>
-            <View
-              style={{
-                width: 35,
-                height: 35,
-                borderRadius: 50,
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
-              }}>
-              <Ionicons
-                name="options-outline"
-                size={25}
-                color="#ffffff"
-                style={{ transform: [{ rotate: "-90deg" }] }}
-              />
-            </View>
-          </TouchableOpacity> */}
           <ReactNativeAnimatedSearchbox
-            onChangeText={(text) => searchFilterFunction(text)}
+            onChangeText={(text) => setSearch(text)}
             value={search}
             placeholder={"Tìm kiếm..."}
             ref={refSearchBox}
@@ -401,8 +336,8 @@ const Home = () => {
               </View>
               {refreshing ? (
                 <Loading size="small" />
-              ) : filteredDataSource?.length > 0 ? (
-                filteredDataSource.map((item, index) => (
+              ) : benefit.benefitMana?.length > 0 ? (
+                benefit.benefitMana.map((item, index) => (
                   <BenefitHome item={item} key={index} />
                 ))
               ) : (
@@ -437,9 +372,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     marginTop: "23%",
     width: "95%",
-    // flexDirection: "row",
-    // justifyContent: "space-between",
-    // alignContent: "center",
     paddingLeft: 15,
   },
   input: {

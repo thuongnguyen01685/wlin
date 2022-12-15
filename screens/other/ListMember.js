@@ -21,6 +21,7 @@ import {
   TextInput,
   RefreshControl,
   Animated,
+  FlatList,
 } from "react-native";
 
 import HeaderPart from "../../components/HeaderPart/HeaderPart";
@@ -83,47 +84,20 @@ const ListMember = () => {
   const [refreshing, setRefreshing] = React.useState(false);
   const { auth, club } = useSelector((state) => state);
 
+  //pagination
+  const [page, setPage] = useState(1);
+  const [data, setData] = useState([]);
+  const [viewMore, setViewMore] = useState(false);
   //search
   const [search, setSearch] = useState("");
-  const [filteredDataSource, setFilteredDataSource] = useState([]);
-  const [masterDataSource, setMasterDataSource] = useState([]);
 
   //search animated
   const [searchIconColor, setSearchIconColor] = useState("#909090");
   const refSearchBox = useRef();
-  const openSearchBox = () => refSearchBox.current.open();
-  const closeSearchBox = () => refSearchBox.current.close();
-
-  const searchFilterFunction = (text) => {
-    // Check if searched text is not blank
-    if (text) {
-      // Inserted text is not blank
-      // Filter the masterDataSource and update FilteredDataSource
-      const newData = masterDataSource.filter(function (item) {
-        // Applying filter for the inserted text in search bar
-        const itemData = item.ten_kh
-          ? item.ten_kh.toUpperCase()
-          : "".toUpperCase();
-        const textData = text.toUpperCase();
-        return itemData.indexOf(textData) > -1;
-      });
-      setFilteredDataSource(newData);
-      setSearch(text);
-    } else {
-      // Inserted text is blank
-      // Update FilteredDataSource with masterDataSource
-      setFilteredDataSource(masterDataSource);
-      setSearch(text);
-    }
-  };
 
   const circleAnimatedValue = useRef(new Animated.Value(0)).current;
 
   let temp = -1;
-
-  // const getUniqueListBy = (arr, key) => {
-  //   return [...new Map(arr.map((item) => [item[key], item])).values()];
-  // };
 
   const circleAnimated = () => {
     circleAnimatedValue.setValue(0);
@@ -152,6 +126,25 @@ const ListMember = () => {
     outputRange: [-10, 90],
   });
 
+  const onLoadMore = async () => {
+    setPage((page) => page + 1);
+
+    setViewMore(true);
+    const res = await dispatch(getCLub(auth, 1, auth.permission.group_id));
+    const arrMember = res
+      ?.flatMap((items) => items.ds_thanh_vien.map((item) => item.ma_kh))
+      .filter((item, index, arr) => {
+        const itemIndex = arr.findIndex((it) => it === item);
+        return itemIndex === index;
+      });
+    const reListMe = await dispatch(
+      getMemberAction(auth.token, arrMember, page, search)
+    );
+
+    setData([...data, ...reListMe]);
+    setViewMore(false);
+  };
+
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     circleAnimated();
@@ -163,18 +156,18 @@ const ListMember = () => {
           const itemIndex = arr.findIndex((it) => it === item);
           return itemIndex === index;
         });
-      const reListMe = await dispatch(getMemberAction(auth.token, arrMember));
-      setFilteredDataSource(reListMe);
-      setMasterDataSource(reListMe);
+      const reListMe = await dispatch(
+        getMemberAction(auth.token, arrMember, 1, "")
+      );
+      setData([...data, ...reListMe]);
     }
     it();
-    wait(1000).then(() => setRefreshing(false));
+    wait(500).then(() => setRefreshing(false));
   }, [dispatch]);
 
   useEffect(() => {
     setRefreshing(true);
     circleAnimated();
-
     async function it() {
       const res = await dispatch(getCLub(auth, 1, auth.permission.group_id));
       const arrMember = res
@@ -183,13 +176,14 @@ const ListMember = () => {
           const itemIndex = arr.findIndex((it) => it === item);
           return itemIndex === index;
         });
-      const reListMe = await dispatch(getMemberAction(auth.token, arrMember));
-      setFilteredDataSource(reListMe);
-      setMasterDataSource(reListMe);
+      const reListMe = await dispatch(
+        getMemberAction(auth.token, arrMember, page, search)
+      );
+      setData([...data, ...reListMe]);
     }
     it();
-    wait(1000).then(() => setRefreshing(false));
-  }, [dispatch]);
+    wait(500).then(() => setRefreshing(false));
+  }, [dispatch, search]);
 
   const handleDetailMember = (ma_kh) => {
     dispatch(getDetailMember(ma_kh, auth.token));
@@ -201,52 +195,12 @@ const ListMember = () => {
       <StatusBar barStyle="light-content" />
       <HeaderPart />
       <View style={styles.search}>
-        {/* <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            width: "80%",
-            borderRadius: 7,
-          }}>
-          <TouchableOpacity>
-            <Ionicons name="search-outline" size={30} color="#ffffff" />
-          </TouchableOpacity>
-          <TextInput
-            placeholderTextColor={"#ffffff"}
-            theme={{
-              roundness: 50,
-              colors: {
-                primary: "green",
-                underlineColor: "transparent",
-              },
-            }}
-            underlineColorAndroid="transparent"
-            style={styles.input}
-            onChangeText={(text) => searchFilterFunction(text)}
-            value={search}
-            placeholder="Tìm kiếm"
-          />
-        </View>
-        <TouchableOpacity>
-          <View
-            style={{
-              width: 35,
-              height: 35,
-              borderRadius: 50,
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-            }}>
-            <Ionicons
-              name="options-outline"
-              size={25}
-              color="#ffffff"
-              style={{ transform: [{ rotate: "-90deg" }] }}
-            />
-          </View>
-        </TouchableOpacity> */}
         <ReactNativeAnimatedSearchbox
-          onChangeText={(text) => searchFilterFunction(text)}
+          onChangeText={(text) => {
+            setSearch(text);
+            setData([]);
+            setPage(1);
+          }}
           value={search}
           placeholder={"Tìm kiếm..."}
           ref={refSearchBox}
@@ -287,93 +241,91 @@ const ListMember = () => {
             justifyContent: "space-between",
             alignItems: "center",
           }}>
-          <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
+          <Text
+            style={{
+              fontSize: 16,
+              color: "#826CCF",
+              fontFamily: "LexendDeca_600SemiBold",
+            }}>
             Danh sách hội viên
           </Text>
-          {refreshing && <Loading size="large" />}
+          {(refreshing || viewMore) && <Loading size="large" />}
         </View>
       </View>
       <View style={{ height: "100%" }}>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={onRefresh}
-              colors={["#9D85F2", "green", "blue"]}
-            />
-          }>
-          {refreshing ? (
-            Array(10)
-              .fill("")
-              .map((i, index) => (
+        {refreshing ? (
+          Array(10)
+            .fill("")
+            .map((i, index) => (
+              <View
+                style={[
+                  {
+                    marginBottom: 8,
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  },
+                  styles.card,
+                ]}
+                key={index}>
                 <View
-                  style={[
-                    {
-                      marginBottom: 8,
-                      flexDirection: "row",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    },
-                    styles.card,
-                  ]}
-                  key={index}>
-                  <View
+                  style={{
+                    width: w * 0.12,
+                    height: w * 0.12,
+                    borderRadius: 60,
+                    backgroundColor: "#ECEFF1",
+                    overflow: "hidden",
+                    marginLeft: 20,
+                    marginRight: 25,
+                  }}>
+                  <Animated.View
                     style={{
-                      width: w * 0.12,
-                      height: w * 0.12,
-                      borderRadius: 60,
+                      width: "30%",
+                      opacity: 0.5,
+                      height: "100%",
+                      backgroundColor: "white",
+                      transform: [{ translateX: translateX }],
+                    }}></Animated.View>
+                </View>
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: "space-evenly",
+                    overflow: "hidden",
+                    borderRadius: 20,
+                  }}>
+                  <Animated.View
+                    style={{
                       backgroundColor: "#ECEFF1",
-                      overflow: "hidden",
-                      marginLeft: 20,
-                      marginRight: 25,
+                      height: 28,
                     }}>
                     <Animated.View
                       style={{
-                        width: "30%",
-                        opacity: 0.5,
+                        width: "20%",
                         height: "100%",
                         backgroundColor: "white",
-                        transform: [{ translateX: translateX }],
+                        opacity: 0.5,
+                        transform: [{ translateX: translateX2 }],
                       }}></Animated.View>
-                  </View>
-                  <View
-                    style={{
-                      flex: 1,
-                      justifyContent: "space-evenly",
-                      overflow: "hidden",
-                      borderRadius: 20,
-                    }}>
+                  </Animated.View>
+                  <View style={{ backgroundColor: "#ECEFF1", height: 28 }}>
                     <Animated.View
                       style={{
-                        backgroundColor: "#ECEFF1",
-                        height: 28,
-                      }}>
-                      <Animated.View
-                        style={{
-                          width: "20%",
-                          height: "100%",
-                          backgroundColor: "white",
-                          opacity: 0.5,
-                          transform: [{ translateX: translateX2 }],
-                        }}></Animated.View>
-                    </Animated.View>
-                    <View style={{ backgroundColor: "#ECEFF1", height: 28 }}>
-                      <Animated.View
-                        style={{
-                          width: "20%",
-                          height: "100%",
-                          backgroundColor: "white",
-                          opacity: 0.5,
-                          transform: [{ translateX: translateX2 }],
-                        }}></Animated.View>
-                    </View>
+                        width: "20%",
+                        height: "100%",
+                        backgroundColor: "white",
+                        opacity: 0.5,
+                        transform: [{ translateX: translateX2 }],
+                      }}></Animated.View>
                   </View>
                 </View>
-              ))
-          ) : (
-            <View style={{ marginBottom: "70%" }}>
-              {filteredDataSource.map((item) => {
+              </View>
+            ))
+        ) : (
+          <View style={{ marginBottom: "70%" }}>
+            <FlatList
+              data={data}
+              renderItem={({ item }) => {
                 temp++;
 
                 if (dataColor.length === temp) {
@@ -381,7 +333,6 @@ const ListMember = () => {
                 }
                 return (
                   <TouchableOpacity
-                    key={item._id}
                     style={{
                       flexDirection: "row",
                       justifyContent: "space-between",
@@ -402,7 +353,10 @@ const ListMember = () => {
                         width: w * 0.7,
                       }}>
                       <View
-                        style={{ flexDirection: "row", marginHorizontal: 25 }}>
+                        style={{
+                          flexDirection: "row",
+                          marginHorizontal: 25,
+                        }}>
                         <Image
                           source={
                             item.hinh_anh
@@ -430,7 +384,7 @@ const ListMember = () => {
                           style={{
                             color: "#474747",
                             fontSize: 15,
-                            fontWeight: "600",
+                            fontFamily: "LexendDeca_600SemiBold",
                             textAlign: "center",
                           }}>
                           {item.ten_kh}
@@ -445,7 +399,7 @@ const ListMember = () => {
                             style={{
                               color: dataColor[temp].color,
                               fontSize: 12,
-                              fontWeight: "500",
+                              fontFamily: "LexendDeca_500Medium",
                               textAlign: "center",
                               marginHorizontal: 10,
                             }}>
@@ -476,10 +430,18 @@ const ListMember = () => {
                     </View>
                   </TouchableOpacity>
                 );
-              })}
-            </View>
-          )}
-        </ScrollView>
+              }}
+              onEndReached={onLoadMore}
+              refreshControl={
+                <RefreshControl
+                  refreshing={refreshing}
+                  onRefresh={onRefresh}
+                  colors={["#9D85F2", "red", "green"]}
+                />
+              }
+            />
+          </View>
+        )}
       </View>
     </View>
   );

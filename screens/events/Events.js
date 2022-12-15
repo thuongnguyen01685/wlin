@@ -133,6 +133,7 @@ const Events = () => {
                     borderBottomWidth: 0.5,
                     flexDirection: "row",
                     alignItems: "center",
+                    width: w * 0.65,
                   }}
                   onPress={() =>
                     navigation.navigate("DetailEvents", { _id: item._id })
@@ -272,9 +273,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     marginTop: "23%",
     width: "95%",
-    // flexDirection: "row",
-    // justifyContent: "space-between",
-    // alignContent: "center",
     paddingLeft: 15,
   },
   input: {
@@ -295,6 +293,7 @@ const styles = StyleSheet.create({
     borderColor: "#f8f8f8",
     paddingHorizontal: 15,
     paddingBottom: 10,
+    height: height * 0.5,
   },
 });
 
