@@ -118,10 +118,12 @@ const EditBoard = ({ route }) => {
     wait(1000).then(() => setRefreshing(false));
   };
 
-  const handleEditBoard = () => {
+  const handleEditBoard = async () => {
     setRefreshing(true);
-    dispatch(deleteBQTAction(auth.token, putQuantri, club.detailClub._id));
-    dispatch(getDetailClub(route.params.id_event, auth.token));
+    await dispatch(
+      deleteBQTAction(auth.token, putQuantri, club.detailClub._id)
+    );
+    await dispatch(getDetailClub(route.params.id_event, auth.token));
     setRefreshing(false);
     navigation.goBack();
   };
@@ -196,7 +198,9 @@ const EditBoard = ({ route }) => {
               flex: 1,
             }}
             behavior={"position"}
-            keyboardVerticalOffset={Platform.OS === "ios" ? h * 0.1 : h * 0.1}>
+            keyboardVerticalOffset={
+              Platform.OS === "ios" ? h * 0.01 : h * 0.01
+            }>
             {/* ten nhiem ki */}
             <View style={styles.cardContainer}>
               <Text style={styles.headerName}>Tên nhiệm kì(*)</Text>
@@ -273,81 +277,81 @@ const EditBoard = ({ route }) => {
                   <Ionicons name="caret-down-outline" size={18} />
                 </TouchableOpacity>
               </View>
-              {(showResult || position !== "") && (
+            </View>
+            {(showResult || position !== "") && (
+              <View
+                style={{
+                  backgroundColor: "#efefef",
+                  position: "absolute",
+                  zIndex: 5,
+                  top: h * 0.2,
+                  borderRadius: 10,
+                  height: h * 0.3,
+                  paddingHorizontal: 10,
+                  width: w * 0.8,
+                }}>
                 <View
                   style={{
-                    backgroundColor: "#efefef",
-                    position: "absolute",
-                    zIndex: 5,
-                    top: h * 0.1,
-                    borderRadius: 10,
-                    height: h * 0.3,
-                    paddingHorizontal: 10,
-                    width: w * 0.8,
+                    borderColor: "#826CCF",
+                    marginTop: 10,
+                    marginBottom: 10,
                   }}>
-                  <View
+                  <Text
                     style={{
-                      borderColor: "#826CCF",
-                      marginTop: 10,
-                      marginBottom: 10,
+                      fontSize: 13,
+                      fontWeight: "400",
+                      color: "#826CCF",
+                      fontFamily: "LexendDeca_300Light",
                     }}>
-                    <Text
-                      style={{
-                        fontSize: 13,
-                        fontWeight: "400",
-                        color: "#826CCF",
-                        fontFamily: "LexendDeca_300Light",
-                      }}>
-                      Chọn thành viên bên dưới.
-                    </Text>
-                  </View>
-
-                  <ScrollView>
-                    {data.map((item, index) => (
-                      <TouchableOpacity
-                        key={index}
-                        style={{
-                          paddingVertical: 5,
-                          borderBottomWidth: 0.5,
-                          flexDirection: "row",
-                          alignItems: "center",
-                          width: w * 0.65,
-                        }}
-                        onPress={() => {
-                          setMaHV(item.ma_kh);
-                          setNameHV(item.ten_kh);
-                          setPosition("");
-                          setShowResult(false);
-                        }}>
-                        <Image
-                          source={
-                            item.hinh_anh
-                              ? { uri: `${URL}${item.hinh_anh}` }
-                              : require("../../../../assets/avtUser.png")
-                          }
-                          style={{
-                            width: w * 0.1,
-                            height: w * 0.1,
-                            resizeMode: "contain",
-                            borderRadius: 5,
-                          }}
-                        />
-                        <Text
-                          style={{
-                            fontSize: 14,
-                            fontWeight: "600",
-                            color: "#474747",
-                            marginLeft: 10,
-                            fontFamily: "LexendDeca_500Medium",
-                          }}>
-                          {item.ten_kh}
-                        </Text>
-                      </TouchableOpacity>
-                    ))}
-                  </ScrollView>
+                    Chọn thành viên bên dưới.
+                  </Text>
                 </View>
-              )}
-            </View>
+
+                <ScrollView>
+                  {data.map((item, index) => (
+                    <TouchableOpacity
+                      key={index}
+                      style={{
+                        paddingVertical: 5,
+                        borderBottomWidth: 0.5,
+                        flexDirection: "row",
+                        alignItems: "center",
+                        width: w * 0.65,
+                      }}
+                      onPress={() => {
+                        setMaHV(item.ma_kh);
+                        setNameHV(item.ten_kh);
+                        setPosition("");
+                        setShowResult(false);
+                      }}>
+                      <Image
+                        source={
+                          item.hinh_anh
+                            ? { uri: `${URL}${item.hinh_anh}` }
+                            : require("../../../../assets/avtUser.png")
+                        }
+                        style={{
+                          width: w * 0.1,
+                          height: w * 0.1,
+                          resizeMode: "contain",
+                          borderRadius: 5,
+                        }}
+                      />
+                      <Text
+                        style={{
+                          fontSize: 14,
+                          fontWeight: "600",
+                          color: "#474747",
+                          marginLeft: 10,
+                          fontFamily: "LexendDeca_500Medium",
+                        }}>
+                        {item.ten_kh}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+              </View>
+            )}
 
             {/* chuc danh  */}
 
