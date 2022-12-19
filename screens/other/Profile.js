@@ -72,70 +72,72 @@ const Profile = () => {
     {
       name: "Số điện thoại",
       icon: "call",
-      value: auth.customer.dien_thoai,
+      value: auth?.customer?.dien_thoai,
       color: "rgba(136, 38, 140, 0.75)",
       permission: [Member, Partner, Admin],
     },
     {
       name: "Chức vụ",
       icon: "briefcase",
-      value: auth.customer.chuc_vu,
+      value: auth?.customer?.chuc_vu,
       color: "#DC5696",
       permission: [Member, Partner],
     },
     {
       name: "Công ty",
       icon: "business",
-      value: auth.customer.ten_cong_ty,
+      value: auth?.customer?.ten_cong_ty,
       color: "#F8AA4F",
       permission: [Member, Partner],
     },
     {
       name: "Địa chỉ công ty",
       icon: "location",
-      value: auth.customer.address_cong_ty,
+      value: auth?.customer?.address_cong_ty,
       color: "#FA846F",
       permission: [Member, Partner],
     },
     {
       name: "Địa chỉ cá nhân",
       icon: "location",
-      value: auth.customer.address,
+      value: auth?.customer?.address,
       color: "rgba(5, 60, 255, 0.4)",
       permission: [Member, Partner, Admin],
     },
     {
       name: "Email",
       icon: "mail",
-      value: auth.customer.email,
+      value: auth?.customer?.email,
       color: "rgba(255, 0, 0, 0.7)",
       permission: [Member, Partner, Admin],
     },
     {
       name: "Ngày sinh",
       icon: "calendar",
-      value: formatDateDisplays(auth.customer.ngay_sinh),
+      value:
+        auth?.customer?.ngay_sinh &&
+        formatDateDisplays(auth?.customer?.ngay_sinh),
       color: "#93DBE4",
       permission: [Member, Partner, Admin],
     },
     {
       name: "Ngành hàng",
       icon: "cube",
-      value: auth.customer.ten_nganh_hang,
+      value: auth?.customer?.ten_nganh_hang,
       color: "rgba(255, 10, 157, 0.4)",
       permission: [Member, Partner],
     },
     {
       name: "Ngành hàng chi tiết",
       icon: "cube",
-      value: auth.customer.nganh_hang_con,
+      value: auth?.customer?.nganh_hang_con,
       color: "#6CADF6",
       permission: [Member, Partner],
     },
     {
       name: "Người giới thiệu",
       icon: "person",
-      value: auth.customer.nguoi_gioi_thieu,
+      value: auth?.customer?.nguoi_gioi_thieu,
       color: "rgba(17, 141, 59, 0.5)",
       permission: [Member, Partner],
     },
@@ -629,7 +631,7 @@ const Profile = () => {
                                   fontSize: 12,
                                   fontFamily: "LexendDeca_400Regular",
                                 }}>
-                                {auth.customer.ma_kh}
+                                {auth?.customer?.ma_kh}
                               </Text>
                             </View>
                           </View>
