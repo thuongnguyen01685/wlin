@@ -243,8 +243,8 @@ const Nation = () => {
               </View>
             </View>
           ))
-      ) : auth.customer.goi_thanh_vien === "03" ||
-        auth.customer.goi_thanh_vien === "04" ||
+      ) : auth?.customer?.goi_thanh_vien === "03" ||
+        auth?.customer?.goi_thanh_vien === "04" ||
         auth.permission.group_id === Admin ? (
         <View style={{ marginTop: 10, paddingBottom: "82%", height: "100%" }}>
           <Animated.FlatList
@@ -671,9 +671,9 @@ const Area = () => {
               </View>
             </View>
           ))
-      ) : auth.customer.goi_thanh_vien === "02" ||
-        auth.customer.goi_thanh_vien === "03" ||
-        auth.customer.goi_thanh_vien === "04" ||
+      ) : auth?.customer?.goi_thanh_vien === "02" ||
+        auth?.customer?.goi_thanh_vien === "03" ||
+        auth?.customer?.goi_thanh_vien === "04" ||
         auth.permission.group_id === Admin ? (
         <View style={{ marginTop: 10, paddingBottom: "82%", height: "100%" }}>
           <Animated.FlatList

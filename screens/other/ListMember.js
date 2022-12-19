@@ -128,7 +128,6 @@ const ListMember = () => {
 
   const onLoadMore = async () => {
     setPage((page) => page + 1);
-
     setViewMore(true);
     const res = await dispatch(getCLub(auth, 1, auth.permission.group_id));
     const arrMember = res
@@ -138,7 +137,7 @@ const ListMember = () => {
         return itemIndex === index;
       });
     const reListMe = await dispatch(
-      getMemberAction(auth.token, arrMember, page, search)
+      getMemberAction(auth.token, arrMember, page + 1, search)
     );
 
     setData([...data, ...reListMe]);
@@ -157,7 +156,7 @@ const ListMember = () => {
           return itemIndex === index;
         });
       const reListMe = await dispatch(
-        getMemberAction(auth.token, arrMember, 1, "")
+        getMemberAction(auth.token, arrMember, page, "")
       );
       setData([...data, ...reListMe]);
     }

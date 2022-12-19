@@ -1,5 +1,6 @@
 //import liraries
 import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { Component } from "react";
 import {
@@ -15,6 +16,7 @@ import Modal from "react-native-modal";
 
 // create a component
 const ModalALertPermission = (props) => {
+  const navigation = useNavigation();
   const closeExitApp = () => {
     props.setShowAlertPermission(!props.showAlertPermission);
     BackHandler.exitApp();
@@ -70,21 +72,52 @@ const ModalALertPermission = (props) => {
           </Text>
           <Text
             style={{
-              fontSize: 15,
+              fontSize: 14,
               textAlign: "center",
               marginVertical: 20,
               fontFamily: "LexendDeca_400Regular",
+              lineHeight: 20,
+              paddingHorizontal: 20,
             }}>
-            {props.content}
+            {`Gói thành viên đang được cập nhật. \n Vui lòng liên hệ QTV để biết thêm thông tin chi tiết.`}
           </Text>
         </View>
         <View
           style={{
-            flexDirection: "row",
+            flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            marginVertical: 10,
+            marginBottom: 15,
           }}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("TabBar");
+            }}>
+            <LinearGradient
+              start={{ x: 0, y: 0.3 }}
+              end={{ x: 1, y: 1 }}
+              colors={["#9D85F2", "rgba(157, 133, 242, 0.4)"]}
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignContent: "center",
+                alignItems: "center",
+                borderRadius: 20,
+                paddingVertical: 5,
+                paddingHorizontal: 10,
+              }}>
+              <View style={styles.borderBacRounded}>
+                <Text
+                  style={{
+                    color: "#ffffff",
+                    fontFamily: "LexendDeca_400Regular",
+                    fontSize: 15,
+                  }}>
+                  Tiếp tục vào ứng dụng.
+                </Text>
+              </View>
+            </LinearGradient>
+          </TouchableOpacity>
           <TouchableOpacity onPress={closeExitApp}>
             <LinearGradient
               start={{ x: 0, y: 0.3 }}
@@ -95,9 +128,10 @@ const ModalALertPermission = (props) => {
                 justifyContent: "space-between",
                 alignContent: "center",
                 alignItems: "center",
-                borderRadius: 10,
+                borderRadius: 20,
                 paddingVertical: 5,
                 paddingHorizontal: 10,
+                marginTop: 10,
               }}>
               <View style={styles.borderBacRounded}>
                 <Text

@@ -48,7 +48,6 @@ const PayBenefit = () => {
 
   const onLoadMore = async () => {
     setPage((page) => page + 1);
-
     setViewMore(true);
     const res = await dispatch(getCLub(auth, 1, auth.permission.group_id));
     const arrMember = res
@@ -58,9 +57,8 @@ const PayBenefit = () => {
         return itemIndex === index;
       });
     const reBe = await dispatch(
-      getBenefitManagemant(auth.token, arrMember, page, search)
+      getBenefitManagemant(auth.token, arrMember, page + 1, search)
     );
-
     setData([...data, ...reBe]);
     setViewMore(false);
   };
@@ -284,7 +282,6 @@ const PayBenefit = () => {
             />
           )}
         </View>
-        {/* </ScrollView> */}
       </View>
     </View>
   );

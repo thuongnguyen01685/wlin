@@ -37,7 +37,7 @@ export const getDetailClub = (_id, token) => async (dispatch) => {
 export const getListBenefit = (token) => async (dispatch) => {
   try {
     const res = await callApis(
-      `dmnhomquyenloi?access_token=${token}&limit=1000`
+      `dmnhomquyenloi?access_token=${token}&limit=500`
     );
     dispatch({ type: CLUB.GETBENEFIT, payload: res.data });
   } catch (error) {
@@ -102,9 +102,9 @@ export const deleteBQTAction = (token, arr, id_club) => async (dispatch) => {
     console.log(error);
   }
 };
-export const getDmchucvu = () => async (dispatch) => {
+export const getDmchucvu = (token) => async (dispatch) => {
   try {
-    const res = await callApis(`dmchucvu?access_token=flex.public.token`);
+    const res = await callApis(`dmchucvu?access_token=${token}`);
     dispatch({ type: CLUB.DMCHUCVU, payload: res.data });
   } catch (error) {
     console.log(error);

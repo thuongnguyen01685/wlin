@@ -54,6 +54,7 @@ import Chart from "./Chart.home";
 import { Admin, Partner } from "../../utils/AccessPermission";
 import CasouselEventing from "./CasouselEventing";
 import ReactNativeAnimatedSearchbox from "../../components/ReactNativeAnimatedSearchbox";
+import { Alert } from "react-native";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;

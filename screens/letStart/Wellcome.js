@@ -160,7 +160,7 @@ const Wellcome = () => {
 const styles = StyleSheet.create({
   subtitle: {
     color: "#000",
-    fontSize: 13,
+    fontSize: 12.5,
     marginTop: 10,
     textAlign: "center",
     lineHeight: 20,
@@ -170,7 +170,6 @@ const styles = StyleSheet.create({
     color: COLORS.purple,
     fontSize: 30,
     fontFamily: "LexendDeca_600SemiBold",
-    marginTop: 18,
     textAlign: "center",
   },
 

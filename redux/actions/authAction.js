@@ -2,6 +2,7 @@ import { URL } from "../../utils/fetchApi";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import callApis from "../../utils/callApis";
 import callApi from "../../utils/callApi";
+import { id_app, Member } from "../../utils/AccessPermission";
 
 export const AUTH = {
   OTP: "OTP",
@@ -33,7 +34,7 @@ export const getOTP = (number) => async (dispatch) => {
 export const getTokenAction = (id_otp, code_opt) => async (dispatch) => {
   try {
     const res = await callApi(
-      `verify-otp/${id_otp}/${code_opt}?group_id=631c254a7a3a837ce2c229b1&id_app=62e0b3885271e2560e8bb7d3`
+      `verify-otp/${id_otp}/${code_opt}?group_id=${Member}&id_app=${id_app}`
     );
 
     if (res.data) {
@@ -61,13 +62,11 @@ export const getProfileAction = (token) => async (dispatch) => {
 
 export const getPermissionAction = (token, email) => async (dispatch) => {
   try {
-    const res = await callApis(
-      `participant?access_token=flex.public.token&q={"email": "${email}"}&limit=500`
-    );
+    const res = await callApis(`wlin_participant?access_token=${token}`);
 
-    dispatch({ type: AUTH.PERSSION, payload: res?.data[0] });
+    dispatch({ type: AUTH.PERSSION, payload: res?.data });
 
-    return res?.data[0]?.group_id;
+    return res?.data?.group_id;
   } catch (error) {
     console.log(error);
   }
@@ -96,18 +95,23 @@ export const getCustomerWlinAction = (token, phone) => async (dispatch) => {
 export const getRankAction = (token, email) => async (dispatch) => {
   try {
     const res = await callApis(
-      `customer?access_token=flex.public.token&q={"of_user":"${email}"}`
+      `customer?access_token=${token}&q={"of_user":"${email}"}`
     );
 
     let dataFilter = [];
-    if (res.data && res.data.length > 0) {
+    if (res?.data && res?.data.length > 0) {
       dataFilter = await callApis(
         `dmgoithanhvien?access_token=${token}&q=${JSON.stringify({
-          ma_goi: res.data[0].goi_thanh_vien,
+          ma_goi: res?.data[0].goi_thanh_vien,
         })}`
       );
+
+      dispatch({
+        type: AUTH.RANK,
+        payload: { ...dataFilter?.data, ...res?.data[0] },
+      });
     }
-    dispatch({ type: AUTH.RANK, payload: { ...dataFilter, ...res.data[0] } });
+
     return res.data[0]?.goi_thanh_vien;
   } catch (error) {
     console.log(error);

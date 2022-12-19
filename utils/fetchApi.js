@@ -7,7 +7,7 @@ export const getdataApiClub = async (url, auth, page, permission) => {
   //QTV
   if (permission === Admin) {
     const res = await axios.get(
-      `${URL}/api/${id_app}/${url}?access_token=flex.public.token&limit=500&q={"thu_ky": "${auth.profile.email}"}`
+      `${URL}/api/${id_app}/${url}?access_token=${auth.token}&limit=500&q={"thu_ky": "${auth.profile.email}"}`
     );
 
     return res;
@@ -16,7 +16,7 @@ export const getdataApiClub = async (url, auth, page, permission) => {
   //partner
   if (permission === Partner) {
     const res = await axios.get(
-      `${URL}/api/${id_app}/${url}?access_token=flex.public.token&limit=500&q={"partner": "${auth.profile.email}"}`
+      `${URL}/api/${id_app}/${url}?access_token=${auth.token}&limit=500&q={"partner": "${auth.profile.email}"}`
     );
     return res;
   }
@@ -24,7 +24,7 @@ export const getdataApiClub = async (url, auth, page, permission) => {
   //Hoi viens
   if (permission === Member) {
     const res = await axios.get(
-      `${URL}/api/${id_app}/${url}?access_token=flex.public.token&limit=500&q={"ds_thanh_vien":{"$elemMatch":{"ma_kh":"${auth.profile.email}"}}}`
+      `${URL}/api/${id_app}/${url}?access_token=${auth.token}&limit=500&q={"ds_thanh_vien":{"$elemMatch":{"ma_kh":"${auth.profile.email}"}}}`
     );
     return res;
   }
