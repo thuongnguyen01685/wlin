@@ -123,18 +123,23 @@ const Otp = ({ route }) => {
         const access = await dispatch(getPermissionAction(res.token, resPhone));
         if (resPhone) {
           if (access !== Admin) {
-            const goi = await dispatch(getRankAction(res.token, resPhone));
-            await dispatch({ type: AUTH.GOI, payload: goi });
-            await dispatch(getCustomerWlinAction(res.token, resPhone));
+            ///const goi = await dispatch(getRankAction(res.token, resPhone));
+            //console.log(goi);
+            //await dispatch({ type: AUTH.GOI, payload: goi });
+            const goi = await dispatch(
+              getCustomerWlinAction(res.token, resPhone)
+            );
+            await dispatch({ type: AUTH.GOI, payload: goi.goi_thanh_vien });
             if (goi) {
               await navigation.navigate("TabBar");
             } else {
               setShowAlertPermission(true);
             }
           } else {
-            const goi = await dispatch(getRankAction(res.token, resPhone));
-            await dispatch({ type: AUTH.GOI, payload: goi });
-            await dispatch(getCustomerWlinAction(res.token, resPhone));
+            const goi = await dispatch(
+              getCustomerWlinAction(res.token, resPhone)
+            );
+            await dispatch({ type: AUTH.GOI, payload: goi.goi_thanh_vien });
             await navigation.navigate("TabBar");
           }
         }

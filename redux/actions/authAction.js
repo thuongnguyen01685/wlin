@@ -86,7 +86,7 @@ export const getCustomerWlinAction = (token, phone) => async (dispatch) => {
       type: AUTH.CUSTOMER_WLIN,
       payload: res.data,
     });
-    return res.data;
+    return res.data[0];
   } catch (error) {
     console.log(error);
   }
@@ -97,6 +97,7 @@ export const getRankAction = (token, email) => async (dispatch) => {
     const res = await callApis(
       `customer?access_token=${token}&q={"of_user":"${email}"}`
     );
+    console.log(res, "datares");
 
     let dataFilter = [];
     if (res?.data && res?.data.length > 0) {
