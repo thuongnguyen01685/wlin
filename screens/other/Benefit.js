@@ -49,13 +49,18 @@ const Benefit = () => {
   useEffect(() => {
     setRefreshing(true);
     dispatch(getListBenefit(auth.token));
-    dispatch(getBenefitMember(auth.token, auth.customer.of_user));
+    if (auth?.customer?.of_user) {
+      dispatch(getBenefitMember(auth.token, auth?.customer?.of_user));
+    }
+
     wait(100).then(() => setRefreshing(false));
   }, [dispatch]);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     dispatch(getListBenefit(auth.token));
-    dispatch(getBenefitMember(auth.token, auth.customer.of_user));
+    if (auth?.customer?.of_user) {
+      dispatch(getBenefitMember(auth.token, auth?.customer?.of_user));
+    }
     wait(1000).then(() => setRefreshing(false));
   }, [dispatch]);
 
@@ -131,7 +136,7 @@ const Benefit = () => {
                   {club.getBenefit
                     .filter(
                       (items) =>
-                        items.ma_nhquyenloi !== auth.customer.nhom_quyen_loi
+                        items.ma_nhquyenloi !== auth?.customer?.nhom_quyen_loi
                     )
                     .map((item, index) => (
                       <TouchableOpacity
@@ -229,7 +234,7 @@ const Benefit = () => {
                     {club.getBenefit
                       .filter(
                         (items) =>
-                          items.ma_nhquyenloi === auth.customer.nhom_quyen_loi
+                          items.ma_nhquyenloi === auth?.customer?.nhom_quyen_loi
                       )
                       .map((item, index) => (
                         <TouchableOpacity
