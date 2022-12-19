@@ -52,19 +52,21 @@ const Splash = () => {
             const access = await dispatch(getPermissionAction(token, res));
             if (access) {
               if (access !== Admin) {
-                const goi = await dispatch(getRankAction(token, res));
+                //const goi = await dispatch(getRankAction(token, res));
 
-                dispatch({ type: AUTH.GOI, payload: goi });
-                dispatch(getCustomerWlinAction(token, res));
-                if (goi) {
+                //dispatch({ type: AUTH.GOI, payload: goi });
+                const goi = await dispatch(getCustomerWlinAction(token, res));
+                dispatch({ type: AUTH.GOI, payload: goi.goi_thanh_vien });
+                if (goi.goi_thanh_vien) {
                   navigation.navigate("TabBar");
                 } else {
                   setShowAlertPermission(true);
                 }
               } else {
-                const goi = await dispatch(getRankAction(token, res));
-                dispatch({ type: AUTH.GOI, payload: goi });
-                dispatch(getCustomerWlinAction(token, res));
+                //const goi = await dispatch(getRankAction(token, res));
+                //dispatch({ type: AUTH.GOI, payload: goi });
+                const goi = await dispatch(getCustomerWlinAction(token, res));
+                dispatch({ type: AUTH.GOI, payload: goi.goi_thanh_vien });
                 navigation.navigate("TabBar");
               }
             } else {
