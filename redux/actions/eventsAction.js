@@ -52,7 +52,7 @@ export const checkEventAction =
   (eventParticipant, token, ma_kh) => async (dispatch) => {
     try {
       const res = await callApis(
-        `sukienappwlin?access_token=flex.public.token&ma_kh=${ma_kh}&ma_su_kien=${eventParticipant.ma_su_kien}&loai_su_kien=1`
+        `sukienappwlin?access_token=${token}&ma_kh=${ma_kh}&ma_su_kien=${eventParticipant.ma_su_kien}&loai_su_kien=1`
       );
       // dispatch({ type: EVENTS.SOCKETCHECKIN, payload: res.data });
       return res.data;
@@ -66,7 +66,7 @@ export const checkPayFeeAction =
     try {
       if (PTPAY === "tienmat") {
         const res = await callApis(
-          `sukienappwlin?access_token=flex.public.token&ma_kh=${ma_kh}&ma_su_kien=${eventParticipant.ma_su_kien}&loai_su_kien=2&pt_thanh_toan=TM`
+          `sukienappwlin?access_token=${token}&ma_kh=${ma_kh}&ma_su_kien=${eventParticipant.ma_su_kien}&loai_su_kien=2&pt_thanh_toan=TM`
         );
         return res.data;
       }
@@ -140,6 +140,7 @@ export const eventChartAction =
         const res = await callApis(
           `fos_chart?access_token=${auth.token}&partner=${auth.customer.ma_kh}&tu_ngay=${fromTime}&den_ngay=${toTime}`
         );
+
         dispatch({ type: EVENTS.EVENTCHART, payload: res.data });
       }
     } catch (error) {

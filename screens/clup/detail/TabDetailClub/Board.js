@@ -36,7 +36,7 @@ const Board = (props) => {
   const [refreshing, setRefreshing] = React.useState(false);
 
   useEffect(() => {
-    dispatch(getDmchucvu());
+    dispatch(getDmchucvu(auth.token));
     async function it() {
       const res = await dispatch(getCLub(auth, 1, auth.permission.group_id));
       const arrMember = res

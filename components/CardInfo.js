@@ -25,7 +25,7 @@ const CardInfo = () => {
             ? ["#7289DD", "#D0DAFF", "#ABBCF8", "#7E96E9"]
             : auth.ma_goi === "04"
             ? ["#1F1F1f", "#646464", "#484848", "#373737"]
-            : ["#000", "#000"]
+            : ["#9D85F2", "rgba(157, 133, 242, 0.4)"]
         }
         style={{
           borderRadius: 7,
@@ -79,72 +79,78 @@ const CardInfo = () => {
                   ? "#8D6B48"
                   : auth.ma_goi === "03"
                   ? "#5A54A5"
-                  : auth.ma_goi === "04" && "#6A6A6A",
+                  : auth.ma_goi === "04"
+                  ? "#6A6A6A"
+                  : "#fff",
               fontSize: 22,
               fontFamily: "LexendDeca_800ExtraBold",
               textAlign: "center",
               top: 10,
             }}>
-            {auth.customer?.ten_kh}
+            {auth.customer?.ten_kh ? auth.customer?.ten_kh : "Đang cập nhật."}
           </Text>
         </View>
         <View style={{ paddingHorizontal: 10, bottom: 5, marginVertical: 15 }}>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-            }}>
-            <Text
-              style={[
-                styles.textContent,
-                {
-                  color:
-                    auth.ma_goi === "01"
-                      ? "rgba(103, 103, 103, 0.5)"
-                      : auth.ma_goi === "02"
-                      ? "#CAAD8B"
-                      : auth.ma_goi === "03"
-                      ? "rgba(90, 84, 165, 0.5)"
-                      : auth.ma_goi === "04" && "rgba(255, 255, 255, 0.6)",
-                },
-              ]}>
-              1/2/2021
-            </Text>
-            <Text
-              style={[
-                styles.textContent,
-                {
-                  color:
-                    auth.ma_goi === "01"
-                      ? "rgba(103, 103, 103, 0.5)"
-                      : auth.ma_goi === "02"
-                      ? "#CAAD8B"
-                      : auth.ma_goi === "03"
-                      ? "rgba(90, 84, 165, 0.5)"
-                      : auth.ma_goi === "04" && "rgba(255, 255, 255, 0.6)",
-                },
-              ]}>
-              {" "}
-              - 1/2/2022
-            </Text>
-          </View>
-          <Text
-            style={[
-              styles.textContent,
-              {
-                color:
-                  auth.ma_goi === "01"
-                    ? "rgba(103, 103, 103, 0.5)"
-                    : auth.ma_goi === "02"
-                    ? "#CAAD8B"
-                    : auth.ma_goi === "03"
-                    ? "rgba(90, 84, 165, 0.5)"
-                    : auth.ma_goi === "04" && "rgba(255, 255, 255, 0.6)",
-              },
-            ]}>
-            Thời gian hoạt động còn lại: 20 ngày
-          </Text>
+          {auth.ma_goi && (
+            <View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}>
+                <Text
+                  style={[
+                    styles.textContent,
+                    {
+                      color:
+                        auth.ma_goi === "01"
+                          ? "rgba(103, 103, 103, 0.5)"
+                          : auth.ma_goi === "02"
+                          ? "#CAAD8B"
+                          : auth.ma_goi === "03"
+                          ? "rgba(90, 84, 165, 0.5)"
+                          : auth.ma_goi === "04" && "rgba(255, 255, 255, 0.6)",
+                    },
+                  ]}>
+                  1/2/2021
+                </Text>
+                <Text
+                  style={[
+                    styles.textContent,
+                    {
+                      color:
+                        auth.ma_goi === "01"
+                          ? "rgba(103, 103, 103, 0.5)"
+                          : auth.ma_goi === "02"
+                          ? "#CAAD8B"
+                          : auth.ma_goi === "03"
+                          ? "rgba(90, 84, 165, 0.5)"
+                          : auth.ma_goi === "04" && "rgba(255, 255, 255, 0.6)",
+                    },
+                  ]}>
+                  {" "}
+                  - 1/2/2022
+                </Text>
+              </View>
+              <Text
+                style={[
+                  styles.textContent,
+                  {
+                    color:
+                      auth.ma_goi === "01"
+                        ? "rgba(103, 103, 103, 0.5)"
+                        : auth.ma_goi === "02"
+                        ? "#CAAD8B"
+                        : auth.ma_goi === "03"
+                        ? "rgba(90, 84, 165, 0.5)"
+                        : auth.ma_goi === "04" && "rgba(255, 255, 255, 0.6)",
+                  },
+                ]}>
+                Thời gian hoạt động còn lại: 20 ngày
+              </Text>
+            </View>
+          )}
         </View>
       </LinearGradient>
     </View>

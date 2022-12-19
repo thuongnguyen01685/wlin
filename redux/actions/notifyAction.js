@@ -7,7 +7,7 @@ export const NOTIFY = {
 
 export const getNotify = (token) => async (dispatch) => {
   try {
-    const res = await Notifications(`&access_token=${token}&limit=100`);
+    const res = await Notifications(`&access_token=${token}&limit=200`);
 
     dispatch({ type: NOTIFY.GETNOTIFY, payload: res.data });
   } catch (error) {

@@ -115,10 +115,6 @@ const Otp = ({ route }) => {
       const res = await dispatch(getTokenAction(auth.otp._id, auth.otp.otp));
 
       if (res) {
-        // dispatch(getProfileAction(res.token));
-        // dispatch(getCustomerWlinAction(res.token, route.params.value));
-        // dispatch(getPermissionAction(res.token, route.params.value));
-        // dispatch(getRankAction(res.token, route.params.value));
         dispatch(getNotify(res.token));
         setStatus("success");
         popIn();
@@ -128,18 +124,18 @@ const Otp = ({ route }) => {
         if (resPhone) {
           if (access !== Admin) {
             const goi = await dispatch(getRankAction(res.token, resPhone));
-            dispatch({ type: AUTH.GOI, payload: goi });
-            dispatch(getCustomerWlinAction(res.token, resPhone));
+            await dispatch({ type: AUTH.GOI, payload: goi });
+            await dispatch(getCustomerWlinAction(res.token, resPhone));
             if (goi) {
-              wait(500).then(() => navigation.navigate("TabBar"));
+              await navigation.navigate("TabBar");
             } else {
               setShowAlertPermission(true);
             }
           } else {
             const goi = await dispatch(getRankAction(res.token, resPhone));
-            dispatch({ type: AUTH.GOI, payload: goi });
-            dispatch(getCustomerWlinAction(res.token, resPhone));
-            wait(500).then(() => navigation.navigate("TabBar"));
+            await dispatch({ type: AUTH.GOI, payload: goi });
+            await dispatch(getCustomerWlinAction(res.token, resPhone));
+            await navigation.navigate("TabBar");
           }
         }
       }
@@ -156,7 +152,7 @@ const Otp = ({ route }) => {
         <ModalALertPermission
           showAlertPermission={showAlertPermission}
           setShowAlertPermission={setShowAlertPermission}
-          content={"Vui lòng nâng cấp lên hội viên."}
+          content={"Vui lòng nâng cấp lên gói thành viên."}
         />
       )}
       <View

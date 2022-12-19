@@ -74,7 +74,7 @@ const Chart = () => {
         [{ text: "Quay lại" }]
       );
     }
-  }, [fromTime, toTime]);
+  }, [fromTime, toTime, auth]);
 
   // event.eventChart.sort((a, b) => a.tuan - b.tuan);
 

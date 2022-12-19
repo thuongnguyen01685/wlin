@@ -154,7 +154,7 @@ const Splash = () => {
             <ModalALertPermission
               showAlertPermission={showAlertPermission}
               setShowAlertPermission={setShowAlertPermission}
-              content={"Vui lòng nâng cấp lên hội viên."}
+              content={"Vui lòng nâng cấp lên gói thành viên."}
             />
           )}
         </View>
