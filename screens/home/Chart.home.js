@@ -79,11 +79,13 @@ const Chart = () => {
   // event.eventChart.sort((a, b) => a.tuan - b.tuan);
 
   let temp = [];
-  for (let i = 0; i < event.eventChart.length; i++) {
-    temp.push({
-      x: `${event.eventChart[i].tuan}`,
-      y: event.eventChart[i].su_kien.length,
-    });
+  if (event?.eventChart?.length > 0) {
+    for (let i = 0; i < event?.eventChart?.length; i++) {
+      temp.push({
+        x: `${event.eventChart[i].tuan}`,
+        y: event.eventChart[i].su_kien.length,
+      });
+    }
   }
 
   return (
