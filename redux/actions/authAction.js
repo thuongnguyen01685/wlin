@@ -97,7 +97,7 @@ export const getRankAction = (token, email) => async (dispatch) => {
     const res = await callApis(
       `customer?access_token=${token}&q={"of_user":"${email}"}`
     );
-    console.log(res, "datares");
+    // console.log(res, "datares");
 
     let dataFilter = [];
     if (res?.data && res?.data.length > 0) {
