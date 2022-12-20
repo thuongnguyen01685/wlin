@@ -56,25 +56,30 @@ const Splash = () => {
 
                 //dispatch({ type: AUTH.GOI, payload: goi });
                 const goi = await dispatch(getCustomerWlinAction(token, res));
-                dispatch({ type: AUTH.GOI, payload: goi.goi_thanh_vien });
-                if (goi.goi_thanh_vien) {
+
+                if (goi?.goi_thanh_vien) {
+                  dispatch({ type: AUTH.GOI, payload: goi.goi_thanh_vien });
                   navigation.navigate("TabBar");
                 } else {
+                  dispatch({ type: AUTH.GOI, payload: [] });
                   setShowAlertPermission(true);
                 }
               } else {
                 //const goi = await dispatch(getRankAction(token, res));
                 //dispatch({ type: AUTH.GOI, payload: goi });
                 const goi = await dispatch(getCustomerWlinAction(token, res));
-                dispatch({ type: AUTH.GOI, payload: goi.goi_thanh_vien });
+
+                if (goi) {
+                  dispatch({ type: AUTH.GOI, payload: goi.goi_thanh_vien });
+                }
+
                 navigation.navigate("TabBar");
               }
             } else {
-              await AsyncStorage.removeItem("@token_key");
-
+              //await AsyncStorage.removeItem("@token_key");
               // console.log("Token removed");
-              await dispatch({ type: AUTH.TOKEN, payload: null });
-              await dispatch({ type: AUTH.PROFILE, payload: [] });
+              // await dispatch({ type: AUTH.TOKEN, payload: null });
+              // await dispatch({ type: AUTH.PROFILE, payload: [] });
             }
           }
           dispatch(getNotify(token));
