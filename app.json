@@ -1,15 +1,15 @@
 {
     "expo": {
         "name": "CRM WGH",
-        "slug": "wlinprod",
-        "version": "1.0.3",
+        "slug": "wlin",
+        "version": "1.0.6",
         "orientation": "portrait",
         "icon": "./assets/logo2.png",
         "notification": {
             "icon": "./assets/icon.png",
             "color": "#FFFFFF",
             "androidMode": "collapse",
-            "androidCollapsedTitle": "wlinprod"
+            "androidCollapsedTitle": "wlin"
         },
         "userInterfaceStyle": "light",
         "splash": {
@@ -68,7 +68,7 @@
             ],
             "package": "com.fostech.wlin",
             "useNextNotificationsApi": true,
-            "versionCode": 57,
+            "versionCode": 59,
             "config": {
                 "googleMaps": {
                     "apiKey": "AIzaSyBogLh772OrNo1zlEF-KUaaR3p9Jh1vyaQ"

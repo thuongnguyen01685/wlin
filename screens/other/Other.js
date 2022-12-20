@@ -308,7 +308,7 @@ const Other = () => {
                             fontFamily: "LexendDeca_400Regular",
                             fontSize: 15,
                           }}>
-                          V1.01
+                          V1.07
                         </Text>
                       </Text>
                     </View>
