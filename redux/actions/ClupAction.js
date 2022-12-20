@@ -64,11 +64,11 @@ export const getMemberAction =
           { ten_kh: { $regex: search, $options: "i" } },
         ],
       };
+      condition = JSON.stringify(condition);
       if (array.length > 0) {
         const res = await callApis(
           `customer_wlin?access_token=${token}&q=${condition}&limit=10&page=${page}`
         );
-
         dispatch({ type: CLUB.GETMEMBER, payload: res.data });
         return res.data;
       }

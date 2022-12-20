@@ -398,6 +398,7 @@ const Otp = ({ route }) => {
               onPress={() =>
                 navigation.navigate("ForgetOtp", {
                   numberPhone: route.params.numberPhone,
+                  value: route.params.value,
                 })
               }>
               <Text

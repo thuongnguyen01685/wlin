@@ -52,7 +52,6 @@ const DetailEvents = ({ route }, props) => {
   const [refreshing, setRefreshing] = useState(false);
   const [modalSuccess, setModalSuccess] = useState(false);
   const [showTakePicture, setShowTakePicture] = useState(false);
-  const [searchPart, setSearchPart] = useState(false);
   const dispatch = useDispatch();
 
   const { auth, event } = useSelector((state) => state);
@@ -76,14 +75,14 @@ const DetailEvents = ({ route }, props) => {
     setRefreshing(true);
     circleAnimated();
     dispatch(getDetailEventsAction(route.params._id, auth.token));
-    wait(100).then(() => setRefreshing(false));
+    setRefreshing(false);
   }, []);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     circleAnimated();
     dispatch(getDetailEventsAction(route.params._id, auth.token));
-    wait(1000).then(() => setRefreshing(false));
+    wait(5).then(() => setRefreshing(false));
   }, []);
 
   let dateEvent = new Date(
@@ -112,7 +111,7 @@ const DetailEvents = ({ route }, props) => {
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
-      <HeaderPart searchPart={searchPart} />
+      <HeaderPart />
       <View
         style={{
           backgroundColor: "#ffffff",

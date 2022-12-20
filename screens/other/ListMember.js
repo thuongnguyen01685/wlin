@@ -145,9 +145,9 @@ const ListMember = () => {
   };
 
   const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
     circleAnimated();
     async function it() {
+      await setRefreshing(true);
       const res = await dispatch(getCLub(auth, 1, auth.permission.group_id));
       const arrMember = res
         ?.flatMap((items) => items.ds_thanh_vien.map((item) => item.ma_kh))
@@ -159,15 +159,15 @@ const ListMember = () => {
         getMemberAction(auth.token, arrMember, page, "")
       );
       setData([...data, ...reListMe]);
+      await setRefreshing(false);
     }
     it();
-    wait(500).then(() => setRefreshing(false));
   }, [dispatch]);
 
   useEffect(() => {
-    setRefreshing(true);
     circleAnimated();
     async function it() {
+      await setRefreshing(true);
       const res = await dispatch(getCLub(auth, 1, auth.permission.group_id));
       const arrMember = res
         ?.flatMap((items) => items.ds_thanh_vien.map((item) => item.ma_kh))
@@ -179,9 +179,9 @@ const ListMember = () => {
         getMemberAction(auth.token, arrMember, page, search)
       );
       setData([...data, ...reListMe]);
+      await setRefreshing(false);
     }
     it();
-    wait(500).then(() => setRefreshing(false));
   }, [dispatch, search]);
 
   const handleDetailMember = (ma_kh) => {

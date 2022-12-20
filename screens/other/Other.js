@@ -105,15 +105,17 @@ const Other = () => {
 
   const handleLogout = async () => {
     try {
-      await setLoading(true);
+      setLoading(true);
+
       await AsyncStorage.removeItem("@token_key");
 
       // console.log("Token removed");
 
-      await dispatch({ type: AUTH.TOKEN, payload: null });
+      dispatch({ type: AUTH.TOKEN, payload: null });
 
-      await dispatch({ type: AUTH.PROFILE, payload: [] });
-      await setLoading(false);
+      dispatch({ type: AUTH.PROFILE, payload: [] });
+
+      setLoading(false);
       Toast.show("Bạn đã đăng xuất !", {
         duration: Toast.durations.LONG,
         position: Toast.positions.BOTTOM,
