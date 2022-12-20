@@ -91,7 +91,7 @@ const Splash = () => {
       }, 1 * 2000);
     };
     it();
-  }, [dispatch, auth.token]);
+  }, [dispatch]);
 
   return (
     <View style={styles.container}>

@@ -7,7 +7,6 @@ const Loading = (props) => {
   return (
     <View
       style={{
-        left: 10,
         padding: 30,
         position: "absolute",
         left: "100%",

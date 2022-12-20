@@ -13,6 +13,7 @@ import {
   ScrollView,
   TextInput,
   Animated,
+  ActivityIndicator,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useDispatch, useSelector } from "react-redux";
@@ -47,6 +48,7 @@ const Otp = ({ route }) => {
   const [checked, setChecked] = useState(false);
   const [modalSms, setModalSms] = useState(false);
   const [showAlertPermission, setShowAlertPermission] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   //animated
   const [status, setStatus] = useState(null);
@@ -102,7 +104,10 @@ const Otp = ({ route }) => {
 
   const { auth } = useSelector((state) => state);
 
+  let number = route.params.value;
+  if (!number.startsWith("0")) number = "0" + route.params.value;
   const handleCheckOtp = async () => {
+    setLoading(true);
     const maOtp =
       one.toString() +
       two.toString() +
@@ -144,9 +149,11 @@ const Otp = ({ route }) => {
             await dispatch({ type: AUTH.GOI, payload: goi.goi_thanh_vien });
             await navigation.navigate("TabBar");
           }
+          setLoading(false);
         }
       }
     } else {
+      setLoading(false);
       setStatus("fail");
       popIn();
     }
@@ -161,6 +168,22 @@ const Otp = ({ route }) => {
           setShowAlertPermission={setShowAlertPermission}
           content={"Vui lòng nâng cấp lên gói thành viên."}
         />
+      )}
+      {loading && (
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: "#000",
+            opacity: 0.5,
+            width: w,
+            height: h,
+            position: "absolute",
+            zIndex: 20,
+            justifyContent: "center",
+            alignItems: "center",
+          }}>
+          <ActivityIndicator size="large" color="#00ff00" />
+        </View>
       )}
       <View
         style={{
@@ -287,7 +310,7 @@ const Otp = ({ route }) => {
                   fontWeight: "400",
                   left: 10,
                 }}>
-                {route.params.numberPhone}
+                {number}
               </Text>
             </Text>
             <Text style={styles.contentText}>

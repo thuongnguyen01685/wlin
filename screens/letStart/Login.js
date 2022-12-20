@@ -12,6 +12,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
+  ActivityIndicator,
 } from "react-native";
 import PhoneInput from "react-native-phone-number-input";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -20,6 +21,7 @@ import ModalSms from "../../components/ModalSms";
 import { useDispatch, useSelector } from "react-redux";
 import { AUTH, getOTP } from "../../redux/actions/authAction";
 import { CheckBox } from "@rneui/themed";
+import Loading from "../../components/loading/Loading";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
@@ -36,20 +38,29 @@ const Login = () => {
   const [checked, setChecked] = useState(false);
   const [modalSms, setModalSms] = useState(false);
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
 
   const handleGetOtp = async () => {
+    setLoading(true);
     const checkValid = phoneInput.current?.isValidNumber(value);
-    setShowMessage(true);
+
+    if (!checkValid) {
+      setShowMessage(true);
+      setLoading(false);
+    }
+
     setValid(checkValid ? checkValid : false);
 
     if (checkValid && checked) {
       const res = await dispatch(getOTP(value));
       if (res) {
+        setLoading(false);
         setModalSms(true);
         setTimeout(() => {
           dispatch({ type: AUTH.OTP, payload: "" });
         }, 300 * 1000);
       } else {
+        setLoading(false);
         Toast.show("Tài khoản này không tồn tại !", {
           duration: Toast.durations.LONG,
           position: Toast.positions.BOTTOM,
@@ -60,6 +71,23 @@ const Login = () => {
 
   return (
     <KeyboardAwareScrollView style={styles.container}>
+      {loading && (
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: "#000",
+            opacity: 0.5,
+            width: w,
+            height: h,
+            position: "absolute",
+            zIndex: 20,
+            justifyContent: "center",
+            alignItems: "center",
+          }}>
+          <ActivityIndicator size="large" color="#00ff00" />
+        </View>
+      )}
+
       {modalSms && (
         <ModalSms
           modalSms={modalSms}
@@ -181,8 +209,8 @@ const Login = () => {
               />
             </View>
 
-            {showMessage ? (
-              valid ? (
+            {showMessage &&
+              (valid ? (
                 <></>
               ) : value === "" ? (
                 <Text
@@ -206,10 +234,7 @@ const Login = () => {
                   }}>
                   Định dạng số chưa đúng.
                 </Text>
-              )
-            ) : (
-              <Text></Text>
-            )}
+              ))}
             <View
               style={{
                 flexDirection: "row",

@@ -18,6 +18,7 @@ import {
   Keyboard,
   Platform,
   TextInput,
+  ActivityIndicator,
 } from "react-native";
 import Toast from "react-native-root-toast";
 import { useDispatch, useSelector } from "react-redux";
@@ -86,6 +87,7 @@ const Other = () => {
   const [searchPart, setSearchPart] = useState(false);
   const { auth } = useSelector((state) => state);
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
 
   let dataHas = [];
 
@@ -103,6 +105,7 @@ const Other = () => {
 
   const handleLogout = async () => {
     try {
+      await setLoading(true);
       await AsyncStorage.removeItem("@token_key");
 
       // console.log("Token removed");
@@ -110,7 +113,7 @@ const Other = () => {
       await dispatch({ type: AUTH.TOKEN, payload: null });
 
       await dispatch({ type: AUTH.PROFILE, payload: [] });
-
+      await setLoading(false);
       Toast.show("Bạn đã đăng xuất !", {
         duration: Toast.durations.LONG,
         position: Toast.positions.BOTTOM,
@@ -124,6 +127,22 @@ const Other = () => {
 
   return (
     <View style={styles.container}>
+      {loading && (
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: "#000",
+            opacity: 0.5,
+            width: w,
+            height: h,
+            position: "absolute",
+            zIndex: 20,
+            justifyContent: "center",
+            alignItems: "center",
+          }}>
+          <ActivityIndicator size="large" color="#00ff00" />
+        </View>
+      )}
       <StatusBar barStyle="light-content" />
       <HeaderPart searchPart={searchPart} />
       <View
