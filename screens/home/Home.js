@@ -19,6 +19,7 @@ import {
   Platform,
   TextInput,
   FlatList,
+  ActivityIndicator,
 } from "react-native";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -135,11 +136,13 @@ const Home = () => {
     setRefreshing(true);
     dispatch(getProfileAction(auth.token));
     dispatch(getPermissionAction(auth.token, auth.profile.email));
-    dispatch(getCustomerWlinAction(auth.token, auth.profile.email));
+
     dispatch(getBenefitAction(auth.token, auth.profile.email));
     async function it() {
-      const goi = await dispatch(getRankAction(auth.token, auth.profile.email));
-      dispatch({ type: AUTH.GOI, payload: goi });
+      const goi = await dispatch(
+        getCustomerWlinAction(auth.token, auth.profile.email)
+      );
+      await dispatch({ type: AUTH.GOI, payload: goi.goi_thanh_vien });
       const res = await dispatch(getCLub(auth, 1, auth.permission.group_id));
 
       const arrayClub = res.map((item) => item.ma_club);
@@ -160,6 +163,22 @@ const Home = () => {
 
   return (
     <View style={styles.container}>
+      {refreshing && (
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: "#000",
+            opacity: 0.5,
+            width: w,
+            height: h,
+            position: "absolute",
+            zIndex: 20,
+            justifyContent: "center",
+            alignItems: "center",
+          }}>
+          <ActivityIndicator size="large" color="#00ff00" />
+        </View>
+      )}
       <StatusBar barStyle="light-content" />
 
       <HeaderPart backHome={backHome} setBackHome={setBackHome} />

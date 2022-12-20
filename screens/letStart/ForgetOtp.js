@@ -25,6 +25,8 @@ const ForgetOtp = ({ route }) => {
   const navigation = useNavigation();
   const { auth } = useSelector((state) => state);
 
+  let number = route.params.value;
+  if (!number.startsWith("0")) number = "0" + route.params.value;
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -125,7 +127,7 @@ const ForgetOtp = ({ route }) => {
                 Xin chào,
                 <Text
                   style={{ fontSize: 13, fontFamily: "LexendDeca_400Regular" }}>
-                  {route.params.numberPhone} !
+                  {number} !
                 </Text>
               </Text>
               <Text style={styles.contentText}>

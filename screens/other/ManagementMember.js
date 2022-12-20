@@ -70,13 +70,13 @@ const ManagementMember = () => {
   useEffect(() => {
     setRefreshing(true);
     circleAnimated();
-    wait(100).then(() => setRefreshing(false));
+    wait(5).then(() => setRefreshing(false));
   }, [dispatch]);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     circleAnimated();
-    wait(100).then(() => setRefreshing(false));
+    wait(10).then(() => setRefreshing(false));
   }, [dispatch]);
 
   return (

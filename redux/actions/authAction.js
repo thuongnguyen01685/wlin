@@ -52,7 +52,7 @@ export const getProfileAction = (token) => async (dispatch) => {
   try {
     const res = await callApi(`api/profile?access_token=${token}`);
 
-    getRankAction(token, res.data.email);
+    //getRankAction(token, res.data.email);
     dispatch({ type: AUTH.PROFILE, payload: res.data });
     return res.data.email;
   } catch (error) {

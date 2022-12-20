@@ -83,14 +83,15 @@ const Nation = () => {
   useEffect(() => {
     setRefreshing(true);
     circleAnimated();
-    wait(200).then(() => setRefreshing(false));
+    dispatch(getCLub(auth, 1, auth.permission.group_id));
+    setRefreshing(false);
   }, []);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     circleAnimated();
     dispatch(getCLub(auth, 1, auth.permission.group_id));
-    wait(500).then(() => setRefreshing(false));
+    setRefreshing(false);
   }, []);
 
   const handleDetail = (_id) => {
@@ -519,7 +520,7 @@ const Area = () => {
     setRefreshing(true);
     circleAnimated();
     dispatch(getCLub(auth, 1, auth.permission.group_id));
-    wait(500).then(() => setRefreshing(false));
+    setRefreshing(false);
   }, [auth.permission.group_id]);
 
   const handleDetail = (_id) => {
@@ -1375,7 +1376,7 @@ const Club = () => {
     setFilteredDataSource(club.getClubs);
     setMasterDataSource(club.getClubs);
     setRefreshing(false);
-  }, [dispatch]);
+  }, []);
 
   const handleDetailClub = (_id) => {
     dispatch(getDetailClub(_id, auth.token));
@@ -1387,50 +1388,6 @@ const Club = () => {
       <StatusBar barStyle="light-content" />
       <HeaderPart />
       <View style={styles.search}>
-        {/* <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            width: "80%",
-            borderRadius: 7,
-          }}>
-          <TouchableOpacity>
-            <Ionicons name="search-outline" size={30} color="#ffffff" />
-          </TouchableOpacity>
-          <TextInput
-            placeholderTextColor={"#ffffff"}
-            theme={{
-              roundness: 50,
-              colors: {
-                primary: "green",
-                underlineColor: "transparent",
-              },
-            }}
-            underlineColorAndroid="transparent"
-            style={styles.input}
-            onChangeText={(text) => searchFilterFunction(text)}
-            value={search}
-            placeholder="Tìm kiếm"
-          />
-        </View>
-        <TouchableOpacity>
-          <View
-            style={{
-              width: 35,
-              height: 35,
-              borderRadius: 50,
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-            }}>
-            <Ionicons
-              name="options-outline"
-              size={25}
-              color="#ffffff"
-              style={{ transform: [{ rotate: "-90deg" }] }}
-            />
-          </View>
-        </TouchableOpacity> */}
         <ReactNativeAnimatedSearchbox
           onChangeText={(text) => searchFilterFunction(text)}
           value={search}
@@ -1527,28 +1484,7 @@ const Club = () => {
         </View>
       )}
 
-      <View
-        style={{
-          backgroundColor: "#ffffff",
-          shadowColor: "#000",
-          shadowOffset: {
-            width: 0,
-            height: 2,
-          },
-          shadowOpacity: 0.25,
-          shadowRadius: 3.84,
-
-          elevation: 5,
-          zIndex: 3,
-          marginTop: -50,
-          marginHorizontal: 15,
-          paddingVertical: 20,
-          borderRadius: 10,
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-          paddingHorizontal: 10,
-        }}>
+      <View style={styles.titlePart}>
         <View
           style={{
             flexDirection: "row",
@@ -1597,6 +1533,26 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#ffffff",
+  },
+  titlePart: {
+    backgroundColor: "#ffffff",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    zIndex: 3,
+    marginTop: -50,
+    marginHorizontal: 15,
+    paddingVertical: 20,
+    borderRadius: 10,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 10,
   },
   headerTitle: {
     fontSize: 16,
