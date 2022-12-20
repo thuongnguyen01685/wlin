@@ -75,7 +75,7 @@ export const getPermissionAction = (token, email) => async (dispatch) => {
 export const getCustomerWlinAction = (token, phone) => async (dispatch) => {
   try {
     const q = {
-      $and: [{ of_user: phone }, { trang_thai: { $ne: "0" } }],
+      $and: [{ of_user: phone }],
     };
 
     const res = await callApis(

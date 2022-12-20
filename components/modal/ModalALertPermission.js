@@ -91,6 +91,7 @@ const ModalALertPermission = (props) => {
           }}>
           <TouchableOpacity
             onPress={() => {
+              props.setShowAlertPermission(!props.showAlertPermission);
               navigation.navigate("TabBar");
             }}>
             <LinearGradient

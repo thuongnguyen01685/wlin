@@ -33,7 +33,7 @@ const CardInfo = () => {
           paddingBottom: 10,
           borderRadius: 15,
         }}>
-        {auth?.ma_goi && (
+        {auth.ma_goi?.length > 0 && (
           <Image
             source={
               auth?.ma_goi === "01"
@@ -91,7 +91,7 @@ const CardInfo = () => {
           </Text>
         </View>
         <View style={{ paddingHorizontal: 10, bottom: 5, marginVertical: 15 }}>
-          {auth.ma_goi && (
+          {auth.ma_goi?.length > 0 && (
             <View>
               <View
                 style={{
