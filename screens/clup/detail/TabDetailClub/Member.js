@@ -159,7 +159,7 @@ const Member = (props) => {
                     <View
                       style={{
                         marginLeft: 10,
-                        width: width * 0.5,
+                        width: width * 0.6,
                         flexDirection: "column",
                       }}>
                       <Text
@@ -175,9 +175,9 @@ const Member = (props) => {
                           backgroundColor: item.ten_chuc_vu
                             ? dataColor[temp].bgColor
                             : "#ffff",
-                          padding: item.ten_chuc_vu ? 5 : 0,
+                          paddingVertical: item.ten_chuc_vu ? 5 : 0,
                           borderRadius: 15,
-                          width: "50%",
+                          width: width * 0.4,
                         }}>
                         <Text
                           style={{

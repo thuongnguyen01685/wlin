@@ -95,7 +95,11 @@ const DetailEvents = ({ route }, props) => {
 
   const countParticipant = event.detailEvent?.ds_tham_gia?.filter(
     (item) =>
-      item.trang_thai_checkin === "1" && item.ma_kh === `${auth.profile.email}`
+      item.trang_thai_checkin === "1" && item.ma_kh === `${auth.customer.ma_kh}`
+  );
+
+  const checkParticipant = event.detailEvent?.ds_tham_gia?.filter(
+    (item) => item.ma_kh === `${auth.customer.ma_kh}`
   );
 
   const dayname = [
@@ -651,48 +655,51 @@ const DetailEvents = ({ route }, props) => {
               </View>
 
               {auth.permission.group_id === Member ? (
-                <View
-                  style={{
-                    flexDirection: "row",
-                    width: w,
-                    paddingHorizontal: 15,
-                    marginTop: 10,
-                  }}>
-                  <TouchableOpacity
-                    onPress={
-                      countParticipant?.length === 1
-                        ? () => {
-                            return;
-                          }
-                        : () => navigation.navigate("CheckQR")
-                    }>
-                    <LinearGradient
-                      start={{ x: 0, y: 0.3 }}
-                      end={{ x: 1, y: 1 }}
-                      colors={["#9D85F2", "rgba(157, 133, 242, 0.4)"]}
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "center",
-                        alignContent: "center",
-                        alignItems: "center",
-                        borderRadius: 30,
-                        width: w * 0.9,
-                        paddingVertical: 15,
-                      }}>
-                      <Text
+                //check event recomend
+                checkParticipant?.length > 0 && (
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      width: w,
+                      paddingHorizontal: 15,
+                      marginTop: 10,
+                    }}>
+                    <TouchableOpacity
+                      onPress={
+                        countParticipant?.length === 1
+                          ? () => {
+                              return;
+                            }
+                          : () => navigation.navigate("CheckQR")
+                      }>
+                      <LinearGradient
+                        start={{ x: 0, y: 0.3 }}
+                        end={{ x: 1, y: 1 }}
+                        colors={["#9D85F2", "rgba(157, 133, 242, 0.4)"]}
                         style={{
-                          fontSize: 25,
-                          color: "#ffffff",
-                          fontFamily: "LexendDeca_400Regular",
-                          textAlign: "center",
+                          flexDirection: "row",
+                          justifyContent: "center",
+                          alignContent: "center",
+                          alignItems: "center",
+                          borderRadius: 30,
+                          width: w * 0.9,
+                          paddingVertical: 15,
                         }}>
-                        {countParticipant?.length === 1
-                          ? "Đã Check-in"
-                          : "Check-in"}
-                      </Text>
-                    </LinearGradient>
-                  </TouchableOpacity>
-                </View>
+                        <Text
+                          style={{
+                            fontSize: 25,
+                            color: "#ffffff",
+                            fontFamily: "LexendDeca_400Regular",
+                            textAlign: "center",
+                          }}>
+                          {countParticipant?.length === 1
+                            ? "Đã Check-in"
+                            : "Check-in"}
+                        </Text>
+                      </LinearGradient>
+                    </TouchableOpacity>
+                  </View>
+                )
               ) : (
                 <View
                   style={{

@@ -82,7 +82,7 @@ const BenefitHome = ({ item }) => {
           }}>
           {item?.ten_quyen_loi}
         </Text>
-        {/* <TouchableOpacity
+        <View
           style={{
             flexDirection: "row",
             justifyContent: "space-between",
@@ -93,9 +93,10 @@ const BenefitHome = ({ item }) => {
             borderRadius: 15,
             paddingVertical: 5,
             paddingHorizontal: 10,
+            opacity: 0.5,
           }}>
-          <Text style={{ fontSize: 11, color: "#ffffff" }}>Trả QL</Text>
-        </TouchableOpacity> */}
+          <Text style={{ fontSize: 11, color: "#ffffff" }}>Chưa trả</Text>
+        </View>
       </View>
     </View>
   );

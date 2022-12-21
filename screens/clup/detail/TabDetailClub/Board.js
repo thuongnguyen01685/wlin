@@ -66,9 +66,9 @@ const Board = (props) => {
       },
       {
         text: "Xóa",
-        onPress: () => {
-          dispatch(deleteBQTAction(auth.token, arr, props.id_event));
-          dispatch(getDetailClub(props.id_event, auth.token));
+        onPress: async () => {
+          await dispatch(deleteBQTAction(auth.token, arr, props.id_event));
+          await dispatch(getDetailClub(props.id_event, auth.token));
         },
       },
     ]);

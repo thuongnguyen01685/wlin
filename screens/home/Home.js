@@ -106,6 +106,7 @@ const Home = () => {
     }
     async function it() {
       const res = await dispatch(getCLub(auth, 1, auth.permission.group_id));
+
       const arrayClub = res?.map((item) => item.ma_club);
       dispatch(getEventsAction(auth, arrayClub, auth.permission.group_id));
 
