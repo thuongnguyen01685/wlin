@@ -8,6 +8,7 @@ export const EVENTS = {
   NEWSEVENTS: "NEWSEVENTS",
   SOCKETCHECKIN: "SOCKETCHECKIN",
   EVENTCHART: "EVENTCHART",
+  RECOMMEND_EVENT: "RECOMMEND_EVENT",
 };
 
 export const getEventsAction =
@@ -20,7 +21,7 @@ export const getEventsAction =
       condition = JSON.stringify(condition);
       if (permission === Admin || permission === Partner) {
         const res = await callApis(
-          `dmsukien?access_token=${auth.token}&q=${condition}`
+          `dmsukien?access_token=${auth.token}&q=${condition}&limit=200`
         );
         dispatch({ type: EVENTS.GETEVENTS, payload: res.data });
         return res.data;
@@ -28,10 +29,17 @@ export const getEventsAction =
       //dmsukien?access_token=a32ace19895e836dc9c11ef730a86dac&limit=200&q={"ds_tham_gia":{"$elemMatch":{"ma_kh":"0338634204"}}}
       if (permission === Member) {
         const res = await callApis(
-          `dmsukien?access_token=${auth.token}&limit=200&q={"ds_tham_gia":{"$elemMatch":{"ma_kh":"${auth.profile.email}"}}}`
+          `dmsukien?access_token=${auth.token}&limit=200&q={"ds_tham_gia":{"$elemMatch":{"ma_kh":"${auth.customer.ma_kh}"}}}`
         );
         dispatch({ type: EVENTS.GETEVENTS, payload: res.data });
-        return res.data;
+
+        const resRecommend = await callApis(
+          `recommend_event?access_token=${auth.token}&ma_kh=${auth.customer.ma_kh}`
+        );
+
+        dispatch({ type: EVENTS.RECOMMEND_EVENT, payload: resRecommend.data });
+
+        return [...res.data, ...resRecommend.data];
       }
     } catch (error) {
       console.log(error);

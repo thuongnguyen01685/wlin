@@ -79,7 +79,7 @@ export const getCustomerWlinAction = (token, phone) => async (dispatch) => {
     };
 
     const res = await callApis(
-      `customer_wlin?access_token=${token}&limit=500&q=${JSON.stringify(q)}`
+      `customer_wlin?access_token=${token}&q=${JSON.stringify(q)}`
     );
 
     dispatch({

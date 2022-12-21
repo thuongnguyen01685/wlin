@@ -27,6 +27,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getEventsAction } from "../../redux/actions/eventsAction";
 import { URL } from "../../utils/fetchApi";
 import ReactNativeAnimatedSearchbox from "../../components/ReactNativeAnimatedSearchbox";
+import { getCLub } from "../../redux/actions/ClupAction";
 
 const w = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
@@ -73,8 +74,17 @@ const Events = () => {
   };
 
   useEffect(() => {
-    setFilteredDataSource(event.getEvents);
-    setMasterDataSource(event.getEvents);
+    async function it() {
+      const res = await dispatch(getCLub(auth, 1, auth.permission.group_id));
+
+      const arrayClub = res.map((item) => item.ma_club);
+      const resSearch = await dispatch(
+        getEventsAction(auth, arrayClub, auth.permission.group_id)
+      );
+      setFilteredDataSource(resSearch);
+      setMasterDataSource(resSearch);
+    }
+    it();
   }, []);
 
   const [routes] = useState([
@@ -125,9 +135,9 @@ const Events = () => {
           </View>
           <ScrollView>
             {filteredDataSource.length > 0 ? (
-              filteredDataSource.map((item) => (
+              filteredDataSource.map((item, index) => (
                 <TouchableOpacity
-                  key={item._id}
+                  key={index}
                   style={{
                     paddingVertical: 5,
                     borderBottomWidth: 0.5,
