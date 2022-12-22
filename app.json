@@ -11,7 +11,7 @@
             "androidMode": "collapse",
             "androidCollapsedTitle": "wlin"
         },
-        "userInterfaceStyle": "light",
+        "userInterfaceStyle": "automatic",
         "splash": {
             "image": "./assets/logo.png",
             "resizeMode": "contain",
@@ -75,7 +75,7 @@
                 }
             }
         },
-        
+
         "plugins": [
             [
                 "expo-image-picker",

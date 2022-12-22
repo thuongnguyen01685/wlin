@@ -9,6 +9,7 @@ export const EVENTS = {
   SOCKETCHECKIN: "SOCKETCHECKIN",
   EVENTCHART: "EVENTCHART",
   RECOMMEND_EVENT: "RECOMMEND_EVENT",
+  PARTNER_EVENT: "PARTNER_EVENT",
 };
 
 export const getEventsAction =
@@ -19,12 +20,25 @@ export const getEventsAction =
         club: { $in: array },
       };
       condition = JSON.stringify(condition);
-      if (permission === Admin || permission === Partner) {
+      if (permission === Admin) {
         const res = await callApis(
           `dmsukien?access_token=${auth.token}&q=${condition}&limit=200`
         );
         dispatch({ type: EVENTS.GETEVENTS, payload: res.data });
         return res.data;
+      }
+
+      //partner
+      if (permission === Partner) {
+        const res = await callApis(
+          `dmsukien?access_token=${auth.token}&q=${condition}&limit=200`
+        );
+        dispatch({ type: EVENTS.GETEVENTS, payload: res.data });
+        const resPartner = await callApis(
+          `dmsukien?access_token=${auth.token}&limit=200&q={"ds_tham_gia":{"$elemMatch":{"ma_kh":"${auth.customer.ma_kh}"}}}`
+        );
+        dispatch({ type: EVENTS.PARTNER_EVENT, payload: resPartner.data });
+        return [...res.data, ...resPartner.data];
       }
       //dmsukien?access_token=a32ace19895e836dc9c11ef730a86dac&limit=200&q={"ds_tham_gia":{"$elemMatch":{"ma_kh":"0338634204"}}}
       if (permission === Member) {
@@ -39,7 +53,7 @@ export const getEventsAction =
 
         dispatch({ type: EVENTS.RECOMMEND_EVENT, payload: resRecommend.data });
 
-        return [...res.data, ...resRecommend.data];
+        return res.data;
       }
     } catch (error) {
       console.log(error);
@@ -49,8 +63,9 @@ export const getEventsAction =
 export const getDetailEventsAction = (_id, token) => async (dispatch) => {
   try {
     const res = await callApis(`dmsukien/${_id}?access_token=${token}`);
-
-    dispatch({ type: EVENTS.DETAILEVENTS, payload: res.data });
+    if (res?.data) {
+      dispatch({ type: EVENTS.DETAILEVENTS, payload: res.data });
+    }
   } catch (error) {
     console.log(error);
   }
