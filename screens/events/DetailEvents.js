@@ -709,7 +709,9 @@ const DetailEvents = ({ route }, props) => {
                     paddingHorizontal: 15,
                     marginTop: 10,
                   }}>
-                  {event.detailEvent.trang_thai !== "1" && (
+                  {((event.detailEvent.trang_thai !== "1" &&
+                    checkParticipant?.length > 0) ||
+                    auth.permission.group_id === Admin) && (
                     <TouchableOpacity
                       onPress={() => navigation.navigate("CheckQR")}>
                       <LinearGradient

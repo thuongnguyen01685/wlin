@@ -82,6 +82,7 @@ const Events = () => {
         const resSearch = await dispatch(
           getEventsAction(auth, arrayClub, auth.permission.group_id)
         );
+
         setFilteredDataSource(resSearch);
         setMasterDataSource(resSearch);
       }

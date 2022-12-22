@@ -79,7 +79,7 @@ const ChooseTime = (props) => {
         onConfirm={handleConfirmFromTime}
         onCancel={hideDatePickerFromTime}
         isDarkModeEnabled={
-          Appearance.getColorScheme() == "light" ? true : false
+          Appearance.getColorScheme() === "light" ? false : true
         }
       />
 
@@ -90,7 +90,7 @@ const ChooseTime = (props) => {
         onConfirm={handleConfirmToTime}
         onCancel={hideDatePickerToTime}
         isDarkModeEnabled={
-          Appearance.getColorScheme() == "light" ? true : false
+          Appearance.getColorScheme() === "light" ? false : true
         }
       />
       <TouchableOpacity

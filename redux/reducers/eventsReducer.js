@@ -6,6 +6,7 @@ const initialState = {
   socketCheckin: [],
   eventChart: [],
   eventRecommend: [],
+  eventPartner: [],
 };
 
 const eventReducer = (state = initialState, action) => {
@@ -14,6 +15,11 @@ const eventReducer = (state = initialState, action) => {
       return {
         ...state,
         getEvents: action.payload,
+      };
+    case EVENTS.PARTNER_EVENT:
+      return {
+        ...state,
+        eventPartner: action.payload,
       };
     case EVENTS.RECOMMEND_EVENT:
       return {
