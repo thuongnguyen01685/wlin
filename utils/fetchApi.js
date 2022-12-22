@@ -34,3 +34,18 @@ export const getdataApiClub = async (url, auth, page, permission) => {
     }
   }
 };
+
+export const getClubPartnerParticipant = async (
+  url,
+  auth,
+  page,
+  permission
+) => {
+  //partner
+  if (permission === Partner) {
+    const res = await axios.get(
+      `${URL}/api/${id_app}/${url}?access_token=${auth.token}&limit=500&q={"ds_thanh_vien":{"$elemMatch":{"ma_kh":"${auth.profile.email}"}}}`
+    );
+    return res;
+  }
+};

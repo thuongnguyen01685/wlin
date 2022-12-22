@@ -8,6 +8,7 @@ const initialState = {
   getMember: [],
   detailMember: {},
   dmchucvu: [],
+  clubPartnerJoin: [],
 };
 
 const clubReducer = (state = initialState, action) => {
@@ -18,6 +19,11 @@ const clubReducer = (state = initialState, action) => {
       return {
         ...state,
         getClubs: action.payload,
+      };
+    case CLUB.GETCLUBPARTNERJOIN:
+      return {
+        ...state,
+        clubPartnerJoin: action.payload,
       };
     case CLUB.DETAILCLUB:
       return {

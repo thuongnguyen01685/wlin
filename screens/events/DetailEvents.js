@@ -95,11 +95,11 @@ const DetailEvents = ({ route }, props) => {
 
   const countParticipant = event.detailEvent?.ds_tham_gia?.filter(
     (item) =>
-      item.trang_thai_checkin === "1" && item.ma_kh === `${auth.customer.ma_kh}`
+      item.trang_thai_checkin === "1" && item.ma_kh === `${auth.profile.email}`
   );
 
   const checkParticipant = event.detailEvent?.ds_tham_gia?.filter(
-    (item) => item.ma_kh === `${auth.customer.ma_kh}`
+    (item) => item.ma_kh === `${auth.profile.email}`
   );
 
   const dayname = [

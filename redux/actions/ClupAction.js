@@ -1,5 +1,9 @@
+import { Partner } from "../../utils/AccessPermission";
 import callApis from "../../utils/callApis";
-import { getdataApiClub } from "../../utils/fetchApi";
+import {
+  getClubPartnerParticipant,
+  getdataApiClub,
+} from "../../utils/fetchApi";
 
 export const CLUB = {
   GETCLUB: "GETCLUB",
@@ -9,11 +13,24 @@ export const CLUB = {
   DETAILMEMBER: "DETAILMEMBER",
   DETAILBENEFIT: "DETAILBENEFIT",
   DMCHUCVU: "DMCHUCVU",
+  GETCLUBPARTNERJOIN: "GETCLUBPARTNERJOIN",
 };
 
 export const getCLub = (auth, page, permission) => async (dispatch) => {
   try {
     const res = await getdataApiClub(`wlin_club`, auth, page, permission);
+
+    if (permission === Partner) {
+      const resPartner = await getClubPartnerParticipant(
+        `wlin_club`,
+        auth,
+        page,
+        permission
+      );
+      if (resPartner.data) {
+        dispatch({ type: CLUB.GETCLUBPARTNERJOIN, payload: resPartner.data });
+      }
+    }
 
     if (res.data) {
       dispatch({ type: CLUB.GETCLUB, payload: res.data });

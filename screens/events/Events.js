@@ -77,12 +77,14 @@ const Events = () => {
     async function it() {
       const res = await dispatch(getCLub(auth, 1, auth.permission.group_id));
 
-      const arrayClub = res.map((item) => item.ma_club);
-      const resSearch = await dispatch(
-        getEventsAction(auth, arrayClub, auth.permission.group_id)
-      );
-      setFilteredDataSource(resSearch);
-      setMasterDataSource(resSearch);
+      if (res.length > 0) {
+        const arrayClub = res.map((item) => item.ma_club);
+        const resSearch = await dispatch(
+          getEventsAction(auth, arrayClub, auth.permission.group_id)
+        );
+        setFilteredDataSource(resSearch);
+        setMasterDataSource(resSearch);
+      }
     }
     it();
   }, []);

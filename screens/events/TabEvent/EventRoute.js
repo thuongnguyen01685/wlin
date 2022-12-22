@@ -25,6 +25,7 @@ import { URL } from "../../../utils/fetchApi";
 import Svg, { Path } from "react-native-svg";
 import ItemEvent from "./ItemEvent";
 import { useRef } from "react";
+import { Admin } from "../../../utils/AccessPermission";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
@@ -281,148 +282,155 @@ const EventRoute = () => {
               </Text>
             </View>
           )}
-
-          <Text
-            style={{
-              fontFamily: "LexendDeca_600SemiBold",
-              marginBottom: 5,
-              fontSize: 20,
-            }}>
-            Sự kiện gợi ý.
-          </Text>
-          {refreshing ? (
-            Array(10)
-              .fill("")
-              .map((i, index) => (
-                <View style={[{ marginBottom: 5 }, styles.card]} key={index}>
-                  <View
-                    style={{
-                      flexDirection: "column",
-                      width: w * 0.24,
-                      justifyContent: "center",
-                      alignItems: "center",
-                      marginHorizontal: 10,
-                      height: w * 0.2,
-                    }}>
-                    <View
-                      style={{
-                        width: w * 0.2,
-                        height: w * 0.18,
-                        borderRadius: 10,
-                        backgroundColor: "#ECEFF1",
-                        overflow: "hidden",
-                        marginRight: 16,
-                      }}>
-                      <Animated.View
-                        style={{
-                          width: "30%",
-                          opacity: 0.5,
-                          height: "100%",
-                          backgroundColor: "white",
-                          transform: [{ translateX: translateX }],
-                        }}></Animated.View>
-                    </View>
-                  </View>
-                  <View
-                    style={{
-                      flex: 1,
-                      justifyContent: "space-evenly",
-                      overflow: "hidden",
-                    }}>
-                    <Animated.View
-                      style={{ backgroundColor: "#ECEFF1", height: 25 }}>
-                      <Animated.View
-                        style={{
-                          width: "20%",
-                          height: "100%",
-                          backgroundColor: "white",
-                          opacity: 0.5,
-                          transform: [{ translateX: translateX2 }],
-                        }}></Animated.View>
-                    </Animated.View>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        width: w * 0.45,
-                        justifyContent: "flex-start",
-                        alignItems: "center",
-                        marginTop: 5,
-                      }}>
-                      <View
-                        style={{
-                          width: w * 0.19,
-                          height: w * 0.05,
-                          borderRadius: 5,
-                          backgroundColor: "#ECEFF1",
-                          overflow: "hidden",
-                        }}>
-                        <Animated.View
-                          style={{
-                            width: "30%",
-                            opacity: 0.5,
-                            height: "100%",
-                            backgroundColor: "white",
-                            transform: [{ translateX: translateX }],
-                          }}></Animated.View>
-                      </View>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        width: w * 0.45,
-                        justifyContent: "flex-start",
-                        alignItems: "center",
-                        marginTop: 3,
-                      }}>
-                      <View
-                        style={{
-                          width: w * 0.4,
-                          height: w * 0.05,
-                          borderRadius: 5,
-                          backgroundColor: "#ECEFF1",
-                          overflow: "hidden",
-                        }}>
-                        <Animated.View
-                          style={{
-                            width: "30%",
-                            opacity: 0.5,
-                            height: "100%",
-                            backgroundColor: "white",
-                            transform: [{ translateX: translateX }],
-                          }}></Animated.View>
-                      </View>
-                    </View>
-                  </View>
-                </View>
-              ))
-          ) : eventsRecommend?.length > 0 ? (
-            eventsRecommend.map((item) => (
-              <ItemEvent
-                onChangeStatusLove={onChangeStatusLove}
-                key={item._id}
-                item={item}
-                handleDetail={handleDetail}
-                noLove={true}
-              />
-            ))
-          ) : (
-            <View
-              style={{
-                paddingVertical: 15,
-                height: 200,
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-              }}>
+          {auth.permission.group_id !== Admin && (
+            <>
               <Text
                 style={{
-                  fontSize: 15,
-                  color: "#474747",
                   fontFamily: "LexendDeca_600SemiBold",
+                  marginBottom: 5,
+                  fontSize: 16,
+                  marginLeft: 10,
+                  color: "#826CCF",
                 }}>
-                Không có sự kiện gợi ý nào đang diễn ra.
+                Sự kiện gợi ý.
               </Text>
-            </View>
+              {refreshing ? (
+                Array(10)
+                  .fill("")
+                  .map((i, index) => (
+                    <View
+                      style={[{ marginBottom: 5 }, styles.card]}
+                      key={index}>
+                      <View
+                        style={{
+                          flexDirection: "column",
+                          width: w * 0.24,
+                          justifyContent: "center",
+                          alignItems: "center",
+                          marginHorizontal: 10,
+                          height: w * 0.2,
+                        }}>
+                        <View
+                          style={{
+                            width: w * 0.2,
+                            height: w * 0.18,
+                            borderRadius: 10,
+                            backgroundColor: "#ECEFF1",
+                            overflow: "hidden",
+                            marginRight: 16,
+                          }}>
+                          <Animated.View
+                            style={{
+                              width: "30%",
+                              opacity: 0.5,
+                              height: "100%",
+                              backgroundColor: "white",
+                              transform: [{ translateX: translateX }],
+                            }}></Animated.View>
+                        </View>
+                      </View>
+                      <View
+                        style={{
+                          flex: 1,
+                          justifyContent: "space-evenly",
+                          overflow: "hidden",
+                        }}>
+                        <Animated.View
+                          style={{ backgroundColor: "#ECEFF1", height: 25 }}>
+                          <Animated.View
+                            style={{
+                              width: "20%",
+                              height: "100%",
+                              backgroundColor: "white",
+                              opacity: 0.5,
+                              transform: [{ translateX: translateX2 }],
+                            }}></Animated.View>
+                        </Animated.View>
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            width: w * 0.45,
+                            justifyContent: "flex-start",
+                            alignItems: "center",
+                            marginTop: 5,
+                          }}>
+                          <View
+                            style={{
+                              width: w * 0.19,
+                              height: w * 0.05,
+                              borderRadius: 5,
+                              backgroundColor: "#ECEFF1",
+                              overflow: "hidden",
+                            }}>
+                            <Animated.View
+                              style={{
+                                width: "30%",
+                                opacity: 0.5,
+                                height: "100%",
+                                backgroundColor: "white",
+                                transform: [{ translateX: translateX }],
+                              }}></Animated.View>
+                          </View>
+                        </View>
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            width: w * 0.45,
+                            justifyContent: "flex-start",
+                            alignItems: "center",
+                            marginTop: 3,
+                          }}>
+                          <View
+                            style={{
+                              width: w * 0.4,
+                              height: w * 0.05,
+                              borderRadius: 5,
+                              backgroundColor: "#ECEFF1",
+                              overflow: "hidden",
+                            }}>
+                            <Animated.View
+                              style={{
+                                width: "30%",
+                                opacity: 0.5,
+                                height: "100%",
+                                backgroundColor: "white",
+                                transform: [{ translateX: translateX }],
+                              }}></Animated.View>
+                          </View>
+                        </View>
+                      </View>
+                    </View>
+                  ))
+              ) : eventsRecommend?.length > 0 ? (
+                eventsRecommend.map((item) => (
+                  <ItemEvent
+                    onChangeStatusLove={onChangeStatusLove}
+                    key={item._id}
+                    item={item}
+                    handleDetail={handleDetail}
+                    noLove={true}
+                  />
+                ))
+              ) : (
+                <View
+                  style={{
+                    paddingVertical: 15,
+                    height: 200,
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}>
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      color: "#474747",
+                      fontFamily: "LexendDeca_600SemiBold",
+                    }}>
+                    Không có sự kiện gợi ý nào đang diễn ra.
+                  </Text>
+                </View>
+              )}
+            </>
           )}
         </View>
       </ScrollView>

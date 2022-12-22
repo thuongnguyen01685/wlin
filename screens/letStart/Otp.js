@@ -146,7 +146,10 @@ const Otp = ({ route }) => {
             const goi = await dispatch(
               getCustomerWlinAction(res.token, resPhone)
             );
-            await dispatch({ type: AUTH.GOI, payload: goi.goi_thanh_vien });
+            if (goi) {
+              await dispatch({ type: AUTH.GOI, payload: goi.goi_thanh_vien });
+            }
+
             await navigation.navigate("TabBar");
           }
           setLoading(false);
