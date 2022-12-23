@@ -3,24 +3,31 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { Component } from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  BackHandler,
+} from "react-native";
 
 import Modal from "react-native-modal";
 
 // create a component
 const ModalNotPermission = (props) => {
   const navigation = useNavigation();
+
   return (
     <Modal
       animationType="fade"
       transparent={true}
-      isVisible={props.modalNotAccess}
+      isVisible={props.showAlertPermission}
       backdropColor="#C4C4C4"
       backdropOpacity={0.5}
-      onBackdropPress={() => {
-        props.setModalNotAccess(!props.modalNotAccess);
-        navigation.goBack();
-      }}
+      onBackdropPress={() =>
+        props.setShowAlertPermission(!props.showAlertPermission)
+      }
       style={{ paddingHorizontal: 10 }}>
       <View
         style={{
@@ -32,66 +39,74 @@ const ModalNotPermission = (props) => {
           height: "auto",
           bottom: 20,
         }}>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "flex-end",
-            alignItems: "center",
-          }}>
-          <TouchableOpacity
-            onPress={() => {
-              props.setModalNotAccess(!props.modalNotAccess);
-              navigation.goBack();
+        <View style={{ flexDirection: "row", justifyContent: "center" }}>
+          <Image
+            source={require("../../assets/notconfetti.png")}
+            style={{
+              resizeMode: "contain",
+              width: 150,
+              height: 100,
+              marginVertical: 10,
+            }}
+          />
+        </View>
+        <View>
+          <Text
+            style={{
+              fontSize: 22,
+              fontFamily: "LexendDeca_600SemiBold",
+              textAlign: "center",
             }}>
-            <Ionicons name="close-outline" size={20} />
-          </TouchableOpacity>
+            Rất tiếc
+          </Text>
+          <Text
+            style={{
+              fontSize: 14,
+              textAlign: "center",
+              marginVertical: 20,
+              fontFamily: "LexendDeca_400Regular",
+              lineHeight: 20,
+              paddingHorizontal: 20,
+            }}>
+            {props.content}
+          </Text>
         </View>
         <View
           style={{
             flexDirection: "column",
-            justifyContent: "space-around",
+            justifyContent: "center",
+            alignItems: "center",
+            marginBottom: 15,
           }}>
-          <View style={{ flexDirection: "row", justifyContent: "center" }}>
-            <Image
-              source={require("../../assets/notconfetti.png")}
-              style={{ width: 70, height: 70 }}
-            />
-          </View>
-          <View style={{ marginVertical: 10 }}>
-            <Text
-              style={{ fontSize: 12, fontWeight: "600", textAlign: "center" }}>
-              Tạo Referrals thành công
-            </Text>
-          </View>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-              marginVertical: 10,
+          <TouchableOpacity
+            onPress={() => {
+              props.setShowAlertPermission(!props.showAlertPermission);
             }}>
-            <TouchableOpacity
-              onPress={() => {
-                props.setModalNotAccess(!props.modalNotAccess);
-                navigation.goBack();
+            <LinearGradient
+              start={{ x: 0, y: 0.3 }}
+              end={{ x: 1, y: 1 }}
+              colors={["#9D85F2", "rgba(157, 133, 242, 0.4)"]}
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignContent: "center",
+                alignItems: "center",
+                borderRadius: 20,
+                paddingVertical: 5,
+                paddingHorizontal: 10,
               }}>
-              <LinearGradient
-                start={{ x: 0, y: 0.3 }}
-                end={{ x: 1, y: 1 }}
-                colors={["#751979", "#AE40B2"]}
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignContent: "center",
-                  alignItems: "center",
-                  borderRadius: 7,
-                }}>
-                <View style={styles.borderBacRounded}>
-                  <Text style={{ color: "#ffffff" }}>OK</Text>
-                </View>
-              </LinearGradient>
-            </TouchableOpacity>
-          </View>
+              <View style={styles.borderBacRounded}>
+                <Text
+                  style={{
+                    color: "#ffffff",
+                    fontFamily: "LexendDeca_400Regular",
+                    fontSize: 15,
+                  }}>
+                  Quay lại
+                </Text>
+              </View>
+            </LinearGradient>
+          </TouchableOpacity>
         </View>
       </View>
     </Modal>
@@ -104,11 +119,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#2c3e50",
   },
   borderBacRounded: {
     paddingHorizontal: 20,
-    paddingVertical: 5,
+    paddingVertical: 8,
+    borderRadius: 15,
   },
 });
 

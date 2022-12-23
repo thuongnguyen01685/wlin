@@ -18,7 +18,9 @@ import {
   TextInput,
   RefreshControl,
 } from "react-native";
+import { useSelector } from "react-redux";
 import HeaderPart from "../../components/HeaderPart/HeaderPart";
+import Loading from "../../components/loading/Loading";
 
 import ModalSuccessRefer from "../../components/modal/ModalSuccessRefer";
 
@@ -36,8 +38,19 @@ const UpgradeMember = () => {
   const [modalSuccess, setModalSuccess] = useState(false);
   const [refreshing, setRefreshing] = React.useState(false);
   const [searchPart, setSearchPart] = useState(false);
+  const { auth } = useSelector((state) => state);
 
   useEffect(() => {}, []);
+
+  const ma_goi = () => {
+    if (auth.ma_goi) {
+      let number = Number(auth.ma_goi) + 1;
+      let stringGoi = "0" + number.toString();
+      return stringGoi;
+    } else {
+      return "05";
+    }
+  };
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -76,25 +89,16 @@ const UpgradeMember = () => {
             justifyContent: "space-between",
             alignItems: "center",
           }}>
-          <Text style={{ fontSize: 18, fontWeight: "600", color: "#826CCF" }}>
+          <Text
+            style={{
+              fontSize: 18,
+              color: "#826CCF",
+              fontFamily: "LexendDeca_600SemiBold",
+            }}>
             Nâng cấp gói thành viên
           </Text>
 
-          {refreshing && (
-            <View
-              style={{
-                left: 10,
-                padding: 30,
-                position: "absolute",
-                left: "100%",
-              }}>
-              {/* <Lottie
-                source={require("../../assets/loading.json")}
-                autoPlay
-                loop
-              /> */}
-            </View>
-          )}
+          {refreshing && <Loading size="large" />}
         </View>
       </View>
       <View style={{ height: "100%" }}>
@@ -119,7 +123,17 @@ const UpgradeMember = () => {
                 <LinearGradient
                   start={{ x: 1, y: 0.7 }}
                   end={{ x: 0.3, y: 0.8 }}
-                  colors={["#7289DD", "#D0DAFF", "#ABBCF8", "#7E96E9"]}
+                  colors={
+                    ma_goi() === "01"
+                      ? ["#ABABAB", "#DFDFDF", "#C5C5C5", "#B9B9B9"]
+                      : ma_goi() === "02"
+                      ? ["#DEC1A1", "#FBECD7", "#F5DFC7", "#D5B59C"]
+                      : ma_goi() === "03"
+                      ? ["#7289DD", "#D0DAFF", "#ABBCF8", "#7E96E9"]
+                      : ma_goi() === "04"
+                      ? ["#1F1F1f", "#646464", "#484848", "#373737"]
+                      : ["#9D85F2", "rgba(157, 133, 242, 0.4)"]
+                  }
                   style={{ width: 20, height: 20, borderRadius: 5 }}>
                   <View
                     style={{
@@ -130,24 +144,33 @@ const UpgradeMember = () => {
                     }}>
                     <Image
                       source={require("../../assets/logo.png")}
-                      style={{ width: 10, height: 10 }}
+                      style={{ width: 15, height: 15, resizeMode: "contain" }}
                     />
-                    <Text style={{ fontSize: 3, color: "#969696" }}>
-                      Gói Kim cương
-                    </Text>
                   </View>
                 </LinearGradient>
                 <Text
                   style={{
-                    color: "#8DA0E7",
+                    color:
+                      ma_goi() === "01"
+                        ? "rgba(103, 103, 103, 0.5)"
+                        : ma_goi() === "02"
+                        ? "#CAAD8B"
+                        : ma_goi() === "03"
+                        ? "rgba(90, 84, 165, 0.5)"
+                        : ma_goi() === "04" && "rgba(255, 255, 255, 0.6)",
                     fontSize: 13,
-                    fontWeight: "500",
+                    fontFamily: "LexendDeca_500Medium",
                     marginHorizontal: 10,
                   }}>
-                  Gói Kim cương
+                  {ma_goi() === "01"
+                    ? "Gói bạc"
+                    : ma_goi() === "02"
+                    ? "Gói vàng"
+                    : ma_goi() === "03"
+                    ? "Gói kim cương"
+                    : ma_goi() === "04" && "Gói partner"}
                 </Text>
               </View>
-              <Ionicons name="chevron-down-outline" size={20} color="#474747" />
             </TouchableOpacity>
           </View>
           <View style={{ flexDirection: "row", justifyContent: "center" }}>
@@ -171,16 +194,7 @@ const UpgradeMember = () => {
                   paddingVertical: 8,
                   borderRadius: 15,
                 }}>
-                <Text
-                  style={{
-                    fontSize: 12,
-                    color: "#ffffff",
-                    textAlign: "center",
-                    width: "100%",
-                    fontWeight: "500",
-                  }}>
-                  Nâng cấp
-                </Text>
+                <Text style={styles.textBtn}>Nâng cấp</Text>
               </LinearGradient>
             </TouchableOpacity>
           </View>
@@ -197,7 +211,17 @@ const UpgradeMember = () => {
                 <LinearGradient
                   start={{ x: 1, y: 0.7 }}
                   end={{ x: 0.3, y: 0.8 }}
-                  colors={["#F9C271", "#F4EFB8", "#F4EFB8", "#F9C271"]}
+                  colors={
+                    auth.ma_goi === "01"
+                      ? ["#ABABAB", "#DFDFDF", "#C5C5C5", "#B9B9B9"]
+                      : auth.ma_goi === "02"
+                      ? ["#DEC1A1", "#FBECD7", "#F5DFC7", "#D5B59C"]
+                      : auth.ma_goi === "03"
+                      ? ["#7289DD", "#D0DAFF", "#ABBCF8", "#7E96E9"]
+                      : auth.ma_goi === "04"
+                      ? ["#1F1F1f", "#646464", "#484848", "#373737"]
+                      : ["#9D85F2", "rgba(157, 133, 242, 0.4)"]
+                  }
                   style={{ width: 20, height: 20, borderRadius: 5 }}>
                   <View
                     style={{
@@ -208,24 +232,33 @@ const UpgradeMember = () => {
                     }}>
                     <Image
                       source={require("../../assets/logo.png")}
-                      style={{ width: 10, height: 10 }}
+                      style={{ width: 15, height: 15, resizeMode: "contain" }}
                     />
-                    <Text style={{ fontSize: 3, color: "#969696" }}>
-                      Gói Kim cương
-                    </Text>
                   </View>
                 </LinearGradient>
                 <Text
                   style={{
-                    color: "#F9C271",
+                    color:
+                      auth.ma_goi === "01"
+                        ? "rgba(103, 103, 103, 0.5)"
+                        : auth.ma_goi === "02"
+                        ? "#CAAD8B"
+                        : auth.ma_goi === "03"
+                        ? "rgba(90, 84, 165, 0.5)"
+                        : auth.ma_goi === "04" && "rgba(255, 255, 255, 0.6)",
                     fontSize: 13,
-                    fontWeight: "500",
+                    fontFamily: "LexendDeca_500Medium",
                     marginHorizontal: 10,
                   }}>
-                  Gói Vàng
+                  {auth.ma_goi === "01"
+                    ? "Gói bạc"
+                    : auth.ma_goi === "02"
+                    ? "Gói vàng"
+                    : auth.ma_goi === "03"
+                    ? "Gói kim cương"
+                    : auth.ma_goi === "04" && "Gói partner"}
                 </Text>
               </View>
-              <Ionicons name="chevron-down-outline" size={20} color="#474747" />
             </TouchableOpacity>
           </View>
           <View style={{ flexDirection: "row", justifyContent: "center" }}>
@@ -249,16 +282,7 @@ const UpgradeMember = () => {
                   paddingVertical: 8,
                   borderRadius: 15,
                 }}>
-                <Text
-                  style={{
-                    fontSize: 12,
-                    color: "#ffffff",
-                    textAlign: "center",
-                    width: "100%",
-                    fontWeight: "500",
-                  }}>
-                  Gia hạn
-                </Text>
+                <Text style={styles.textBtn}>Gia hạn</Text>
               </LinearGradient>
             </TouchableOpacity>
             <TouchableOpacity
@@ -280,16 +304,7 @@ const UpgradeMember = () => {
                   paddingVertical: 8,
                   borderRadius: 15,
                 }}>
-                <Text
-                  style={{
-                    fontSize: 12,
-                    color: "#ffffff",
-                    textAlign: "center",
-                    width: "100%",
-                    fontWeight: "500",
-                  }}>
-                  Hủy gia hạn
-                </Text>
+                <Text style={styles.textBtn}>Hủy gia hạn</Text>
               </LinearGradient>
             </TouchableOpacity>
           </View>
@@ -317,7 +332,7 @@ const styles = StyleSheet.create({
   headerName: {
     color: "#474747",
     fontSize: 14,
-    fontWeight: "600",
+    fontFamily: "LexendDeca_600SemiBold",
   },
   cardContainer: {
     marginBottom: 5,
@@ -340,6 +355,13 @@ const styles = StyleSheet.create({
     elevation: 5,
     borderRadius: 8,
     paddingHorizontal: 15,
+  },
+  textBtn: {
+    fontSize: 12,
+    color: "#ffffff",
+    textAlign: "center",
+    width: "100%",
+    fontFamily: "LexendDeca_500Medium",
   },
 });
 

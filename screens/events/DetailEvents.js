@@ -39,6 +39,7 @@ import Svg, { Path } from "react-native-svg";
 import Loading from "../../components/loading/Loading";
 import SkeletonDetailEvents from "../../components/loading/skeleton/SkeletonDetailEvents";
 import { log } from "react-native-reanimated";
+import ModalNotPermission from "../../components/modal/ModalNotPermission";
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
 const ratio = w / 720;
@@ -55,6 +56,8 @@ const DetailEvents = ({ route }, props) => {
   const dispatch = useDispatch();
 
   const { auth, event } = useSelector((state) => state);
+
+  const [showAlertPermission, setShowAlertPermission] = useState(false);
 
   //skeleton
   const circleAnimatedValue = useRef(new Animated.Value(0)).current;
@@ -75,14 +78,14 @@ const DetailEvents = ({ route }, props) => {
     setRefreshing(true);
     circleAnimated();
     dispatch(getDetailEventsAction(route.params._id, auth.token));
-    setRefreshing(false);
+    wait(10).then(() => setRefreshing(false));
   }, []);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     circleAnimated();
     dispatch(getDetailEventsAction(route.params._id, auth.token));
-    wait(5).then(() => setRefreshing(false));
+    wait(10).then(() => setRefreshing(false));
   }, []);
 
   let dateEvent = new Date(
@@ -114,6 +117,13 @@ const DetailEvents = ({ route }, props) => {
 
   return (
     <View style={styles.container}>
+      {showAlertPermission && (
+        <ModalNotPermission
+          showAlertPermission={showAlertPermission}
+          setShowAlertPermission={setShowAlertPermission}
+          content="Hiện QTV chưa chọn vị trí trên bản đồ hệ thống."
+        />
+      )}
       <StatusBar barStyle="light-content" />
       <HeaderPart />
       <View
@@ -519,15 +529,7 @@ const DetailEvents = ({ route }, props) => {
                               location: event.detailEvent.exfields.location,
                             });
                           } else {
-                            Alert.alert(
-                              "Thông báo",
-                              "Hiện chưa chọn vị trí trên bản đồ",
-                              [
-                                {
-                                  text: "Quay lại",
-                                },
-                              ]
-                            );
+                            setShowAlertPermission(true);
                           }
                         }}>
                         <LinearGradient

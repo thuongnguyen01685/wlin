@@ -17,26 +17,26 @@ import {
 } from "@expo-google-fonts/lexend-deca";
 
 export default function App() {
-  // Updates.checkForUpdateAsync().then((update) => {
-  //   if (update.isAvailable) {
-  //     Updates.fetchUpdateAsync().then((rs) => {
-  //       if (rs.isNew) {
-  //         Alert.alert(
-  //           " UPDATE",
-  //           "Chương trình có cập nhật mới. Bạn hãy khởi động lại chương trình để áp dụng phiên bản mới nhất!",
-  //           [
-  //             {
-  //               text: "restart",
-  //               onPress: () => {
-  //                 return Updates.reloadAsync();
-  //               },
-  //             },
-  //           ]
-  //         );
-  //       }
-  //     });
-  //   }
-  // });
+  Updates.checkForUpdateAsync().then((update) => {
+    if (update.isAvailable) {
+      Updates.fetchUpdateAsync().then((rs) => {
+        if (rs.isNew) {
+          Alert.alert(
+            " UPDATE",
+            "Chương trình có cập nhật mới. Bạn hãy khởi động lại chương trình để áp dụng phiên bản mới nhất!",
+            [
+              {
+                text: "restart",
+                onPress: () => {
+                  return Updates.reloadAsync();
+                },
+              },
+            ]
+          );
+        }
+      });
+    }
+  });
   let [fontsLoaded] = useFonts({
     LexendDeca_100Thin,
     LexendDeca_200ExtraLight,

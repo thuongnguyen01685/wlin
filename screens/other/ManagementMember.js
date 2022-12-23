@@ -18,6 +18,7 @@ import {
   ScrollView,
   Platform,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import Lottie from "lottie-react-native";
 import HeaderPart from "../../components/HeaderPart/HeaderPart";
@@ -30,6 +31,8 @@ import { Avatar, Surface } from "react-native-paper";
 import { URL } from "../../utils/fetchApi";
 import Loading from "../../components/loading/Loading";
 import SkeletonDetailMember from "../../components/loading/skeleton/SkeletonDetailMember";
+import { Admin, Partner } from "../../utils/AccessPermission";
+import ModalNotPermission from "../../components/modal/ModalNotPermission";
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -46,6 +49,7 @@ const ManagementMember = () => {
   const [refreshing, setRefreshing] = React.useState(false);
   const { auth, club } = useSelector((state) => state);
   const [searchPart, setSearchPart] = useState(false);
+  const [showAlertPermission, setShowAlertPermission] = useState(false);
 
   //skeleton
   const circleAnimatedValue = useRef(new Animated.Value(0)).current;
@@ -62,9 +66,27 @@ const ManagementMember = () => {
     });
   };
 
-  const handleDetail = (_id) => {
-    dispatch(getDetailClub(_id, auth.token));
-    navigation.navigate("DetailClub", { _id: _id });
+  const handleDetail = (item) => {
+    if (
+      item.partner === auth.profile.email ||
+      item.thu_ky === auth.profile.email
+    ) {
+      dispatch(getDetailClub(item._id, auth.token));
+      navigation.navigate("DetailClub", { _id: item._id });
+    } else {
+      setShowAlertPermission(true);
+    }
+
+    if (club.getClubs.length > 0) {
+      club.getClubs.map((i) => {
+        if (i._id === item._id) {
+          dispatch(getDetailClub(item._id, auth.token));
+          navigation.navigate("DetailClub", { _id: item._id });
+        } else {
+          setShowAlertPermission(true);
+        }
+      });
+    }
   };
 
   useEffect(() => {
@@ -83,6 +105,13 @@ const ManagementMember = () => {
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
       <HeaderPart searchPart={searchPart} />
+      {showAlertPermission && (
+        <ModalNotPermission
+          showAlertPermission={showAlertPermission}
+          setShowAlertPermission={setShowAlertPermission}
+          content="Bạn chưa có quyền trong CLUB này"
+        />
+      )}
       <View
         style={{
           backgroundColor: "#ffffff",
@@ -122,6 +151,7 @@ const ManagementMember = () => {
           {refreshing && <Loading size="large" />}
         </View>
       </View>
+
       <View style={{ height: "100%" }}>
         <ScrollView
           showsVerticalScrollIndicator={false}
@@ -264,7 +294,7 @@ const ManagementMember = () => {
                     {club.detailMember?.ds_club?.map((item) => (
                       <TouchableOpacity
                         key={item._id}
-                        onPress={() => handleDetail(item._id)}>
+                        onPress={() => handleDetail(item)}>
                         <Surface style={styles.surface}>
                           <View
                             style={{
@@ -405,7 +435,7 @@ const ManagementMember = () => {
                             </View>
                           </View>
                           <TouchableOpacity
-                            onPress={() => handleDetail(item._id)}
+                            onPress={() => handleDetail(item)}
                             style={{ top: -10 }}>
                             <Ionicons
                               name="chevron-forward-outline"
