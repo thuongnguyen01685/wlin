@@ -465,7 +465,7 @@ const Nation = () => {
             textAlign: "center",
             marginTop: 20,
             fontSize: 15,
-            fontWeight: "500",
+            fontFamily: "LexendDeca_500Medium",
           }}>
           Bạn không có quyền xem tab này.
         </Text>
@@ -894,7 +894,7 @@ const Area = () => {
             textAlign: "center",
             marginTop: 20,
             fontSize: 15,
-            fontWeight: "500",
+            fontFamily: "LexendDeca_500Medium",
           }}>
           Bạn không có quyền xem tab này.
         </Text>
