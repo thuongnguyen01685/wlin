@@ -18,11 +18,12 @@ import {
   TextInput,
   RefreshControl,
 } from "react-native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import HeaderPart from "../../components/HeaderPart/HeaderPart";
 import Loading from "../../components/loading/Loading";
 
 import ModalSuccessRefer from "../../components/modal/ModalSuccessRefer";
+import { AUTH, getCustomerWlinAction } from "../../redux/actions/authAction";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
@@ -39,6 +40,7 @@ const UpgradeMember = () => {
   const [refreshing, setRefreshing] = React.useState(false);
   const [searchPart, setSearchPart] = useState(false);
   const { auth } = useSelector((state) => state);
+  const dispatch = useDispatch();
 
   useEffect(() => {}, []);
 
@@ -48,13 +50,19 @@ const UpgradeMember = () => {
       let stringGoi = "0" + number.toString();
       return stringGoi;
     } else {
-      return "05";
+      return "00";
     }
   };
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-
+    async function it() {
+      const goi = await dispatch(
+        getCustomerWlinAction(auth.token, auth.profile.email)
+      );
+      await dispatch({ type: AUTH.GOI, payload: goi.goi_thanh_vien });
+    }
+    it();
     wait(1000).then(() => setRefreshing(false));
   }, []);
   return (
@@ -132,6 +140,8 @@ const UpgradeMember = () => {
                       ? ["#7289DD", "#D0DAFF", "#ABBCF8", "#7E96E9"]
                       : ma_goi() === "04"
                       ? ["#1F1F1f", "#646464", "#484848", "#373737"]
+                      : ma_goi() === "05"
+                      ? ["#1F1F1f", "#646464", "#484848", "#373737"]
                       : ["#9D85F2", "rgba(157, 133, 242, 0.4)"]
                   }
                   style={{ width: 20, height: 20, borderRadius: 5 }}>
@@ -157,7 +167,7 @@ const UpgradeMember = () => {
                         ? "#CAAD8B"
                         : ma_goi() === "03"
                         ? "rgba(90, 84, 165, 0.5)"
-                        : ma_goi() === "04" && "rgba(255, 255, 255, 0.6)",
+                        : ma_goi() === "04" && "#000",
                     fontSize: 13,
                     fontFamily: "LexendDeca_500Medium",
                     marginHorizontal: 10,
@@ -168,7 +178,11 @@ const UpgradeMember = () => {
                     ? "Gói vàng"
                     : ma_goi() === "03"
                     ? "Gói kim cương"
-                    : ma_goi() === "04" && "Gói partner"}
+                    : ma_goi() === "04"
+                    ? "Gói partner"
+                    : ma_goi() === "05"
+                    ? "Bạn đã đạt gói cao nhất"
+                    : "Gói bạc"}
                 </Text>
               </View>
             </TouchableOpacity>
@@ -245,7 +259,7 @@ const UpgradeMember = () => {
                         ? "#CAAD8B"
                         : auth.ma_goi === "03"
                         ? "rgba(90, 84, 165, 0.5)"
-                        : auth.ma_goi === "04" && "rgba(255, 255, 255, 0.6)",
+                        : auth.ma_goi === "04" && "#000",
                     fontSize: 13,
                     fontFamily: "LexendDeca_500Medium",
                     marginHorizontal: 10,
