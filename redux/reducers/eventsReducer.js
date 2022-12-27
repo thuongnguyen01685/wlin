@@ -7,6 +7,7 @@ const initialState = {
   eventChart: [],
   eventRecommend: [],
   eventPartner: [],
+  eventSupport: [],
 };
 
 const eventReducer = (state = initialState, action) => {
@@ -25,6 +26,11 @@ const eventReducer = (state = initialState, action) => {
       return {
         ...state,
         eventRecommend: action.payload,
+      };
+    case EVENTS.SUPPORT_EVENT:
+      return {
+        ...state,
+        eventSupport: action.payload,
       };
     case EVENTS.DETAILEVENTS:
       return {

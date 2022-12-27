@@ -10,6 +10,7 @@ export const EVENTS = {
   EVENTCHART: "EVENTCHART",
   RECOMMEND_EVENT: "RECOMMEND_EVENT",
   PARTNER_EVENT: "PARTNER_EVENT",
+  SUPPORT_EVENT: "SUPPORT_EVENT",
 };
 
 export const getEventsAction =
@@ -24,7 +25,14 @@ export const getEventsAction =
         const res = await callApis(
           `dmsukien?access_token=${auth.token}&q=${condition}&limit=200`
         );
+
         dispatch({ type: EVENTS.GETEVENTS, payload: res.data });
+
+        const resSupport = await callApis(
+          `dmsukien?access_token=${auth.token}&q={"attends": {"$in":["${auth.profile.email}"]}}`
+        );
+        dispatch({ type: EVENTS.SUPPORT_EVENT, payload: resSupport.data });
+
         return res.data;
       }
 

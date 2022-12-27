@@ -111,23 +111,6 @@ function EventsScreen() {
   );
 }
 
-function SlipsScreen() {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Slips"
-        component={Slips}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="CreateRefer"
-        component={CreateRefer}
-        options={{ headerShown: false }}
-      />
-    </Stack.Navigator>
-  );
-}
-
 function OtherScreen() {
   const { auth } = useSelector((state) => state);
 

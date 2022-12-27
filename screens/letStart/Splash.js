@@ -41,54 +41,41 @@ const Splash = () => {
   useEffect(() => {
     const it = async () => {
       const token = await AsyncStorage.getItem("@token_key");
-
       setLoading(true);
-      setTimeout(async () => {
-        if (token) {
-          await dispatch({ type: AUTH.TOKEN, payload: token });
-          const res = await dispatch(getProfileAction(token));
+      if (token) {
+        await dispatch({ type: AUTH.TOKEN, payload: token });
+        const res = await dispatch(getProfileAction(token));
 
-          if (res) {
-            const access = await dispatch(getPermissionAction(token, res));
-            if (access) {
-              if (access !== Admin) {
-                //const goi = await dispatch(getRankAction(token, res));
+        if (res) {
+          const access = await dispatch(getPermissionAction(token, res));
+          if (access) {
+            if (access !== Admin) {
+              const goi = await dispatch(getCustomerWlinAction(token, res));
 
-                //dispatch({ type: AUTH.GOI, payload: goi });
-                const goi = await dispatch(getCustomerWlinAction(token, res));
-
-                if (goi?.goi_thanh_vien) {
-                  dispatch({ type: AUTH.GOI, payload: goi.goi_thanh_vien });
-                  navigation.navigate("TabBar");
-                } else {
-                  dispatch({ type: AUTH.GOI, payload: [] });
-                  setShowAlertPermission(true);
-                }
-              } else {
-                //const goi = await dispatch(getRankAction(token, res));
-                //dispatch({ type: AUTH.GOI, payload: goi });
-                const goi = await dispatch(getCustomerWlinAction(token, res));
-
-                if (goi) {
-                  dispatch({ type: AUTH.GOI, payload: goi.goi_thanh_vien });
-                }
-
+              if (goi?.goi_thanh_vien) {
+                dispatch({ type: AUTH.GOI, payload: goi.goi_thanh_vien });
                 navigation.navigate("TabBar");
+              } else {
+                dispatch({ type: AUTH.GOI, payload: [] });
+                setShowAlertPermission(true);
               }
             } else {
-              //await AsyncStorage.removeItem("@token_key");
-              // console.log("Token removed");
-              // await dispatch({ type: AUTH.TOKEN, payload: null });
-              // await dispatch({ type: AUTH.PROFILE, payload: [] });
+              const goi = await dispatch(getCustomerWlinAction(token, res));
+
+              if (goi) {
+                dispatch({ type: AUTH.GOI, payload: goi.goi_thanh_vien });
+              }
+              navigation.navigate("TabBar");
             }
+          } else {
           }
-          dispatch(getNotify(token));
-          setLoading(false);
-        } else {
-          setLoading(false);
-          navigation.navigate("Wellcome");
         }
-      }, 1 * 2000);
+        dispatch(getNotify(token));
+        setLoading(false);
+      } else {
+        setLoading(false);
+        navigation.navigate("Wellcome");
+      }
     };
     it();
   }, [dispatch]);
@@ -147,15 +134,15 @@ const Splash = () => {
             width: 100,
             Top: 20,
           }}>
-          {Platform.OS === "ios" ? (
-            loading && <ActivityIndicator size="large" color="#00ff00" />
-          ) : (
-            <Lottie
-              source={require("../../assets/animationloader.json")}
-              autoPlay
-              loop
-            />
-          )}
+          {Platform.OS === "ios"
+            ? loading && <ActivityIndicator size="large" color="#00ff00" />
+            : loading && (
+                <Lottie
+                  source={require("../../assets/animationloader.json")}
+                  autoPlay
+                  loop
+                />
+              )}
 
           {showAlertPermission && (
             <ModalALertPermission
