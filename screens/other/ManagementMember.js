@@ -31,7 +31,7 @@ import { Avatar, Surface } from "react-native-paper";
 import { URL } from "../../utils/fetchApi";
 import Loading from "../../components/loading/Loading";
 import SkeletonDetailMember from "../../components/loading/skeleton/SkeletonDetailMember";
-import { Admin, Partner } from "../../utils/AccessPermission";
+import { Admin, id_app, Partner } from "../../utils/AccessPermission";
 import ModalNotPermission from "../../components/modal/ModalNotPermission";
 
 const wait = (timeout) => {
@@ -50,6 +50,7 @@ const ManagementMember = () => {
   const { auth, club } = useSelector((state) => state);
   const [searchPart, setSearchPart] = useState(false);
   const [showAlertPermission, setShowAlertPermission] = useState(false);
+  const [arrClubPart, setArrClubPart] = useState([]);
 
   //skeleton
   const circleAnimatedValue = useRef(new Animated.Value(0)).current;
@@ -67,31 +68,44 @@ const ManagementMember = () => {
   };
 
   const handleDetail = (item) => {
-    if (
-      item.partner === auth.profile.email ||
-      item.thu_ky === auth.profile.email
-    ) {
-      dispatch(getDetailClub(item._id, auth.token));
-      navigation.navigate("DetailClub", { _id: item._id });
-    } else {
-      setShowAlertPermission(true);
-    }
+    // if (
+    //   item.partner === auth.profile.email ||
+    //   item.thu_ky === auth.profile.email
+    // ) {
+    //   dispatch(getDetailClub(item._id, auth.token));
+    //   navigation.navigate("DetailClub", { _id: item._id });
+    // } else {
+    //   console.log("1");
+    //   setShowAlertPermission(true);
+    // }
 
     if (club.getClubs.length > 0) {
-      club.getClubs.map((i) => {
-        if (i._id === item._id) {
-          dispatch(getDetailClub(item._id, auth.token));
-          navigation.navigate("DetailClub", { _id: item._id });
-        } else {
-          setShowAlertPermission(true);
-        }
-      });
+      if (
+        club.getClubs
+          .map((i) => {
+            return i.ma_club;
+          })
+          .includes(item.ma_club) === true ||
+        arrClubPart.includes(item.ma_club) === true
+      ) {
+        dispatch(getDetailClub(item._id, auth.token));
+        navigation.navigate("DetailClub", { _id: item._id });
+      } else {
+        setShowAlertPermission(true);
+      }
     }
   };
 
   useEffect(() => {
     setRefreshing(true);
     circleAnimated();
+
+    fetch(
+      `${URL}/api/${id_app}/wlin_club?access_token=${auth.token}&limit=500&q={"ds_thanh_vien":{"$elemMatch":{"ma_kh":"${auth.profile.email}"}}}`
+    )
+      .then((response) => response.json())
+      .then((data) => setArrClubPart(data.map((i) => i.ma_club)));
+
     wait(5).then(() => setRefreshing(false));
   }, [dispatch]);
 

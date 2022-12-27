@@ -735,7 +735,7 @@ const DetailEvents = ({ route }, props) => {
                     </TouchableOpacity>
                   )}
 
-                  {auth.permission.group_id === Admin &&
+                  {/* {auth.permission.group_id === Admin &&
                     event.detailEvent.trang_thai !== "1" && (
                       <TouchableOpacity
                         onPress={() => {
@@ -758,7 +758,7 @@ const DetailEvents = ({ route }, props) => {
                           </View>
                         </LinearGradient>
                       </TouchableOpacity>
-                    )}
+                    )} */}
                   {(auth.permission.group_id === Admin ||
                     auth.permission.group_id === Partner) && (
                     <TouchableOpacity

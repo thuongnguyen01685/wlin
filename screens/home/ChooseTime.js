@@ -75,7 +75,7 @@ const ChooseTime = (props) => {
       <DateTimePickerModal
         isVisible={isDatePickerVisibleFrom}
         mode="date"
-        date={new Date()}
+        date={new Date(props.fromTime)}
         onConfirm={handleConfirmFromTime}
         onCancel={hideDatePickerFromTime}
         isDarkModeEnabled={
@@ -86,7 +86,7 @@ const ChooseTime = (props) => {
       <DateTimePickerModal
         isVisible={isDatePickerVisibleTo}
         mode="date"
-        date={new Date()}
+        date={new Date(props.toTime)}
         onConfirm={handleConfirmToTime}
         onCancel={hideDatePickerToTime}
         isDarkModeEnabled={

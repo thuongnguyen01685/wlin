@@ -209,8 +209,10 @@ const Board = (props) => {
                       </View>
                     </View>
 
-                    {(auth.permission.group_id === Admin ||
-                      auth.permission.group_id === Partner) && (
+                    {((auth.permission.group_id === Admin &&
+                      club.detailClub.thu_ky === auth.profile.email) ||
+                      (auth.permission.group_id === Partner &&
+                        club.detailClub.partner === auth.profile.email)) && (
                       <View
                         style={{
                           flexDirection: "row",

@@ -51,7 +51,7 @@ const Chart = () => {
   const [fromTime, setFromTime] = useState(
     moment().add(-1, "M").format("YYYY-MM-DD")
   );
-  const [toTime, setToTime] = useState(new Date());
+  const [toTime, setToTime] = useState(moment().format("YYYY-MM-DD"));
   const { auth, event } = useSelector((state) => state);
   const dispatch = useDispatch();
 
