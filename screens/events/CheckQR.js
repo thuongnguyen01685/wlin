@@ -42,7 +42,7 @@ const CheckQR = () => {
   const [searchPart, setSearchPart] = useState(false);
 
   useEffect(() => {
-    DeviceEventEmitter.addListener("wlincheckin", async (data) => {
+    DeviceEventEmitter.addListener("onwlinCheck", async (data) => {
       if (data) {
         dispatch({ type: EVENTS.SOCKETCHECKIN, payload: data });
         setModalCheckGuestSuccess(true);
