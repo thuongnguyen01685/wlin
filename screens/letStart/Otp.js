@@ -29,6 +29,12 @@ import { getNotify } from "../../redux/actions/notifyAction";
 import ModalSms from "../../components/ModalSms";
 import { Admin } from "../../utils/AccessPermission";
 import ModalALertPermission from "../../components/modal/ModalALertPermission";
+import {
+  CodeField,
+  Cursor,
+  useBlurOnFulfill,
+  useClearByFocusCell,
+} from "react-native-confirmation-code-field";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
@@ -38,14 +44,16 @@ const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 // create a component
+const CELL_COUNT = 6;
 const Otp = ({ route }) => {
   const [value, setValue] = useState("");
-  const [formattedValue, setFormattedValue] = useState("");
-  const [valid, setValid] = useState(false);
-  const [showMessage, setShowMessage] = useState(false);
-  const phoneInput = useRef();
+  const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
+  const [props, getCellOnLayoutHandler] = useClearByFocusCell({
+    value,
+    setValue,
+  });
   const navigation = useNavigation();
-  const [checked, setChecked] = useState(false);
+
   const [modalSms, setModalSms] = useState(false);
   const [showAlertPermission, setShowAlertPermission] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -88,35 +96,15 @@ const Otp = ({ route }) => {
 
   const dispatch = useDispatch();
 
-  const firstInput = useRef();
-  const secondInput = useRef();
-  const thirdInput = useRef();
-  const fourInput = useRef();
-  const fiveInput = useRef();
-  const sixInput = useRef();
-
-  const [one, setOne] = useState(0);
-  const [two, setTwo] = useState(0);
-  const [three, setThree] = useState(0);
-  const [four, setFour] = useState(0);
-  const [five, setFive] = useState(0);
-  const [six, setSix] = useState(0);
-
+  //textinput
   const { auth } = useSelector((state) => state);
 
   let number = route.params.value;
   if (!number.startsWith("0")) number = "0" + route.params.value;
   const handleCheckOtp = async () => {
     setLoading(true);
-    const maOtp =
-      one.toString() +
-      two.toString() +
-      three.toString() +
-      four.toString() +
-      five.toString() +
-      six.toString();
 
-    if (auth.otp.otp === maOtp.toString()) {
+    if (auth.otp.otp === value.toString()) {
       const res = await dispatch(getTokenAction(auth.otp._id, auth.otp.otp));
 
       if (res) {
@@ -320,70 +308,34 @@ const Otp = ({ route }) => {
               Vui lòng nhập mã OTP để xác nhận đăng nhập.
             </Text>
           </View>
-
-          <View style={styles.inputPart}>
-            <TextInput
-              style={styles.input}
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+            }}>
+            <CodeField
+              ref={ref}
+              {...props}
+              value={value}
+              onChangeText={setValue}
+              cellCount={CELL_COUNT}
+              rootStyle={styles.codeFiledRoot}
               keyboardType="number-pad"
-              maxLength={1}
-              ref={firstInput}
-              onChangeText={(text) => {
-                text && secondInput.current.focus();
-                setOne(text);
-              }}
-            />
-            <TextInput
-              style={styles.input}
-              keyboardType="number-pad"
-              maxLength={1}
-              ref={secondInput}
-              onChangeText={(text) => {
-                text ? thirdInput.current.focus() : firstInput.current.focus();
-                setTwo(text);
-              }}
-            />
-            <TextInput
-              style={styles.input}
-              keyboardType="number-pad"
-              maxLength={1}
-              ref={thirdInput}
-              onChangeText={(text) => {
-                text ? fourInput.current.focus() : secondInput.current.focus();
-                setThree(text);
-              }}
-            />
-            <TextInput
-              style={styles.input}
-              keyboardType="number-pad"
-              maxLength={1}
-              ref={fourInput}
-              onChangeText={(text) => {
-                text ? fiveInput.current.focus() : thirdInput.current.focus();
-                setFour(text);
-              }}
-            />
-            <TextInput
-              style={styles.input}
-              keyboardType="number-pad"
-              maxLength={1}
-              ref={fiveInput}
-              onChangeText={(text) => {
-                text ? sixInput.current.focus() : fourInput.current.focus();
-                setFive(text);
-              }}
-            />
-            <TextInput
-              style={styles.input}
-              keyboardType="number-pad"
-              maxLength={1}
-              ref={sixInput}
-              onChangeText={(text) => {
-                !text && fiveInput.current.focus();
-                setSix(text);
-              }}
+              textContentType="oneTimeCode"
+              renderCell={({ index, symbol, isFocused }) => (
+                <View
+                  // Make sure that you pass onLayout={getCellOnLayoutHandler(index)} prop to root component of "Cell"
+                  onLayout={getCellOnLayoutHandler(index)}
+                  key={index}
+                  style={[styles.cellRoot, isFocused && styles.focusCell]}>
+                  <Text style={styles.cellText}>
+                    {symbol || (isFocused ? <Cursor /> : null)}
+                  </Text>
+                </View>
+              )}
             />
           </View>
-
           <View
             style={{
               flexDirection: "row",
@@ -462,20 +414,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily: "LexendDeca_400Regular",
   },
-  inputPart: {
-    flexDirection: "row",
-    marginTop: 15,
-    height: 50,
-    justifyContent: "space-evenly",
-    marginHorizontal: 3,
-  },
-  input: {
-    backgroundColor: "#E8E8E8",
-    borderRadius: 10,
-    width: 50,
-    textAlign: "center",
-    fontFamily: "LexendDeca_400Regular",
-  },
+
   //animated
   toastContainer: {
     height: 60,
@@ -503,6 +442,33 @@ const styles = StyleSheet.create({
     width: "70%",
     padding: 2,
     fontFamily: "LexendDeca_500Medium",
+  },
+
+  //input
+  codeFiledRoot: {
+    marginTop: 10,
+    marginLeft: "auto",
+    marginRight: "auto",
+  },
+  cellRoot: {
+    width: 50,
+    height: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    borderBottomColor: "#ccc",
+    borderBottomWidth: 1,
+    marginHorizontal: 5,
+  },
+  cellText: {
+    color: "#000",
+    fontSize: 30,
+    textAlign: "center",
+    fontFamily: "LexendDeca_400Regular",
+    opacity: 0.8,
+  },
+  focusCell: {
+    borderBottomColor: "#007AFF",
+    borderBottomWidth: 2,
   },
 });
 
