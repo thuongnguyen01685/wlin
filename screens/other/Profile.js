@@ -63,7 +63,10 @@ const Profile = () => {
     dispatch(getBenefitAction(auth.token, auth.profile.email));
     async function it() {
       const goi = await dispatch(getRankAction(auth.token, auth.profile.email));
-      dispatch({ type: AUTH.GOI, payload: goi });
+
+      if (goi) {
+        await dispatch({ type: AUTH.GOI, payload: goi });
+      }
     }
     it();
     wait(1000).then(() => setRefreshing(false));
