@@ -265,7 +265,6 @@ const Profile = () => {
                   name="chevron-back-outline"
                   size={25}
                   color="#826CCF"
-                  // style={{ transform: [{ rotate: "45deg" }] }}
                 />
               </TouchableOpacity>
               <View
@@ -639,12 +638,12 @@ const Profile = () => {
                             </View>
                           </View>
                         </View>
-                        <TouchableOpacity>
+                        {/* <TouchableOpacity>
                           <Image
                             source={require("../../assets/Edite.png")}
                             style={{ width: w * 0.041, height: w * 0.041 }}
                           />
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                       </View>
                     )}
 
@@ -717,12 +716,12 @@ const Profile = () => {
                             </View>
                           </View>
                         </View>
-                        <TouchableOpacity>
+                        {/* <TouchableOpacity>
                           <Image
                             source={require("../../assets/Edite.png")}
                             style={{ width: w * 0.041, height: w * 0.041 }}
                           />
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                       </View>
                     ))}
                   </View>
