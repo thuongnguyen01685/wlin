@@ -60,22 +60,6 @@ const Wellcome = () => {
     setCurrentSlideIndex(currentIndex);
   };
 
-  const goToNextSlide = () => {
-    const nextSlideIndex = currentSlideIndex + 1;
-    if (nextSlideIndex != slides.length) {
-      const offset = nextSlideIndex * width;
-      ref?.current.scrollToOffset({ offset });
-      setCurrentSlideIndex(currentSlideIndex + 1);
-    }
-  };
-
-  const skip = () => {
-    const lastSlideIndex = slides.length - 1;
-    const offset = lastSlideIndex * width;
-    ref?.current.scrollToOffset({ offset });
-    setCurrentSlideIndex(lastSlideIndex);
-  };
-
   const Footer = () => {
     return (
       <View

@@ -13,6 +13,7 @@ import {
   Dimensions,
   TextInput,
   FlatList,
+  Image,
 } from "react-native";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -110,9 +111,9 @@ const PayBenefit = () => {
         getBenefitManagemant(auth.token, arrMember, page, search)
       );
 
-      setData([...data, ...reBe]);
+      if (reBe) setData([...data, ...reBe]);
 
-      setRefreshing(false);
+      wait(500).then(() => setRefreshing(false));
     }
     it();
   }, [dispatch, search]);
@@ -267,7 +268,7 @@ const PayBenefit = () => {
                   </View>
                 </View>
               ))
-          ) : (
+          ) : data.length > 0 ? (
             <FlatList
               data={data}
               renderItem={BenefitHome}
@@ -280,6 +281,32 @@ const PayBenefit = () => {
                 />
               }
             />
+          ) : (
+            <View
+              style={{
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                marginTop: 20,
+              }}>
+              <Image
+                source={require("../../assets/search.png")}
+                style={{
+                  width: w * 0.3,
+                  height: w * 0.3,
+                  resizeMode: "contain",
+                }}
+              />
+              <Text
+                style={{
+                  fontFamily: "LexendDeca_600SemiBold",
+                  fontSize: 14,
+                  textAlign: "center",
+                  marginVertical: 10,
+                }}>
+                Hiện chưa có chỉ số quyền lợi{`\n`}chưa trả nào.
+              </Text>
+            </View>
           )}
         </View>
       </View>

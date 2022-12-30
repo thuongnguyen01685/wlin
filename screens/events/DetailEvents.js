@@ -21,6 +21,7 @@ import {
   RefreshControl,
   Animated,
   Alert,
+  DeviceEventEmitter,
 } from "react-native";
 import Lottie from "lottie-react-native";
 import HeaderPart from "../../components/HeaderPart/HeaderPart";
@@ -40,6 +41,7 @@ import Loading from "../../components/loading/Loading";
 import SkeletonDetailEvents from "../../components/loading/skeleton/SkeletonDetailEvents";
 import { log } from "react-native-reanimated";
 import ModalNotPermission from "../../components/modal/ModalNotPermission";
+import { getNotify } from "../../redux/actions/notifyAction";
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
 const ratio = w / 720;
@@ -77,6 +79,11 @@ const DetailEvents = ({ route }, props) => {
   useEffect(() => {
     setRefreshing(true);
     circleAnimated();
+    DeviceEventEmitter.addListener("onwlinthanhtoan", async (data) => {
+      if (data) {
+        dispatch(getNotify(auth.token));
+      }
+    });
     dispatch(getDetailEventsAction(route.params._id, auth.token));
     wait(10).then(() => setRefreshing(false));
   }, []);

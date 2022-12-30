@@ -78,7 +78,7 @@ const Splash = () => {
       }
     };
     it();
-  }, [dispatch]);
+  }, [dispatch, auth.isCheckLogin]);
 
   return (
     <View style={styles.container}>

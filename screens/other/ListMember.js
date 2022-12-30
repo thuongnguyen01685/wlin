@@ -178,7 +178,10 @@ const ListMember = () => {
       const reListMe = await dispatch(
         getMemberAction(auth.token, arrMember, page, search)
       );
-      setData([...data, ...reListMe]);
+      if (reListMe) {
+        setData([...data, ...reListMe]);
+      }
+
       await setRefreshing(false);
     }
     it();
@@ -320,7 +323,7 @@ const ListMember = () => {
                 </View>
               </View>
             ))
-        ) : (
+        ) : data.length > 0 ? (
           <View style={{ marginBottom: "70%" }}>
             <FlatList
               data={data}
@@ -439,6 +442,32 @@ const ListMember = () => {
                 />
               }
             />
+          </View>
+        ) : (
+          <View
+            style={{
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              marginTop: 20,
+            }}>
+            <Image
+              source={require("../../assets/search.png")}
+              style={{
+                width: w * 0.3,
+                height: w * 0.3,
+                resizeMode: "contain",
+              }}
+            />
+            <Text
+              style={{
+                fontFamily: "LexendDeca_600SemiBold",
+                fontSize: 14,
+                textAlign: "center",
+                marginVertical: 10,
+              }}>
+              Hiện chưa có hội viên nào.
+            </Text>
           </View>
         )}
       </View>
