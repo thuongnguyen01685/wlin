@@ -99,6 +99,7 @@ const Other = () => {
 
   useEffect(() => {
     if (!auth.token) {
+      setLoading(false);
       navigation.navigate("Wellcome");
     }
   }, [auth.token]);
@@ -106,7 +107,6 @@ const Other = () => {
   const handleLogout = async () => {
     try {
       setLoading(true);
-
       await AsyncStorage.removeItem("@token_key");
 
       // console.log("Token removed");
@@ -115,7 +115,6 @@ const Other = () => {
 
       dispatch({ type: AUTH.PROFILE, payload: [] });
 
-      setLoading(false);
       Toast.show("Bạn đã đăng xuất !", {
         duration: Toast.durations.LONG,
         position: Toast.positions.BOTTOM,

@@ -203,6 +203,9 @@ export const initSocket = async (token, email) => {
   socket.on(`wlincheckin`, function (data) {
     DeviceEventEmitter.emit(`onwlinCheck`, data);
   });
+  socket.on(`wlinthanhtoan`, function (data) {
+    DeviceEventEmitter.emit(`onwlinthanhtoan`, data);
+  });
 
   function _handleNotification(notification) {
     let data = notification.request.content.data;

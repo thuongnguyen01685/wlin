@@ -51,7 +51,7 @@ const CheckQR = () => {
         setModalFail(true);
       }
     });
-    DeviceEventEmitter.addListener("wlinthanhtoan", async (data) => {
+    DeviceEventEmitter.addListener("onwlinthanhtoan", async (data) => {
       if (data) {
         dispatch(getNotify(auth.token));
       } else {

@@ -1467,7 +1467,12 @@ const Club = () => {
                 }}>
                 <Image
                   source={require("../../assets/search.png")}
-                  style={{ width: w * 0.2, height: w * 0.2, right: 5 }}
+                  style={{
+                    width: w * 0.3,
+                    height: w * 0.3,
+                    right: 5,
+                    resizeMode: "contain",
+                  }}
                 />
                 <Text
                   style={{
