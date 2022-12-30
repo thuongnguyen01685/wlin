@@ -165,12 +165,15 @@ export const eventChartAction =
         const res = await callApis(
           `fos_chart?access_token=${auth.token}&email=${auth.profile.email}&tu_ngay=${fromTime}&den_ngay=${toTime}`
         );
+
         dispatch({ type: EVENTS.EVENTCHART, payload: res.data });
       }
       if (auth.permission.group_id === Partner) {
         const res = await callApis(
           `fos_chart?access_token=${auth.token}&partner=${auth.customer.ma_kh}&tu_ngay=${fromTime}&den_ngay=${toTime}`
         );
+
+        console.log(res, "res2");
 
         dispatch({ type: EVENTS.EVENTCHART, payload: res.data });
       }
