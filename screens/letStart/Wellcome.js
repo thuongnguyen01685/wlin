@@ -1,5 +1,5 @@
-import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import React, { useState } from "react";
 import {
   SafeAreaView,
   Image,
@@ -12,6 +12,7 @@ import {
   Dimensions,
   Platform,
 } from "react-native";
+import BackFail from "../home/BackFail";
 
 const { width, height } = Dimensions.get("window");
 
@@ -91,8 +92,16 @@ const Wellcome = () => {
     );
   };
 
+  //backfail
+  const [backFail, setBackFail] = useState(true);
+  useFocusEffect(() => {
+    setBackFail(true);
+    return () => setBackFail(false);
+  });
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
+      {backFail && <BackFail />}
       <FlatList
         ref={ref}
         onMomentumScrollEnd={updateCurrentSlideIndex}

@@ -35,7 +35,9 @@
                 "NSPhotoLibraryUsageDescription": "Chương trình sử dụng thư viện ảnh để cho phép người dùng thêm hình đại diện.",
                 "NSLocationWhenInUseUsageDescription": "Chương trình này sử dụng vị trí của bạn để gợi ý cho bạn các công việc gần bạn.",
                 "NSFaceIDUsageDescription": "chương trình này sử dụng TouchID/FaceID để cho phép người dùng đăng nhập"
-            }
+            },
+
+            "requireFullScreen": true
         },
         "android": {
             "icon": "./assets/icon.png",
@@ -90,6 +92,12 @@
                     "photosPermission": "Allow $(PRODUCT_NAME) to access your photos.",
                     "savePhotosPermission": "Allow $(PRODUCT_NAME) to save photos.",
                     "isAccessMediaLocationEnabled": "true"
+                }
+            ],
+            [
+                "expo-screen-orientation",
+                {
+                    "initialOrientation": "DEFAULT"
                 }
             ]
         ]

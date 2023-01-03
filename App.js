@@ -1,6 +1,7 @@
 import { Provider } from "react-redux";
 import Navigator from "./navigation/Navigator";
 import { store } from "./redux/store";
+//import * as ScreenOrientation from "expo-screen-orientation";
 import * as Updates from "expo-updates";
 import { Alert } from "react-native";
 import {
@@ -15,6 +16,7 @@ import {
   LexendDeca_800ExtraBold,
   LexendDeca_900Black,
 } from "@expo-google-fonts/lexend-deca";
+import { useEffect } from "react";
 
 export default function App() {
   Updates.checkForUpdateAsync().then((update) => {
@@ -51,6 +53,13 @@ export default function App() {
   if (!fontsLoaded) {
     return null;
   }
+  // async function changeScreenOrientation() {
+  //   await ScreenOrientation.lockAsync(
+  //     ScreenOrientation.OrientationLock.LANDSCAPE_LEFT
+  //   );
+  // }
+  //changeScreenOrientation();
+
   return (
     <Provider store={store}>
       <Navigator />

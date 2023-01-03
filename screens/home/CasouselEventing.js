@@ -23,7 +23,10 @@ const CasouselEventing = (props) => {
   //eventing
   let dateNow = new Date();
   let year = dateNow.getFullYear();
-  let month = dateNow.getMonth() + 1;
+  let month =
+    dateNow.getMonth() + 1 >= 10
+      ? dateNow.getMonth() + 1
+      : `0${dateNow.getMonth() + 1}`;
   let day =
     dateNow.getDate() >= 10 ? dateNow.getDate() : `0${dateNow.getDate()}`;
   let dayofweek = dateNow.getDay();

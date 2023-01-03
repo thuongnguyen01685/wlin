@@ -161,6 +161,8 @@ function getWidth() {
 
 const TabBar = () => {
   const tabOffsetValue = useRef(new Animated.Value(0)).current;
+  const opacity = useRef(new Animated.Value(1)).current;
+
   const { auth } = useSelector((state) => state);
   return (
     <>
@@ -215,67 +217,132 @@ const TabBar = () => {
           name="Home"
           component={Home}
           options={{ title: "Trang chủ" }}
-          listeners={({ navigation, route }) => ({
-            tabPress: (e) => {
+          listeners={({ navigation, route }) => {
+            navigation.addListener("focus", () => {
+              Animated.timing(opacity, {
+                toValue: 1,
+                duration: 200,
+                useNativeDriver: true,
+              }).start();
               Animated.spring(tabOffsetValue, {
                 toValue: 0,
                 useNativeDriver: true,
               }).start();
-            },
-          })}
+            });
+            return {
+              tabPress: (e) => {
+                Animated.spring(tabOffsetValue, {
+                  toValue: 0,
+                  useNativeDriver: true,
+                }).start();
+              },
+            };
+          }}
         />
 
         <Tab.Screen
           name="ClubScreen"
           component={ClubScreen}
           options={{ headerShown: false, title: "CLUB" }}
-          listeners={({ navigation, route }) => ({
-            tabPress: (e) => {
+          listeners={({ navigation, route }) => {
+            navigation.addListener("focus", () => {
+              Animated.timing(opacity, {
+                toValue: 1,
+                duration: 200,
+                useNativeDriver: true,
+              }).start();
               Animated.spring(tabOffsetValue, {
                 toValue: getWidth() * 1.08,
                 useNativeDriver: true,
               }).start();
-            },
-          })}
+            });
+            return {
+              tabPress: (e) => {
+                Animated.spring(tabOffsetValue, {
+                  toValue: getWidth() * 1.08,
+                  useNativeDriver: true,
+                }).start();
+              },
+            };
+          }}
         />
         <Tab.Screen
           name="QRScreen"
           component={CheckQR}
           options={{ headerShown: false, title: "" }}
-          listeners={({ navigation, route }) => ({
-            tabPress: (e) => {
-              Animated.spring(tabOffsetValue, {
-                toValue: -100,
+          listeners={({ navigation, route }) => {
+            navigation.addListener("focus", () => {
+              Animated.timing(opacity, {
+                toValue: 0,
+                duration: 200,
                 useNativeDriver: true,
               }).start();
-            },
-          })}
+              Animated.spring(tabOffsetValue, {
+                toValue: getWidth() * 2.16,
+                useNativeDriver: true,
+              }).start();
+            });
+            return {
+              tabPress: (e) => {
+                Animated.spring(tabOffsetValue, {
+                  toValue: getWidth() * 2.16,
+                  useNativeDriver: true,
+                }).start();
+              },
+            };
+          }}
         />
         <Tab.Screen
           name="EventsScreen"
           component={EventsScreen}
           options={{ headerShown: false, title: "Sự kiện" }}
-          listeners={({ navigation, route }) => ({
-            tabPress: (e) => {
+          listeners={({ navigation, route }) => {
+            navigation.addListener("focus", () => {
+              Animated.timing(opacity, {
+                toValue: 1,
+                duration: 200,
+                useNativeDriver: true,
+              }).start();
               Animated.spring(tabOffsetValue, {
                 toValue: getWidth() * 3.24,
                 useNativeDriver: true,
               }).start();
-            },
-          })}
+            });
+            return {
+              tabPress: (e) => {
+                Animated.spring(tabOffsetValue, {
+                  toValue: getWidth() * 3.24,
+                  useNativeDriver: true,
+                }).start();
+              },
+            };
+          }}
         />
         <Tab.Screen
           name="OtherScreen"
           component={OtherScreen}
           options={{ title: "Khác" }}
-          listeners={({ navigation, route }) => ({
-            tabPress: (e) => {
+          listeners={({ navigation, route }) => {
+            navigation.addListener("focus", () => {
+              Animated.timing(opacity, {
+                toValue: 1,
+                duration: 200,
+                useNativeDriver: true,
+              }).start();
               Animated.spring(tabOffsetValue, {
                 toValue: getWidth() * 4.33,
                 useNativeDriver: true,
               }).start();
-            },
-          })}
+            });
+            return {
+              tabPress: (e) => {
+                Animated.spring(tabOffsetValue, {
+                  toValue: getWidth() * 4.33,
+                  useNativeDriver: true,
+                }).start();
+              },
+            };
+          }}
         />
       </Tab.Navigator>
       <Animated.View
@@ -286,7 +353,7 @@ const TabBar = () => {
           position: "absolute",
           bottom: 10,
           borderRadius: 50,
-          opacity: 0.9,
+          opacity: opacity,
           left: 23,
           transform: [{ translateX: tabOffsetValue }],
         }}></Animated.View>

@@ -1,9 +1,8 @@
 //import liraries
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
-
 import React, { Component, useRef, useState } from "react";
 import {
   View,
@@ -32,11 +31,7 @@ import {
   getProfileAction,
   getRankAction,
 } from "../../redux/actions/authAction";
-
-import { getNotify } from "../../redux/actions/notifyAction";
 import HeaderPart from "../../components/HeaderPart/HeaderPart";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import Toast from "react-native-root-toast";
 
 import { getEventsAction } from "../../redux/actions/eventsAction";
 
@@ -56,18 +51,19 @@ import { Admin, Partner } from "../../utils/AccessPermission";
 import CasouselEventing from "./CasouselEventing";
 import ReactNativeAnimatedSearchbox from "../../components/ReactNativeAnimatedSearchbox";
 import { Alert } from "react-native";
+import BackFail from "./BackFail";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
 const ratio = w / 720;
 
-let backHandlerClickCount = 0;
 // create a component
 const Home = () => {
   const navigation = useNavigation();
   const [backHome, setBackHome] = useState(false);
   const dispatch = useDispatch();
   const [refreshing, setRefreshing] = useState(false);
+  const [backFail, setBackFail] = useState(true);
 
   //search
   const [search, setSearch] = useState("");
@@ -79,27 +75,11 @@ const Home = () => {
   const [searchIconColor, setSearchIconColor] = useState("#909090");
   const refSearchBox = useRef();
 
-  const backButtonHandler = () => {
-    const shortToast = (message) => {
-      Toast.show(message, {
-        duration: Toast.durations.LONG,
-        position: Toast.positions.BOTTOM,
-      });
-    };
-    // let backHandlerClickCount;
-    backHandlerClickCount += 1;
-    if (backHandlerClickCount < 2) {
-      shortToast("Nhấn lần nữa sẽ thoát ứng dụng!");
-    } else {
-      BackHandler.exitApp();
-    }
-    // timeout for fade and exit
-    setTimeout(() => {
-      backHandlerClickCount = 0;
-    }, 1000);
+  useFocusEffect(() => {
+    setBackFail(true);
+    return () => setBackFail(false);
+  });
 
-    return true;
-  };
   useEffect(() => {
     if (auth.token) {
       setRefreshing(true);
@@ -108,7 +88,9 @@ const Home = () => {
       const res = await dispatch(getCLub(auth, 1, auth.permission.group_id));
 
       const arrayClub = res?.map((item) => item.ma_club);
-      dispatch(getEventsAction(auth, arrayClub, auth.permission.group_id));
+      await dispatch(
+        getEventsAction(auth, arrayClub, auth.permission.group_id)
+      );
 
       const arrMember = res
         ?.flatMap((items) => items.ds_thanh_vien.map((item) => item.ma_kh))
@@ -123,15 +105,6 @@ const Home = () => {
     }
     it();
   }, [dispatch, auth.profile.email, auth.permission.group_id, search]);
-
-  useEffect(() => {
-    if (backHome === false) {
-      BackHandler.addEventListener("hardwareBackPress", backButtonHandler);
-    }
-    return () => {
-      BackHandler.removeEventListener("hardwareBackPress", backButtonHandler);
-    };
-  }, [backHome]);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -164,6 +137,7 @@ const Home = () => {
 
   return (
     <View style={styles.container}>
+      {backFail && <BackFail />}
       {refreshing && (
         <View
           style={{
