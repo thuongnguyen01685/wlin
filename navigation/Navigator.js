@@ -69,7 +69,7 @@ function StartScreen() {
       <Stack.Screen
         name="Wellcome"
         component={Wellcome}
-        options={{ headerShown: false }}
+        options={{ headerShown: false, gestureEnabled: false }}
       />
       <Stack.Screen
         name="Login"
@@ -127,7 +127,7 @@ const Navigator = () => {
         <Stack.Screen
           name="TabBar"
           component={TabBar}
-          options={{ headerShown: false }}
+          options={{ headerShown: false, gestureEnabled: false }}
         />
         <Stack.Screen
           name="Profile"
