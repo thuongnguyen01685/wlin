@@ -2,9 +2,11 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
+import moment from "moment";
 import React, { Component, useEffect, useState } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
+import { formatDateDisplay } from "../utils/datetime";
 
 // create a component
 const CardInfo = () => {
@@ -113,7 +115,11 @@ const CardInfo = () => {
                           : auth.ma_goi === "04" && "rgba(255, 255, 255, 0.6)",
                     },
                   ]}>
-                  1/2/2021
+                  {auth.customer?.contract.length > 0
+                    ? formatDateDisplay(
+                        auth.customer.contract[0]?.ngay_hieu_luc
+                      )
+                    : "..."}
                 </Text>
                 <Text
                   style={[
@@ -130,7 +136,12 @@ const CardInfo = () => {
                     },
                   ]}>
                   {" "}
-                  - 1/2/2022
+                  -{" "}
+                  {auth.customer?.contract.length > 0
+                    ? formatDateDisplay(
+                        auth.customer.contract[0]?.ngay_ket_thuc
+                      )
+                    : "..."}
                 </Text>
               </View>
               <Text
@@ -147,7 +158,14 @@ const CardInfo = () => {
                         : auth.ma_goi === "04" && "rgba(255, 255, 255, 0.6)",
                   },
                 ]}>
-                Thời gian hoạt động còn lại: 20 ngày
+                Thời gian hoạt động còn lại:{" "}
+                {auth.customer?.contract.length > 0
+                  ? moment(auth.customer.contract[0]?.ngay_ket_thuc).diff(
+                      moment(auth.customer.contract[0]?.ngay_hieu_luc),
+                      "d"
+                    )
+                  : "..."}{" "}
+                ngày
               </Text>
             </View>
           )}
