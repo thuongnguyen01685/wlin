@@ -207,10 +207,15 @@ export const initSocket = async (token, email) => {
     DeviceEventEmitter.emit(`onwlinthanhtoan`, data);
   });
 
+  socket.on(`wlin_update_htv`, function (data) {
+    DeviceEventEmitter.emit(`onwlinupdatehtv`, data);
+  });
+
   function _handleNotification(notification) {
     let data = notification.request.content.data;
     DeviceEventEmitter.emit(data.__event, data);
   }
+
   async function _handleNotificationResponse(response) {
     let data = response.notification.request.content.data;
     //news

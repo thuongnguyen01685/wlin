@@ -15,6 +15,7 @@ import {
   ScrollView,
   Animated,
   StatusBar,
+  DeviceEventEmitter,
 } from "react-native";
 import Toast from "react-native-root-toast";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -37,6 +38,7 @@ import { getBenefitAction } from "../../redux/actions/benefitAction";
 import { RefreshControl } from "react-native";
 import Loading from "../../components/loading/Loading";
 import ModalNotify from "../../components/modal/ModalNotify";
+import { getNotify } from "../../redux/actions/notifyAction";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
@@ -156,6 +158,11 @@ const Profile = () => {
     navigation.goBack();
   };
   useEffect(() => {
+    DeviceEventEmitter.addListener("onwlinupdatehtv", async (data) => {
+      if (data) {
+        dispatch(getNotify(auth.token));
+      }
+    });
     Animated.loop(
       Animated.sequence([
         Animated.timing(amin, {

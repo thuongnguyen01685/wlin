@@ -21,9 +21,11 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import HeaderPart from "../../components/HeaderPart/HeaderPart";
 import Loading from "../../components/loading/Loading";
+import ModalNotPermission from "../../components/modal/ModalNotPermission";
 
 import ModalSuccessRefer from "../../components/modal/ModalSuccessRefer";
 import { AUTH, getCustomerWlinAction } from "../../redux/actions/authAction";
+import callApis from "../../utils/callApis";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
@@ -35,15 +37,17 @@ const wait = (timeout) => {
 // create a component
 const UpgradeMember = () => {
   const navigation = useNavigation();
-  const [search, setSearch] = useState("");
-  const [modalSuccess, setModalSuccess] = useState(false);
+
   const [refreshing, setRefreshing] = React.useState(false);
   const [searchPart, setSearchPart] = useState(false);
+  const [content, setContent] = useState("");
   const { auth } = useSelector((state) => state);
+
+  //modal state
+  const [modalSuccess, setModalSuccess] = useState(false);
+  const [showAlertPermission, setShowAlertPermission] = useState(false);
+
   const dispatch = useDispatch();
-
-  useEffect(() => {}, []);
-
   const ma_goi = () => {
     if (auth.ma_goi) {
       let number = Number(auth.ma_goi) + 1;
@@ -51,6 +55,21 @@ const UpgradeMember = () => {
       return stringGoi;
     } else {
       return "00";
+    }
+  };
+
+  const upgradeMember = async () => {
+    const res = await callApis(
+      `update_htv?access_token=${auth.token}&ma_kh=${
+        auth.profile.email
+      }&ma_goi_ht=${auth.ma_goi}&ma_goi_yc=${ma_goi()}`
+    );
+    if (res.data) {
+      setContent(res.data);
+      setModalSuccess(true);
+    } else {
+      setContent(res.error);
+      setShowAlertPermission(true);
     }
   };
 
@@ -198,7 +217,7 @@ const UpgradeMember = () => {
                 justifyContent: "center",
                 marginBottom: 10,
               }}
-              onPress={() => setModalSuccess(true)}>
+              onPress={upgradeMember}>
               <LinearGradient
                 start={{ x: 0.3, y: 1 }}
                 end={{ x: 1, y: 1 }}
@@ -285,8 +304,7 @@ const UpgradeMember = () => {
                 justifyContent: "center",
                 marginBottom: 10,
                 marginHorizontal: 5,
-              }}
-              onPress={() => setModalSuccess(true)}>
+              }}>
               <LinearGradient
                 start={{ x: 0.3, y: 1 }}
                 end={{ x: 1, y: 1 }}
@@ -329,7 +347,15 @@ const UpgradeMember = () => {
         <ModalSuccessRefer
           modalSuccess={modalSuccess}
           setModalSuccess={setModalSuccess}
-          content={"Gửi yêu cầu thành công"}
+          content={content}
+        />
+      )}
+
+      {showAlertPermission && (
+        <ModalNotPermission
+          showAlertPermission={showAlertPermission}
+          setShowAlertPermission={setShowAlertPermission}
+          content={content}
         />
       )}
     </View>

@@ -161,7 +161,7 @@ const CardInfo = () => {
                 Thời gian hoạt động còn lại:{" "}
                 {auth.customer?.contract.length > 0
                   ? moment(auth.customer.contract[0]?.ngay_ket_thuc).diff(
-                      moment(auth.customer.contract[0]?.ngay_hieu_luc),
+                      moment(),
                       "d"
                     )
                   : "..."}{" "}
