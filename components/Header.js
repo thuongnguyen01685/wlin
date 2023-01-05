@@ -12,12 +12,14 @@ import {
   ImageBackground,
   Animated,
   StatusBar,
+  DeviceEventEmitter,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { AUTH, getProfileAction } from "../redux/actions/authAction";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { URL } from "../utils/fetchApi";
 import ModalNotify from "./modal/ModalNotify";
+import { getNotify } from "../redux/actions/notifyAction";
 
 // create a component
 const Header = (props) => {
@@ -37,6 +39,11 @@ const Header = (props) => {
     const it = async () => {
       const token = await AsyncStorage.getItem("@token_key");
       dispatch(getProfileAction(token));
+      DeviceEventEmitter.addListener("onwlinupdatehtv", async (data) => {
+        if (data) {
+          dispatch(getNotify(token));
+        }
+      });
     };
     it();
     Animated.loop(
