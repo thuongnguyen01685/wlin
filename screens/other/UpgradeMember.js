@@ -294,7 +294,7 @@ const UpgradeMember = () => {
               </View>
             </TouchableOpacity>
           </View>
-          <View style={{ flexDirection: "row", justifyContent: "center" }}>
+          {/* <View style={{ flexDirection: "row", justifyContent: "center" }}>
             <TouchableOpacity
               style={{
                 borderRadius: 7,
@@ -339,7 +339,7 @@ const UpgradeMember = () => {
                 <Text style={styles.textBtn}>Hủy gia hạn</Text>
               </LinearGradient>
             </TouchableOpacity>
-          </View>
+          </View> */}
         </ScrollView>
       </View>
 
